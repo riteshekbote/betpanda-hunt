@@ -1,0 +1,241 @@
+name: Deep Hunt (BetPanda)
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+env:
+  PROBE_ALLOW: "betpanda.io"
+
+jobs:
+  analyst:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: hunt-betpanda-analyst
+      cancel-in-progress: true
+    env:
+      MODEL_ID: opencode/mimo-v2.5-free
+      OPENCODE_REASONING: xhigh
+      MODEL_NAME: mimo
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install OpenCode
+        run: |
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          if command -v opencode >/dev/null 2>&1; then opencode --version; exit 0; fi
+          npm install -g opencode-ai 2>/dev/null || npm install -g --prefix "$HOME/.npm-global" opencode-ai 2>/dev/null || true
+          if ! command -v opencode >/dev/null 2>&1; then
+            for i in 1 2 3; do
+              curl -fsSL https://opencode.ai/install | bash && break
+              echo "opencode.ai installer attempt $i failed, retrying in 15s..."
+              sleep 15
+            done
+          fi
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          opencode --version
+
+      - name: Prepare context (RAG + state + inventory + last cycle)
+        run: |
+          mkdir -p knowledge inventory leads reports
+          [ -f knowledge/index.md ] || echo "# Knowledge Base (seed)" > knowledge/index.md
+          [ -f state_${MODEL_NAME}.json ] || echo '{"phase":"RECON","target":"api"}' > state_${MODEL_NAME}.json
+          {
+            echo "=== KNOWLEDGE BASE ==="
+            cat knowledge/index.md
+            echo "=== MY STATE ==="
+            cat state_${MODEL_NAME}.json
+            echo "=== MY LAST LEADS (tail) ==="
+            tail -60 leads/lead-${MODEL_NAME}.md 2>/dev/null || echo none
+            echo "=== AGGREGATED HYPOTHESES (tail) ==="
+            tail -40 reports/hypotheses.md 2>/dev/null || echo none
+            echo "=== INVENTORY betpanda ==="
+            cat inventory/betpanda.md 2>/dev/null || echo none
+          } > ctx.txt
+
+      - name: Analyst run (deep-hunt methodology)
+        run: |
+          cat ctx.txt > analyst-prompt.txt
+          cat >> analyst-prompt.txt << 'PROMPT_EOF'
+          You are a senior bug bounty hunter ANALYST for the BetPanda program (report channel: bugs.olivermaicher.eu).
+          Eligible in-scope assets (ONLY these, from scope.yml + inventory/betpanda.md): All company-owned infrastructure, betting platforms, gaming systems, wallets, APIs, user accounts, and domains operated by BetPanda
+          Deep-hunt directives:
+          - Prioritize HIGH-VALUE classes: broken auth/session, IDOR/BOLA, SSRF-to-cloud-metadata (169.254.169.254), mass assignment, JWT alg/key confusion, OAuth redirect_uri/state flaws, business logic on money/auth flows, file upload, GraphQL introspection+mutations, subdomain takeover.
+          - CHAIN aggressively: open redirect -> OAuth code theft -> ATO; IDOR -> cross-tenant PII dump; SSRF -> metadata -> keys; XSS -> session theft -> ATO.
+          - Request-level reasoning: exact METHOD path params headers body, expected vs actual status. No filler.
+          - Breadth over the full inventory for anomalies (odd status codes, id/uid/email/user_id params, versioned /api/v1|v2|beta|internal, debug/test flags, swagger/openapi/json), then depth on top-3 anomalies.
+          - If a hypothesis needs live confirmation you cannot do passively, emit [NEXT] PROBE with the EXACT read-only request.
+          OUT OF SCOPE (REJECTED classes): network DoS, account-lockout DoS, descriptive errors/headers only, robots.txt / known public files, outdated library versions, OPTIONS/TRACE, CSRF on logout or anonymous forms, cookie flags on non-sensitive data, self-XSS, scanner reports without POC, physical access, social engineering of employees/vendors, username enumeration on login/forgot-password, brute-force/rate-limit/lockout policy, SSL/TLS best practice, SSL attacks, clickjacking without demonstrated exploit, mail config (SPF/DKIM/DMARC), known-vulnerable library without program-specific exploit, password/account-recovery policy, autocomplete in fields, public login panels, lack of email verification, session control during email/password change, and any exposure of customer/employee/financial/authentication data during testing (program note). Focus on real logic flaws in scoped assets.
+          Your job is NOT to invent vulnerabilities. Run the 8 steps and output ONLY structured blocks.
+
+          STEP 1 — DELTA: compare inventory+knowledge+last leads against current surface. [NEW]/[CHANGED] one line each, or NO_DELTA.
+          STEP 2 — PRIORITIZE: score top new (or existing) assets 0-10 on attack_surface, business_value, tech_exposure (GraphQL/OAuth/JWT/upload/admin/uncommon), gate_ease (10=no auth), cloud_surface, freshness. priority=0.25a+0.25b+0.15t+0.15g+0.10c+0.10f. Emit [PRIO] asset,score,axis.
+          STEP 3 — HYPOTHESES: top 3 assets, max 1 hypothesis each. Strict schema, one field per line under [HYP] title line:
+          [HYP] <title>
+          class: <IDOR|SSRF|AUTH|XSS|BUSLOGIC|MISCONFIG|OATH|OTHER>
+          asset: <host/endpoint>
+          confidence: <0-100>
+          reasoning: <facts only>
+          evidence_needed: <what proves it>
+          verify_steps: <passive-first concrete HTTP requests>
+          impact: <what attacker gets + severity>
+          testability: <PASSIVE|AUTH_HELPED|HUMAN_ONLY>
+          Never put fields inline in the [HYP] title.
+          STEP 4 — SELF-CRITIQUE: drop confidence<40 or REJECTED-class or no-verify-steps. [PARKED] <title>: <why>. [FINAL] survivors ranked.
+          STEP 5 — NEXT ACTION: exactly one [NEXT] <PROBE|SCAN|RAG|HUMAN>: <one concrete action, exact endpoint if PROBE>.
+          STEP 6 — LEARNING: [LEARN] REJECTED/ACCEPTED <class> @ <asset>: <reason>.
+          STEP 7 — RISK: [RISK] <program>: <0-100> reason.
+          RULES: facts vs hypotheses strictly separated; no endpoint-map-only; no REJECTED class; sha256 any secret; all claims trace to context or your own read-only probes; passive-first, <=1 rps, GET/HEAD/OPTIONS only for live probes; no auth-bypass or mutating tests against live customer data; any scanner output requires manual validation.
+          PROMPT_EOF
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          timeout -k 15 20m opencode run --model "$MODEL_ID" < analyst-prompt.txt > analyst-out.txt 2>&1 || true
+          cp analyst-out.txt analyst-${MODEL_NAME}.out
+          grep -E '^\[(NEW|CHANGED|PRIO|HYP|PARKED|FINAL|NEXT|LEARN|RISK)\]|^class:|^confidence:|^asset:|^impact:|^testability:|^verify_steps:|^reasoning:|^evidence_needed:' analyst-out.txt > lead.txt || true
+          {
+            echo "## $(date -u +'%Y-%m-%d %H:%M:%S UTC') [target] (model ${MODEL_NAME})"
+            cat lead.txt
+          } > lead_${MODEL_NAME}.txt
+          echo "lead bytes: $(wc -c < lead.txt) | raw bytes: $(wc -c < analyst-out.txt)"
+
+      - name: Upload model artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: analyst-betpanda
+          path: |
+            lead_${{ matrix.model.name }}.txt
+            analyst-${{ matrix.model.name }}.out
+            ctx.txt
+          if-no-files-found: warn
+
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: analyst
+    if: always()
+    concurrency:
+      group: hunt-betpanda-aggregate
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          path: art
+          merge-multiple: true
+
+      - name: Merge + rank + inventory + knowledge update
+        run: |
+          mkdir -p leads reports knowledge inventory
+          for f in art/lead_*.txt; do
+            [ -f "$f" ] || continue
+            cat "$f" >> leads/lead-$(basename "$f" | sed -E 's/lead_([a-z0-9]+)\.txt/\1/').md
+          done
+          python3 << 'PY_EOF'
+          import re, glob, json, os, datetime
+          stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
+          all_h=[]
+          for f in glob.glob('art/lead_*.txt'):
+              base=os.path.basename(f); model=re.sub(r'^lead_([a-z0-9]+)\.txt$',r'\1',base)
+              open(f'reports/hypotheses-{model}.txt','w').write(open(f).read())
+              text=open(f).read()
+              m=re.search(r'^\[HYP\] (.*)$',text,re.M)
+              if not m: continue
+              c=re.search(r'^confidence:\s*(\d+)',text,re.M)
+              a=re.search(r'^asset:\s*(\S+)',text,re.M)
+              all_h.append((int(c.group(1)) if c else 0, a.group(1) if a else '?', m.group(1).strip(), f))
+          all_h.sort(reverse=True)
+          with open('reports/hypotheses.md','a') as out:
+              out.write(f"\n## RANKED HYPOTHESES {stamp}\n")
+              seen=set()
+              for conf,asset,title,f in all_h[:8]:
+                  key=title.lower()[:60]
+                  if key in seen: continue
+                  seen.add(key); out.write(f"- [{conf}] {asset}: {title} (from {f})\n")
+              for f in glob.glob('reports/hypotheses-*.txt'):
+                  n=re.search(r'^\[NEXT\] (.*)$',open(f).read(),re.M)
+                  if n: out.write(f"- NEXT({os.path.basename(f)}): {n.group(1).strip()[:160]}\n")
+              for f in glob.glob('reports/hypotheses-*.txt'):
+                  for l in re.findall(r'^\[LEARN\] (.*)$',open(f).read(),re.M): out.write(f"- LEARN: {l.strip()[:160]}\n")
+          kpath='knowledge/index.md'; os.makedirs('knowledge',exist_ok=True)
+          ktext=open(kpath).read() if os.path.exists(kpath) else ''
+          with open(kpath,'a') as k:
+              for f in glob.glob('reports/hypotheses-*.txt'):
+                  for l in re.findall(r'^\[LEARN\] (.*)$',open(f).read(),re.M):
+                      line=f"- {stamp[:10]} {l.strip()}"
+                      if line not in ktext: k.write(line+"\n")
+          inv='inventory/betpanda.md'
+          with open(inv,'a') as io:
+              io.write(f"\n## {stamp}\n")
+              for f in glob.glob('reports/hypotheses-*.txt'):
+                  for l in re.findall(r'^\[(NEW|CHANGED)\] (.*)$',open(f).read(),re.M): io.write(f"- {l[0]} {l[1].strip()[:200]}\n")
+          for sp in glob.glob('state_*.json'):
+              try: st=json.load(open(sp))
+              except Exception: st={}
+              phases=['RECON','SURFACE','HYPOTHESIS','POC']
+              if st.get('phase') in phases: st['phase']=phases[min(phases.index(st['phase'])+1,3)]
+              json.dump(st,open(sp,'w'))
+          for f in glob.glob('art/analyst-*.out'):
+              model=re.search(r'art/analyst-([a-z0-9]+)\.out$',f)
+              if model:
+                  with open(f'reports/analyst-{model.group(1)}.log','a') as lg:
+                      lg.write(f"===== ANALYST {model.group(1)} {stamp} =====\n"+open(f,errors='ignore').read())
+          print('merged',len(all_h),'hypotheses')
+          PY_EOF
+
+      - name: Passive verifier on leads (rate-limited read-only)
+        shell: bash
+        run: |
+          python3 << 'ROBOT_PY'
+          import re, glob, ssl, urllib.request, os, time
+          allow=os.environ.get('PROBE_ALLOW','').lower()
+          pat=re.compile(r'https?://[^\s"\)\]\}]+')
+          urls,seen=[],set()
+          for f in glob.glob('art/lead_*.txt')+glob.glob('lead_*.txt')+glob.glob('analyst-*.out'):
+              try: txt=open(f,errors='ignore').read()
+              except OSError: continue
+              for m in pat.findall(txt):
+                  u=m.strip('.,;)]}>')
+                  if u in seen or not u.startswith('https://'): continue
+                  seen.add(u)
+                  if allow and not any(a in u.lower() for a in allow.split('|')): continue
+                  urls.append(u[:300])
+          ctx=ssl.create_default_context(); rows=[]
+          for u in urls[:12]:
+              time.sleep(1)
+              try:
+                  req=urllib.request.Request(u,method='HEAD',headers={'User-Agent':'Mozilla/5.0 (passive verifier)'})
+                  with urllib.request.urlopen(req,timeout=12,context=ctx) as r:
+                      rows.append('%s -> %s len=%s'%(u,r.status,r.headers.get('Content-Length','?')))
+              except urllib.error.HTTPError as e:
+                  rows.append('%s -> HTTP %s'%(u,e.code))
+              except Exception as e:
+                  rows.append('%s -> ERR %s'%(u,str(e)[:50]))
+          print('\n'.join(rows) if rows else 'no probes (allow=%s)'%allow)
+          with open('probe-results.md','a') as fo:
+              fo.write('\n## %s\n%s\n'%(time.strftime('%Y-%m-%d %H:%M:%S UTC',time.gmtime()),'\n'.join(rows)))
+          ROBOT_PY
+
+      - name: Commit (single push, no race)
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          grep -rlE 'AIza[A-Za-z0-9_-]{30,}|ghp_[A-Za-z0-9]{20,}|AKIA[A-Z0-9]{16}' --include='*.md' --include='*.json' --include='*.txt' . 2>/dev/null | xargs -r sed -i -E 's/(AIza[A-Za-z0-9_-]{6}|ghp_[A-Za-z0-9]{8}|AKIA[A-Z0-9]{6})[A-Za-z0-9_-]{8,}/\1_REDACTED/g' || true
+          git add leads reports knowledge inventory state_*.json probe-results.md || true
+          if ! git diff --cached --quiet; then
+            git commit -m "hunt cycle $(date -u +'%Y-%m-%d-%H-%M')"
+          fi
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main && git push origin main && break
+            echo "commit push attempt $i failed, retrying in 20s..."; sleep 20
+          done
+          git log --oneline -1

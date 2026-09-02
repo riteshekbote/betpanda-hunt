@@ -1,0 +1,109 @@
+name: Reposcan (BetPanda)
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PROBE_ALLOW: "betpanda.io"
+  TARGET_ORG: ""   # set to a public GitHub org if one is known, else leave empty
+
+jobs:
+  reposcan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: reposcan-betpanda
+      cancel-in-progress: true
+    env:
+      MODEL_ID: opencode/mimo-v2.5-free
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install OpenCode
+        run: |
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          if command -v opencode >/dev/null 2>&1; then opencode --version; exit 0; fi
+          npm install -g opencode-ai 2>/dev/null || npm install -g --prefix "$HOME/.npm-global" opencode-ai 2>/dev/null || true
+          if ! command -v opencode >/dev/null 2>&1; then
+            for i in 1 2 3; do
+              curl -fsSL https://opencode.ai/install | bash && break
+              echo "opencode.ai installer attempt $i failed, retrying in 15s..."; sleep 15
+            done
+          fi
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          opencode --version
+
+      - name: Enumerate org repo candidates (if TARGET_ORG set)
+        run: |
+          if [ -z "$TARGET_ORG" ]; then
+            echo "TARGET_ORG not configured for betpanda; skipping public-org deep scan." > reposcan-raw/summary.txt
+            mkdir -p reposcan-raw inventory
+            exit 0
+          fi
+          mkdir -p reposcan-raw
+          for ORG in $TARGET_ORG; do
+            echo "== $ORG =="
+            curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/orgs/$ORG/repos?per_page=100&sort=updated" -o repos-$ORG.json
+            python3 - "$ORG" << 'PY'
+          import json, os, sys
+          org = sys.argv[1]
+          try:
+              repos = json.load(open(f"repos-{org}.json"))
+              if not isinstance(repos, list):
+                  print("API error:", str(repos)[:200]); exit(0)
+          except Exception as ex:
+              print("parse error:", ex); exit(0)
+          cands=[r for r in repos if not r.get("archived") and r.get("language") and r.get("stargazers_count",0)>2 and r.get("size",10**9)<200000]
+          cands.sort(key=lambda r:r["updated_at"],reverse=True)
+          with open(f"cands-{org}.txt","w") as f:
+              for r in cands[:15]:
+                  line=f"{org}/{r['name']} stars={r['stargazers_count']} lang={r['language']} clone=https://github.com/{org}/{r['name']}.git"
+                  f.write(line+"\n"); print(line)
+          PY
+          done
+
+      - name: Analyst scan of candidate repos
+        run: |
+          mkdir -p reposcan-raw leads reports
+          cat reposcan-raw/cands-*.txt > cands.txt 2>/dev/null || echo "no org candidates" > cands.txt
+          cat > reposcan-prompt.txt << 'PROMPT_EOF'
+          You are a source-code audit analyst for BetPanda (bugs.olivermaicher.eu). The candidate public repos below are the org's own code. Hunt for secrets, hardcoded credentials, insecure patterns (hardcoded API keys/SEK/cloud creds, SSRF-prone URL builders, JWT weak validation, IDOR-prone endpoints, debug backdoors) that map to IN-SCOPE assets.
+          Candidates:
+          PROMPT_EOF
+          head -15 cands.txt >> reposcan-prompt.txt
+          cat >> reposcan-prompt.txt << 'PROMPT_EOF2'
+          For each candidate repo you can audit via the GitHub API (read-only, unauthenticated public), clone it with depth=1 and grep for: AKIA[A-Z0-9]{16}, AIza..., ghp_, sk_live_, sk-us, -----BEGIN (RSA/EC/OPENSSH PRIVATE), password=, api_key, secret, token, client_secret, aws s3 buckets, storage.googleapis, *.azure. Emit findings as:
+          [HYP] <title>
+          class: SECRET|MISCONFIG|IDOR|SSRF|OTHER
+          asset: <repo/path>
+          confidence: <0-100>
+          reasoning: <facts>
+          impact: <severity>
+          verify_steps: <how to confirm it is live/in-scope, passive>
+          Mark only findings that plausibly touch in-scope assets; public known files and non-platform secrets are out of scope. Do not invent findings.
+          PROMPT_EOF2
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          timeout -k 15 15m opencode run --model "$MODEL_ID" < reposcan-prompt.txt > reposcan-out.txt 2>&1 || true
+          grep -E '^\[HYP\]|^class:|^confidence:|^asset:|^impact:|^verify_steps:|^reasoning:' reposcan-out.txt > lead.txt || true
+          cat reposcan-raw/summary.txt 2>/dev/null >> lead.txt
+          { echo "## REPOSCAN $(date -u +'%Y-%m-%d %H:%M:%S UTC')"; cat lead.txt; } >> leads/reposcan-betpanda.md
+          echo "reposcan lead bytes: $(wc -c < lead.txt)"
+
+      - name: Commit
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add leads reports reposcan-raw inventory || true
+          if ! git diff --cached --quiet; then
+            git commit -m "reposcan $(date -u +'%Y-%m-%d-%H-%M')"
+          fi
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "reposcan push attempt $i failed, retrying in 15s..."; sleep 15
+          done

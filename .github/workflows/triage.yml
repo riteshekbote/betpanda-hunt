@@ -1,0 +1,138 @@
+name: Triager (BetPanda)
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PROBE_ALLOW: "betpanda.io"
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: triage-betpanda
+      cancel-in-progress: true
+    env:
+      MODEL_ID: opencode/mimo-v2.5-free
+      OPENCODE_REASONING: xhigh
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install OpenCode
+        run: |
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          if command -v opencode >/dev/null 2>&1; then opencode --version; exit 0; fi
+          npm install -g opencode-ai 2>/dev/null || npm install -g --prefix "$HOME/.npm-global" opencode-ai 2>/dev/null || true
+          if ! command -v opencode >/dev/null 2>&1; then
+            for i in 1 2 3; do
+              curl -fsSL https://opencode.ai/install | bash && break
+              echo "opencode.ai installer attempt $i failed, retrying in 15s..."; sleep 15
+            done
+          fi
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          opencode --version
+
+      - name: Collect UNVALIDATED leads
+        run: |
+          mkdir -p triage reports
+          grep -h "\[UNVALIDATED\]" leads/lead-*.md 2>/dev/null | sort -u | head -25 > new-leads.txt
+          echo "unvalidated leads: $(wc -l < new-leads.txt)"
+
+      - name: Passive live probe of endpoint leads (rate-limited)
+        run: |
+          : > probe-results.txt
+          grep -oE 'https?://[a-zA-Z0-9._/-]+' new-leads.txt | sort -u | head -20 | while read -r url; do
+            host=$(echo "$url" | sed -E 's|https?://([^/]+).*|\1|')
+            if echo "$host" | grep -qiE '(betpanda.io)'; then
+              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 -A 'Mozilla/5.0 (passive research probe)' -H 'Range: bytes=0-1' "$url" 2>/dev/null || echo TIMEOUT)
+              echo "$code $url" >> probe-results.txt
+              sleep 1
+            fi
+          done
+          cat probe-results.txt
+
+      - name: Validate with second model (7-Question Gate)
+        run: |
+          export PATH="$HOME/.opencode/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+          cat > triage-prompt.txt << 'PROMPT_START'
+          You are a strict triager for the BetPanda program (bugs.olivermaicher.eu). A hunt bot produced leads below. Validate each against the 7-Question Gate. Answer all 7 per lead, verdict VALID / INVALID / HOLD with one-line reason. For VALID: state minimal read-only proof steps, impact, CVSS 3.1, reporting channel.
+          Out-of-scope reminders: no DoS/account-lockout, no exposure of customer/employee/financial/auth data during testing, no social engineering, no vendor/employee-targeted attacks. Passive-first proof.
+          Q1 In program scope (asset from scope.yml/inventory/betpanda.md)?
+          Q2 Attacker reachable (public/unauth/low-priv)?
+          Q3 Real security impact?
+          Q4 Provable non-invasively?
+          Q5 Genuinely novel/unreported?
+          Q6 Not on always-rejected list?
+          Q7 Would a reasonable triager accept it?
+          PROBE RESULTS (passive per url):
+          PROMPT_START
+          cat probe-results.txt >> triage-prompt.txt
+          echo "" >> triage-prompt.txt
+          echo "LEADS:" >> triage-prompt.txt
+          cat new-leads.txt >> triage-prompt.txt
+          timeout -k 15 15m opencode run --model "$MODEL_ID" < triage-prompt.txt > triage-output.txt 2>&1 || true
+          echo "=== triage preview ==="; head -40 triage-output.txt
+
+      - name: Update valid-bugs counter
+        run: |
+          mkdir -p triage reports
+          {
+            echo ""
+            echo "===== TRIAGE $(date -u +'%Y-%m-%d %H:%M:%S UTC') ====="
+            cat triage-output.txt
+          } >> triage/run-$(date -u +'%Y-%m-%d-%H-%M').md
+          python3 << 'PY'
+          import re
+          try: txt=open('triage-output.txt',errors='ignore').read()
+          except Exception: txt=''
+          verdict_lines=[l.strip() for l in txt.split('\n') if re.search(r'(?<!IN)\bVALID\b',l,re.I) and not re.search(r'\bINVALID\b',l,re.I) and re.search(r'verdict|^\||^\s*\*\*VALID|^\s*VALID',l,re.I)]
+          if verdict_lines:
+              with open('reports/valid-bugs.md','a') as f:
+                  stamp=__import__('datetime').datetime.now(__import__('datetime').timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
+                  f.write(f"\n- {len(verdict_lines)} lead(s) marked VALID at {stamp}\n")
+                  for vl in verdict_lines[:20]: f.write(f"  - {vl[:200]}\n")
+              total=open('reports/valid-bugs.md').read().count('lead(s) marked VALID')
+              print(f"RUNNING VALID COUNT: {total}")
+          else:
+              print('no VALID verdicts this cycle')
+          PY
+
+      - name: Append learnings to knowledge base
+        run: |
+          python3 << 'PY'
+          import re, os, datetime, glob
+          stamp=datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
+          kpath='knowledge/index.md'; os.makedirs('knowledge',exist_ok=True)
+          if not os.path.exists(kpath): open(kpath,'w').write('# Knowledge Base (seed)\n')
+          ktext=open(kpath).read(); learnings=[]
+          try: txt=open('triage-output.txt',errors='ignore').read()
+          except Exception: txt=''
+          for m in re.finditer(r'(?im)^\s*(INVALID|HOLD|VALID)\b.*?[-:]\s*(.{10,220})',txt):
+              verdict,why=m.group(1).upper(),m.group(2).strip()
+              if verdict in ('INVALID','HOLD'):
+                  line=f"- {stamp[:10]} REJECTED class @ lead: {why}"
+                  if line not in ktext: learnings.append(line)
+          with open(kpath,'a') as k:
+              for line in learnings: k.write(line+'\n')
+          print(f'appended {len(learnings)} learnings to knowledge/index.md')
+          PY
+
+      - name: Commit
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add triage reports leads knowledge || true
+          if ! git diff --cached --quiet; then
+            git commit -m "triage $(date -u +'%Y-%m-%d-%H-%M')"
+          fi
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "triage push attempt $i failed, retrying in 15s..."; sleep 15
+          done
