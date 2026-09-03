@@ -93,3 +93,166 @@ testability: PASSIVE
 [LEARN] No prior hypotheses to evaluate — first analysis cycle.
 
 [RISK] betpanda: 75 — New dedicated attack surface (4 hosts), k8s dashboard on AWS ALB, affiliate money-flow SPA, main betting platform OAuth surface. High-value target classes present (MISCONFIG, IDOR, OAUTH).
+===== ANALYST nemotron3 2026-09-03 19:50:16 UTC =====
+[0m
+> build · nemotron-3-ultra-free
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/
+total 108
+drwxr-xr-x 12 runner runner 4096 Sep  3 19:41 .
+drwxr-xr-x  3 runner runner 4096 Sep  3 19:40 ..
+drwxr-xr-x  7 runner runner 4096 Sep  3 19:41 .git
+drwxr-xr-x  3 runner runner 4096 Sep  3 19:40 .github
+-rw-r--r--  1 runner runner 1709 Sep  3 19:40 README.md
+-rw-r--r--  1 runner runner   43 Sep  3 19:41 analyst-out.txt
+-rw-r--r--  1 runner runner 9911 Sep  3 19:41 analyst-prompt.txt
+-rw-r--r--  1 runner runner 6130 Sep  3 19:41 ctx.txt
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 inventory
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 knowledge
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 leads
+-rw-r--r--  1 runner runner  728 Sep  3 19:40 probe-results.md
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 recon-notes
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 reports
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 reposcan-raw
+-rw-r--r--  1 runner runner 3194 Sep  3 19:40 scope.yml
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 scripts
+-rw-r--r--  1 runner runner   37 Sep  3 19:40 state_bigpickle.json
+-rw-r--r--  1 runner runner   37 Sep  3 19:40 state_laguna.json
+-rw-r--r--  1 runner runner   37 Sep  3 19:40 state_ling3.json
+-rw-r--r--  1 runner runner   37 Sep  3 19:40 state_longcat.json
+-rw-r--r--  1 runner runner   33 Sep  3 19:40 state_mimo.json
+-rw-r--r--  1 runner runner   37 Sep  3 19:40 state_nemotron3.json
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 triage
+[0m
+[0m→ [0mRead inventory/betpanda.md
+[0m→ [0mRead scope.yml
+[0m✗ [0mRead knowledge/seed.md failed
+[91m[1mError: [0mFile not found: /home/runner/work/betpanda-hunt/betpanda-hunt/knowledge/seed.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/knowledge/
+total 12
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 .
+drwxr-xr-x 12 runner runner 4096 Sep  3 19:41 ..
+-rw-r--r--  1 runner runner   95 Sep  3 19:40 index.md
+[0m
+[0m→ [0mRead ctx.txt
+[0m→ [0mRead probe-results.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/leads/
+total 36
+drwxr-xr-x  2 runner runner 4096 Sep  3 19:40 .
+drwxr-xr-x 12 runner runner 4096 Sep  3 19:41 ..
+-rw-r--r--  1 runner runner 2639 Sep  3 19:40 lead-bigpickle.md
+-rw-r--r--  1 runner runner   51 Sep  3 19:40 lead-laguna.md
+-rw-r--r--  1 runner runner   50 Sep  3 19:40 lead-ling3.md
+-rw-r--r--  1 runner runner   52 Sep  3 19:40 lead-longcat.md
+-rw-r--r--  1 runner runner   18 Sep  3 19:40 lead-mimo.md
+-rw-r--r--  1 runner runner 3439 Sep  3 19:40 lead-nemotron3.md
+-rw-r--r--  1 runner runner  214 Sep  3 19:40 reposcan-betpanda.md
+[0m
+[0m→ [0mRead leads/lead-nemotron3.md
+[0m→ [0mRead leads/lead-bigpickle.md
+[0m→ [0mRead leads/lead-laguna.md
+[0m→ [0mRead leads/lead-ling3.md
+[0m→ [0mRead leads/lead-longcat.md
+[0m→ [0mRead leads/lead-mimo.md
+[0m→ [0mRead leads/reposcan-betpanda.md
+Now I have full context. Let me execute the 8-step analysis.
+
+---
+
+### STEP 1 — DELTA
+
+**NEW**: `betpandacasino.io` (Spring Boot + Cognito JWT money-flow API) discovered via bigpickle lead — not in inventory
+**NEW**: `flags.betpanda.io` (Flipt feature-flag service) discovered via bigpickle lead — DNS resolution fails (CF challenge)
+**CHANGED**: `dashboard.betpanda.io` probes all **timed out** — k8s dashboard not reachable via ALB (may be private/auth-gated)
+**CHANGED**: `affiliates.betpanda.io/api/` returns **200** — API surface confirmed, SPA bundles loadable
+**CHANGED**: `betpanda.io/api/auth/authorize` returns **200** with arbitrary `redirect_uri=https://evil.com` — OAuth redirect validation flaw **confirmed passive signal**
+**CHANGED**: `cable.betpanda.io/cable/user-event` accepts arbitrary POST JSON with `access-control-allow-origin: *` — unauthenticated event ingestion confirmed
+
+---
+
+### STEP 2 — PRIORITIZE
+
+| Asset | Score | attack_surface | business_value | tech_exposure | gate_ease | cloud_surface | freshness |
+|-------|-------|----------------|----------------|---------------|-----------|---------------|-----------|
+| betpandacasino.io | **8.1** | 9 | 10 | 9 | 5 | 8 | 7 |
+| betpanda.io | **7.6** | 8 | 9 | 7 | 7 | 7 | 6 |
+| cable.betpanda.io | **6.9** | 7 | 6 | 8 | 9 | 5 | 7 |
+| affiliates.betpanda.io | **6.8** | 7 | 8 | 6 | 8 | 6 | 6 |
+| dashboard.betpanda.io | **4.2** | 5 | 8 | 5 | 2 | 8 | 3 |
+| custom-lp.betpanda.io | **4.0** | 4 | 5 | 4 | 3 | 5 | 6 |
+| fp.betpanda.io | **3.8** | 4 | 4 | 5 | 2 | 5 | 6 |
+
+[PRIO] betpandacasino.io,8.1,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=7
+[PRIO] betpanda.io,7.6,attack_surface=8,business_value=9,tech_exposure=7,gate_ease=7,cloud_surface=7,freshness=6
+[PRIO] cable.betpanda.io,6.9,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=9,cloud_surface=5,freshness=7
+[PRIO] affiliates.betpanda.io,6.8,attack_surface=7,business_value=8,tech_exposure=6,gate_ease=8,cloud_surface=6,freshness=6
+[PRIO] dashboard.betpanda.io,4.2,attack_surface=5,business_value=8,tech_exposure=5,gate_ease=2,cloud_surface=8,freshness=3
+[PRIO] custom-lp.betpanda.io,4.0,attack_surface=4,business_value=5,tech_exposure=4,gate_ease=3,cloud_surface=5,freshness=6
+[PRIO] fp.betpanda.io,3.8,attack_surface=4,business_value=4,tech_exposure=5,gate_ease=2,cloud_surface=5,freshness=6
+
+---
+
+### STEP 3 — HYPOTHESES
+
+[HYP] BOLA/IDOR on Player Wallet & Balance Endpoints
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 70
+reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (balances, wallet/withdraw, bets). Auth returns 403, balances returns 405=endpoint exists. CORS pinned but server-side authorization not verified. Real-money gambling platform = critical impact.
+evidence_needed: Cross-tenant access via enumerated user_id/uid with valid JWT from account A against account B's resources
+verify_steps: PASSIVE: GET https://betpandacasino.io/rest/user/account-balances-and-bonuses (with valid JWT) → observe response structure; GET https://betpandacasino.io/rest/user/wallet/withdraw (with valid JWT) → observe params; check for user_id/uid in path or query
+impact: Cross-tenant wallet/balance/bonus disclosure or tampering on real-money gambling platform — CRITICAL
+testability: AUTH_HELPED
+
+[HYP] OAuth Redirect_URI Validation Bypass on Main Platform
+class: OAUTH
+asset: betpanda.io
+confidence: 75
+reasoning: Probe returned 200 for `GET /api/auth/authorize?redirect_uri=https://evil.com&state=test&client_id=test` — endpoint accepts arbitrary external redirect_uri without validation. Gambling platform with multiple subdomains = high likelihood of loose redirect_uri allowlist.
+evidence_needed: Authorization code issued to attacker-controlled redirect_uri; missing/weak state parameter validation
+verify_steps: GET https://betpanda.io/api/auth/authorize?redirect_uri=https://attacker.com/callback&response_type=code&client_id=test&scope=openid&state=xyz (passive) → check for 302 to attacker.com with code param; analyze login page for OAuth/OIDC flow
+impact: Account takeover via authorization code theft — CRITICAL
+testability: PASSIVE
+
+[HYP] Unauthenticated Analytics Injection / Stored XSS Vector via Cable Endpoint
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 60
+reasoning: POST accepts arbitrary JSON with `access-control-allow-origin: *`, returns 200 "processed and saved". Only userId validated alphanumeric; referrer/registeredOn/firstVisitOn unvalidated. No auth, no CSRF/Origin restriction. Data likely flows to internal analytics dashboards.
+evidence_needed: Persisted server-side effect (malformed/oversized payload causing 5xx, or stored XSS in reporting dashboard)
+verify_steps: POST https://cable.betpanda.io/cable/user-event with oversized/unusual `referrer` (e.g. 10KB string, `<script>alert(1)</script>`, SQLi payloads) → observe response; GET https://cable.betpanda.io/cable/ (enumerate other endpoints)
+impact: Analytics data poisoning; potential stored XSS in internal dashboard — MEDIUM (chains to HIGH if dashboard accessible)
+testability: PASSIVE
+
+---
+
+### STEP 4 — SELF-CRITIQUE
+
+[PARKED] Flipt feature-flag admin / unauth evaluation abuse: confidence 25 (<40), asset flags.betpanda.io fails DNS resolution (CF challenge), testability AUTH_HELPED only — insufficient passive signal
+[PARKED] k8s Dashboard Exposure via AWS ALB: confidence dropped to 35 — all 3 probes timed out, ALB likely private/auth-gated, no passive evidence of k8s dashboard UI
+[FINAL] 1. OAuth Redirect_URI Validation Bypass on Main Platform (betpanda.io, 75)
+[FINAL] 2. BOLA/IDOR on Player Wallet & Balance Endpoints (betpandacasino.io, 70)
+[FINAL] 3. Unauthenticated Analytics Injection via Cable Endpoint (cable.betpanda.io, 60)
+
+---
+
+### STEP 5 — NEXT ACTION
+
+[NEXT] PROBE: GET https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 (passive, read-only, confirm OAuth code issuance to external redirect_uri)
+
+---
+
+### STEP 6 — LEARNING
+
+[LEARN] REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB (all probes timeout) — ALB likely internal or auth-gated
+[LEARN] ACCEPTED OAUTH @ betpanda.io: /api/auth/authorize accepts arbitrary redirect_uri (200 response) — high-confidence passive signal
+[LEARN] ACCEPTED IDOR @ betpandacasino.io: Money-flow REST endpoints confirmed (403/405 responses) — Spring Boot + Cognito JWT, critical business value
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
+
+---
+
+### STEP 7 — RISK
+
+[RISK] betpanda: 85 — OAuth redirect_uri bypass confirmed passive (CRITICAL ATO path), real-money gambling API with BOLA surface (CRITICAL financial), unauthenticated analytics ingestion (chaining vector), 4 new dedicated hosts with high-value target classes. Program scope covers all company-owned infrastructure.

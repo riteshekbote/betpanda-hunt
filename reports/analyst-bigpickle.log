@@ -1422,3 +1422,985 @@ testability: AUTH_HELPED
 
 ---
 **State update:** phase RECON→enrichment; `target=api` confirmed (`/rest`). Inventory and notes updated. Awaiting scoped account to advance the top hypothesis (IDOR) from AUTH_HELPED to AUTH tests.
+===== ANALYST bigpickle 2026-09-03 19:50:16 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m• [0mRecon surface scan betpanda[90m General Agent[0m
+[0m✓ [0mRecon surface scan betpanda[90m General Agent[0m
+[0m• [0mAffiliate JS + REST probing[90m General Agent[0m
+[0m✓ [0mAffiliate JS + REST probing[90m General Agent[0m
+[0m
+[0m$ [0mcurl -sS -m 10 https://affiliates.betpanda.io/main.ef021e68.js 2>&1 | head -c 5000
+var _$=Object.defineProperty;var C$=(e,t,n)=>t in e?_$(e,t,{enumerable:!0,configurable:!0,writable:!0,value:n}):e[t]=n;var Ie=(e,t,n)=>(C$(e,typeof t!="symbol"?t+"":t,n),n);function eD(e,t){for(var n=0;n<t.length;n++){const r=t[n];if(typeof r!="string"&&!Array.isArray(r)){for(const i in r)if(i!=="default"&&!(i in e)){const a=Object.getOwnPropertyDescriptor(r,i);a&&Object.defineProperty(e,i,a.get?a:{enumerable:!0,get:()=>r[i]})}}}return Object.freeze(Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}))}(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const i of document.querySelectorAll('link[rel="modulepreload"]'))r(i);new MutationObserver(i=>{for(const a of i)if(a.type==="childList")for(const s of a.addedNodes)s.tagName==="LINK"&&s.rel==="modulepreload"&&r(s)}).observe(document,{childList:!0,subtree:!0});function n(i){const a={};return i.integrity&&(a.integrity=i.integrity),i.referrerPolicy&&(a.referrerPolicy=i.referrerPolicy),i.crossOrigin==="use-credentials"?a.credentials="include":i.crossOrigin==="anonymous"?a.credentials="omit":a.credentials="same-origin",a}function r(i){if(i.ep)return;i.ep=!0;const a=n(i);fetch(i.href,a)}})();var zn=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function Xk(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}function ln(e){if(e.__esModule)return e;var t=e.default;if(typeof t=="function"){var n=function r(){if(this instanceof r){var i=[null];i.push.apply(i,arguments);var a=Function.bind.apply(t,i);return new a}return t.apply(this,arguments)};n.prototype=t.prototype}else n={};return Object.defineProperty(n,"__esModule",{value:!0}),Object.keys(e).forEach(function(r){var i=Object.getOwnPropertyDescriptor(e,r);Object.defineProperty(n,r,i.get?i:{enumerable:!0,get:function(){return e[r]}})}),n}var y={},O$={get exports(){return y},set exports(e){y=e}},ov={},$={},A$={get exports(){return $},set exports(e){$=e}},Wt={};/**
+ * @license React
+ * react.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */var Ih=Symbol.for("react.element"),P$=Symbol.for("react.portal"),T$=Symbol.for("react.fragment"),N$=Symbol.for("react.strict_mode"),D$=Symbol.for("react.profiler"),R$=Symbol.for("react.provider"),I$=Symbol.for("react.context"),L$=Symbol.for("react.forward_ref"),j$=Symbol.for("react.suspense"),M$=Symbol.for("react.memo"),F$=Symbol.for("react.lazy"),H3=Symbol.iterator;function $$(e){return e===null||typeof e!="object"?null:(e=H3&&e[H3]||e["@@iterator"],typeof e=="function"?e:null)}var tD={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}},nD=Object.assign,rD={};function mf(e,t,n){this.props=e,this.context=t,this.refs=rD,this.updater=n||tD}mf.prototype.isReactComponent={};mf.prototype.setState=function(e,t){if(typeof e!="object"&&typeof e!="function"&&e!=null)throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");this.updater.enqueueSetState(this,e,t,"setState")};mf.prototype.forceUpdate=function(e){this.updater.enqueueForceUpdate(this,e,"forceUpdate")};function iD(){}iD.prototype=mf.prototype;function Gk(e,t,n){this.props=e,this.context=t,this.refs=rD,this.updater=n||tD}var qk=Gk.prototype=new iD;qk.constructor=Gk;nD(qk,mf.prototype);qk.isPureReactComponent=!0;var U3=Array.isArray,aD=Object.prototype.hasOwnProperty,Kk={current:null},sD={key:!0,ref:!0,__self:!0,__source:!0};function oD(e,t,n){var r,i={},a=null,s=null;if(t!=null)for(r in t.ref!==void 0&&(s=t.ref),t.key!==void 0&&(a=""+t.key),t)aD.call(t,r)&&!sD.hasOwnProperty(r)&&(i[r]=t[r]);var c=arguments.length-2;if(c===1)i.children=n;else if(1<c){for(var u=Array(c),d=0;d<c;d++)u[d]=arguments[d+2];i.children=u}if(e&&e.defaultProps)for(r in c=e.defaultProps,c)i[r]===void 0&&(i[r]=c[r]);return{$$typeof:Ih,type:e,key:a,ref:s,props:i,_owner:Kk.current}}function B$(e,t){return{$$typeof:Ih,type:e.type,key:t,ref:e.ref,props:e.props,_owner:e._owner}}function Zk(e){return typeof e=="object"&&e!==null&&e.$$typeof===Ih}function z$(e){var t={"=":"=0",":":"=2"};return"$"+e.replace(/[=:]/g,function(n){return t[n]})}var W3=/\/+/g;function Yb(e,t){return typeof e=="object"&&e!==null&&e.key!=null?z$(""+e.key):t.toString(36)}function gm(e,t,n,r,i){var a=typeof e;(a==="undefined"||a==="boolean")&&(e=null);var s=!1;if(e===null)s=!0;else switch(a){case"string":case"number":s=!0;break;case"object":switch(e.$$typeof){case Ih:case P$:s=!0}}if(s)return s=e,i=i(s),e=r===""?"."+Yb(s,0):r,U3(i)?(n="",e!=null&&(n=e.replace(W3,"$&/")+"/"),gm(i,t,n,"",function(d){return d})):i!=null&&(Zk(i)&&(i=B$(i,n+(!i.key||s&&s.key===i.key?"":(""+i.key).replace(W3,"$&/")+"/")+e)),t.push(i)),1;if(s=0,r=r==="
+[0m
+Let me run the probes directly.
+[0m$ [0mfor path in /actuator /actuator/health /actuator/env /actuator/info; do echo "=== $path ==="; curl -sS -D- -m 10 "https://betpandacasino.io${path}" 2>&1 | head -15; echo; sleep 1; done
+=== /actuator ===
+HTTP/2 301 
+date: Thu, 03 Sep 2026 19:44:13 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/actuator/
+server: cloudflare
+cf-ray: a3573f71df0541a7-IAD
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+
+=== /actuator/health ===
+HTTP/2 301 
+date: Thu, 03 Sep 2026 19:44:14 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/actuator/health/
+server: cloudflare
+cf-ray: a3573f785a6a396e-IAD
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+
+=== /actuator/env ===
+HTTP/2 301 
+date: Thu, 03 Sep 2026 19:44:15 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/actuator/env/
+server: cloudflare
+cf-ray: a3573f7ed92ed62d-IAD
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+
+=== /actuator/info ===
+HTTP/2 301 
+date: Thu, 03 Sep 2026 19:44:16 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/actuator/info/
+server: cloudflare
+cf-ray: a3573f85585a386e-IAD
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+[0m
+[0m$ [0mfor path in /cable/health /health; do echo "=== $path ==="; curl -sS -D- -m 10 "https://cable.betpanda.io${path}" 2>&1 | head -15; echo; sleep 1; done; for path in /api /api/v1 /rest; do echo "=== affiliates${path} ==="; curl -sS -D- -m 10 "https://affiliates.betpanda.io${path}" 2>&1 | head -15; echo; sleep 1; done
+=== /cable/health ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:13 GMT
+content-type: application/json
+content-length: 36
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a3573f754aea9c3d-IAD
+
+{"error":"Cannot GET /cable/health"}
+=== /health ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:14 GMT
+content-type: application/json
+content-length: 30
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a3573f7c78ab1011-IAD
+
+{"error":"Cannot GET /health"}
+=== affiliates/api ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:16 GMT
+content-type: text/html
+server: cloudflare
+last-modified: Thu, 30 Jul 2026 12:02:44 GMT
+accept-ranges: bytes
+cf-cache-status: DYNAMIC
+cf-ray: a3573f83b9838214-IAD
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+=== affiliates/api/v1 ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:17 GMT
+content-type: text/html
+server: cloudflare
+last-modified: Thu, 30 Jul 2026 12:02:44 GMT
+accept-ranges: bytes
+cf-cache-status: DYNAMIC
+cf-ray: a3573f8d19fccc13-IAD
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+=== affiliates/rest ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:19 GMT
+content-type: application/json
+content-length: 69
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3573f962d4b05c3-IAD
+
+This is Affiliate REST API. Time is now: Thu Sep 03 19:44:19 UTC 2026
+[0m
+[0m$ [0mfor path in /rest/config /rest/user/profile /rest/user/balance /rest/user/bonuses /rest/user/wallet /rest/user/transactions /rest/user/bets /rest/user/history /rest/user/kyc /rest/user/verify; do echo "=== $path ==="; curl -sS -D- -m 10 "https://betpandacasino.io${path}" 2>&1 | head -15; echo; sleep 1; done
+=== /rest/config ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:13 GMT
+content-type: application/json
+cf-ray: a3573f6fac28d64f-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqXAnoV7qL7SfxG; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:13 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/profile ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:15 GMT
+content-type: application/json
+cf-ray: a3573f7acf5fe62d-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqXCGSXWxdMyzw6; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:15 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/balance ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:16 GMT
+content-type: application/json
+cf-ray: a3573f85ed34e5e5-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVbFNd53hPSzUU; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:16 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/bonuses ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:18 GMT
+content-type: application/json
+cf-ray: a3573f8f29c7d6f3-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwmcpRXBkXKyAC; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:18 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/wallet ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:20 GMT
+content-type: application/json
+cf-ray: a3573f9a3e3712c6-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwo6TTvK3msJ92; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:20 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/transactions ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:21 GMT
+content-type: application/json
+cf-ray: a3573fa5883de62d-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVewUE4rwWoJvY; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:21 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/bets ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:23 GMT
+content-type: application/json
+cf-ray: a3573faebaacd62c-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwqJv2WzzegHcG; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:23 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/history ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:25 GMT
+content-type: application/json
+cf-ray: a3573fb9a9bac578-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwrnZ4v8HuDcb6; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:25 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/kyc ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:27 GMT
+content-type: application/json
+cf-ray: a3573fc4de6441a7-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVidZq4gBe9dNc; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:27 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+
+=== /rest/user/verify ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:28 GMT
+content-type: application/json
+cf-ray: a3573fcfa896396e-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVk7CsToUtgxMS; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:28 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+[0m
+Actuator endpoints exist (301→trailing-slash) and affiliates has a REST API. Let me follow up.
+[0m$ [0mcurl -sS -m 10 https://affiliates.betpanda.io/main.ef021e68.js 2>&1 | grep -oiE '(https?://[a-zA-Z0-9._/-]+|/rest/[a-zA-Z0-9/_-]+|/api/[a-zA-Z0-9/_-]+|fetch\([^)]+\)|axios\.[a-z]+\([^)]+\))' | sort -u | head -50
+axios.get(this.baseUrl+"/"+t+"?populate=deep&locale="+n)
+fetch("https:"+w.fields.file.url,{method:"GET",headers:{"Content-Type":"multipart/form-data"}})
+fetch(i.href,a)
+fetch(w.url,{method:"GET",headers:{"Content-Type":"multipart/form-data"}})
+http://fb.me/use-check-prop-types
+http://jedwatson.github.io/classnames
+http://localhost
+http://momentjs.com/guides/
+http://ricostacruz.com/nprogress
+http://schemas.microsoft.com/office/excel/2006/main
+http://schemas.microsoft.com/office/mac/excel/2008/main
+http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac
+http://schemas.microsoft.com/office/spreadsheetml/2009/9/main
+http://schemas.openxmlformats.org/markup-compatibility/2006
+http://schemas.openxmlformats.org/officeDocument/2006/relationships
+http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument
+http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet
+http://schemas.openxmlformats.org/package/2006/content-types
+http://schemas.openxmlformats.org/package/2006/relationships
+http://schemas.openxmlformats.org/spreadsheetml/2006/main
+http://stuartk.com/jszip
+http://svgjs.dev
+http://www.w3.org/1998/Math/MathML
+http://www.w3.org/1999/xhtml
+http://www.w3.org/1999/xlink
+http://www.w3.org/2000/svg
+http://www.w3.org/2000/xmlns/
+http://www.w3.org/XML/1998/namespace
+https://epicdomain.com/callback/signup
+https://getbootstrap.com/
+https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md
+https://github.com/nodeca/pako/blob/main/LICENSE
+https://github.com/remarkjs/react-markdown/blob/main/changelog.md
+https://github.com/syntax-tree/hast-util-to-jsx-runtime
+https://github.com/twbs/bootstrap/blob/main/LICENSE
+https://github.com/twbs/bootstrap/graphs/contributors
+https://keenthemes.com
+https://nano-public.s3-eu-west-1.amazonaws.com/neobet/neobet-icon-96.png
+https://popper.js.org
+https://raw.github.com/Stuk/jszip/main/LICENSE.markdown.
+https://raw.githubusercontent.com/lipis/flag-icons/main/flags/4x3/
+https://reactjs.org/docs/error-decoder.html
+https://reactjs.org/docs/forms.html
+https://stuk.github.io/jszip/documentation/howto/read_zip.html
+[0m
+[0m$ [0mfor path in /actuator/ /actuator/health/ /actuator/env/ /actuator/info/ /actuator/beans/ /actuator/mappings/ /actuator/configprops/ /actuator/conditions/ /actuator/loggers/; do echo "=== $path ==="; curl -sS -D- -m 10 "https://betpandacasino.io${path}" 2>&1 | head -20; echo; sleep 1; done
+=== /actuator/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:34 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a3573ff09d2012c6-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVooJUTcj23GoW; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:34 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+
+=== /actuator/health/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:35 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a3573ffb6d72f39d-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVqGwWrk2GabnL; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:35 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+
+=== /actuator/env/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:37 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a35740069d09d4c1-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVr1m34JftrGGk; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:37 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+
+=== /actuator/info/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:39 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a35740119847396e-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx382Mi1NezuSt; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:39 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+
+=== /actuator/beans/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:41 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a357401cbaec386e-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx4bfQ78fuYERi; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:41 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+
+=== /actuator/mappings/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:42 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a3574027acd812c6-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx65JSWFyA5ZQY; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:42 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+
+=== /actuator/configprops/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:44 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a35740310d0ae5b4-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx6p7xhpcnMDtx; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:44 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+
+=== /actuator/conditions/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:45 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a357403c0b4cf39d-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx8Hm16wv2tYsn; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:45 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+
+=== /actuator/loggers/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:47 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a3574045895d5b35-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVz8mmFVompZfJ; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 18:44:47 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+[0m
+[0m$ [0mfor path in /rest/ /rest/user /rest/users /rest/health /rest/config /rest/info /rest/affiliates /rest/campaign /rest/commission /rest/payout /rest/link /rest/statistics /rest/dashboard; do echo "=== affiliates${path} ==="; curl -sS -D- -m 10 "https://affiliates.betpanda.io${path}" 2>&1 | head -15; echo; sleep 1; done
+=== affiliates/rest/ ===
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:34 GMT
+content-type: application/json
+content-length: 69
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3573ff5799f9c3d-IAD
+
+This is Affiliate REST API. Time is now: Thu Sep 03 19:44:34 UTC 2026
+=== affiliates/rest/user ===
+HTTP/2 401 
+date: Thu, 03 Sep 2026 19:44:35 GMT
+content-type: application/json
+content-length: 48
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3573ffcaf37cc13-IAD
+
+You need to be logged in to access this resource
+=== affiliates/rest/users ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:36 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3574003d9651d73-IAD
+
+<Map><timestamp>1788464676884</timestamp><status>404</status><error>Not Found</error><path>/rest/users</path></Map>
+=== affiliates/rest/health ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:38 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a357400d9a929c36-IAD
+
+<Map><timestamp>1788464678095</timestamp><status>404</status><error>Not Found</error><path>/rest/health</path></Map>
+=== affiliates/rest/config ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:39 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3574014efebb560-IAD
+
+<Map><timestamp>1788464679246</timestamp><status>404</status><error>Not Found</error><path>/rest/config</path></Map>
+=== affiliates/rest/info ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:40 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a357401c1e7c9c3d-IAD
+
+<Map><timestamp>1788464680392</timestamp><status>404</status><error>Not Found</error><path>/rest/info</path></Map>
+=== affiliates/rest/affiliates ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:41 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a357402349c0c94b-IAD
+
+<Map><timestamp>1788464681861</timestamp><status>404</status><error>Not Found</error><path>/rest/affiliates</path></Map>
+=== affiliates/rest/campaign ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:43 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a357402c695c2d22-IAD
+
+<Map><timestamp>1788464683368</timestamp><status>404</status><error>Not Found</error><path>/rest/campaign</path></Map>
+=== affiliates/rest/commission ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:44 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3574035da90aa85-IAD
+
+<Map><timestamp>1788464684818</timestamp><status>404</status><error>Not Found</error><path>/rest/commission</path></Map>
+=== affiliates/rest/payout ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:46 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a357403ee870d8b4-IAD
+
+<Map><timestamp>1788464686260</timestamp><status>404</status><error>Not Found</error><path>/rest/payout</path></Map>
+=== affiliates/rest/link ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:47 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3574047eee7a471-IAD
+
+<Map><timestamp>1788464687704</timestamp><status>404</status><error>Not Found</error><path>/rest/link</path></Map>
+=== affiliates/rest/statistics ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:49 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a35740510931cdc4-IAD
+
+<Map><timestamp>1788464689172</timestamp><status>404</status><error>Not Found</error><path>/rest/statistics</path></Map>
+=== affiliates/rest/dashboard ===
+HTTP/2 404 
+date: Thu, 03 Sep 2026 19:44:50 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a357405a2b1d2d22-IAD
+
+<Map><timestamp>1788464690329</timestamp><status>404</status><error>Not Found</error><path>/rest/dashboard</path></Map>
+[0m
+[0m$ [0mcurl -sS -m 10 https://affiliates.betpanda.io/main.ef021e68.js 2>&1 | grep -oiE '(baseUrl|baseURL|apiUrl|API_URL|STRAPI|strapi|/api/content|/api/pages|/api/articles|populate|locale)[^"]*"[^"]*"' | head -30
+locale:0,getModifierState:fE,charCode:function(e){return e.type==="keypress"
+locale!=="ko"
+locale!=="ko"
+baseURL,e.url);d.open(e.method.toUpperCase(),nI(p,e.params,e.paramsSerializer),!0),d.timeout=e.timeout;function v(){if(!d)return;const w=Rs.from("getAllResponseHeaders"
+baseURL:s,transformRequest:s,transformResponse:s,paramsSerializer:s,timeout:s,timeoutMessage:s,withCredentials:s,adapter:s,responseType:s,xsrfCookieName:s,xsrfHeaderName:s,onUploadProgress:s,onDownloadProgress:s,decompress:s,maxContentLength:s,maxBodyLength:s,beforeRedirect:s,transport:s,httpAgent:s,httpsAgent:s,cancelToken:s,socketPath:s,responseEncoding:s,validateStatus:c,headers:(d,p)=>i(WA(d),WA(p),!0)};return Xe.forEach(Object.keys(e).concat(Object.keys(t)),function(p){const v=u[p]||i,x=v(e[p],t[p],p);Xe.isUndefined(x)&&v!==c||(n[p]=x)}),n}const oI="1.3.5"
+baseURL,t.url);return nI(n,t.params,t.paramsSerializer)}}Xe.forEach(["delete"
+baseUrl,tG=()=>M_.favicon,nG=async e=>{try{return e.withDeposit?await Vt.post(Yt()+"/user/players"
+locale)===null||s===void 0||(c=s.options)===null||c===void 0?void 0:c.weekStartsOn)!==null&&i!==void 0?i:p.weekStartsOn)!==null&&r!==void 0?r:(u=p.locale)===null||u===void 0||(d=u.options)===null||d===void 0?void 0:d.weekStartsOn)!==null&&n!==void 0?n:0);if(!(v>=0&&v<=6))throw new RangeError("weekStartsOn must be between 0 and 6 inclusively"
+locale)===null||s===void 0||(c=s.options)===null||c===void 0?void 0:c.firstWeekContainsDate)!==null&&i!==void 0?i:x.firstWeekContainsDate)!==null&&r!==void 0?r:(u=x.locale)===null||u===void 0||(d=u.options)===null||d===void 0?void 0:d.firstWeekContainsDate)!==null&&n!==void 0?n:1);if(!(w>=1&&w<=7))throw new RangeError("firstWeekContainsDate must be between 1 and 7 inclusively"
+locale)===null||s===void 0||(c=s.options)===null||c===void 0?void 0:c.firstWeekContainsDate)!==null&&i!==void 0?i:p.firstWeekContainsDate)!==null&&r!==void 0?r:(u=p.locale)===null||u===void 0||(d=u.options)===null||d===void 0?void 0:d.firstWeekContainsDate)!==null&&n!==void 0?n:1),x=B_(e,t),w=new Date(0);w.setUTCFullYear(x,0,v),w.setUTCHours(0,0,0,0);var k=lc(w,t);return k}var xG=6048e5;function pI(e,t){Nt(1,arguments);var n=Pt(e),r=lc(n,t).getTime()-bG(n,t).getTime();return Math.round(r/xG)+1}function cn(e,t){for(var n=e<0?"-"
+locale)!==null&&i!==void 0?i:B.locale)!==null&&r!==void 0?r:z_,q=Fn((a=(s=(c=(u=n==null?void 0:n.firstWeekContainsDate)!==null&&u!==void 0?u:n==null||(d=n.locale)===null||d===void 0||(p=d.options)===null||p===void 0?void 0:p.firstWeekContainsDate)!==null&&c!==void 0?c:B.firstWeekContainsDate)!==null&&s!==void 0?s:(v=B.locale)===null||v===void 0||(x=v.options)===null||x===void 0?void 0:x.firstWeekContainsDate)!==null&&a!==void 0?a:1);if(!(q>=1&&q<=7))throw new RangeError("firstWeekContainsDate must be between 1 and 7 inclusively"
+locale)===null||O===void 0||(S=O.options)===null||S===void 0?void 0:S.weekStartsOn)!==null&&E!==void 0?E:B.weekStartsOn)!==null&&k!==void 0?k:(P=B.locale)===null||P===void 0||(M=P.options)===null||M===void 0?void 0:M.weekStartsOn)!==null&&w!==void 0?w:0);if(!(K>=0&&K<=6))throw new RangeError("weekStartsOn must be between 0 and 6 inclusively"
+locale must contain localize property");if(!W.formatLong)throw new RangeError("
+locale must contain formatLong property");var ie=Pt(e);if(!uI(ie))throw new RangeError("
+locale:W,_originalDate:ie},R=j.match(pq).map(function(z){var Q=z[0];if(Q==="p"
+locale)===null||s===void 0||(c=s.options)===null||c===void 0?void 0:c.weekStartsOn)!==null&&i!==void 0?i:p.weekStartsOn)!==null&&r!==void 0?r:(u=p.locale)===null||u===void 0||(d=u.options)===null||d===void 0?void 0:d.weekStartsOn)!==null&&n!==void 0?n:0);if(!(v>=0&&v<=6))throw new RangeError("weekStartsOn must be between 0 and 6 inclusively"
+locale)===null||s===void 0||(c=s.options)===null||c===void 0?void 0:c.weekStartsOn)!==null&&i!==void 0?i:p.weekStartsOn)!==null&&r!==void 0?r:(u=p.locale)===null||u===void 0||(d=u.options)===null||d===void 0?void 0:d.weekStartsOn)!==null&&n!==void 0?n:0);if(!(v>=0&&v<=6))throw new RangeError("weekStartsOn must be between 0 and 6 inclusively"
+locale)===null||c===void 0||(u=c.options)===null||u===void 0?void 0:u.weekStartsOn)!==null&&a!==void 0?a:v.weekStartsOn)!==null&&i!==void 0?i:(d=v.locale)===null||d===void 0||(p=d.options)===null||p===void 0?void 0:p.weekStartsOn)!==null&&r!==void 0?r:0);if(!(x>=0&&x<=6))throw new RangeError("weekStartsOn must be between 0 and 6 inclusively"
+locale)!==null&&a!==void 0?a:q.locale)!==null&&i!==void 0?i:z_;if(!K.match)throw new RangeError("locale must contain match property"
+locale)===null||p===void 0||(v=p.options)===null||v===void 0?void 0:v.firstWeekContainsDate)!==null&&u!==void 0?u:q.firstWeekContainsDate)!==null&&c!==void 0?c:(x=q.locale)===null||x===void 0||(w=x.options)===null||w===void 0?void 0:w.firstWeekContainsDate)!==null&&s!==void 0?s:1);if(!(ie>=1&&ie<=7))throw new RangeError("firstWeekContainsDate must be between 1 and 7 inclusively"
+locale)===null||S===void 0||(P=S.options)===null||P===void 0?void 0:P.weekStartsOn)!==null&&T!==void 0?T:q.weekStartsOn)!==null&&E!==void 0?E:(M=q.locale)===null||M===void 0||(j=M.options)===null||j===void 0?void 0:j.weekStartsOn)!==null&&k!==void 0?k:0);if(!(de>=0&&de<=6))throw new RangeError("weekStartsOn must be between 0 and 6 inclusively"
+locale:K},oe=[new LK],R=W.match(Kee).map(function(we){var Oe=we[0];if(Oe in w2){var Me=w2[Oe];return Me(we,K.formatLong)}return we}).join(""
+locale:r.locale},r.weekStartsOn!==void 0&&(a.dateOptions.weekStartsOn=r.weekStartsOn),a.styles=(0,$p.generateStyles)([pne.default,r.classNames]),a.listSizeCache={},a.isFirstRender=!0,a.state={monthNames:a.getMonthNames(),focusedDate:(0,$p.calcFocusDate)(null,r),drag:{status:!1,range:{startDate:null,endDate:null},disablePreview:!1},scrollArea:a.calcScrollArea(r)},a}return kne(n,[{key:"getMonthNames"
+locale.localize.month(a)})}},{key:"calcScrollArea"
+locale!==this.props.locale||i.weekStartsOn!==this.props.weekStartsOn)&&(this.dateOptions={locale:this.props.locale},this.props.weekStartsOn!==void 0&&(this.dateOptions.weekStartsOn=this.props.weekStartsOn),this.setState({monthNames:this.getMonthNames()})),(0,Zte.shallowEqualObjects)(i.scroll,this.props.scroll)||this.setState({scrollArea:this.calcScrollArea(this.props)})}},{key:"renderWeekdays"
+locale:hne.default,ranges:[],focusedRange:[0,0],dateDisplayFormat:"MMM d, yyyy"
+locale:xt.default.object,shownDate:xt.default.object,onShownDateChange:xt.default.func,ranges:xt.default.arrayOf(qte.rangeShape),preview:xt.default.shape({startDate:xt.default.object,endDate:xt.default.object,color:xt.default.string}),dateDisplayFormat:xt.default.string,monthDisplayFormat:xt.default.string,weekdayDisplayFormat:xt.default.string,weekStartsOn:xt.default.number,dayDisplayFormat:xt.default.string,focusedRange:xt.default.arrayOf(xt.default.number),initialFocusedRange:xt.default.arrayOf(xt.default.number),months:xt.default.number,className:xt.default.string,showDateDisplay:xt.default.bool,showPreview:xt.default.bool,displayMode:xt.default.oneOf(["dateRange"
+locale)||(e._locale=t._locale),a>0)for(n=0;n<a;n++)r=qP[n],i=t[r],li(i)||(e[r]=i);return e}function Zh(e){oC(this,e),this._d=new Date(e._d!=null?e._d.getTime():NaN),this.isValid()||(this._d=new Date(NaN)),V1===!1&&(V1=!0,He.updateOffset(this),V1=!1)}function Pa(e){return e instanceof Zh||e!=null&&e._isAMomentObject!=null}function aL(e){He.suppressDeprecationWarnings===!1&&typeof console<"u"
+localeData().ordinal(i.apply(this,arguments),e)})}function Dre(e){return e.match(/\[[\s\S]/)?e.replace(/^\[|\]$/g,""
+localeData()),H1[t]=H1[t]||Rre(t),H1[t](e)):e.localeData().invalidDate()}function oL(e,t){var n=5;function r(i){return t.longDateFormat(i)||i}for(Hp.lastIndex=0;n>=0&&Hp.test(e);)e=e.replace(Hp,r),Hp.lastIndex=0,n-=1;return e}var Ire={LTS:"h:mm:ss A"
+[0m
+[0m$ [0mcurl -sS -m 10 https://affiliates.betpanda.io/main.ef021e68.js 2>&1 | grep -oP '(https?://[a-zA-Z0-9._:-]+betpanda[a-zA-Z0-9._:/-]*)' | sort -u
+(no output)
+[0m
+[0m$ [0mcurl -sS -m 10 -D- https://affiliates.betpanda.io/rest/ 2>&1
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:44:58 GMT
+content-type: application/json
+content-length: 69
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a357408efc9e2d22-IAD
+
+This is Affiliate REST API. Time is now: Thu Sep 03 19:44:58 UTC 2026
+[0m
+[0m$ [0mcurl -sS -m 10 https://affiliates.betpanda.io/main.ef021e68.js 2>&1 | grep -oP '.{0,100}Yt\(\).{0,100}' | head -10
+A=e=>{M_=e},Yt=()=>M_.baseUrl,tG=()=>M_.favicon,nG=async e=>{try{return e.withDeposit?await Vt.post(Yt()+"/user/players",{limit:e.limit,offset:e.offset,orderBy:e.orderBy??"id",ascending:e.ascending,to:e.t
+o,from:e.from,withDeposit:e.withDeposit}):await Vt.post(Yt()+"/user/players",{limit:e.limit,offset:e.offset,orderBy:e.orderBy??"id",ascending:e.ascending,to:e.t
+});const Yye=()=>{setTimeout(()=>{Xi.reinitialization()},500)},EM=async e=>{try{return await Vt.get(Yt()+`/player/uid/${e.id}?currency=${e.curr?e.curr:"EUR"}`)}catch(t){throw new Error(t==null?void 0:t.me
+ssage,{cause:t==null?void 0:t.status})}},Xye=async e=>{try{return await Vt.post(Yt()+"/transaction/list",{from:e.from,to:e.to,limit:e.limit,offset:e.offset,orderBy:e.orderBy??"id",asce
+oveUnmounted()}),t.current.formState=AM(n,i),t.current}const v0e=async e=>{try{return await Vt.post(Yt()+"/user/account-settings",e)}catch(t){throw new Error(t==null?void 0:t.message,{cause:t==null?void 0
+:t.status})}},b0e=async()=>{try{return await Vt.get(Yt()+"/user/account-settings")}catch(e){throw new Error(e==null?void 0:e.message,{cause:e==null?void 0:e
+setUserIsLoggedIn:s,status:r},children:e})},Ui=()=>$.useContext(zM),$0e=async()=>{try{return Vt.get(Yt()+"/user")}catch(e){throw Error(e)}},B0e=async e=>{var t,n;try{return await Vt.post(Yt()+"/user/chang
+or,{cause:(n=r==null?void 0:r.data)==null?void 0:n.status})}},z0e=async()=>{try{return await Vt.get(Yt()+"/user/selectable-payout-currencies")}catch(e){throw new Error(e==null?void 0:e.message,{cause:e==n
+ull?void 0:e.status})}},V0e=async()=>{try{return await Vt.get(Yt()+"/user/selectable-payout-networks")}catch(e){throw new Error(e==null?void 0:e.message,{cause:e==nul
+l?void 0:e.status})}},H0e=async e=>{try{return await Vt.post(Yt()+"/user/set-profile",e)}catch(t){throw Error(t==null?void 0:t.message,{cause:t==null?void 0:t.status
+[0m
+[0m$ [0mcurl -sS -m 10 -H "Origin: https://evil.com" -D- https://affiliates.betpanda.io/rest/ 2>&1
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:45:03 GMT
+content-type: application/json
+content-length: 69
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a35740aebeb8aa85-IAD
+
+This is Affiliate REST API. Time is now: Thu Sep 03 19:45:03 UTC 2026
+[0m
+[0m$ [0mcurl -sS -m 10 https://affiliates.betpanda.io/main.ef021e68.js 2>&1 | grep -oP '.{0,200}baseUrl.{0,200}' | grep -v 'Object\|function\|prototype\|addEventListener\|createElement\|removeEventListener' | head -10
+=((s=e==null?void 0:e.config)==null?void 0:s.url)??"no-url";return console.log(`http error: status=${t} url=${n}`),Promise.reject((e==null?void 0:e.response)??e)});let M_;const XA=e=>{M_=e},Yt=()=>M_.baseUrl,tG=()=>M_.favicon,nG=async e=>{try{return e.withDeposit?await Vt.post(Yt()+"/user/players",{limit:e.limit,offset:e.offset,orderBy:e.orderBy??"id",ascending:e.ascending,to:e.to,from:e.from,withDeposit
+d 0,content_type:Fg.TERMS,locale:"en"})}getAffiliateBanner(){return this.client.getEntries({"fields.id":void 0,content_type:Fg.BANNERS,locale:"en"})}}class _u{constructor(t){Ie(this,"axios");Ie(this,"baseUrl");let n=localStorage.getItem("strapiApiUrlOverride");n?this.baseUrl=n:this.baseUrl=t,this.axios=j_.create({headers:{"Content-type":"application/json"}})}fetchContent(t,n){return new Promise((r,i)=>{t
+his.axios.get(this.baseUrl+"/"+t+"?populate=deep&locale="+n).then(a=>{r(a.data)}).catch(a=>i(a))})}getAuthenticationPage(){return this.fetchContent("affiliates","en")}getAffiliateTermsPage(){return this.fetchContent("affiliate
+[0m
+[0m$ [0mcurl -sS -D- -m 10 -X OPTIONS https://affiliates.betpanda.io/rest/user -H "Origin: https://evil.com" -H "Access-Control-Request-Method: GET" -H "Access-Control-Request-Headers: Authorization,Content-Type" 2>&1
+HTTP/2 200 
+date: Thu, 03 Sep 2026 19:45:09 GMT
+content-length: 0
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a35740d1c8882d22-IAD
+[0m
+[0m$ [0mcurl -sS -D- -m 10 -H "Origin: https://evil.com" https://affiliates.betpanda.io/rest/user 2>&1
+HTTP/2 401 
+date: Thu, 03 Sep 2026 19:45:09 GMT
+content-type: application/json
+content-length: 48
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a35740d31df6a471-IAD
+
+You need to be logged in to access this resource
+[0m
+[0m$ [0mcurl -sS -m 10 https://affiliates.betpanda.io/main.ef021e68.js 2>&1 | grep -oP '.{0,80}players.{0,80}' | head -10
+=()=>M_.favicon,nG=async e=>{try{return e.withDeposit?await Vt.post(Yt()+"/user/players",{limit:e.limit,offset:e.offset,orderBy:e.orderBy??"id",ascending:e.ascending,t
+o:e.to,from:e.from,withDeposit:e.withDeposit}):await Vt.post(Yt()+"/user/players",{limit:e.limit,offset:e.offset,orderBy:e.orderBy??"id",ascending:e.ascending,t
+e:"btn btn-bg-light btn-light btn-active-light-primary btn-sm px-6",children:n("playerspage.player-item.view")})})]})});hM.displayName="PlayersTableRow";const Gge=e=>{
+ame:"mb-0",children:[y.jsx("h3",{className:"m-0 mb-5 text-gray-700",children:c("playerspage.search.title")}),y.jsx("p",{className:"m-0 fs-6 text-gray-600 ",children:c(
+"playerspage.search.description")})]}),y.jsx("div",{className:"separator separator-dashe
+3 ${n&&"is-invalid"}`,type:"text",id:"search",value:e,onChange:p,placeholder:c("playerspage.search.search-placeholder")})]}),y.jsx("button",{style:{minWidth:"140px"},t
+pinner-border spinner-border-sm align-middle"})}):y.jsx(y.Fragment,{children:c("playerspage.search.search-btn")})})]}),y.jsxs("div",{children:[n&&y.jsx(Os.Text,{classN
+ame:"px-1 p-2 m-0 text-danger",children:c("playerspage.search.error")}),e.length>10&&y.jsx("span",{className:"text-danger px-2 py-
+d 0:n.items)!=null&&T.length)&&s==$e.succeeded)return y.jsx(dl,{status:s,txt:t("playerspage.player-list.empty-list")});if(s==$e.failed)return y.jsx(hl,{status:s,txt:t(
+"playerspage.player-list.server-error")})};return y.jsxs(ti,{mb:"100px",children:[y.jsx(
+[0m
+**CRITICAL FIND**: Affiliates REST API reflects ANY origin with credentials! Let me confirm and enumerate.
+[0m$ [0mcurl -sS -m 10 https://affiliates.betpanda.io/main.ef021e68.js 2>&1 | grep -oP '.{0,100}(Authorization|Bearer|token|jwt|cookie|session).{0,100}' | head -20
+:"),n=s.substring(0,i).trim().toLowerCase(),r=s.substring(i+1).trim(),!(!n||t[n]&&IX[n])&&(n==="set-cookie"?t[n]?t[n].push(r):t[n]=[r]:t[n]=t[n]?t[n]+", "+r:r)}),t},VA=Symbol("internals");function Wf(e){ret
+a):a(t),this}}Fv.accessor(["Content-Type","Content-Length","Accept","Accept-Encoding","User-Agent","Authorization"]);Xe.freezeMethods(Fv.prototype);Xe.freezeMethods(Fv);const Rs=Fv;function P1(e,t){const n=this||R
+sString(a)&&u.push("path="+a),Xe.isString(s)&&u.push("domain="+s),c===!0&&u.push("secure"),document.cookie=u.join("; ")},read:function(n){const r=document.cookie.match(new RegExp("(^|;\\s*)("+n+")=([^;]*)")
+nst w=e.auth.username||"",k=e.auth.password?unescape(encodeURIComponent(e.auth.password)):"";a.set("Authorization","Basic "+btoa(w+":"+k))}const p=sI(e.baseURL,e.url);d.open(e.method.toUpperCase(),nI(p,e.params,e.
+const n=this._listeners.indexOf(t);n!==-1&&this._listeners.splice(n,1)}static source(){let t;return{token:new L_(function(i){t=i}),cancel:t}}}const ZX=L_;function QX(e){return function(n){return e.apply(nu
+var qe=Fe.incompatibleTokens;if(Array.isArray(qe)){var Qe=z.find(function(Ae){return qe.includes(Ae.token)||Ae.token===Me});if(Qe)throw new RangeError("The format string mustn't contain `".concat(Qe.fullTo
+"&&z.length>0)throw new RangeError("The format string mustn't contain `".concat(Oe,"` and any other token at the same time"));z.push({token:Me,fullToken:Oe});var X=Fe.run(B,Oe,K.match,Y);if(!X)return{v:new
+|0)+(((n=e.match(tj))===null||n===void 0?void 0:n.length)||0)>0}const Tj={regex:zoe,countKey:"Vars",token:"${v}",parse:Vn},Nj={regex:tj,countKey:"Colors",token:"${c}",parse:Hr.parse},Dj={regex:hb,countKey:
+"Numbers",token:"${n}",parse:bc.parse};function Q1(e,{regex:t,countKey:n,token:r,parse:i}){const a=e.tokenised.match(t);a&&(e["num"+n]=a.length,e.tokenised=e.tokenised.replace(t,
+r),e.values.push(...a.map(i)))}function S0(e){const t=e.toString(),n={value:t,tokenised:t,values:[],numVars:0,numColors:0,numNumbers:0};return n.value.includes("var(--")&&Q1(n,Tj),Q1(
+),Q1(n,Dj),n}function Rj(e){return S0(e).values}function Ij(e){const{values:t,numColors:n,numVars:r,tokenised:i}=S0(e),a=t.length;return s=>{let c=i;for(let u=0;u<a;u++)u<r?c=c.replace(Tj.token,s[u]):u<r+n
+?c=c.replace(Nj.token,Hr.transform(s[u])):c=c.replace(Dj.token,Hd(s[u]));return c}}const Zle=e=>typeof e=="number"?0:e;function Qle(e){const t=Rj(e);return Ij(e)(
+xtends ul{constructor(){super(...arguments),this.removePointerDownListener=Vn}onPointerDown(t){this.session=new Kj(t,this.createPanHandlers(),{transformPagePoint:this.node.getTransformPagePoint()})}createPan
+}=this.node.getProps();return{onSessionStart:D4(t),onStart:D4(n),onMove:r,onEnd:(a,s)=>{delete this.session,i&&wn.update(()=>i(a,s))}}}mount(){this.removePointerDownListener=Ls(this.node.current,"pointerdown
+",t=>this.onPointerDown(t))}update(){this.session&&this.session.updateHandlers(this.createPanHandlers())}unmount(){this.removePointerDownListener(),this.session&&t
+his.session.end()}}function Aue(){const e=$.useContext(cb);if(e===null)return[!0,null];const{isPresent:t,onExit
+%"+((t<16?"0":"")+t.toString(16)).toUpperCase());return e})();class M0{static get(t){let n=document.cookie.match(new RegExp("(?:^|; )"+t.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,"\\$1")+"=([^;]*)"));return n?
+onent(t)+"="+encodeURIComponent(n);for(let s in i){a+="; "+s;let c=i[s];c!==!0&&(a+="="+c)}document.cookie=a}static delete(t){M0.set(t,"",{"max-age":-1})}}class Yr{static set(t,n,r,i){i?t.style.setProperty(
+enter(n),c(u)):t(u)}function c(u){return nn(u)&&a++<i?(e.consume(u),c):(e.exit(n),t(u))}}const Vbe={tokenize:Hbe};function Hbe(e){const t=e.attempt(this.parser.constructs.contentInitial,r,i);let n;return t
+,e.consume(c);return}return Tt(c)?(e.consume(c),e.exit("chunkText"),a):(e.consume(c),s)}}const Ube={tokenize:Wbe},h6={tokenize:Ybe};function Wbe(e){const t=this,n=[];let r=0,i,a,s;return c;function c(P){if
+[0m
+[0m$ [0mcurl -sS -m 10 https://betpandacasino.io/ -I 2>&1 | grep -i 'x-geo-time-debug'
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/New_York officeHours=true popup=false
+[0m
+Now I have all the data. Let me compile the structured analysis.
+
+---
+
+## STEP 1 — DELTA
+
+[NEW] `affiliates.betpanda.io/rest/*` — separate Spring Boot backend, CORS reflects **any origin + credentials**, endpoints discovered from JS bundle
+[NEW] Affiliates JS endpoints: `/rest/user`, `/rest/user/players`, `/rest/player/uid/{id}?currency=`, `/rest/transaction/list`, `/rest/user/account-settings`, `/rest/user/set-profile`, `/rest/user/change-password`, `/rest/user/selectable-payout-currencies`, `/rest/user/selectable-payout-networks`
+[NEW] Strapi CMS integration with `localStorage.getItem("strapiApiUrlOverride")` — overridable content API base URL
+[NEW] `/actuator/*` paths on betpandacasino.io redirect 301→trailing-slash but serve SPA HTML (not real actuator — catch-all route, NOT a finding)
+[CHANGED] `betpandacasino.io/rest/user/account-balances-and-bonuses` confirmed POST-only (405 GET); `/rest/user/settings` 401; CORS properly pinned to own origin + credentials
+[CHANGED] `cable.betpanda.io/cable/user-event` confirmed POST-only, root returns "Cable Service - Ready!"; no new endpoints
+[CHANGED] `fp.betpanda.io`, `custom-lp.betpanda.io`, `flags.betpanda.io`, `www.betpanda.io` all Cloudflare JS-challenged (403 cf-mitigated) — cannot probe passively
+
+## STEP 2 — PRIORITIZE
+
+| Asset | a | b | t | g | f | **priority** |
+|---|---|---|---|---|---|---|
+| `affiliates.betpanda.io/rest/*` | 9 | 8 | 5 | 9 | 9 | **7.95** |
+| `betpandacasino.io/rest/user/*` | 8 | 9 | 7 | 3 | 9 | **7.40** |
+| `cable.betpanda.io/cable/user-event` | 6 | 5 | 3 | 3 | 9 | **4.80** |
+| `fp.betpanda.io` | 4 | 4 | 5 | 3 | 9 | **4.35** |
+| `custom-lp.betpanda.io` | 3 | 3 | 4 | 3 | 9 | **3.75** |
+| `flags.betpanda.io` | 3 | 3 | 5 | 3 | 9 | **3.95** |
+| `dashboard.betpanda.io` | 5 | 7 | 3 | 3 | 9 | **4.95** |
+
+[PRIO] affiliates.betpanda.io/rest/*,7.95 — wildcard CORS+credentials, full API surface, Spring Boot, player/transaction data
+[PRIO] betpandacasino.io/rest/user/*,7.40 — money-flow endpoints, Cognito JWT, POST-only balances
+[PRIO] cable.betpanda.io/cable/user-event,4.80 — open CORS *, unauthenticated POST, analytics
+
+## STEP 3 — HYPOTHESES
+
+[HYP] Wildcard CORS + credentials on Affiliates REST API enables cross-origin data exfiltration of player PII, transactions, and account settings
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 85
+reasoning: OPTIONS preflight returns 200 with `access-control-allow-origin: https://evil.com` + `access-control-allow-credentials: true`. GET /rest/user returns 401 (auth required, cookies/session-based). JS bundle reveals 10+ authenticated endpoints: /rest/user, /rest/user/players (POST, list with pagination), /rest/player/uid/{id} (GET, player by UID), /rest/transaction/list (POST), /rest/user/account-settings (GET/POST), /rest/user/set-profile (POST), /rest/user/change-password (POST), /rest/user/selectable-payout-currencies (GET), /rest/user/selectable-payout-networks (GET). A malicious page can make credentialed cross-origin requests; browser attaches affiliate session cookies; response exfiltrated to attacker.
+evidence_needed: (1) Confirm auth is cookie/session-based (not only Bearer token) — check Set-Cookie on login; (2) Two affiliate accounts to confirm cross-account access isn't blocked server-side; (3) POC page that triggers /rest/user/players and reads response
+verify_steps: PASSIVE-first: (1) `curl -sS -D- https://affiliates.betpanda.io/rest/user -H "Origin: https://evil.com"` — confirm ACAO reflected + credentials; (2) Login to affiliate panel, capture cookies, then `curl -sS -D- -b cookies.txt https://affiliates.betpanda.io/rest/user/players -X POST -H "Content-Type: application/json" -d '{"limit":10,"offset":0}' -H "Origin: https://evil.com"` — confirm data returns with CORS headers; (3) Check Set-Cookie flags on login response for SameSite
+impact: Full cross-origin read of affiliate player lists, individual player data (UID-based), transaction history, account settings, payout currencies. Attacker can create arbitrary affiliate links, change profile, change password. On a gambling affiliate platform this exposes PII + financial data of referred players. Severity: Critical (CVSS ~9.1)
+testability: AUTH_HELPED
+
+[HYP] Strapi CMS baseURL override via localStorage enables API redirection and data exfiltration
+class: OTHER
+asset: affiliates.betpanda.io (Strapi CMS integration)
+confidence: 60
+reasoning: JS bundle contains `localStorage.getItem("strapiApiUrlOverride")` which overrides the Strapi API base URL. If an attacker can set this value (requires prior XSS or subdomain compromise), all CMS content requests (affiliate pages, banners, terms) go to attacker-controlled server. CMS content could include admin-configured promotional material, terms, or banners — data leakage or content injection.
+evidence_needed: (1) Confirm Strapi instance exists and responds; (2) Verify content contains sensitive/privileged data beyond public pages; (3) Chain from XSS or other subdomain write
+verify_steps: PASSIVE: (1) Search JS for Strapi base URL pattern; (2) Check if Strapi has /api/content/xxx endpoints accessible; (3) Verify localStorage persistence across page reloads
+impact: Content injection (modified terms/banners/promotions) or data exfiltration of CMS content. Medium severity if no sensitive data in CMS, potentially higher if admin/privileged content stored.
+testability: AUTH_HELPED
+
+[HYP] IDOR/BOLA on authenticated Player REST money-flow endpoints on main casino API
+class: IDOR
+asset: https://betpandacasino.io/rest/user/*
+confidence: 55
+reasoning: Core casino API is Spring Boot + Cognito JWT; `/rest/user/account-balances-and-bonuses` is POST-only (confirmed 405 GET), `/rest/user/settings` returns 401. CORS properly pinned to `https://betpandacasino.io` (does NOT reflect evil.com). Gambling money flows are classic BOLA targets. However, proper CORS reduces cross-origin attack surface; IDOR requires same-origin JWT manipulation or ID parameter tampering.
+evidence_needed: 2 user accounts; cross-tenant object access via enumerated id/uid while changing nothing (read-only)
+verify_steps: PASSIVE-first: create 2 scoped test accounts → POST account-balances-and-bonuses with user A JWT including user B's id/uid → diff responses. Also probe `/rest/user/settings` with JWT.
+impact: cross-tenant wallet/balance/bonus disclosure or tampering on a real-money gambling platform; severity High/Critical
+testability: AUTH_HELPED
+
+## STEP 4 — SELF-CRITIQUE
+
+[PARKED] Strapi CMS baseURL override via localStorage: requires prior XSS to set localStorage value; standalone impact is content injection on affiliate pages, not player data. Severity medium at best. **Parked for chaining with XSS.**
+
+[FINAL] Survivors ranked:
+1. **MISCONFIG** — Wildcard CORS+credentials on affiliates REST API (confidence 85) — **CRITICAL**
+2. **IDOR** — Money-flow endpoints on main casino API (confidence 55) — **HIGH**
+
+## STEP 5 — NEXT ACTION
+
+[NEXT] PROBE: Confirm cookie-based auth + data exfiltration on affiliates REST API. `POST https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Content-Type: application/json" -d '{"limit":1,"offset":0}'` (requires authenticated session — HUMAN to login first and provide cookies). Also check Set-Cookie flags on login to confirm cookie-based auth model.
+
+## STEP 6 — LEARNING
+
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 10+ authenticated endpoints discovered from JS bundle including player PII, transactions, account settings, and payout config. Verified via live OPTIONS+GET probes.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances, 401 settings); CORS properly pinned reduces cross-origin attack vector but does not prevent same-origin IDOR.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io CORS: CORS correctly restricts to own origin + credentials; OPTIONS from evil.com does NOT reflect origin. Not a finding.
+[LEARN] REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML (catch-all route). Spring Boot actuator is NOT exposed.
+[LEARN] REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks all passive probes. Cannot assess without solving challenge.
+
+## STEP 7 — RISK
+
+[RISK] BetPanda: 35 — Scoped assets are behind Cloudflare; main casino API has proper CORS + Cognito JWT (server-side auth enforcement likely strong). The affiliates CORS misconfiguration is the highest-probability finding but requires authenticated affiliate session. No evidence of SSRF-to-metadata or admin panel exposure. Moderate cloud surface (AWS ELB for k8s dashboard, Cloudflare everywhere).

@@ -23,3 +23,11 @@ https://affiliates.betpanda.io/api/ -> 200 len=?
 https://betpanda.io/ -> 200 len=?
 https://betpanda.io/api/auth/authorize?redirect_uri=https://evil.com&state=test&client_id=test -> 200 len=?
 https://flags.betpanda.io` -> ERR <urlopen error [Errno -2] Name or service not know
+
+## 2026-09-03 19:50:27 UTC
+https://betpanda.io/api/auth/authorize?redirect_uri=https://attacker.com/callback&response_type=code&client_id=test&scope=openid&state=xyz -> 200 len=?
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://cable.betpanda.io/cable/ -> HTTP 404
+https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 -> 200 len=?
+https://affiliates.betpanda.io/rest/user -> HTTP 401
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
