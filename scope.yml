@@ -48,4 +48,8 @@ rules:
   redact_secrets_in_commits: true
 
 models:
-  - { id: opencode/mimo-v2.5-free, name: mimo }
+  - { id: opencode/big-pickle, name: bigpickle }
+  - { id: opencode/nemotron-3-ultra-free, name: nemotron3 }
+  - { id: opencode/longcat-2.0-free, name: longcat }
+  - { id: opencode/ling-3.0-flash-free, name: ling3 }
+  - { id: opencode/laguna-s-2.1-free, name: laguna }

@@ -17,12 +17,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     concurrency:
-      group: hunt-betpanda-analyst
+      group: hunt-betpanda-${{ matrix.model.name }}
       cancel-in-progress: true
+    strategy:
+      fail-fast: false
+      matrix:
+        model:
+          - { id: opencode/big-pickle, name: bigpickle }
+          - { id: opencode/nemotron-3-ultra-free, name: nemotron3 }
+          - { id: opencode/longcat-2.0-free, name: longcat }
+          - { id: opencode/ling-3.0-flash-free, name: ling3 }
+          - { id: opencode/laguna-s-2.1-free, name: laguna }
     env:
-      MODEL_ID: opencode/mimo-v2.5-free
+      MODEL_ID: ${{ matrix.model.id }}
       OPENCODE_REASONING: xhigh
-      MODEL_NAME: mimo
+      MODEL_NAME: ${{ matrix.model.name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
