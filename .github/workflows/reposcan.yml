@@ -42,8 +42,8 @@ jobs:
       - name: Enumerate org repo candidates (if TARGET_ORG set)
         run: |
           if [ -z "$TARGET_ORG" ]; then
-            echo "TARGET_ORG not configured for betpanda; skipping public-org deep scan." > reposcan-raw/summary.txt
             mkdir -p reposcan-raw inventory
+            echo "TARGET_ORG not configured for betpanda; skipping public-org deep scan." > reposcan-raw/summary.txt
             exit 0
           fi
           mkdir -p reposcan-raw

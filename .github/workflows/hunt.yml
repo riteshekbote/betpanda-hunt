@@ -116,7 +116,7 @@ jobs:
       - name: Upload model artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: analyst-betpanda
+          name: analyst-${{ matrix.model.name }}
           path: |
             lead_${{ matrix.model.name }}.txt
             analyst-${{ matrix.model.name }}.out
