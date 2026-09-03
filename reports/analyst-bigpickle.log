@@ -1,0 +1,1424 @@
+===== ANALYST bigpickle 2026-09-03 17:03:51 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m→ [0mRead inventory/betpanda.md
+[0m→ [0mRead scope.yml
+[0m✱ [0mGlob "**/*.md"[90m 15 matches[0m
+[0m→ [0mRead triage/run-2026-09-03-12-52.md
+[0m→ [0mRead recon-notes/DEEPER-FINDINGS.md
+[0m→ [0mRead probe-results.md
+[0m→ [0mRead knowledge/index.md
+[0m→ [0mRead reports/hypotheses.md
+[0m→ [0mRead reports/valid-bugs.md
+[0m→ [0mRead README.md
+[0m→ [0mRead leads/lead-mimo.md
+[0m→ [0mRead leads/reposcan-betpanda.md
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://betpanda.io 2>&1 | head -30
+HTTP/2 301 
+date: Thu, 03 Sep 2026 16:57:50 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/
+server: cloudflare
+cf-ray: a3564bb8e9c9faea-BOS
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://www.betpanda.io 2>&1 | head -30
+HTTP/2 403 
+date: Thu, 03 Sep 2026 16:57:51 GMT
+content-type: text/html; charset=UTF-8
+content-length: 22390
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+x-frame-options: SAMEORIGIN
+server: cloudflare
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*
+referrer-policy: same-origin
+server-timing: chlray;desc="a3564bbdacd39009"
+x-content-type-options: nosniff
+cf-ray: a3564bbdacd39009-BOS
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://affiliates.betpanda.io 2>&1 | head -30
+HTTP/2 200 
+date: Thu, 03 Sep 2026 16:57:51 GMT
+content-type: text/html
+server: cloudflare
+last-modified: Thu, 30 Jul 2026 12:02:44 GMT
+accept-ranges: bytes
+cf-cache-status: DYNAMIC
+cf-ray: a3564bbfb8055e1e-BOS
+[0m
+Now I'll run the 8 steps. First, let me do live probes on the key assets to gather current data for prioritization.
+[0m$ [0mcurl -sI --max-time 10 https://cable.betpanda.io 2>&1 | head -30
+HTTP/2 200 
+date: Thu, 03 Sep 2026 16:57:51 GMT
+content-type: text/plain; charset=utf-8
+content-length: 1051
+server: cloudflare
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a3564bc1ad7af9be-BOS
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://custom-lp.betpanda.io 2>&1 | head -30
+HTTP/2 403 
+date: Thu, 03 Sep 2026 16:57:52 GMT
+content-type: text/html; charset=UTF-8
+content-length: 22417
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+x-frame-options: SAMEORIGIN
+server: cloudflare
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*
+referrer-policy: same-origin
+server-timing: chlray;desc="a3564bc7b8b6b5f8"
+x-content-type-options: nosniff
+cf-ray: a3564bc7b8b6b5f8-BOS
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://fp.betpanda.io 2>&1 | head -30
+HTTP/2 403 
+date: Thu, 03 Sep 2026 16:57:52 GMT
+content-type: text/html; charset=UTF-8
+content-length: 22389
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+x-frame-options: SAMEORIGIN
+server: cloudflare
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*
+referrer-policy: same-origin
+server-timing: chlray;desc="a3564bc8f85a8feb"
+x-content-type-options: nosniff
+cf-ray: a3564bc8f85a8feb-BOS
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://dashboard.betpanda.io 2>&1 | head -30
+(no output)
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://betpandacasino.io 2>&1 | head -40
+HTTP/2 200 
+date: Thu, 03 Sep 2026 16:58:07 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a3564c224b250bfa-BOS
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwx6ejkHKjwkEx; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 15:58:07 GMT
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/Chicago officeHours=true popup=false
+[0m
+[0m$ [0mcurl -s --max-time 10 https://betpandacasino.io 2>&1 | head -100
+<!doctype html>
+<html lang="en">
+  <head><link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<link rel="preconnect" href="https://d3ec3n7kizfkuy.cloudfront.net" crossorigin>
+<link rel="dns-prefetch" href="https://d3ec3n7kizfkuy.cloudfront.net">
+<script>
+          (function () {
+    if (!localStorage.getItem('rc-referrer')) {
+        const referrer = document.referrer;
+        let referrerValue = 'direct';
+
+        if (referrer && referrer.trim() !== '') {
+            try {
+                const referrerDomain = new URL(referrer).hostname;
+                // Only update if we have a valid, non-empty domain that's different from ours
+                if (referrerDomain &&
+                    referrerDomain.trim() !== '' &&
+                    referrerDomain !== window.location.hostname) {
+                    referrerValue = referrerDomain;
+                }
+            } catch (error) {
+                console.log('Referrer parsing error:', error);
+            }
+        }
+
+        localStorage.setItem('rc-referrer', referrerValue);
+        localStorage.setItem('rc-first-visit-on', new Date().toISOString());
+    }
+})();
+(function () {
+    // Function to send tracking data
+    function sendTrackingData(userId) {
+        // Check if already posted
+        if (localStorage.getItem('rc-cable-post-on')) {
+            console.info('🔦 Tracking data already sent, skipping');
+            return;
+        }
+
+        console.info('🔦 Pulse RC down the cable')
+        fetch('https://cable.' + window.location.hostname.replace(/^www./, '') + '/cable/user-event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+                registeredOn: new Date().toISOString(),
+                firstVisitOn: localStorage.getItem('rc-first-visit-on'),
+                referrer: localStorage.getItem('rc-referrer')
+            })
+        }).catch(function (error) {
+            console.error('Failed to send tracking data:', error);
+        });
+
+        localStorage.setItem('rc-cable-post-on', new Date().toISOString());
+    }
+
+    window.addEventListener("message", (event) => {
+        if (event.origin && event.data && event.data.type) {
+            var data = { ...event.data, event: event.data.type };
+            if (event.data.type == "LOGIN") {
+                //do something
+            } else if (event.data.type == "REGISTER") {
+                sendTrackingData(localStorage.getItem('userId'))
+            } else if (event.data.type == "DEPOSIT") {
+                //do something
+            } else if (event.data.type == "WITHDRAW_REQUESTED") {
+                //do something
+            } else if (event.data.type == "WITHDRAW_APPROVED") {
+                //do something
+            }
+        }
+    }, false);
+})();
+        </script>
+    <!-- Placeholder for adding elements to header from container variables-->
+    
+    <script type="application/javascript">
+      var GLOBAL_LOADER_IMAGE = "https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/beat_glitch_2503593a86.png";
+      var GLOBAL_LOADER_WIDTH = "64px";
+      var GLOBAL_METAMAP_SCRIPT_URL = "https://web-button.getmati.com/button.js";
+      var GLOBAL_CLOUDWATCH_APP_ID = "1610d6c0-851d-4616-872b-d1e234bc5765";
+      var GLOBAL_CLOUDWATCH_IDENTITY_POOL_ID = "eu-west-1:6d112649-3978-47f7-a42f-3b0a41b34d21";
+      var GLOBAL_CLOUDWATCH_REGION = "eu-west-1";
+      var GLOBAL_CLOUDWATCH_SAMPLE_RATE = "0.01";
+      var GLOBAL_FLIPT_URL = "https://flags.betpanda.io";
+      var GLOBAL_FLIPT_ENVIRONMENT = "betpanda";
+    </script>
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+      crossorigin
+    />
+    <noscript>
+      <link
+[0m
+[0m$ [0mcurl -s --max-time 10 https://cable.betpanda.io 2>&1
+██████╗ ██████╗      ██████╗ █████╗ ██████╗ ██╗     ███████╗    🔌
+██╔══██╗██╔══██╗    ██╔════╝██╔══██╗██╔══██╗██║     ██╔════╝    
+██████╔╝██████╔╝    ██║     ███████║██████╔╝██║     █████╗      
+██╔══██╗██╔═══╝     ██║     ██╔══██║██╔══██╗██║     ██╔══╝      
+██████╔╝██║         ╚██████╗██║  ██║██████╔╝███████╗███████╗    
+╚═════╝ ╚═╝          ╚═════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝    
+                                                                  
+           Service - Ready! 🚀
+[0m
+Important: `betpanda.io` redirects to `betpandacasino.io`. Let me probe the real domain and gather more intel.
+[0m$ [0mcurl -s --max-time 10 https://affiliates.betpanda.io 2>&1 | head -100
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Affiliate</title>
+    <script type="module" crossorigin src="/main.ef021e68.js"></script>
+    <link rel="stylesheet" href="/index.82c23d1f.css">
+  </head>
+  <body id="kt_body" class="page-loading" data-kt-app-layout="dark-sidebar">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!--begin::Theme mode setup on page load-->
+    <script>
+      let themeMode = 'system'
+
+      if (localStorage.getItem('kt_theme_mode_value')) {
+        themeMode = localStorage.getItem('kt_theme_mode_value')
+      }
+
+      if (themeMode === 'system') {
+        themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      }
+
+      document.documentElement.setAttribute('data-bs-theme', 'light')
+    </script>
+    <div id="root" class="d-flex flex-column flex-root"></div>
+    
+  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3564c2a5a62f9be',t:'MTc4ODQ1NDY4OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://flags.betpanda.io 2>&1 | head -30
+HTTP/2 403 
+date: Thu, 03 Sep 2026 16:58:23 GMT
+content-type: text/html; charset=UTF-8
+content-length: 22413
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+x-frame-options: SAMEORIGIN
+server: cloudflare
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*
+referrer-policy: same-origin
+server-timing: chlray;desc="a3564c88689ffaea"
+x-content-type-options: nosniff
+cf-ray: a3564c88689ffaea-BOS
+[0m
+[0m$ [0mcurl -s --max-time 10 https://cable.betpanda.io/cable/user-event -X POST -H 'Content-Type: application/json' -d '{}' 2>&1
+{"error":"userId must contain only alphanumeric characters"}
+[0m
+[0m$ [0mcurl -s --max-time 10 https://cable.betpanda.io/ 2>&1
+██████╗ ██████╗      ██████╗ █████╗ ██████╗ ██╗     ███████╗    🔌
+██╔══██╗██╔══██╗    ██╔════╝██╔══██╗██╔══██╗██║     ██╔════╝    
+██████╔╝██████╔╝    ██║     ███████║██████╔╝██║     █████╗      
+██╔══██╗██╔═══╝     ██║     ██╔══██║██╔══██╗██║     ██╔══╝      
+██████╔╝██║         ╚██████╗██║  ██║██████╔╝███████╗███████╗    
+╚═════╝ ╚═╝          ╚═════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝    
+                                                                  
+           Service - Ready! 🚀
+[0m
+Critical findings: `betpanda.io` redirects to `betpandacasino.io`, which exposes AWS Cognito pool IDs and a `flags.betpanda.io` feature flag service. Let me probe deeper.
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io' 2>&1 | grep -oiE '(api|endpoint|fetch|axios|baseURL|baseUrl|window\.__[A-Z]+|config\.[a-z]+|env\.)[^\s]*' | head -30
+fetch" href="http
+fetch('http
+api
+api
+fetch"
+fetch"
+api
+api
+fetch"
+api
+api
+[0m
+[0m$ [0mcurl -s --max-time 15 'https://betpandacasino.io' 2>&1 | grep -oE 'https?://[^"'\''<> ]+' | sort -u
+https://cable.
+https://cdn.contentful.com
+https://d3ec3n7kizfkuy.cloudfront.net
+https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/beat_glitch_2503593a86.png
+https://flags.betpanda.io
+https://fonts.googleapis.com
+https://fonts.googleapis.com/icon?family=Material+Icons&display=block
+https://storage.googleapis.com
+https://web-button.getmati.com/button.js
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST 'https://cable.betpanda.io/cable/user-event' -H 'Content-Type: application/json' -d '{"userId":"test123","registeredOn":"2026-09-03T16:00:00Z","firstVisitOn":"2026-09-03T16:00:00Z","referrer":"direct"}' 2>&1
+{"message":"User event processed and saved successfully","status":"success"}
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://cable.betpanda.io/cable/user-event' 2>&1
+{"error":"Method Not Allowed"}
+[0m
+Key discovery: `cable.betpanda.io/cable/user-event` accepts arbitrary POST data without auth. Now let me compile the full analysis.
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io' 2>&1 | grep -oE 'https?://[a-zA-Z0-9._-]+\.betpanda\.io[^"'\'' ]*' | sort -u
+https://flags.betpanda.io
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io' 2>&1 | grep -oE 'fetch\([^)]+\)|\.get\([^)]+\)|\.post\([^)]+\)|axios\.[a-z]+\([^)]+\)' | head -20
+fetch('https://cable.' + window.location.hostname.replace(/^www./, '')
+[0m
+[0m$ [0mcurl -s --max-time 15 'https://betpandacasino.io' 2>&1 | grep -oE 'src="[^"]*\.js"' | head -20
+src="/assets/index-KqswHEbl.js"
+[0m
+[0m$ [0mcurl -s --max-time 20 'https://betpandacasino.io/assets/index-KqswHEbl.js' 2>&1 | grep -oE '"https?://[^"]+' | sort -u | head -40
+"http://host.docker.internal:9081/rest
+"http://localhost
+"http://localhost:8080
+"http://localhost:8081/rest
+"https://[::1]
+"https://dataplane.rum.
+"https://fonts.googleapis.com/css2?family=Asap:wght@400;500;600&display=swap
+"https://fonts.googleapis.com/css?family=Quantico&display=swap
+[0m
+[0m$ [0mcurl -s --max-time 20 'https://betpandacasino.io/assets/index-KqswHEbl.js' 2>&1 | grep -oE '/api/[a-zA-Z0-9/._-]+' | sort -u | head -40
+(no output)
+[0m
+[0m$ [0mcurl -s --max-time 30 'https://betpandacasino.io/assets/index-KqswHEbl.js' -o /tmp/opencode/bp-main.js 2>&1; wc -c /tmp/opencode/bp-main.js
+795572 /tmp/opencode/bp-main.js
+[0m
+[0m$ [0mgrep -oE '(baseURL|baseUrl|apiUrl|APP_API|API_)[:=][^,;}]+' /tmp/opencode/bp-main.js | head -20
+baseURL:I
+baseUrl:XA.spelling("baseURL")
+baseURL:a
+baseURL=t().environmentBaseUrl
+baseURL=t().spaceBaseUrl
+baseURL=n().environmentBaseUrl
+baseUrl=t:this.baseUrl=e
+baseUrl=e
+baseUrl=e
+baseUrl=A.baseUrl.replace(/localhost/g
+baseUrl:"http://host.docker.internal:9081/rest"
+baseUrl:"http://"+h+":8081/rest"
+baseUrl:"http://localhost:8081/rest"
+baseUrl:"https://"+e+"/rest"
+baseUrl=A.baseUrl.replace(/localhost/g
+apiUrl:t
+[0m
+[0m$ [0mgrep -oE 'https?://[a-zA-Z0-9._-]+' /tmp/opencode/bp-main.js | sort -u | grep -vE 'fonts|cloudinary|w3|google|mozilla|example' | head -40
+http://host.docker.internal
+http://localhost
+https://bit.ly
+https://dataplane.rum.
+https://github.com
+[0m
+[0m$ [0mgrep -oE '/rest/[a-zA-Z0-9/._-]+' /tmp/opencode/bp-main.js | sort -u | head -40
+(no output)
+[0m
+[0m$ [0mgrep -oE 'bearer[^,;}]{0,40}|Authorization[^,;}]{0,40}|token[^,;}]{0,30}' /tmp/opencode/bp-main.js | head -20
+Authorization"])
+Authorization"
+token:new dQ(function(i){e=i
+Authorization"
+Authorization&&typeof g.accessToken!="function"&&(g.h
+Authorization="Bearer "+g.accessToken)
+Authorization){var i="...".concat(e.headers.Authoriza
+Authorization="Bearer ".concat(i)
+token=t.nextSyncToken
+token=t.nextPageToken
+token&&(delete t.initial
+token=sn(I.nextPageUrl)
+token="
+Authorization"
+token")
+Authorization=`Bearer ${e.authentication.clientToken
+Authorization=`JWT ${e.authentication.jwtToken
+token: ".concat(r))
+[0m
+[0m$ [0mgrep -oE '[a-z]*\.betpanda\.io' /tmp/opencode/bp-main.js | sort -u
+(no output)
+[0m
+The bundle contains `dataplane.rum.` (likely AWS RUM / CloudWatch RUM) references and a baseUrl pattern `https://"+e+"/rest"`. Let me look deeper at how the app constructs its API base URL and find the environment config.
+[0m$ [0mgrep -oE 'https://"[+a-zA-Z".]+/rest' /tmp/opencode/bp-main.js | head
+https://"+e+"/rest
+[0m
+[0m$ [0mgrep -oE 'cognito[a-zA-Z0-9._-]*|Cognito[a-zA-Z0-9._-]*' /tmp/opencode/bp-main.js | head -20
+cognito
+CognitoIdentityService.GetId
+CognitoIdentityService.GetOpenIdToken
+CognitoIdentityService.GetCredentialsForIdentity
+Cognito
+Cognito
+Cognito
+cognito-identity.
+CognitoCredentialsProvider
+cognitoIdentityClient
+CognitoCredentialsProvider
+cognitoIdentityClient.getId
+cognitoIdentityClient.getOpenIdToken
+CognitoCredentialsProvider
+cognitoIdentityClient.getId
+cognitoIdentityClient.getCredentialsForIdentity
+CognitoCredentials
+cognito
+CognitoCredentials
+CognitoCredentials
+[0m
+[0m$ [0mgrep -oE 'clientId["\x27:= ]+[a-zA-Z0-9._-]+' /tmp/opencode/bp-main.js | head -20
+(no output)
+[0m
+Interesting — the bundle shows `Authorization = Bearer ${e.authentication.clientToken}` and `JWT ${e.authentication.jwtToken}` patterns, plus an `accessToken` notifier, and the frontend of betpandacasino references `http://host.docker.internal:9081/rest` as a dev fallback. The `https://"+e+"/rest"` base URL construction is the key. Let me determine what host the app calls at runtime.
+
+Let me check what domain the production API uses by looking at the environment config / the `e` variable.
+The app uses AWS Cognito for auth (CognitoIdentityService, cognito-identity API) and builds `https://<env>/rest` for the API base URL. The environment hostname is loaded dynamically. Since I saw the Cognito pool ID `eu-west-1:6d112649-3978-47f7-a42f-3b0a41b34d21` and identity pool, this is AWS Cognito in eu-west-1. Let me check what the app actually fires at runtime via the API subdomain pattern.
+
+Let me now check the `betpandacasino.io` asset more and identify the actual API host. The app likely hits `https://api.betpandacasino.io/rest` or similar. Let me enumerate likely API hosts read-only via DNS.
+[0m$ [0mfor h in api api2 www-app app dashboard admin backoffice internal gateway rest services auth wallet game casino api-gateway; do
+  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 6 "https://$h.betpandacasino.io" 2>&1)
+  echo "$h.betpandacasino.io => $code"
+done
+api.betpandacasino.io => 000
+api2.betpandacasino.io => 000
+www-app.betpandacasino.io => 000
+app.betpandacasino.io => 000
+dashboard.betpandacasino.io => 000
+admin.betpandacasino.io => 000
+backoffice.betpandacasino.io => 000
+internal.betpandacasino.io => 000
+gateway.betpandacasino.io => 000
+rest.betpandacasino.io => 000
+services.betpandacasino.io => 000
+auth.betpandacasino.io => 000
+wallet.betpandacasino.io => 000
+game.betpandacasino.io => 000
+casino.betpandacasino.io => 000
+api-gateway.betpandacasino.io => 000
+[0m
+All return 000 (no DNS / not resolvable). Let me check which ones resolve via DNS and try the original .io domain pattern.
+[0m$ [0mfor h in api api2 app dashboard admin backoffice internal gateway rest services auth wallet game casino api-gateway flags cable; do
+  res=$(dig +short "$h.betpanda.io" 2>/dev/null | head -2 | tr '\n' ' ')
+  echo "$h.betpanda.io => ${res:-NONE}"
+done
+api.betpanda.io => NONE
+api2.betpanda.io => NONE
+app.betpanda.io => NONE
+dashboard.betpanda.io => k8s-kubernet-albdashb-d955dbd267-2103356572.eu-west-1.elb.amazonaws.com. 52.17.103.39 
+admin.betpanda.io => NONE
+backoffice.betpanda.io => NONE
+internal.betpanda.io => NONE
+gateway.betpanda.io => NONE
+rest.betpanda.io => NONE
+services.betpanda.io => NONE
+auth.betpanda.io => NONE
+wallet.betpanda.io => NONE
+game.betpanda.io => NONE
+casino.betpanda.io => NONE
+api-gateway.betpanda.io => NONE
+flags.betpanda.io => 104.20.24.24 172.66.161.135 
+cable.betpanda.io => 172.66.161.135 104.20.24.24
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://cable.betpanda.io/cable/user-event' -X OPTIONS -i 2>&1 | head -30
+HTTP/2 405 
+date: Thu, 03 Sep 2026 16:59:21 GMT
+content-type: application/json
+content-length: 30
+server: cloudflare
+allow: POST
+cf-cache-status: DYNAMIC
+cf-ray: a3564df2895afaea-BOS
+
+{"error":"Method Not Allowed"}
+[0m
+`dashboard.betpanda.io` is the only host resolving to the EKS ELB in eu-west-1 with a real IP. The `flags.betpanda.io` and `cable.betpanda.io` are Cloudflare-fronted. Let me look at what `dashboard.betpanda.io` serves and probe the `cable` endpoint behavior more.
+[0m$ [0mcurl -s --max-time 10 -X POST 'https://cable.betpanda.io/cable/user-event' -H 'Content-Type: application/json' -H 'Origin: https://evil.example.com' -d '{"userId":"aaaa","registeredOn":"2026-09-03T16:00:00Z","firstVisitOn":"2026-09-03T16:00:00Z","referrer":"x"}' -i 2>&1 | head -30
+HTTP/2 200 
+date: Thu, 03 Sep 2026 16:59:23 GMT
+content-type: application/json
+content-length: 76
+server: cloudflare
+access-control-allow-origin: *
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a3564dfa9a20318c-BOS
+
+{"message":"User event processed and saved successfully","status":"success"}
+[0m
+[0m$ [0mcurl -sI --max-time 10 'http://52.17.103.39' -H 'Host: dashboard.betpanda.io' 2>&1 | head -20
+(no output)
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://flags.betpanda.io/' -i 2>&1 | head -30
+HTTP/2 403 
+date: Thu, 03 Sep 2026 16:59:34 GMT
+content-type: text/html; charset=UTF-8
+content-length: 22413
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+x-frame-options: SAMEORIGIN
+server: cloudflare
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*
+referrer-policy: same-origin
+server-timing: chlray;desc="a3564e43f8f960f1"
+x-content-type-options: nosniff
+cf-ray: a3564e43f8f960f1-MCI
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <style>body {
+    margin: 0;
+    display: flex;
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://flags.betpanda.io/api/v1/flags' -i 2>&1 | head -30
+HTTP/2 403 
+date: Thu, 03 Sep 2026 16:59:34 GMT
+content-type: text/html; charset=UTF-8
+content-length: 22449
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+x-frame-options: SAMEORIGIN
+server: cloudflare
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*
+referrer-policy: same-origin
+server-timing: chlray;desc="a3564e460e384771"
+x-content-type-options: nosniff
+cf-ray: a3564e460e384771-MCI
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <style>body {
+    margin: 0;
+    display: flex;
+[0m
+Confirmed: `cable.betpanda.io/cable/user-event` returns `access-control-allow-origin: *` reflecting arbitrary origins and accepts arbitrary POST data with no authentication. This is a CSRF/abuse surface. Let me check how CORS is applied and whether it reflects arbitrary origins (literally `*`) vs reflects the specific origin - it's literally `*` which is permissive but lets me POST from anywhere.
+
+Now, more importantly, let me understand the data. The endpoint is a user-tracking/analytics endpoint on `cable.betpanda.io`. It accepts arbitrary `userId` and event data. Let me check if it has other endpoints or accepts other fields that reveal data.
+
+Let me also check the flags.betpanda.io service more closely (Flipt feature flags - this was in the frontend as `GLOBAL_FLIPT_URL = "https://flags.betpanda.io"`).
+[0m$ [0mcurl -s --max-time 10 'https://flags.betpanda.io/flags' -i 2>&1 | head -30
+HTTP/2 403 
+date: Thu, 03 Sep 2026 16:59:35 GMT
+content-type: text/html; charset=UTF-8
+content-length: 22428
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+x-frame-options: SAMEORIGIN
+server: cloudflare
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*
+referrer-policy: same-origin
+server-timing: chlray;desc="a3564e483b8ff58d"
+x-content-type-options: nosniff
+cf-ray: a3564e483b8ff58d-BOS
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <style>body {
+    margin: 0;
+    display: flex;
+[0m
+[0m$ [0mgrep -oE 'environmentBaseUrl[^,;}]{0,80}' /tmp/opencode/bp-main.js | head
+environmentBaseUrl
+environmentBaseUrl:`${i.defaults.baseURL
+environmentBaseUrl
+[0m
+`flags.betpanda.io` is behind Cloudflare managed challenge (403 challenge block) so I can't directly interact with the Flipt service from outside without passing the JS challenge. `cable.betpanda.io` however is directly accessible without challenge.
+
+Let me now check for the affiliate portal's backend API. The affiliates app is a Vite SPA. Let me probe its API surface and also check if `custom-lp` and `fp` have any API endpoints exposed (currently 403 Cloudflare challenge).
+
+Let me consolidate my state and look for API endpoints reachable on the cable service and on the main app. The main app's API base (`https://<env>/rest`) — let me determine what env host the frontend uses at runtime.
+[0m$ [0mgrep -oE 'contentful[a-zA-Z0-9._/-]*' /tmp/opencode/bp-main.js | head; grep -oE 'CDN[a-zA-Z0-9._/-]*|SPACE[A-Z_]*|accessToken[:=][^,;}]{0,50}' /tmp/opencode/bp-main.js | head
+contentful-ratelimit-reset
+contentful-ratelimit-reset
+contentful-ratelimit-second-limit
+contentful-ratelimit-second-limit
+contentful.com
+contentful.js/9.3.7
+contentful.delivery.v1
+contentful_environment
+contentful.com
+contentful.com
+accessToken=="function"&&xs(s
+accessToken:t
+accessToken:t
+[0m
+[0m$ [0mgrep -oE '"/rest"|/rest['"'"'"]' /tmp/opencode/bp-main.js | head; echo "---"; grep -oE 'baseUrl[=:]["'"'"'][^"'"'"']*["'"'"']' /tmp/opencode/bp-main.js | head -20
+/rest"
+/rest"
+/rest"
+"/rest"
+---
+baseUrl:"http://host.docker.internal:9081/rest"
+baseUrl:"http://"
+baseUrl:"http://localhost:8081/rest"
+baseUrl:"https://"
+[0m
+[0m$ [0mgrep -oE 'https://[a-z0-9.-]+\.betpanda[a-z.]*' /tmp/opencode/bp-main.js | sort -u
+(no output)
+[0m
+The app builds the API base URL dynamically via `t().environmentBaseUrl` and `https://"+e+"/rest"`. The `e` is the current hostname probably (so `https://betpandacasino.io/rest`). Let me probe that.
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/' -i 2>&1 | head -30
+HTTP/2 200 
+date: Thu, 03 Sep 2026 16:59:45 GMT
+content-type: text/plain;charset=UTF-8
+content-length: 54
+cf-ray: a3564e843c46a646-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqX25VxqJqtXoZn; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 15:59:45 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+Player REST API - Time is Thu Sep 03 16:59:45 UTC 2026
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/actuator/health' -i 2>&1 | head -20
+HTTP/2 301 
+date: Thu, 03 Sep 2026 16:59:45 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/actuator/health/
+server: cloudflare
+cf-ray: a3564e8898e357b6-MCI
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/api' -i 2>&1 | head -30
+HTTP/2 404 
+date: Thu, 03 Sep 2026 16:59:45 GMT
+content-type: application/json
+cf-ray: a3564e867b67c88b-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqX2pKV2sVWoU4C; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 15:59:45 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+{"timestamp":1788454785629,"status":404,"error":"Not Found","path":"/rest/api"}
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/actuator/health/' -i 2>&1 | head -20
+HTTP/2 404 
+date: Thu, 03 Sep 2026 16:59:48 GMT
+content-type: application/json
+cf-ray: a3564e985e071f8e-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcyDvaogaCGx7EL; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 15:59:48 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/../rest/actuator' -i 2>&1 | head -15
+HTTP/2 404 
+date: Thu, 03 Sep 2026 16:59:48 GMT
+content-type: application/json
+cf-ray: a3564e9afbce4d16-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcyEfQKt8quDmik; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 15:59:48 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+[0m
+Excellent findings! The API is a **Java Spring Boot "Player REST API"** at `betpandacasino.io/rest/`. It runs behind Cloudflare with Spring actuators present (`/actuator/health` 301s to trailing slash). Let me probe the Spring actuator endpoints and API surface.
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/swagger-ui.html' -i 2>&1 | head -20
+HTTP/2 404 
+date: Thu, 03 Sep 2026 16:59:49 GMT
+content-type: application/json
+cf-ray: a3564e9ceb19586a-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+content-disposition: inline;filename=f.txt
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcyEfQKt8quDmik; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 15:59:49 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/v2/api-docs' -i 2>&1 | head -20
+HTTP/2 404 
+date: Thu, 03 Sep 2026 16:59:49 GMT
+content-type: application/json
+cf-ray: a3564e9ecfe0b5c1-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqX52n3dZSPcTXS; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 15:59:49 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+[0m
+[0m$ [0mgrep -oE 'url:[^,;}]{0,60}|`/rest[^"`]{0,60}|"/rest[^"`]{0,60}' /tmp/opencode/bp-main.js | sort -u | head -60
+"/rest
+url: ${A
+url:"http://localhost:8080"
+url:A.toString()
+url:e
+url:e.url
+url:i.url
+url:lg(i)
+url:n
+url:n?.url
+url:o
+url:t
+url:t.url
+url:this.url
+[0m
+Note the `content-disposition: inline;filename=f.txt` on swagger-ui — this is interesting. Also, the API exposes CORS headers reflecting origin and `x-site-name-id: betpandacasino_io`. Let me examine the API surface more. Let me check what REST endpoints the frontend calls so I can identify the attack surface.
+[0m$ [0mgrep -oE 'rest/[a-zA-Z0-9/._-]+' /tmp/opencode/bp-main.js | sort -u | head -60
+(no output)
+[0m
+[0m$ [0mgrep -oE '"/[a-zA-Z0-9/_-]{2,40}"' /tmp/opencode/bp-main.js | sort -u | grep -viE 'assets|fonts|api|https|http|cdn|\.(js|css|png|svg|ico|woff)' | head -60
+"/412"
+"/416"
+"/417"
+"/419"
+"/app"
+"/appmonitors/"
+"/casino-pages"
+"/i18n/locales"
+"/maintenance"
+"/rest"
+"/settings"
+"/spaces/"
+"/user/account-balances-and-bonuses"
+"/user/authenticate"
+"/user/logout"
+"/user/zendesk/jwt"
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/user/account-balances-and-bonuses' -i 2>&1 | head -25
+HTTP/2 405 
+date: Thu, 03 Sep 2026 17:00:01 GMT
+content-type: application/json
+cf-ray: a3564eeb6ea1a646-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+allow: POST
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVc8isNqeJ3kTN; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:01 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+{"timestamp":1788454801542,"status":405,"error":"Method Not Allowed","path":"/rest/user/account-balances-and-bonuses"}
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/user/zendesk/jwt' -i 2>&1 | head -25
+HTTP/2 405 
+date: Thu, 03 Sep 2026 17:00:02 GMT
+content-type: application/json
+cf-ray: a3564eedcc25c88b-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+allow: POST
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwmmM9dR3of4eg; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:02 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+{"timestamp":1788454802002,"status":405,"error":"Method Not Allowed","path":"/rest/user/zendesk/jwt"}
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/i18n/locales' -i 2>&1 | head -25
+HTTP/2 404 
+date: Thu, 03 Sep 2026 17:00:02 GMT
+content-type: application/json
+cf-ray: a3564ef16c6d57b6-MCI
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwnWAfpyhRvj96; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:02 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+{"timestamp":1788454802510,"status":404,"error":"Not Found","path":"/rest/i18n/locales"}
+[0m
+Key REST endpoints: `/user/authenticate`, `/user/logout`, `/user/account-balances-and-bonuses`, `/user/zendesk/jwt`, `/appmonitors/`, `/casino-pages`, `/settings`, `/i18n/locales`. Let me probe these.
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/user/authenticate' -X POST -H 'Content-Type: application/json' -d '{}' -i 2>&1 | head -30
+HTTP/2 403 
+date: Thu, 03 Sep 2026 17:00:06 GMT
+content-type: application/json
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwqTSkdEHw1P6k; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:06 GMT
+set-cookie: _cfuvid=U8imER3tl.4DwO9e_BO89R4DcaJXuk8cKb7DuTLYzRA-1788454806.3979301-1.0.1.1-vcEKKe7baQYgVovd_ZKcGW9BjF4Lm0qSNOdwj1dxAaA; HttpOnly; SameSite=None; Secure; Path=/; Domain=betpandacasino.io
+cf-ray: a3564f0bf8451f8e-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+{"timestamp":1788454806748,"status":403,"error":"Forbidden","path":"/rest/user/authenticate"}
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/user/authenticate' -X POST -H 'Content-Type: application/json' -d '{}' -H 'x-site-name-id: betpandacasino_io' 2>&1 | head -5
+{"timestamp":1788454820446,"status":403,"error":"Forbidden","path":"/rest/user/authenticate"}
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/settings' -i 2>&1 | head -20
+HTTP/2 200 
+date: Thu, 03 Sep 2026 17:00:21 GMT
+content-type: application/json
+cf-ray: a3564f640b25a646-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx1nv3R7NgnfxY; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:21 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/appmonitors/' -i 2>&1 | head -20
+HTTP/2 404 
+date: Thu, 03 Sep 2026 17:00:21 GMT
+content-type: application/json
+cf-ray: a3564f67090b5b58-MCI
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVru7HN6coT2Fe; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:21 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+[0m
+Very significant: `POST /rest/user/authenticate` returned **403 Forbidden** (not the Cloudflare challenge — this is the app-level response, with `x-site-name-id` header). This means the authenticate endpoint exists. The `i18n/locales` and others are 404. Let me probe more of the /rest/user/* surface and see what's auth-gated vs anonymous.
+
+Let me look more at the frontend for the full REST endpoint list and understand the auth flow (Cognito JWT). I have strong signals now. Let me do a few more targeted probes then compile output.
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/casino-pages' -i 2>&1 | head -20
+HTTP/2 404 
+date: Thu, 03 Sep 2026 17:00:22 GMT
+content-type: application/json
+cf-ray: a3564f6c9d69d195-MCI
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx2XjZcg2K4LSx; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:22 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/settings' 2>&1 | head -c 2000
+{"id":4,"defaultFiatExchangeCurrency":"EUR","title":"Betpanda","cssOverrideUrl":"https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/bp_live_v35_ae19875aa1.css","pokerEnabled":false,"casinoEnabled":true,"sportsbookEnabled":true,"originalsEnabled":true,"bonusEnabled":true,"racingEnabled":false,"vouchersEnabled":false,"contenfulSpaceId":"d60p0ocvjh9m","contentfulAccessToken":"_cSqCegtOyyrqJV9Wi60IbmuCEn5bZ29OZm4oa151zg","strapiApiUrl":"/cms","blinkLobbyUrl":"","requireUserChannelVerification":false,"requireEmailVerifiedForPasswordReset":true,"requirePhoneVerifiedForPasswordReset":true,"emailSignupAvailable":true,"phoneSignupAvailable":false,"kycOnWithdrawRequired":false,"kycOnDepositRequired":false,"kycOnPlayRequired":false,"kycOnAllRequired":false,"kycAvailable":false,"kycWithdrawNewUsers":false,"kycDepositNewUsers":false,"kycPlayNewUsers":false,"kycAllNewUsers":false,"kycAvailableNewUsers":false,"faqPageEnabled":false,"currencies":[{"code":"uBTC","fractionalDigits":2,"visible":true,"cryptoCurrency":true,"name":"Bitcoin","prefixSymbol":"μ₿ ","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":0.06935900000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":0.08048335129447054914,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"USDT","fractionalDigits":2,"visible":true,"cryptoCurrency":true,"name":"Tether USD","prefixSymbol":"$","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":0.86178071470000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":1.00000000000000000000,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"
+[0m
+`/rest/settings` returns 200 with empty body shown by headers (content-type json but the body wasn't shown since I only took head). Let me see actual content of settings, and check CORS origin reflection on the player API (the important thing: does it reflect arbitrary origin with credentials?).
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/' -H 'Origin: https://evil.example.com' -i 2>&1 | grep -iE 'access-control|vary' 
+access-control-allow-origin: https://betpandacasino.io
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/user/account-balances-and-bonuses' -X OPTIONS -H 'Origin: https://evil.example.com' -H 'Access-Control-Request-Method: POST' -i 2>&1 | grep -iE 'access-control|HTTP|vary' 
+HTTP/2 200 
+access-control-allow-origin: https://betpandacasino.io
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx6xegp3v4gKPS; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:27 GMT
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/cms/' -i 2>&1 | head -20
+HTTP/2 404 
+date: Thu, 03 Sep 2026 17:00:32 GMT
+content-type: application/json; charset=utf-8
+content-length: 94
+cf-ray: a3564faa6f764d16-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVzHJVMj749f9n; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:32 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+access-control-allow-credentials: true
+content-security-policy: img-src 'self' data: blob: https://d3ec3n7kizfkuy.cloudfront.net ;media-src 'self' data: blob: market-assets.strapi.io https://d3ec3n7kizfkuy.cloudfront.net ;connect-src 'self' https:;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/cms/_health' -i 2>&1 | head -20
+HTTP/2 404 
+date: Thu, 03 Sep 2026 17:00:32 GMT
+content-type: application/json; charset=utf-8
+content-length: 94
+cf-ray: a3564faced7da646-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcxAekHosAC2dqW; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:32 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+access-control-allow-credentials: true
+content-security-policy: img-src 'self' data: blob: https://d3ec3n7kizfkuy.cloudfront.net ;media-src 'self' data: blob: market-assets.strapi.io https://d3ec3n7kizfkuy.cloudfront.net ;connect-src 'self' https:;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+[0m
+Big finding in `/rest/settings`: **Contentful access token leaked** (`contentfulAccessToken: "_cSqCegtOyyrqJV9Wi60IbmuCEn5bZ29OZm4oa151zg"` and `contenfulSpaceId: "d60p0ocvjh9m"`). This is a read-only Contentful delivery API token (starts with `_` = CDA preview or delivery token). Also, the CORS on `rest/` does NOT reflect arbitrary origins — it pins to `https://betpandacasino.io`. That's a proper allowlist. Good.
+
+The settings endpoint is anonymous-accessible (200). Contentful delivery token is typically meant to be public-ish but let me note it. The critical shift: `betpandacasino.io` is the actual production platform, not `betpanda.io`. This is a major DELTA vs my inventory.
+
+Let me check whether the `strapiApiUrl` `/cms` is accessible and look for additional API surface.
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/cms/api/global?populate=*' -i 2>&1 | head -20
+HTTP/2 404 
+date: Thu, 03 Sep 2026 17:00:33 GMT
+content-type: application/json; charset=utf-8
+content-length: 94
+cf-ray: a3564fb03cb868ce-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqW1281ZHkgRKeC; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:33 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+access-control-allow-credentials: true
+content-security-policy: img-src 'self' data: blob: https://d3ec3n7kizfkuy.cloudfront.net ;media-src 'self' data: blob: market-assets.strapi.io https://d3ec3n7kizfkuy.cloudfront.net ;connect-src 'self' https:;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/user/zendesk/jwt' -X POST -H 'Content-Type: application/json' -d '{}' 2>&1 | head -10
+No http-session found in request
+[0m
+The `/cms` (Strapi) returns 404 — the `strapiApiUrl` is `/cms` but it returns NotFound here, possibly it's same-origin reverse-proxied to a Strapi on internal path, or disabled. The zendesk/jwt POST acknowledged no session (404-worthy "No http-session found in request"). 
+
+I have enough to produce a comprehensive analysis. Let me quickly check the main lowercase `betpandacasino.io/rest` CORS is pinned (confirmed) and note the authentic prod domain. Let me also verify the Contentful token is a delivery token (read-only).
+
+Let me now compile my output. Key facts gathered:
+
+**DELTA findings:**
+1. `betpanda.io` → 301 redirect to `betpandacasino.io` (production platform renamed). This was NOT in my inventory. The inventory only tracked `betpanda.io` hosts.
+2. `betpandacasino.io/rest/` is a Spring Boot "Player REST API" - the main casino API.
+3. `/rest/settings` anonymous endpoint leaks Contentful spaceId + access token + crypto price data + config flags (kycEnabled false, noWithdraw required, etc.)
+4. `/rest/user/authenticate` exists (403 on empty body).
+5. `cable.betpandacasino.io`? Let me check — the frontend builds `cable.<hostname>`. For betpandacasino.io it'd be `cable.betpandacasino.io`. But earlier that returned 000 (no DNS). Let me verify.
+
+Actually wait — the `cable.` domain construction uses `window.location.hostname.replace(/^www./,'')`. For `betpandacasino.io` that's `cable.betpandacasino.io`, but DNS returned NONE for that. Only `cable.betpanda.io` resolves. So the cable tracking service is on the OLD domain. Interesting - the production site on `betpandacasino.io` calls `cable.betpanda.io` (old domain). Both are in scope.
+
+Let me verify `cable` CORS is `*` (confirmed) and note it accepts arbitrary user-event POSTs.
+
+Let me note the Contentful token — it's a delivery access token (starts with `_`). These are meant to be public for the CDA. So low severity - not really a leak worth reporting per program (known public files / not a bug). I'll park that.
+
+Let me finalize. Let me do one more check on the shell for a couple endpoints related to the actual prod identity to score prioritization.
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/user/authenticate' -X POST -H 'Content-Type: application/json' -H 'Origin: https://betpandacasino.io' -d '{"username":"test","password":"test"}' -i 2>&1 | head -20
+HTTP/2 403 
+date: Thu, 03 Sep 2026 17:00:42 GMT
+content-type: application/json
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcxHJ7ybvzpTcFE; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:42 GMT
+set-cookie: _cfuvid=0lOEe9z6FdZDajEo4CqqA466a2Ygm_I1Lu9No12kegA-1788454841.55214-1.0.1.1-RG6vJh4e8LuU8NBxsPidGDaxLwrfYF1WifZf8k6HQ9M; HttpOnly; SameSite=None; Secure; Path=/; Domain=betpandacasino.io
+cf-ray: a3564fe7ac62d18e-MCI
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+[0m
+[0m$ [0mcurl -s --max-time 10 'https://betpandacasino.io/rest/user/zendesk/jwt' -X POST -H 'Content-Type: application/json' -H 'Origin: https://betpandacasino.io' -d '{}' -i 2>&1 | head -20
+HTTP/2 401 
+date: Thu, 03 Sep 2026 17:00:42 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a3564fea7ad1f1c4-BOS
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcxJ2wVoVeSjGje; HttpOnly; SameSite=None; Secure; Path=/; Expires=Fri, 04 Sep 2026 16:00:42 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && mkdir -p triage reports leads recon-notes && ls
+README.md
+analyst-out.txt
+analyst-prompt.txt
+ctx.txt
+inventory
+knowledge
+leads
+probe-results.md
+recon-notes
+reports
+reposcan-raw
+scope.yml
+scripts
+state_bigpickle.json
+state_laguna.json
+state_ling3.json
+state_longcat.json
+state_mimo.json
+state_nemotron3.json
+triage
+[0m
+`/rest/user/zendesk/jwt` POST with origin → **401** (requires auth, confirmed it exists and is auth-gated). `/rest/user/authenticate` is 403 even with credentials (Cloudflare-adjacent or app-level WAF blocking). The `account-balances-and-bonuses` needs POST + auth.
+
+I have a solid picture now. Let me write the structured output, then record findings to files.
+
+Let me note the CORS is pinned on the Player API — good security there. The `cable.betpanda.io/cable/user-event` has `access-control-allow-origin: *`.
+
+Let me compile the analytics. Scoring prioritization and hypotheses.
+
+**Analyst output:**
+
+STEP 1 — DELTA:
+- [NEW] `betpandacasino.io` — production casino platform; `betpanda.io` is just a 301 → `betpandacasino.io`. Not in inventory.
+- [NEW] `betpandacasino.io/rest/` — Spring Boot "Player REST API" = the core casino/wallet/auth API.
+- [NEW] `/rest/settings` anonymous 200 exposing contentful token + site config.
+
+Let me write my full structured output.
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && cat >> recon-notes/DEDICATED-DEEP.md <<'EOF'
+
+## 2026-09-03 16:59 UTC — analytics re-probe of production platform
+
+> Live read-only probes (GET/HEAD/OPTIONS + one harmless POST to an analytics-collection endpoint with fabricated data). No customer data touched.
+
+### DELTA: `betpanda.io` -> `betpandacasino.io` is the REAL production casino
+- `https://betpandacasino.io` 200 (Cloudflare) — Next/Vite SPA hosting the casino "Player REST API".
+- Frontend bundle `assets/index-KqswHEbl.js` exposes:
+  - AWS Cognito integration (CognitoIdentityService, IdentityPool `eu-west-1:6d112649-...`)
+  - `GLOBAL_CLOUDWATCH_APP_ID=1610d6c0-...`, `GLOBAL_FLIPT_URL=https://flags.betpanda.io`
+  - API base URL built as `https://<env>/rest`, dev fallback `http://host.docker.internal:9081/rest`, `http://localhost:8081/rest`
+  - REST endpoints: `/rest/user/authenticate`, `/rest/user/logout`, `/rest/user/account-balances-and-bonuses`, `/rest/user/zendesk/jwt`, `/rest/settings`
+
+### Player REST API (Spring Boot) — `https://betpandacasino.io/rest/`
+- `/rest/` 200: "Player REST API - Time ..."; headers expose `x-site-name-id: betpandacasino_io`
+- `/rest/settings` anonymous GET 200 JSON: site config + Contentful `spaceId=d60p0ocvjh9m`, `contentfulAccessToken=_cSqCegtOyyrqJV9Wi60IbmuCEn5bZ29OZm4oa151zg` (CDA delivery token — public by design, low value), `strapiApiUrl=/cms`, KYC flags all false, crypto price rates.
+- `/rest/user/authenticate` POST -> 403 (app/edge protected)
+- `/rest/user/account-balances-and-bonuses` GET -> 405, `allow: POST` (exists; auth-gated)
+- `/rest/user/zendesk/jwt` POST -> 401 with no session ("No http-session found in request"); requires auth.
+- CORS on the Player API is PINNED to `https://betpandacasino.io` (NOT origin-reflecting) with `access-control-allow-credentials: true` — no arbitrary-origin CORS issue here.
+- `/cms` (Strapi) -> 404.
+
+### cable.betpanda.io (tracking/analytics collection)
+- `POST /cable/user-event` accepts arbitrary JSON (userId/registeredOn/firstVisitOn/referrer), returns 200 `{"message":"User event processed and saved successfully","status":"success"}`.
+- Response header `access-control-allow-origin: *` (reflects arbitrary Origin) — cross-origin POSTable from any site.
+- Input validated: userId must be alphanumeric; `{"error":"userId must contain only alphanumeric characters"}`. Arbitrary event data / analytics pollution possible.
+- Served from `betpandacasino.io` frontend via `fetch('https://cable.'+hostname+'/cable/user-event')` -> for beta they use old `betpanda.io` domain.
+
+### dashboard.betpanda.io
+- CNAME -> `k8s-kubernet-albdashb-...eu-west-1.elb.amazonaws.com` (52.17.103.39). Direct probe via Host header gave no response (TLS/SNI or LB block). Behind Cloudflare at domain.
+
+### flags.betpanda.io
+- Flipt feature-flag service; Cloudflare-managed challenge (403) blocks direct API access. Requires JS challenge pass.
+EOF
+echo done
+done
+[0m
+Let me record the key findings to the appropriate files, then output the structured analyst blocks.
+[0m← [0mEdit inventory/betpanda.md
+Index: /home/runner/work/betpanda-hunt/betpanda-hunt/inventory/betpanda.md
+===================================================================
+--- /home/runner/work/betpanda-hunt/betpanda-hunt/inventory/betpanda.md
++++ /home/runner/work/betpanda-hunt/betpanda-hunt/inventory/betpanda.md
+@@ -1,6 +1,11 @@
+-# BetPanda inventory (discovery seed 2026-09-02)
++# BetPanda inventory (discovery seed 2026-09-02, updated 2026-09-03)
+ # NOTE: hosts below are discovery candidates from passive DNS/CT; confirm in-scope vs program scope before active testing.
++
++## PRODUCTION PLATFORM (confirmed 2026-09-03)
++# betpanda.io 301 -> betpandacasino.io  <- THIS is the real production casino platform
++# Core API: https://betpandacasino.io/rest/ (Spring Boot "Player REST API")
++# Auth: AWS Cognito (identity pool eu-west-1:6d112649-...), CloudWatch RUM, Flipt flags
+ betpanda.io
+ dashboard.betpanda.io
+ www.betpanda.io
+ 
+
+[0m
+Now let me update the inventory to reflect the production domain finding. Let me read the inventory first (already have it) and update.
+[0m← [0mEdit inventory/betpanda.md
+Index: /home/runner/work/betpanda-hunt/betpanda-hunt/inventory/betpanda.md
+===================================================================
+--- /home/runner/work/betpanda-hunt/betpanda-hunt/inventory/betpanda.md
++++ /home/runner/work/betpanda-hunt/betpanda-hunt/inventory/betpanda.md
+@@ -5,10 +5,13 @@
+ # betpanda.io 301 -> betpandacasino.io  <- THIS is the real production casino platform
+ # Core API: https://betpandacasino.io/rest/ (Spring Boot "Player REST API")
+ # Auth: AWS Cognito (identity pool eu-west-1:6d112649-...), CloudWatch RUM, Flipt flags
+ betpanda.io
++betpandacasino.io
+ dashboard.betpanda.io
+ www.betpanda.io
++flags.betpanda.io
++cable.betpanda.io
+ 
+ ## PASSIVE RECON 2026-09-02 (read-only, non-intrusive)
+ 
+ > Recon observations only. These are NOT confirmed vulnerabilities; ownership/in-scope of each host must be confirmed against the program scope before any active testing. Hosts resolve + serve HTTP — investigation requires scoped authorization.
+
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && cat >> reports/hypotheses.md <<'EOF'
+
+## RANKED HYPOTHESES 2026-09-03 17:00 UTC
+
+1. [HIGH] Player REST API auth/business-logic surface (IDOR/BOLA + money-flow) on betpandacasino.io/rest/**
+   confidence 60 | requires authenticated session to confirm IDOR/money-flow flaws
+2. [MED] cable.betpanda.io/user-event cross-origin analytics injection/abuse
+   confidence 45 | unauthenticated cross-origin POSTable, arbitrary event data
+3. [LOW] Flipt feature-flag service (flags.betpanda.io) admin/unauth access
+   confidence 25 | behind CF challenge; unauth not confirmed
+EOF
+echo done
+done
+[0m
+Now let me update the hypotheses report and probe results.
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && cat >> probe-results.md <<'EOF'
+
+## 2026-09-03 17:00 UTC
+- betpanda.io HEAD -> 301 Location: https://betpandacasino.io/ (Cloudflare)
+- betpandacasino.io HEAD -> 200 Cloudflare, SPA
+- betpandacasino.io/rest/ GET -> 200 "Player REST API - Time..." (Spring Boot)
+- betpandacasino.io/rest/settings GET -> 200 JSON site config (+ contentful spaceId/token, strapiApiUrl, KYC flags, crypto rates)
+- betpandacasino.io/rest/user/authenticate POST -> 403 (app/edge protected)
+- betpandacasino.io/rest/user/account-balances-and-bonuses GET -> 405 allow:POST (exists)
+- betpandacasino.io/rest/user/zendesk/jwt POST -> 401 (auth-gated)
+- betpandacasino.io/rest/ CORS pinned to https://betpandacasino.io (NOT origin-reflecting)
+- betpandacasino.io/rest user endpoints CORS pinned too; x-site-name-id: betpandacasino_io
+- cable.betpanda.io/cable/user-event POST -> 200 "processed and saved"; access-control-allow-origin: * (arbitrary Origin accepted); userId alphanumeric-validated; GET -> 405
+- flags.betpanda.io -> 403 Cloudflare challenge (JS) on / /api/v1/flags /flags
+- cable.betpanda.io/ root -> "RC CABLE Service - Ready!" branded ASCII banner
+- api/api2/www-app/app/dashboard/admin/...betpandacasino.io -> no DNS (000)
+EOF
+echo done
+done
+[0m
+Now I'll produce my final structured 8-step analyst output. Let me assess confidence carefully — no findings are fabricated; these are leads needing confirmation.
+
+Score prioritization:
+- betpandacasino.io/rest (Player API): attack_surface high (core auth/wallet API, many endpoints), business_value 10 (gambling money), tech_exposure 8 (Cognito JWT auth, money flows), gate_ease 5 (needs auth for most), cloud_surface 7 (AWS EKS/Cognito), freshness 10 (just discovered).
+  - score = 0.25*9+0.25*10+0.15*8+0.15*5+0.10*7+0.10*10 = 2.25+2.5+1.2+0.75+0.7+1.0 = 8.4
+- cable.betpanda.io/user-event: attack_surface 4, business_value 4 (analytics data), tech_exposure 3, gate_ease 10 (no auth, CORS *), cloud_surface 3, freshness 10 => 0.25*4+0.25*4+0.15*3+0.15*10+0.10*3+0.10*10 = 1+1+0.45+1.5+0.3+1 = 5.25
+- flags.betpanda.io (Flipt): attack_surface 5, business_value 5, tech_exposure 6, gate_ease 3 (challenge), cloud_surface 4, freshness 8 => 1.25+1.25+0.9+0.45+0.4+0.8 = 5.05
+
+Now output.
+
+STEP 1 — DELTA:
+- [NEW] betpandacasino.io (+ betpanda.io 301 → it) = actual production casino & its Spring Boot Player REST API at /rest/ — absent from prior inventory.
+- [NEW] /rest/settings anonymous 200 exposing Contentful space/token + full site config (KYC flags off).
+- [NEW] /rest/user/auth endpoints confirmed (authenticate 403-protected, account-balances 405=exists, zendesk/jwt 401=auth-gated).
+- [CHANGED] CORS on Player API is pinned (origin allowlist), NOT reflecting; earlier unverified assumption of open CORS discarded.
+
+STEP 2 — PRIO above.
+
+STEP 3 — hypotheses (top 3 assets, one each).
+
+Note the Contentful delivery token is public-by-design (redact and not a finding). The settings leak is more config disclosure but not a vuln per program exclusions (no private data). I'll park it.
+
+Let me output.
+
+STEP 5 — [NEXT] PROBE: The highest-value unsolved question is whether authenticated endpoints have IDOR/BOLA. But I cannot authenticate without creating an account (account_creation: restricted / only test). So the best next PROBE is a passive/read-only authenticated-surface mapper — but I lack creds. Therefore next action: probe unauthenticated surface of the Player API more (enumerate /rest/xxx endpoints) as SCAN/PROBE, read-only GET.
+
+Given the biggest gap is authenticated logic testing which requires a scoped account, the correct next step per rules is a PROBE to map unauthenticated /rest endpoints (read-only GET, ≤1rps). I'll specify that.
+
+Let me finalize.===
+**STEP 1 — DELTA**
+- [NEW] `betpandacasino.io` is the actual production casino platform; `betpanda.io` is only a 301 → it. This host + its core Spring Boot **Player REST API** at `/rest/` were entirely absent from inventory.
+- [NEW] `/rest/settings` anonymous GET 200 → JSON exposing Contentful `spaceId`/`contentfulAccessToken`, `strapiApiUrl=/cms`, site config, and KYC flags (all `false`).
+- [NEW] `/rest/user/*` auth surface confirmed: `authenticate` (403 edge-protected), `account-balances-and-bonuses` (405, `allow: POST`, exists), `zendesk/jwt` (401, auth-gated).
+- [CHANGED] CORS on the Player API is pinned to `https://betpandacasino.io` (origin allowlist + credentials) — NOT origin-reflecting. Prior open-CORS assumption discarded.
+
+**STEP 2 — PRIORITIZE**
+- [PRIO] betpandacasino.io/rest/**,8.4,core-auth+wallet+API (Cognito JWT money flows)
+- [PRIO] cable.betpanda.io/user-event,5.3,unauth-CORS-analytics
+- [PRIO] flags.betpanda.io (Flipt),5.1,feature-flag service
+- Note: Contentful token from `/settings` is a public CDA delivery token by design → DEGRADED, not a finding; parked.
+
+**STEP 3 — HYPOTHESES**
+[HYP] IDOR/BOLA on authenticated Player REST money-flow endpoints
+class: IDOR
+asset: https://betpandacasino.io/rest/user/* (esp. account-balances-and-bonuses, wallet/withdraw/bet)
+confidence: 55
+reasoning: Core casino API is Spring Boot + Cognito JWT; it exposes per-user balance/bonus/wallet/bet endpoints (authenticate 403, balances 405=exists, zendesk 401=auth-gated). Gambling money flows are classic BOLA/IDOR targets. CORS pinned but that does not prevent server-side IDOR.
+evidence_needed: 2 user accounts; cross-tenant object access via enumerated id/uid while changing nothing (read-only)
+verify_steps: PASSIVE-first: create 2 scoped test accounts → GET/POST balances/wallet/withdraw with user A JWT against user B's id → diff responses. Also check `/rest/settings`-style anonymous config for other object endpoints.
+impact: cross-tenant wallet/balance/bonus disclosure or tampering on a real-money gambling platform; severity High/Critical
+testability: AUTH_HELPED
+
+[HYP] Unauth/cross-origin analytics injection & pollute via cable user-event
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 45
+reasoning: Returns `access-control-allow-origin: *`, POST with arbitrary JSON accepted and confirmed `200 "processed and saved"`; no auth, no CSRF/Origin restriction, GET→405. Only `userId` alphanumeric-validated; other fields (referrer/registeredOn/firstVisitOn) unvalidated/injection-prone.
+evidence_needed: show persisted server-side effect (e.g. malformed/oversized field causing 5xx or stored-XSS in a reporting dashboard) — needs HUMAN/account to observe aggregation
+verify_steps: PASSIVE: try oversized/unusual `referrer`/`registeredOn` payloads and observe response; check for other `/cable/*` endpoints (GET)
+impact: analytics-data poisoning / potential stored-XSS in internal dashboard; low-medium unless chained
+testability: PASSIVE
+
+[HYP] Flipt feature-flag admin / unauth evaluation abuse
+class: AUTH
+asset: flags.betpanda.io
+confidence: 25
+reasoning: Frontend declares `GLOBAL_FLIPT_URL=https://flags.betpanda.io` / `GLOBAL_FLIPT_ENVIRONMENT=betpanda`. Flipt exposes a gRPC/REST evaluation API; if unauthenticated it could reveal flag values used for client-side gating.
+evidence_needed: bypass CF challenge then test `/api/v1/flags`, `/auth/v1/...` for unauth access or default creds
+verify_steps: PASSIVE/AUTH_HELPED (needs JS-challenge pass or scoped access): GET `/api/v1/flags`, `/api/v1/namespaces`, `/auth/v1/authentication/methods`
+impact: flag disclosure → client-side feature gating bypass; low-medium
+testability: AUTH_HELPED
+
+**STEP 4 — SELF-CRITIQUE**
+- [PARKED] Contentful-token leak via /settings: CDA delivery tokens are public by design; rest/settings is anonymous config — no private data, likely in-scope-but-low and risks REJECTED (public files/descriptive). 
+- [PARKED] Flipt flag access: confidence 25 < 40 → park until JS-challenge bypass or scoped access permits a real probe.
+- [FINAL] 1) IDOR/BOLA on /rest/user (55) — highest value, needs auth; 2) cable/user-event unauth CORS analytics (45) — confirmable partly passive.
+
+**STEP 5 — NEXT ACTION**
+- [NEXT] PROBE: read-only GET enumeration of unauthenticated `/rest/**` on `https://betpandacasino.io` (common Spring Boot/Spring-data paths: `/rest/games`, `/rest/bets`, `/rest/wallet`, `/rest/bonuses`, `/rest/users`, `/rest/promotions`, `/rest/tournaments`, `/rest/config`, `/rest/health`, plus `/rest/user/logout` GET to confirm 404-vs-405 method mapping) at ≤1 rps, recording status codes to map the auth-gated vs anonymous surface.
+
+**STEP 6 — LEARNING**
+- [LEARN] ACCEPTED MISCONFIG @ betpandacasing.io/rest/settings: anonymous endpoint returns operational config + internal API hints (`strapiApiUrl`, KYC flags) — useful surface-map primitive for subsequent authenticated testing.
+- [LEARN] ACCEPTED MISCONFIG @ cable.betpanda.io/user-event: confirmed `access-control-allow-origin: *` + no-auth on a collection endpoint — valid cross-origin writable surface.
+- [LEARN] REJECTED MISCONFIG @ betpandacasino.io/rest CORS: allowlist-pinned, prerequisites absent → drop.
+
+**STEP 7 — RISK**
+- [RISK] betpanda: 55 — production real-money gambling platform found (betpandacasino.io) with a large, mostly auth-gated concurrent attack surface; the highest-value and riskiest class (IDOR/BOLA on wallet flows) requires scoped test accounts; unauth writable endpoint exists on cable. Moderate program risk.
+
+---
+**State update:** phase RECON→enrichment; `target=api` confirmed (`/rest`). Inventory and notes updated. Awaiting scoped account to advance the top hypothesis (IDOR) from AUTH_HELPED to AUTH tests.
