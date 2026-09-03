@@ -31,3 +31,12 @@ https://cable.betpanda.io/cable/ -> HTTP 404
 https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 -> 200 len=?
 https://affiliates.betpanda.io/rest/user -> HTTP 401
 https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+
+## 2026-09-03 22:26:41 UTC
+https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 -> 200 len=?
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=<captured>&scope=openid&state=random123` -> 200 len=?
+https://affiliates.betpanda.io/rest/user/players` -> HTTP 400
+https://affiliates.betpanda.io/rest/player/uid/{victim_uid -> HTTP 400
+https://betpanda.io/api/auth/authorize?response_type=code&client_id=<captured>&scope=openid` -> 200 len=?
+https://betpanda.io/api/auth/authorize?response_type=code&client_id=test&scope=openid&state=test123&redirect_uri=https://httpbin.org/get` -> 200 len=?

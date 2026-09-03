@@ -9,3 +9,7 @@
 - 2026-09-03 ACCEPTED OAUTH @ betpanda.io: /api/auth/authorize accepts arbitrary redirect_uri (200 response) — high-confidence passive signal
 - 2026-09-03 ACCEPTED IDOR @ betpandacasino.io: Money-flow REST endpoints confirmed (403/405 responses) — Spring Boot + Cognito JWT, critical business value
 - 2026-09-03 ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
+- 2026-09-03 REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB (all probes timeout). ALB likely internal or auth-gated.
+- 2026-09-03 ACCEPTED OAUTH @ betpanda.io: /api/auth/authorize accepts arbitrary redirect_uri (200 response). High-confidence passive signal for redirect_uri bypass.
+- 2026-09-03 ACCEPTED IDOR @ betpandacasino.io: Money-flow REST endpoints confirmed (403/405 responses). Spring Boot + Cognito JWT, critical business value.
+- 2026-09-03 ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed. Injection surface validated.

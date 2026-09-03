@@ -73,3 +73,47 @@ testability: AUTH_HELPED
 [LEARN] REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML (catch-all route). Spring Boot actuator is NOT exposed.
 [LEARN] REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks all passive probes. Cannot assess without solving challenge.
 [RISK] BetPanda: 35 — Scoped assets are behind Cloudflare; main casino API has proper CORS + Cognito JWT (server-side auth enforcement likely strong). The affiliates CORS misconfiguration is the highest-probability finding but requires authenticated affiliate session. No evidence of SSRF-to-metadata or admin panel exposure. Moderate cloud surface (AWS ELB for k8s dashboard, Cloudflare everywhere).
+## 2026-09-03 22:20:38 UTC [target] (model bigpickle)
+[PRIO] affiliates.betpanda.io/rest/*,6.75,a7/b8/t5/g7/c6/f8
+[PRIO] betpanda.io/api/auth/*,6.35,a8/b8/t7/g3/c5/f5
+[PRIO] betpandacasino.io/rest/user/*,6.30,a7/b9/t6/g4/c5/f6
+[PRIO] cable.betpanda.io/cable/*,5.40,a5/b4/t3/g9/c6/f7
+[HYP] OAuth redirect_uri validation bypass on betpanda.io authorisation endpoint enables auth code theft via open redirect
+class: OAUTH
+asset: betpanda.io/api/auth/authorize
+confidence: 72
+reasoning: Prior ACCEPTED OAUTH finding confirmed /api/auth/authorize accepts arbitrary redirect_uri with 200 response. High business-value auth endpoint. If redirect_uri is not validated server-side before code issuance (vs only at consent), attacker-controlled URI receives the authorization code. Combined with the casino's Cognito JWT backend, this could allow account takeover if the code can be exchanged for tokens at the IdP without proper redirect_uri check at token exchange. Even partial bypass (code issued to attacker URI, exchange fails) leaks code to attacker's server logs.
+evidence_needed: (1) POST token exchange with attacker-controlled redirect_uri + received code; (2) Verify whether Cognito checks redirect_uri at token exchange; (3) Check if state parameter is validated
+verify_steps: PASSIVE: GET `https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=<captured>&scope=openid&state=random123` — confirm 200 + code in redirect; check response headers for token exchange endpoint discovery
+impact: Authorization code theft → potential ATO on real-money gambling accounts; High/Critical severity
+testability: AUTH_HELPED
+[HYP] IDOR on affiliate player lookup by UID exposes cross-affiliate player data
+class: IDOR
+asset: affiliates.betpanda.io/rest/player/uid/{id}
+confidence: 70
+reasoning: Affiliates REST API has `/rest/player/uid/{id}?currency=` endpoint accepting player UIDs. Wildcard CORS means attacker page can call this with victim's cookies. Server-side may not enforce that the looked-up player belongs to the authenticated affiliate — classic BOLA. Player UIDs may be sequential/enumeralble from the `/rest/user/players` response.
+evidence_needed: (1) Authenticated session with two affiliate accounts; (2) Lookup player UID from account A while authenticated as account B; (3) Confirm data returned (PII, balances)
+verify_steps: AUTH_HELPED: POST `https://affiliates.betpanda.io/rest/user/players` with session cookies → extract player UIDs → GET `https://affiliates.betpanda.io/rest/player/uid/{victim_uid}?currency=BTC` with attacker affiliate session cookies
+impact: Cross-tenant player PII + financial data disclosure on gambling platform; High severity
+testability: AUTH_HELPED
+[HYP] OAuth state parameter missing or not validated enables CSRF-based account linking
+class: AUTH
+asset: betpanda.io/api/auth/authorize
+confidence: 55
+reasoning: If the authorization flow does not validate the `state` parameter or allows login without it, an attacker can craft an authorize URL, victim completes login, and the attacker's session receives the code (combined with redirect_uri bypass). This is a prerequisite for the OAuth finding above. The /authorize endpoint returning 200 to arbitrary params suggests minimal server-side validation.
+evidence_needed: (1) Check if state parameter is present in authorize URL from normal flow; (2) Attempt authorize without state parameter; (3) Verify session binding
+verify_steps: PASSIVE: GET `https://betpanda.io/api/auth/authorize?response_type=code&client_id=<captured>&scope=openid` (no state) — check if 200 + code issued without state
+impact: CSRF-based session fixation / account takeover chain component; Medium severity alone, Critical when chained with redirect_uri bypass
+testability: PASSIVE
+[FINAL] Survivors ranked:
+[NEXT] PROBE: GET `https://betpanda.io/api/auth/authorize?response_type=code&client_id=test&scope=openid&state=test123&redirect_uri=https://httpbin.org/get` — passive, read-only. Observe: (1) status code, (2) whether a code is returned in redirect or response body, (3) whether redirect_uri is reflected in response headers/body, (4) any error about invalid client_id revealing endpoint behavior. Also GET without state param to test state requirement.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 10+ authenticated endpoints discovered from JS bundle including player PII, transactions, account settings, and payout config. Verified via live OPTIONS+GET probes.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances, 401 settings); CORS properly pinned reduces cross-origin attack vector but does not prevent same-origin IDOR.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io CORS: CORS correctly restricts to own origin + credentials; OPTIONS from evil.com does NOT reflect origin. Not a finding.
+[LEARN] REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML (catch-all route). Spring Boot actuator is NOT exposed.
+[LEARN] REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks all passive probes. Cannot assess without solving challenge.
+[LEARN] REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB (all probes timeout). ALB likely internal or auth-gated.
+[LEARN] ACCEPTED OAUTH @ betpanda.io: /api/auth/authorize accepts arbitrary redirect_uri (200 response). High-confidence passive signal for redirect_uri bypass.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io: Money-flow REST endpoints confirmed (403/405 responses). Spring Boot + Cognito JWT, critical business value.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed. Injection surface validated.
+[RISK] BetPanda: 35 — Highest-probability finding (affiliates CORS) is ACCEPTED but needs authenticated session to demonstrate impact. Main casino API has proper CORS + Cognito JWT (server-side auth likely strong). OAuth finding on betpanda.io is promising but Cloudflare challenges many paths. flags.betpanda.io completely blocked by CF. No evidence of SSRF-to-metadata, admin panels, or file upload surfaces discovered. Cloud surface moderate (AWS ELB, Cloudflare CDN).

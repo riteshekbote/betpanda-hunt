@@ -44,3 +44,17 @@ www.betpanda.io
 - CHANGED `betpandacasino.io/rest/user/account-balances-and-bonuses` confirmed POST-only (405 GET); `/rest/user/settings` 401; CORS properly pinned to own origin + credentials
 - CHANGED `cable.betpanda.io/cable/user-event` confirmed POST-only, root returns "Cable Service - Ready!"; no new endpoints
 - CHANGED `fp.betpanda.io`, `custom-lp.betpanda.io`, `flags.betpanda.io`, `www.betpanda.io` all Cloudflare JS-challenged (403 cf-mitigated) — cannot probe passively
+
+## 2026-09-03 22:26:28 UTC
+- NEW affiliates.betpanda.io — dedicated host (HTTP 200), separate Spring Boot backend, wildcard CORS + credentials reflected from any origin, 10+ authenticated REST endpoints discovered from JS bundle (/re
+- NEW cable.betpanda.io — dedicated host (HTTP 200), unauthenticated event ingestion endpoint /cable/user-event accepts arbitrary JSON with `access-control-allow-origin: *`, returns 200 "processed and saved
+- NEW custom-lp.betpanda.io — dedicated host (HTTP 403), Cloudflare JS challenge blocks passive probes
+- NEW fp.betpanda.io — dedicated host (HTTP 403), Cloudflare JS challenge blocks passive probes
+- NEW betpandacasino.io — major betting platform (not in initial inventory), Spring Boot + Cognito JWT API at /rest/user/*, money-flow endpoints confirmed (balances POST-only 405, settings 401, wallet/withd
+- CHANGED betpandacasino.io/rest/user/account-balances-and-bonuses — confirmed POST-only (405 GET), endpoint exists
+- CHANGED betpandacasino.io/rest/user/settings — returns 401 (auth required)
+- CHANGED betpandacasino.io/actuator/* — all paths redirect 301→trailing-slash but serve SPA HTML (catch-all route), Spring Boot actuator NOT exposed
+- CHANGED cable.betpanda.io/cable/user-event — confirmed POST-only, root returns "Cable Service - Ready!", no additional endpoints discovered
+- CHANGED dashboard.betpanda.io — k8s dashboard NOT exposed on ALB (all probes timeout), ALB likely internal or auth-gated
+- CHANGED flags.betpanda.io, www.betpanda.io, custom-lp.betpanda.io, fp.betpanda.io — all Cloudflare JS-challenged (403 cf-mitigated), cannot probe passively
+- CHANGED betpanda.io/api/auth/authorize — accepts arbitrary redirect_uri (200 response), high-confidence passive signal for OAuth redirect_uri validation bypass
