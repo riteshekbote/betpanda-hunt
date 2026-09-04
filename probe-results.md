@@ -55,3 +55,7 @@ https://affiliates.betpanda.io/rest/player/uid/{victim_uid -> HTTP 400
 https://affiliates.betpanda.io/rest/user/players -> HTTP 405
 https://affiliates.betpanda.io/rest/player/uid/{victim_uid -> HTTP 400
 https://cable.betpanda.io/cable/user-event -> HTTP 405
+
+## 2026-09-04 13:57:19 UTC
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405

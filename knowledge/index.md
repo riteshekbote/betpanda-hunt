@@ -34,3 +34,14 @@
 - 2026-09-04 ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated.
 - 2026-09-04 NEW ASSET @ betpandacasino.io/rest/properties/manifest: Real PWA manifest endpoint (JSON, 200). Cross-origin assets from nano-public.s3.eu-west-1.amazonaws.com.
 - 2026-09-04 REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, not a real OAuth endpoint.
+- 2026-09-04 REJECTED S3 BUCKET LISTING @ nano-public.s3.eu-west-1.amazonaws.com: Bucket listing disabled (AccessDenied on ?list-type=2 and ?prefix=operators/). Individual objects accessible but no enumeration.
+- 2026-09-04 NEW ENDPOINT @ betpandacasino.io/rest/user/authenticate: Real Spring Boot endpoint (403 JSON, not SPA catch-all). Returns 403 with dummy creds. Likely requires CAPTCHA token (x-captcha-token in CORS allow-headers).
+- 2026-09-04 AUTH MODEL @ betpandacasino.io: REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout. SameSite=Lax limits cross-origin cookie sending.
+- 2026-09-04 NEW ENDPOINTS @ affiliates.betpanda.io: JS reveals /agent/set-deposit-withdraw-limit (POST, financial), /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates. Expands attack surface beyond previously known endpoints.
+- 2026-09-04 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 20+ authenticated REST endpoints. Strongest finding, needs auth for POC.
+- 2026-09-04 ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed; CORS properly pinned reduces cross-origin attack vector.
+- 2026-09-04 REJECTED MISCONFIG @ nano-public.s3.eu-west-1.amazonaws.com: S3 bucket listing returns 403 Forbidden; no enumeration possible
+- 2026-09-04 REJECTED SSRF @ betpandacasino.io/rest/properties/manifest: Manifest is static JSON with hardcoded S3 URLs; no user-controllable parameters for URL manipulation
+- 2026-09-04 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials confirmed via live OPTIONS probe reflecting arbitrary Origin with ACAC: true
+- 2026-09-04 ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances 405, settings 401); CORS pinned but server-side authZ unverified
+- 2026-09-04 REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io SPA catch-all; no server-side OAuth endpoint exists
