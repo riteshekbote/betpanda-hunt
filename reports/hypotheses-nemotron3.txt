@@ -1,7 +1,4 @@
-## 2026-09-04 17:27:57 UTC [target] (model nemotron3)
-[NEW] nano-public.s3.eu-west-1.amazonaws.com — S3 bucket listing returns 403 Forbidden (no enumeration)
-[CHANGED] betpandacasino.io/rest/properties/manifest — Static PWA manifest with hardcoded S3 asset URLs; no query params for URL manipulation
-[CHANGED] affiliates.betpanda.io/config/config.json — Only contains baseUrl (no strapiApiUrlOverride in config; override via localStorage only)
+## 2026-09-04 19:59:49 UTC [target] (model nemotron3)
 [PRIO] affiliates.betpanda.io/rest/*,8.30,attack_surface=9,business_value=9,tech_exposure=8,gate_ease=8,cloud_surface=7,freshness=7
 [PRIO] betpandacasino.io/rest/user/*,8.35,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=7
 [PRIO] cable.betpanda.io/cable/user-event,7.05,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=9,cloud_surface=5,freshness=7
@@ -39,7 +36,7 @@ testability: PASSIVE
 [FINAL] 1. Wildcard CORS + Credentials Enables Cross-Origin Account Takeover (affiliates.betpanda.io, 90)
 [FINAL] 2. BOLA/IDOR on Player Wallet & Balance Endpoints (betpandacasino.io, 80)
 [FINAL] 3. Unauthenticated Event Injection with Reflected Input (cable.betpanda.io, 75)
-[NEXT] PROBE: GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_affiliate_session>" (auth-helped, credentialed cross-origin request to confirm data exfiltration on strongest finding)
+[NEXT] HUMAN: Login to affiliates.betpanda.io and capture session cookies + Set-Cookie headers. This is the only way to complete the CORS+credentials POC for the top finding (auth-helped probe requires valid affiliate session).
 [LEARN] REJECTED MISCONFIG @ nano-public.s3.eu-west-1.amazonaws.com: S3 bucket listing returns 403 Forbidden; no enumeration possible
 [LEARN] REJECTED SSRF @ betpandacasino.io/rest/properties/manifest: Manifest is static JSON with hardcoded S3 URLs; no user-controllable parameters for URL manipulation
 [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials confirmed via live OPTIONS probe reflecting arbitrary Origin with ACAC: true

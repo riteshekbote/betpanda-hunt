@@ -80,3 +80,28 @@ www.betpanda.io
 - NEW nano-public.s3.eu-west-1.amazonaws.com — S3 bucket listing returns 403 Forbidden (no enumeration)
 - CHANGED betpandacasino.io/rest/properties/manifest — Static PWA manifest with hardcoded S3 asset URLs; no query params for URL manipulation
 - CHANGED affiliates.betpanda.io/config/config.json — Only contains baseUrl (no strapiApiUrlOverride in config; override via localStorage only)
+
+## 2026-09-04 20:00:07 UTC
+- NEW `affiliates.betpanda.io/rest/*` — separate Spring Boot backend, CORS reflects **any origin + credentials**, endpoints discovered from JS bundle
+- NEW Affiliates JS endpoints: `/rest/user`, `/rest/user/players`, `/rest/player/uid/{id}?currency=`, `/rest/transaction/list`, `/rest/user/account-settings`, `/rest/user/set-profile`, `/rest/user/change-pa
+- NEW Strapi CMS integration with `localStorage.getItem("strapiApiUrlOverride")` — overridable content API base URL
+- NEW `/actuator/*` paths on betpandacasino.io redirect 301→trailing-slash but serve SPA HTML (not real actuator — catch-all route, NOT a finding)
+- CHANGED `betpandacasino.io/rest/user/account-balances-and-bonuses` confirmed POST-only (405 GET); `/rest/user/settings` 401; CORS properly pinned to own origin + credentials
+- CHANGED `cable.betpanda.io/cable/user-event` confirmed POST-only, root returns "Cable Service - Ready!"; no new endpoints
+- CHANGED `fp.betpanda.io`, `custom-lp.betpanda.io`, `flags.betpanda.io`, `www.betpanda.io` all Cloudflare JS-challenged (403 cf-mitigated) — cannot probe passively
+- NEW nano-public.s3.eu-west-1.amazonaws.com — S3 bucket listing returns 403 Forbidden (no enumeration)
+- CHANGED betpandacasino.io/rest/properties/manifest — Static PWA manifest with hardcoded S3 asset URLs; no query params for URL manipulation
+- CHANGED affiliates.betpanda.io/config/config.json — Only contains baseUrl (no strapiApiUrlOverride in config; override via localStorage only)
+- NEW `affiliates.betpanda.io/rest/*` — separate Spring Boot backend, CORS reflects **any origin + credentials**, endpoints discovered from JS bundle
+- NEW Affiliates JS endpoints: `/rest/user`, `/rest/user/players`, `/rest/player/uid/{id}?currency=`, `/rest/transaction/list`, `/rest/user/account-settings`, `/rest/user/set-profile`, `/rest/user/change-pa
+- NEW Strapi CMS integration with `localStorage.getItem("strapiApiUrlOverride")` — overridable content API base URL
+- NEW `/actuator/*` paths on betpandacasino.io redirect 301→trailing-slash but serve SPA HTML (not real actuator — catch-all route, NOT a finding)
+- CHANGED `betpandacasino.io/rest/user/account-balances-and-bonuses` confirmed POST-only (405 GET); `/rest/user/settings` 401; CORS properly pinned to own origin + credentials
+- CHANGED `cable.betpanda.io/cable/user-event` confirmed POST-only, root returns "Cable Service - Ready!"; no new endpoints
+- CHANGED `fp.betpanda.io`, `custom-lp.betpanda.io`, `flags.betpanda.io`, `www.betpanda.io` all Cloudflare JS-challenged (403 cf-mitigated) — cannot probe passively
+- NEW nano-public.s3.eu-west-1.amazonaws.com — S3 bucket listing returns 403 Forbidden (no enumeration)
+- CHANGED betpandacasino.io/rest/properties/manifest — Static PWA manifest with hardcoded S3 asset URLs; no query params for URL manipulation
+- CHANGED affiliates.betpanda.io/config/config.json — Only contains baseUrl (no strapiApiUrlOverride in config; override via localStorage only)
+- NEW SPA redeploy on affiliates.betpanda.io — JS bundle main.ef021e68.js (previously main.1ae50aab.js). Fresh passive enumeration.
+- NEW Endpoint surface expanded: /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate (GET-gated 401), /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/
+- NEW CORS+credentials coverage extends to password-reset + 2FA endpoints (OPTIONS preflight confirmed ACAO reflect + ACAC:true). ATO/exfil chain on the top finding now includes password reset and 2FA setti
