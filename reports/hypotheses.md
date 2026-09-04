@@ -54,3 +54,18 @@
 - LEARN: ACCEPTED OAUTH @ betpanda.io: /api/auth/authorize accepts arbitrary redirect_uri (200 response) — high-confidence passive signal
 - LEARN: ACCEPTED IDOR @ betpandacasino.io: Money-flow REST endpoints confirmed (403/405 responses) — Spring Boot + Cognito JWT, critical business value
 - LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
+
+## RANKED HYPOTHESES 2026-09-04 00:18:06 UTC
+- [85] affiliates.betpanda.io/rest/*: Wildcard CORS + credentials on affiliates REST API enables credentialed cross-origin exfiltration/ATO of player PII, transactions, payout config (from art/lead_bigpickle.txt)
+- [80] betpanda.io/api/auth/authorize: OAuth Redirect_URI Validation Bypass on Main Platform (from art/lead_nemotron3.txt)
+- NEXT(hypotheses-nemotron3.txt): PROBE: GET https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 (passive, re
+- NEXT(hypotheses-bigpickle.txt): PROBE: Confirm credential model + per-origin reflection on affiliates: `OPTIONS https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io CORS: CORS correctly restricts to own origin + credentials; OPTIONS from evil.com does NOT reflect origin. Not a finding.
+- LEARN: REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML (catch-all route). Spring Boot actuator is NOT exposed.
+- LEARN: REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks all passive probes. Cannot assess without solving challenge.
+- LEARN: REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB (all probes timeout) — ALB likely internal or auth-gated
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 10+ authenticated endpoints discovered from JS bundle
+- LEARN: ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances, 401 settings); CORS properly pinned reduces cross-origin atta
+- LEARN: ACCEPTED OAUTH @ betpanda.io: /api/auth/authorize accepts arbitrary redirect_uri (200 response) — high-confidence passive signal
+- LEARN: ACCEPTED IDOR @ betpandacasino.io: Money-flow REST endpoints confirmed (403/405 responses) — Spring Boot + Cognito JWT, critical business value
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated

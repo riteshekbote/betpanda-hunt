@@ -1,16 +1,4 @@
-## 2026-09-03 22:26:17 UTC [target] (model nemotron3)
-[NEW] affiliates.betpanda.io — dedicated host (HTTP 200), separate Spring Boot backend, wildcard CORS + credentials reflected from any origin, 10+ authenticated REST endpoints discovered from JS bundle (/rest/user, /rest/user/players, /rest/player/uid/{id}, /rest/transaction/list, /rest/user/account-settings, /rest/user/set-profile, /rest/user/change-password, /rest/user/payout-config, /rest/affiliate/stats, /rest/affiliate/commissions)
-[NEW] cable.betpanda.io — dedicated host (HTTP 200), unauthenticated event ingestion endpoint /cable/user-event accepts arbitrary JSON with `access-control-allow-origin: *`, returns 200 "processed and saved", only userId validated alphanumeric
-[NEW] custom-lp.betpanda.io — dedicated host (HTTP 403), Cloudflare JS challenge blocks passive probes
-[NEW] fp.betpanda.io — dedicated host (HTTP 403), Cloudflare JS challenge blocks passive probes
-[NEW] betpandacasino.io — major betting platform (not in initial inventory), Spring Boot + Cognito JWT API at /rest/user/*, money-flow endpoints confirmed (balances POST-only 405, settings 401, wallet/withdraw exists), CORS properly pinned to own origin + credentials
-[CHANGED] betpandacasino.io/rest/user/account-balances-and-bonuses — confirmed POST-only (405 GET), endpoint exists
-[CHANGED] betpandacasino.io/rest/user/settings — returns 401 (auth required)
-[CHANGED] betpandacasino.io/actuator/* — all paths redirect 301→trailing-slash but serve SPA HTML (catch-all route), Spring Boot actuator NOT exposed
-[CHANGED] cable.betpanda.io/cable/user-event — confirmed POST-only, root returns "Cable Service - Ready!", no additional endpoints discovered
-[CHANGED] dashboard.betpanda.io — k8s dashboard NOT exposed on ALB (all probes timeout), ALB likely internal or auth-gated
-[CHANGED] flags.betpanda.io, www.betpanda.io, custom-lp.betpanda.io, fp.betpanda.io — all Cloudflare JS-challenged (403 cf-mitigated), cannot probe passively
-[CHANGED] betpanda.io/api/auth/authorize — accepts arbitrary redirect_uri (200 response), high-confidence passive signal for OAuth redirect_uri validation bypass
+## 2026-09-04 00:17:57 UTC [target] (model nemotron3)
 [PRIO] betpandacasino.io,8.4,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=7
 [PRIO] betpanda.io,7.7,attack_surface=8,business_value=9,tech_exposure=7,gate_ease=7,cloud_surface=7,freshness=6
 [PRIO] affiliates.betpanda.io,7.1,attack_surface=7,business_value=8,tech_exposure=6,gate_ease=8,cloud_surface=6,freshness=6
@@ -18,34 +6,32 @@
 [PRIO] dashboard.betpanda.io,5.4,attack_surface=5,business_value=8,tech_exposure=5,gate_ease=2,cloud_surface=8,freshness=3
 [PRIO] custom-lp.betpanda.io,4.0,attack_surface=4,business_value=5,tech_exposure=4,gate_ease=3,cloud_surface=5,freshness=6
 [PRIO] fp.betpanda.io,3.8,attack_surface=4,business_value=4,tech_exposure=5,gate_ease=2,cloud_surface=5,freshness=6
-[HYP] BOLA/IDOR on Player Wallet & Balance Endpoints
-class: IDOR
-asset: betpandacasino.io/rest/user/*
-confidence: 75
-reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, wallet/withdraw exists). CORS pinned to own origin but server-side authorization not verified. Real-money gambling platform = critical impact. Endpoints accept/return user-specific financial data.
-evidence_needed: Cross-tenant access via enumerated user_id/uid with valid JWT from account A against account B's resources (balances, wallet/withdraw, settings, payout config)
-verify_steps: PASSIVE: GET https://betpandacasino.io/rest/user/account-balances-and-bonuses (with valid JWT) → observe response structure; GET https://betpandacasino.io/rest/user/wallet/withdraw (with valid JWT) → observe params; check for user_id/uid in path or query; enumerate JS bundle for hidden user_id parameters
-impact: Cross-tenant wallet/balance/bonus disclosure or tampering on real-money gambling platform — CRITICAL
-testability: AUTH_HELPED
 [HYP] OAuth Redirect_URI Validation Bypass on Main Platform
 class: OAUTH
 asset: betpanda.io/api/auth/authorize
 confidence: 80
-reasoning: Probe returned 200 for `GET /api/auth/authorize?redirect_uri=https://evil.com&state=test&client_id=test` — endpoint accepts arbitrary external redirect_uri without validation. Gambling platform with multiple subdomains = high likelihood of loose redirect_uri allowlist. Authorization code theft leads to full account takeover.
-evidence_needed: Authorization code issued to attacker-controlled redirect_uri; missing/weak state parameter validation; code exchangeable for tokens
+reasoning: Probe returned 200 for GET /api/auth/authorize?redirect_uri=https://evil.com&state=test&client_id=test — endpoint accepts arbitrary external redirect_uri without validation. Gambling platform with multiple subdomains = high likelihood of loose redirect_uri allowlist. Authorization code theft leads to full account takeover.
+evidence_needed: Authorization code issued to attacker-controlled redirect_uri; missing/weak state parameter validation; code exchangeable for tokens at token endpoint
 verify_steps: GET https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 (passive) → check for 302 to httpbin.org with code param; analyze login page for OAuth/OIDC flow; test state parameter handling (reuse, omission, prediction)
 impact: Account takeover via authorization code theft — CRITICAL
 testability: PASSIVE
+[HYP] BOLA/IDOR on Player Wallet & Balance Endpoints
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 75
+reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, wallet/withdraw exists). CORS pinned to own origin but server-side authorization not verified. Real-money gambling platform = critical[0m
+impact: Cross-tenant wallet/balance/bonus disclosure or tampering on real-money gambling platform — CRITICAL
+testability: AUTH_HELPED
 [HYP] Wildcard CORS + Credentials Enables Cross-Origin Account Takeover
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
 confidence: 70
-reasoning: REST API reflects `access-control-allow-origin: *` + `access-control-allow-credentials: true` from any origin. 10+ authenticated endpoints discovered (players, transactions, account-settings, payout-config, commissions). Cookie-based auth (likely session/JWT in cookie) + wildcard CORS = any origin can read/write authenticated user data via credentialed requests. Strapi CMS integration with overridable `strapiApiUrlOverride` in localStorage expands attack surface.
+reasoning: REST API reflects access-control-allow-origin: * + access-control-allow-credentials: true from any origin. 10+ authenticated endpoints discovered (players, transactions, account-settings, payout-config, commissions). Cookie-based auth (likely session/JWT in cookie) + wildcard CORS = any origin can read/write authenticated user data via credentialed requests. Strapi CMS integration with overridable strapiApiUrlOverride in localStorage expands attack surface.
 evidence_needed: Successful cross-origin credentialed request to /rest/user/players or /rest/transaction/list from attacker-controlled origin returning victim's data; session riding via CSRF-like flow
 verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" → confirm ACAO: * + ACAC: true; GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_session>" (auth-helped) → observe data exfiltration; enumerate all /rest/* endpoints from JS bundle for sensitive actions (set-profile, change-password, payout-config)
 impact: Cross-origin exfiltration of player PII, transactions, affiliate commissions; account settings/password/payout config modification — CRITICAL
 testability: AUTH_HELPED
-[PARKED] None — all three hypotheses have confidence ≥70, valid classes (IDOR, OAUTH, MISCONFIG), concrete verify_steps (PASSIVE or AUTH_HELPED), and no REJECTED-class overlap.
+[PARKED] None — all three hypotheses have confidence ≥70, valid classes (OAUTH, IDOR, MISCONFIG), concrete verify_steps (PASSIVE or AUTH_HELPED), and no REJECTED-class overlap.
 [FINAL] 1. OAuth Redirect_URI Validation Bypass on Main Platform (betpanda.io, 80)
 [FINAL] 2. BOLA/IDOR on Player Wallet & Balance Endpoints (betpandacasino.io, 75)
 [FINAL] 3. Wildcard CORS + Credentials Enables Cross-Origin Account Takeover (affiliates.betpanda.io, 70)

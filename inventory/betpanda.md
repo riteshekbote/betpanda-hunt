@@ -58,3 +58,5 @@ www.betpanda.io
 - CHANGED dashboard.betpanda.io — k8s dashboard NOT exposed on ALB (all probes timeout), ALB likely internal or auth-gated
 - CHANGED flags.betpanda.io, www.betpanda.io, custom-lp.betpanda.io, fp.betpanda.io — all Cloudflare JS-challenged (403 cf-mitigated), cannot probe passively
 - CHANGED betpanda.io/api/auth/authorize — accepts arbitrary redirect_uri (200 response), high-confidence passive signal for OAuth redirect_uri validation bypass
+
+## 2026-09-04 00:18:06 UTC
