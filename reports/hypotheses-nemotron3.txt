@@ -1,4 +1,4 @@
-## 2026-09-04 13:57:06 UTC [target] (model nemotron3)
+## 2026-09-04 17:27:57 UTC [target] (model nemotron3)
 [NEW] nano-public.s3.eu-west-1.amazonaws.com — S3 bucket listing returns 403 Forbidden (no enumeration)
 [CHANGED] betpandacasino.io/rest/properties/manifest — Static PWA manifest with hardcoded S3 asset URLs; no query params for URL manipulation
 [CHANGED] affiliates.betpanda.io/config/config.json — Only contains baseUrl (no strapiApiUrlOverride in config; override via localStorage only)
@@ -11,7 +11,7 @@
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
 confidence: 90
-reasoning: OPTIONS from https://evil.com returns access-control-allow-origin: https://evil.com + access-control-allow-credentials: true. 10+ authenticated endpoints in JS bundle (/rest/user/players, /rest/player/uid/{id}, /rest/transaction/list, /rest/user/account-settings, /rest/user/set-profile, /rest/user/change-password, /rest/user/payout-config, /rest/affiliate/commissions). Cookie-based auth (401 on /rest/user unauthenticated). Any origin can read/write victim data via credentialed fetch.
+reasoning: OPTIONS from https://evil.com returns access-control-allow-origin: https://evil.com + access-control-allow-credentials: true. 20+ authenticated endpoints in JS bundle (/rest/user/players, /rest/player/uid/{id}, /rest/transaction/list, /rest/user/account-settings, /rest/user/set-profile, /rest/user/change-password, /rest/user/payout-config, /rest/affiliate/commissions, /agent/set-deposit-withdraw-limit, /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates). Cookie-based auth (401 on /rest/user unauthenticated). Any origin can read/write victim data via credentialed fetch.
 evidence_needed: Successful cross-origin credentialed GET to /rest/user/players or /rest/transaction/list from attacker-controlled origin returning victim PII/transactions; session riding via credentialed fetch
 verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" → confirm ACAO: evil.com + ACAC: true; GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_session>" (auth-helped) → observe data exfiltration
 impact: Cross-origin exfiltration of player PII, transactions, affiliate commissions; account settings/password/payout config modification — CRITICAL
@@ -20,7 +20,7 @@ testability: AUTH_HELPED
 class: IDOR
 asset: betpandacasino.io/rest/user/*
 confidence: 80
-reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401). CORS pinned to own origin but server-side authorization not verified. Real-money gambling platform = critical business value. Endpoints accept/return user-specific financial data.
+reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403). CORS pinned to own origin but server-side authorization not verified. Real-money gambling platform = critical business value. Endpoints accept/return user-specific financial data. REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed.
 evidence_needed: Successful cross-user access to /rest/user/account-balances-and-bonuses or /rest/user/settings returning another user's wallet/balance/bonus data; JWT missing/insufficient scope/claim validation
 verify_steps: PASSIVE: GET https://betpandacasino.io/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <victim_jwt>" (auth-helped) → observe 200 with victim data; test horizontal IDOR by modifying user_id/player_id in request body/params; test vertical IDOR via role manipulation in JWT claims
 impact: Cross-tenant wallet/balance/bonus disclosure or tampering on real-money gambling platform — CRITICAL

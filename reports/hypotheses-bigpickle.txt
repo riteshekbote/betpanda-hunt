@@ -1,4 +1,4 @@
-## 2026-09-04 13:50:26 UTC [target] (model bigpickle)
+## 2026-09-04 17:27:25 UTC [target] (model bigpickle)
 [PRIO] affiliates.betpanda.io/rest/*,8.50,a9/b9/t4/g2/c3/f9
 [PRIO] betpandacasino.io/rest/user/*,7.15,a8/b10/t8/g3/c2/f8
 [PRIO] cable.betpanda.io/cable/*,6.70,a7/b6/t7/g10/c1/f8

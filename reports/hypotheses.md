@@ -147,3 +147,26 @@
 - LEARN: ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances 405, settings 401); CORS pinned but server-side authZ unverifi
 - LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
 - LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io SPA catch-all; no server-side OAuth endpoint exists
+
+## RANKED HYPOTHESES 2026-09-04 17:28:09 UTC
+- [90] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials Enables Cross-Origin Account Takeover (from art/lead_nemotron3.txt)
+- [85] affiliates.betpanda.io/rest/*: Wildcard CORS + credentials on affiliates REST API enables credentialed cross-origin exfiltration/ATO of player PII, transactions, payout config (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: Login to affiliates.betpanda.io and capture session cookies + Set-Cookie headers. This is the only way to complete the CORS+credentials POC for the top f
+- NEXT(hypotheses-nemotron3.txt): PROBE: GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_affiliate_session>" (auth-helped, credentialed cros
+- LEARN: REJECTED S3 BUCKET LISTING @ nano-public.s3.eu-west-1.amazonaws.com: Bucket listing disabled (AccessDenied on ?list-type=2 and ?prefix=operators/). Individual o
+- LEARN: NEW ENDPOINT @ betpandacasino.io/rest/user/authenticate: Real Spring Boot endpoint (403 JSON, not SPA catch-all). Returns 403 with dummy creds. Likely requires 
+- LEARN: AUTH MODEL @ betpandacasino.io: REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout. SameSite=Lax limits cross-o
+- LEARN: NEW ENDPOINTS @ affiliates.betpanda.io: JS reveals /agent/set-deposit-withdraw-limit (POST, financial), /payouts/single-currency-list, /reports/commission, /rep
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 20+ authenticated REST endpoints. Strongest finding, 
+- LEARN: ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed; CORS properly pinned reduces cross-origin attack vector.
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io CORS: CORS correctly restricts to own origin + credentials.
+- LEARN: REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML.
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed.
+- LEARN: REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks probes.
+- LEARN: REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB.
+- LEARN: REJECTED MISCONFIG @ nano-public.s3.eu-west-1.amazonaws.com: S3 bucket listing returns 403 Forbidden; no enumeration possible
+- LEARN: REJECTED SSRF @ betpandacasino.io/rest/properties/manifest: Manifest is static JSON with hardcoded S3 URLs; no user-controllable parameters for URL manipulation
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials confirmed via live OPTIONS probe reflecting arbitrary Origin with ACAC: true
+- LEARN: ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances 405, settings 401); CORS pinned but server-side authZ unverifi
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
+- LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io SPA catch-all; no server-side OAuth endpoint exists

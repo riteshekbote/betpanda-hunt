@@ -268,3 +268,50 @@ testability: AUTH_HELPED
 [LEARN] REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks probes.
 [LEARN] REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB.
 [RISK] BetPanda: 40 — Top finding (affiliates CORS+credentials with 20+ endpoints including financial tampering) remains strongest. Auth model now fully mapped: casino uses SameSite=Lax cookies (limits cross-origin exploitation), affiliates CORS policy is permissive but cookie SameSite status unknown (needs human login to confirm). S3 bucket listing disabled. Casino authenticate requires CAPTCHA. All critical impacts gated by authenticated sessions. Overall moderate-high value.
+## 2026-09-04 17:27:25 UTC [target] (model bigpickle)
+[PRIO] affiliates.betpanda.io/rest/*,8.50,a9/b9/t4/g2/c3/f9
+[PRIO] betpandacasino.io/rest/user/*,7.15,a8/b10/t8/g3/c2/f8
+[PRIO] cable.betpanda.io/cable/*,6.70,a7/b6/t7/g10/c1/f8
+[HYP] Wildcard CORS + credentials on affiliates REST API enables credentialed cross-origin exfiltration/ATO of player PII, transactions, payout config
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 85
+reasoning: OPTIONS preflight reflects access-control-allow-origin: any origin + access-control-allow-credentials: true. JS bundle exposes 20+ authenticated endpoints including /rest/user/players (POST), /rest/player/uid/{id} (GET), /rest/transaction/list (POST), /rest/user/account-settings, /rest/user/change-password, /rest/user/payout-config, /rest/agent/set-deposit-withdraw-limit (POST), /rest/payouts/single-currency-list, /rest/reports/commission, /rest/reports/sub-affiliates. Auth is cookie/session-based (/rest/user → 401 unauth). A hostile page can fetch with credentials, browser auto-attaches affiliate session cookie, response readable cross-origin → full PII + financial data + account takeover. The /agent/set-deposit-withdraw-limit endpoint is especially dangerous — cross-origin POST could modify another affiliate's deposit/withdrawal limits.
+evidence_needed: (1) Capture Set-Cookie flags from affiliates login to confirm SameSite=None or absent; (2) two affiliate accounts for cross-tenant POC; (3) authenticated cross-origin GET/POST returning data
+verify_steps: AUTH_HELPED: Login to affiliates panel → capture Set-Cookie headers (check SameSite) → POST /rest/user/players with session cookies + Origin: evil.com → confirm data exfiltration. Then GET /rest/player/uid/{victim_uid}?currency=BTC with attacker session cookies.
+impact: Cross-tenant player PII + financial disclosure, deposit/withdrawal limit tampering, password/payout config modification → ATO. Critical (CVSS ~9.1-9.3).
+testability: AUTH_HELPED
+[HYP] IDOR/BOLA on betpandacasino.io money-flow REST endpoints via Cognito JWT
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 68
+reasoning: Real Spring Boot + Cognito JWT backend confirmed: /rest/user/authenticate (403 JSON, requires CAPTCHA), /rest/user/account-balances-and-bonuses (POST-only 405), /rest/user/settings (401), /rest/user/logout (clears REFRESH_TOKEN cookie), /rest/user/refresh (POST auth-gated), /rest/user/zendesk/jwt (POST 401). CORS properly pinned to own origin. Auth model: REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh). Same-origin attacker with stolen session could access other users' balance/transaction data. No evidence of per-user ACL beyond JWT sub claim. SameSite=Lax limits cross-origin cookie sending (reduces browser-based attack surface vs affiliates).
+evidence_needed: (1) Authenticated session; (2) Manipulate JWT sub claim or use different tokens to access other users' data
+verify_steps: AUTH_HELPED: Capture JWT from authenticated session → modify sub claim → POST to /rest/user/account-balances-and-bonuses → check if other user's data returned
+impact: Cross-user financial data disclosure on real-money gambling platform; High severity
+testability: AUTH_HELPED
+[HYP] Unauthenticated event ingestion on cable.betpanda.io enables injection/stored XSS
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 65
+reasoning: POST to /cable/user-event accepts arbitrary JSON body with no authentication, CORS * allows any origin. Response confirms "processed and saved". If data is stored and reflected to other users (dashboards, reports, admin panels), this becomes stored XSS. Currently only confirmed ingestion without output verification.
+evidence_needed: (1) Confirm stored data is rendered to other users; (2) Test with XSS payload in JSON fields; (3) Check if admin dashboard consumes this data
+verify_steps: AUTH_HELPED: POST https://cable.betpanda.io/cable/user-event with JSON body containing XSS payload → Check if data appears in any admin/reporting interface
+impact: Stored XSS on admin panels, potential session theft; Medium severity
+testability: AUTH_HELPED
+[PARKED] IDOR on affiliate player lookup by UID: Merged into MISCONFIG hypothesis — same endpoint, same auth model, same CORS surface. Keeping as separate hypothesis adds redundancy without new attack path.
+[PARKED] Unauthenticated event injection: Confidence 65, needs auth/admin access to verify stored data rendering. Cannot confirm impact without human testing.
+[FINAL] Survivors ranked:
+[NEXT] HUMAN: Login to affiliates.betpanda.io and capture session cookies + Set-Cookie headers. This is the only way to complete the CORS+credentials POC for the top finding. All three surviving hypotheses require authenticated sessions to demonstrate impact.
+[LEARN] REJECTED S3 BUCKET LISTING @ nano-public.s3.eu-west-1.amazonaws.com: Bucket listing disabled (AccessDenied on ?list-type=2 and ?prefix=operators/). Individual objects accessible but no enumeration.
+[LEARN] NEW ENDPOINT @ betpandacasino.io/rest/user/authenticate: Real Spring Boot endpoint (403 JSON, not SPA catch-all). Returns 403 with dummy creds. Likely requires CAPTCHA token (x-captcha-token in CORS allow-headers).
+[LEARN] AUTH MODEL @ betpandacasino.io: REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout. SameSite=Lax limits cross-origin cookie sending.
+[LEARN] NEW ENDPOINTS @ affiliates.betpanda.io: JS reveals /agent/set-deposit-withdraw-limit (POST, financial), /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates. Expands attack surface beyond previously known endpoints.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 20+ authenticated REST endpoints. Strongest finding, needs auth for POC.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed; CORS properly pinned reduces cross-origin attack vector.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io CORS: CORS correctly restricts to own origin + credentials.
+[LEARN] REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed.
+[LEARN] REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks probes.
+[LEARN] REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB.
+[RISK] BetPanda: 40 — Top finding (affiliates CORS+credentials with 20+ endpoints including financial tampering) remains strongest. Auth model now fully mapped: casino uses SameSite=Lax cookies (limits cross-origin exploitation), affiliates CORS policy is permissive but cookie SameSite status unknown (needs human login to confirm). S3 bucket listing disabled. Casino authenticate requires CAPTCHA. All critical impacts gated by authenticated sessions. Overall moderate-high value.
