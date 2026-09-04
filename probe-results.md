@@ -50,3 +50,8 @@ https://affiliates.betpanda.io/rest/user -> HTTP 401
 https://affiliates.betpanda.io/rest/user/players -> HTTP 405
 https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 -> 200 len=?
 https://affiliates.betpanda.io/rest/player/uid/{victim_uid -> HTTP 400
+
+## 2026-09-04 09:29:12 UTC
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://affiliates.betpanda.io/rest/player/uid/{victim_uid -> HTTP 400
+https://cable.betpanda.io/cable/user-event -> HTTP 405

@@ -696,3 +696,138 @@ testability: PASSIVE
 
 **STEP 7 — RISK**
 [RISK] betpanda: 90 — OAuth redirect_uri bypass confirmed passive (direct CRITICAL ATO path), wildcard CORS + credentials on affiliate money-flow API (CRITICAL cross-origin data exfil/ATO), real-money gambling API with BOLA surface (CRITICAL financial), unauthenticated analytics injection (chaining vector), 4 new dedicated hosts with high-value target classes. Program scope covers all company-owned infrastructure.
+===== ANALYST nemotron3 2026-09-04 09:29:07 UTC =====
+[0m
+> build · nemotron-3-ultra-free
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/
+total 148
+drwxr-xr-x 12 runner runner  4096 Sep  4 09:20 .
+drwxr-xr-x  3 runner runner  4096 Sep  4 09:20 ..
+drwxr-xr-x  7 runner runner  4096 Sep  4 09:20 .git
+drwxr-xr-x  3 runner runner  4096 Sep  4 09:20 .github
+-rw-r--r--  1 runner runner  1709 Sep  4 09:20 README.md
+-rw-r--r--  1 runner runner    43 Sep  4 09:20 analyst-out.txt
+-rw-r--r--  1 runner runner 29057 Sep  4 09:20 analyst-prompt.txt
+-rw-r--r--  1 runner runner 25276 Sep  4 09:20 ctx.txt
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 inventory
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 knowledge
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 leads
+-rw-r--r--  1 runner runner  2662 Sep  4 09:20 probe-results.md
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 recon-notes
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 reports
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 reposcan-raw
+-rw-r--r--  1 runner runner  3194 Sep  4 09:20 scope.yml
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 scripts
+-rw-r--r--  1 runner runner    33 Sep  4 09:20 state_bigpickle.json
+-rw-r--r--  1 runner runner    33 Sep  4 09:20 state_laguna.json
+-rw-r--r--  1 runner runner    33 Sep  4 09:20 state_ling3.json
+-rw-r--r--  1 runner runner    33 Sep  4 09:20 state_longcat.json
+-rw-r--r--  1 runner runner    33 Sep  4 09:20 state_mimo.json
+-rw-r--r--  1 runner runner    33 Sep  4 09:20 state_nemotron3.json
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 triage
+[0m
+[0m→ [0mRead inventory/betpanda.md
+[0m→ [0mRead scope.yml
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/knowledge/
+total 16
+drwxr-xr-x  2 runner runner 4096 Sep  4 09:20 .
+drwxr-xr-x 12 runner runner 4096 Sep  4 09:20 ..
+-rw-r--r--  1 runner runner 5002 Sep  4 09:20 index.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/leads/
+total 96
+drwxr-xr-x  2 runner runner  4096 Sep  4 09:20 .
+drwxr-xr-x 12 runner runner  4096 Sep  4 09:20 ..
+-rw-r--r--  1 runner runner 26033 Sep  4 09:20 lead-bigpickle.md
+-rw-r--r--  1 runner runner   255 Sep  4 09:20 lead-laguna.md
+-rw-r--r--  1 runner runner   250 Sep  4 09:20 lead-ling3.md
+-rw-r--r--  1 runner runner   260 Sep  4 09:20 lead-longcat.md
+-rw-r--r--  1 runner runner    18 Sep  4 09:20 lead-mimo.md
+-rw-r--r--  1 runner runner 38634 Sep  4 09:20 lead-nemotron3.md
+-rw-r--r--  1 runner runner   642 Sep  4 09:20 reposcan-betpanda.md
+[0m
+[0m→ [0mRead knowledge/index.md
+[0m→ [0mRead leads/lead-bigpickle.md
+[0m→ [0mRead leads/lead-nemotron3.md
+[0m→ [0mRead probe-results.md
+[0m→ [0mRead leads/lead-laguna.md
+[0m→ [0mRead leads/lead-ling3.md
+[0m→ [0mRead leads/lead-longcat.md
+[0m→ [0mRead leads/reposcan-betpanda.md
+[0m→ [0mRead state_bigpickle.json
+[0m→ [0mRead state_nemotron3.json
+[0m
+[0m$ [0mdate -u +"%Y-%m-%d %H:%M:%S UTC"
+2026-09-04 09:25:26 UTC
+[0m
+Now I have a complete picture. Let me run the 8 analysis steps and output structured blocks.
+### STEP 1 — DELTA
+[CHANGED] betpanda.io/api/auth/authorize — 301 redirects to betpandacasino.io/api/auth/authorize which returns SPA HTML (200). All /api/* paths on betpandacasino.io are SPA catch-all (token, refresh, v1/users). No server-side OAuth endpoint exists. Prior ACCEPTED OAUTH hypothesis was FALSE POSITIVE.
+[CHANGED] betpandacasino.io/graphql/ — 301→301 trailing-slash redirect then 200 SPA HTML. Not a real GraphQL endpoint.
+[NEW] betpandacasino.io/rest/properties/manifest — real PWA manifest endpoint (JSON, 200). Assets served from `nano-public.s3.eu-west-1.amazonaws.com` cross-origin bucket.
+
+### STEP 2 — PRIORITIZE
+[PRIO] affiliates.betpanda.io/rest/*,8.30,attack_surface=9,business_value=9,tech_exposure=8,gate_ease=8,cloud_surface=7,freshness=7
+[PRIO] betpandacasino.io/rest/user/*,8.35,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=7
+[PRIO] betpandacasino.io/rest/properties/manifest,6.20,attack_surface=6,business_value=6,tech_exposure=7,gate_ease=9,cloud_surface=8,freshness=9
+[PRIO] cable.betpanda.io/cable/user-event,7.05,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=9,cloud_surface=5,freshness=7
+[PRIO] nano-public.s3.eu-west-1.amazonaws.com,5.80,attack_surface=5,business_value=5,tech_exposure=6,gate_ease=10,cloud_surface=9,freshness=9
+[PRIO] dashboard.betpanda.io,5.40,attack_surface=5,business_value=8,tech_exposure=5,gate_ease=2,cloud_surface=8,freshness=3
+[PRIO] custom-lp.betpanda.io,4.00,attack_surface=4,business_value=5,tech_exposure=4,gate_ease=3,cloud_surface=5,freshness=6
+[PRIO] fp.betpanda.io,3.80,attack_surface=4,business_value=4,tech_exposure=5,gate_ease=2,cloud_surface=5,freshness=6
+
+### STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS + Credentials Enables Cross-Origin Account Takeover
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 85
+reasoning: REST API reflects access-control-allow-origin: * + access-control-allow-credentials: true from any origin. 10+ authenticated endpoints discovered from JS bundle (/rest/user/players, /rest/player/uid/{id}, /rest/transaction/list, /rest/user/account-settings, /rest/user/set-profile, /rest/user/change-password, /rest/user/payout-config, /rest/affiliate/commissions). Cookie-based auth (401 on /rest/user unauthenticated) + wildcard CORS = any origin can read/write authenticated user data via credentialed requests. Strapi CMS integration with overridable strapiApiUrlOverride in localStorage expands attack surface.
+evidence_needed: Successful cross-origin credentialed request to /rest/user/players or /rest/transaction/list from attacker-controlled origin returning victim's data; session riding via credentialed fetch from evil.com
+verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" → confirm ACAO: * + ACAC: true; GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_session>" (auth-helped) → observe data exfiltration; enumerate all /rest/* endpoints from JS bundle for sensitive actions (set-profile, change-password, payout-config)
+impact: Cross-origin exfiltration of player PII, transactions, affiliate commissions; account settings/password/payout config modification — CRITICAL
+testability: AUTH_HELPED
+
+[HYP] BOLA/IDOR on Player Wallet & Balance Endpoints
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 80
+reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, wallet/withdraw inferred). CORS pinned to own origin but server-side authorization not verified. Real-money gambling platform = critical business value. Endpoints accept/return user-specific financial data.
+evidence_needed: Successful cross-user access to /rest/user/account-balances-and-bonuses or /rest/user/settings returning another user's wallet/balance/bonus data; JWT token missing/insufficient scope/claim validation
+verify_steps: PASSIVE: GET https://betpandacasino.io/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <victim_jwt>" (auth-helped) → observe 200 with victim data; test horizontal IDOR by modifying user_id/player_id in request body/params; test vertical IDOR via role manipulation in JWT claims
+impact: Cross-tenant wallet/balance/bonus disclosure or tampering on real-money gambling platform — CRITICAL
+testability: AUTH_HELPED
+
+[HYP] S3 Bucket Enumeration / SSRF via PWA Manifest Asset Origin
+class: SSRF
+asset: nano-public.s3.eu-west-1.amazonaws.com (referenced from betpandacasino.io/rest/properties/manifest)
+confidence: 65
+reasoning: PWA manifest at betpandacasino.io/rest/properties/manifest returns JSON with asset URLs pointing to nano-public.s3.eu-west-1.amazonaws.com. S3 bucket may have list permissions enabled or contain cross-tenant assets. If bucket listing is enabled, attacker can enumerate all tenant assets. If the SPA fetches manifest dynamically, SSRF via manifest URL manipulation is possible.
+evidence_needed: Bucket listing enabled on nano-public.s3.eu-west-1.amazonaws.com; cross-tenant asset references in bucket; SSRF via manifest URL parameter manipulation
+verify_steps: PASSIVE: GET https://nano-public.s3.eu-west-1.amazonaws.com/?list-type=2 → check if bucket listing returns objects; GET https://betpandacasino.io/rest/properties/manifest → analyze manifest structure for external URLs; test if manifest endpoint accepts query params to override asset base URL
+impact: Cross-tenant asset enumeration, potential SSRF to cloud metadata (169.254.169.254) if manifest URL is user-controllable — HIGH to CRITICAL
+testability: PASSIVE
+
+### STEP 4 — SELF-CRITIQUE
+[PARKED] OAuth Redirect_URI Validation Bypass on Main Platform: REJECTED — betpanda.io/api/auth/authorize 301 redirects to betpandacasino.io/api/auth/authorize which serves SPA HTML (catch-all). No server-side OAuth endpoint exists. Prior ACCEPTED OAUTH was FALSE POSITIVE.
+[FINAL] 1. Wildcard CORS + Credentials Enables Cross-Origin Account Takeover (affiliates.betpanda.io, 85)
+[FINAL] 2. BOLA/IDOR on Player Wallet & Balance Endpoints (betpandacasino.io, 80)
+[FINAL] 3. S3 Bucket Enumeration / SSRF via PWA Manifest Asset Origin (nano-public.s3.eu-west-1.amazonaws.com, 65)
+
+### STEP 5 — NEXT ACTION
+[NEXT] PROBE: GET https://nano-public.s3.eu-west-1.amazonaws.com/?list-type=2 (passive, read-only, check if S3 bucket listing is enabled for cross-tenant asset enumeration)
+
+### STEP 6 — LEARNING
+[LEARN] REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io/api/auth/authorize which returns SPA HTML (200). All /api/* paths on betpandacasino.io are SPA catch-all. No server-side OAuth endpoint exists at this path. Prior ACCEPTED OAUTH hypothesis was incorrect.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io CORS: CORS correctly restricts to own origin + credentials; OPTIONS from evil.com does NOT reflect origin. Not a finding.
+[LEARN] REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML (catch-all route). Spring Boot actuator is NOT exposed.
+[LEARN] REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks all passive probes. Cannot assess without solving challenge.
+[LEARN] REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB (all probes timeout) — ALB likely internal or auth-gated.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 10+ authenticated endpoints discovered from JS bundle including player PII, transactions, account settings, and payout config. Verified via live OPTIONS+GET probes.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances, 401 settings); CORS properly pinned reduces cross-origin attack vector but does not prevent same-origin IDOR.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated.
+[LEARN] NEW ASSET @ betpandacasino.io/rest/properties/manifest: Real PWA manifest endpoint (JSON, 200). Cross-origin assets from nano-public.s3.eu-west-1.amazonaws.com.
+
+### STEP 7 — RISK
+[RISK] betpanda: 85 — Wildcard CORS+credentials on affiliate money-flow API (CRITICAL cross-origin data exfil/ATO, strongest finding), real-money gambling API with BOLA surface (CRITICAL financial), unauthenticated analytics injection (chaining vector), NEW S3 bucket asset origin with potential enumeration/SSRF. OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure.

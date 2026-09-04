@@ -30,3 +30,7 @@
 - 2026-09-04 ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed.
 - 2026-09-04 REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks probes.
 - 2026-09-04 REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB.
+- 2026-09-04 REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB (all probes timeout) — ALB likely internal or auth-gated.
+- 2026-09-04 ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated.
+- 2026-09-04 NEW ASSET @ betpandacasino.io/rest/properties/manifest: Real PWA manifest endpoint (JSON, 200). Cross-origin assets from nano-public.s3.eu-west-1.amazonaws.com.
+- 2026-09-04 REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, not a real OAuth endpoint.

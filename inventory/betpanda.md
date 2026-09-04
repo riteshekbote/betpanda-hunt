@@ -65,3 +65,8 @@ www.betpanda.io
 - CHANGED betpanda.io/api/auth/authorize — 301 redirects to betpandacasino.io/api/auth/authorize which returns SPA HTML (200). `/api/*` paths on betpandacasino.io are ALL SPA catch-all (token, refresh, v1/users
 - CHANGED betpandacasino.io/graphql/ — 301→301 trailing-slash redirect then 200 SPA HTML. Not a real GraphQL endpoint.
 - NEW betpandacasino.io/rest/properties/manifest — real PWA manifest endpoint (JSON, 200). Cross-origin: `nano-public.s3.eu-west-1.amazonaws.com` bucket for assets.
+
+## 2026-09-04 09:29:07 UTC
+- CHANGED betpanda.io/api/auth/authorize — 301 redirects to betpandacasino.io/api/auth/authorize which returns SPA HTML (200). All /api/* paths on betpandacasino.io are SPA catch-all (token, refresh, v1/users).
+- CHANGED betpandacasino.io/graphql/ — 301→301 trailing-slash redirect then 200 SPA HTML. Not a real GraphQL endpoint.
+- NEW betpandacasino.io/rest/properties/manifest — real PWA manifest endpoint (JSON, 200). Assets served from `nano-public.s3.eu-west-1.amazonaws.com` cross-origin bucket.
