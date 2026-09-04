@@ -1,12 +1,47 @@
-## 2026-09-04 00:13:57 UTC [target] (model bigpickle)
+## 2026-09-04 04:44:47 UTC [target] (model bigpickle)
+[CHANGED] betpanda.io/api/auth/authorize — 301 redirects to betpandacasino.io/api/auth/authorize which returns SPA HTML (200). `/api/*` paths on betpandacasino.io are ALL SPA catch-all (token, refresh, v1/users — all 200 SPA HTML). NOT a real server-side OAuth endpoint.
+[CHANGED] betpandacasino.io/graphql/ — 301→301 trailing-slash redirect then 200 SPA HTML. Not a real GraphQL endpoint.
+[NEW] betpandacasino.io/rest/properties/manifest — real PWA manifest endpoint (JSON, 200). Cross-origin: `nano-public.s3.eu-west-1.amazonaws.com` bucket for assets.
+[PRIO] affiliates.betpanda.io/rest/*,8.50,a9/b9/t4/g2/c3/f9
+[PRIO] betpandacasino.io/rest/user/*,7.15,a8/b10/t8/g3/c2/f8
+[PRIO] cable.betpanda.io/cable/*,6.70,a7/b6/t7/g10/c1/f8
+[PRIO] betpandacasino.io/rest/properties/manifest,3.20,a2/b2/t2/g9/c1/f5
 [HYP] Wildcard CORS + credentials on affiliates REST API enables credentialed cross-origin exfiltration/ATO of player PII, transactions, payout config
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
 confidence: 85
-reasoning: OPTIONS preflight reflects access-control-allow-origin: <any origin> + access-control-allow-credentials: true. JS bundle exposes /rest/user/players (POST), /rest/player/uid/{id} (GET), /rest/transaction/list, /rest/user/account-settings, /rest/user/change-password, /rest/user/payout-config. Auth is cookie/session-based (/rest/user → 401 unauth). A hostile page can `fetch(url,{credentials:'include'})`, browser auto-attaches affiliate session cookie, response readable cross-origin → full PII + financial data + account takeover.
+reasoning: OPTIONS preflight reflects access-control-allow-origin: any origin + access-control-allow-credentials: true. JS bundle exposes /rest/user/players (POST), /rest/player/uid/{id} (GET), /rest/transaction/list, /rest/user/account-settings, /rest/user/change-password, /rest/user/payout-config. Auth is cookie/session-based (/rest/user → 401 unauth). A hostile page can fetch with credentials, browser auto-attaches affiliate session cookie, response readable cross-origin → full PII + financial data + account takeover.
 evidence_needed: two affiliate accounts; authenticated cross-origin GET/POST returning other account's player/transaction data
-verify_steps: OPTIONS /rest/user/players -H "Origin: https://evil.com" (confirm ACAO+ACAC); then AUTH_HELPED with session cookie + Origin evil.com on /rest/user/players, /rest/player/uid/{victim_uid}; check ACL on /rest/player/uid/{id} for cross-affiliate
+verify_steps: AUTH_HELPED: POST https://affiliates.betpanda.io/rest/user/players with session cookies → extract player UIDs → GET https://affiliates.betpanda.io/rest/player/uid/{victim_uid}?currency=BTC with attacker affiliate session cookies
 impact: cross-tenant player PII + financial disclosure, password/payout config tampering → ATO. Critical (CVSS ~9.1-9.3).
 testability: AUTH_HELPED
-[NEXT] PROBE: Confirm credential model + per-origin reflection on affiliates: `OPTIONS https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Access-Control-Request-Method: POST" -H "Access-Control-Request-Headers: content-type"` (verify ACAO + ACAC); then `GET https://affiliates.betpanda.io/rest/user -H "Origin: https://evil.com"` to reconfirm 401 cookie-gated auth and whether arbitrary-origin reads are possible pre-auth. HUMAN login required to complete the exfiltration POC (two affiliate accounts).
-[RISK] BetPanda: 45 — The OAuth "critical" path is now confirmed a false positive (catch-all SPA), removing the highest-confidence ATO chain. Remaining strong surface: affiliates wildcard CORS+credentials (needs authenticated session to demonstrate impact and is the top real finding), betpandacasino BOLA on money flows (server-side auth likely strong, Cognito JWT), cable unauth injection (medium, chaining only). Cloud layer: Cloudflare everywhere, one AWS ALB (k8s dashboard internal). Overall moderate-high value but requires authenticated access to land the critical impact.
+[HYP] IDOR on affiliate player lookup by UID exposes cross-affiliate player data
+class: IDOR
+asset: affiliates.betpanda.io/rest/player/uid/{id}
+confidence: 72
+reasoning: Affiliates REST API has /rest/player/uid/{id}?currency= endpoint accepting player UIDs. Wildcard CORS means attacker page can call this with victim's cookies. Server-side may not enforce that the looked-up player belongs to the authenticated affiliate — classic BOLA. Player UIDs may be sequential/enumerable from /rest/user/players response.
+evidence_needed: (1) Authenticated session with two affiliate accounts; (2) Lookup player UID from account A while authenticated as account B; (3) Confirm data returned (PII, balances)
+verify_steps: AUTH_HELPED: POST https://affiliates.betpanda.io/rest/user/players with session cookies → extract player UIDs → GET https://affiliates.betpanda.io/rest/player/uid/{victim_uid}?currency=BTC with attacker affiliate session cookies
+impact: Cross-tenant player PII + financial data disclosure on gambling platform; High severity
+testability: AUTH_HELPED
+[HYP] IDOR/BOLA on betpandacasino.io money-flow REST endpoints via Cognito JWT
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 68
+reasoning: /rest/user/account-balances-and-bonuses (POST-only 405), /rest/user/settings (401) — real Spring Boot + Cognito JWT backend. CORS properly pinned to own origin. Same-origin attacker with stolen session could access other users' balance/transaction data. No evidence of per-user ACL beyond JWT sub claim.
+evidence_needed: (1) Authenticated session; (2) Manipulate JWT sub claim or use different tokens to access other users' data
+verify_steps: AUTH_HELPED: Capture JWT from authenticated session → modify sub claim → POST to /rest/user/account-balances-and-bonuses → check if other user's data returned
+impact: Cross-user financial data disclosure on real-money gambling platform; High severity
+testability: AUTH_HELPED
+[FINAL] Survivors ranked:
+[PARKED] OAuth redirect_uri validation bypass on betpanda.io: REJECTED — /api/auth/authorize on betpanda.io redirects 301 to betpandacasino.io which returns SPA HTML (catch-all). /api/* is entirely SPA catch-all, NOT a real server-side OAuth endpoint. OAuth is likely handled client-side via Cognito SDK or hosted UI on a separate domain. No server-side redirect_uri validation to bypass.
+[NEXT] PROBE: Investigate the Cognito hosted UI domain. Search for Cognito domain references in the SPA bundle or network requests. GET https://betpandacasino.io/rest/user/properties (may return config with Cognito user pool ID/client ID). Also check if `nano-public.s3.eu-west-1.amazonaws.com` bucket is misconfigured (S3 bucket enumeration for cross-tenant data). GET https://nano-public.s3.eu-west-1.amazonaws.com/?list-type=2 (check if bucket listing is enabled).
+[LEARN] REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io/api/auth/authorize which returns SPA HTML (200). All /api/* paths on betpandacasino.io are SPA catch-all. No server-side OAuth endpoint exists at this path. Prior ACCEPTED OAUTH hypothesis was incorrect.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 10+ authenticated REST endpoints. Strongest finding, needs auth for POC.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances, 401 settings); CORS properly pinned reduces cross-origin attack vector.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io CORS: CORS correctly restricts to own origin + credentials.
+[LEARN] REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed.
+[LEARN] REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks probes.
+[LEARN] REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB.
+[RISK] BetPanda: 40 — The OAuth "critical" path is now confirmed FALSE POSITIVE (SPA catch-all removes highest-confidence ATO chain). All three surviving hypotheses require authenticated sessions to demonstrate impact. Top finding (affiliates wildcard CORS+credentials) is real but needs human login. betpandacasino has proper CORS + Cognito JWT server-side enforcement. Cloud surface: Cloudflare CDN everywhere, S3 bucket for assets (potential enumeration), AWS ELB for k8s dashboard (internal). No evidence of SSRF, admin panels, or file upload surfaces. Overall moderate value but all critical impacts gated by authentication.

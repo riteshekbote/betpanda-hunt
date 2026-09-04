@@ -22,3 +22,11 @@
 - 2026-09-04 ACCEPTED OAUTH @ betpanda.io: /api/auth/authorize accepts arbitrary redirect_uri (200 response) — high-confidence passive signal
 - 2026-09-04 ACCEPTED IDOR @ betpandacasino.io: Money-flow REST endpoints confirmed (403/405 responses) — Spring Boot + Cognito JWT, critical business value
 - 2026-09-04 ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
+- 2026-09-04 REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io/api/auth/authorize which returns SPA HTML (200). All /api/* paths on betpandacasino.io are SPA catch-all. No server-side OAuth endpoint exists at this path. Prior ACCEPTED OAUTH hypothesis was incorrect.
+- 2026-09-04 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 10+ authenticated REST endpoints. Strongest finding, needs auth for POC.
+- 2026-09-04 ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances, 401 settings); CORS properly pinned reduces cross-origin attack vector.
+- 2026-09-04 REJECTED MISCONFIG @ betpandacasino.io CORS: CORS correctly restricts to own origin + credentials.
+- 2026-09-04 REJECTED ACTUATOR @ betpandacasino.io/actuator/*: All actuator paths serve SPA HTML.
+- 2026-09-04 ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed.
+- 2026-09-04 REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks probes.
+- 2026-09-04 REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB.
