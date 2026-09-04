@@ -47,3 +47,5 @@
 - 2026-09-04 REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io SPA catch-all; no server-side OAuth endpoint exists
 - 2026-09-04 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: password-reset + 2FA endpoints confirmed under wildcard CORS + credentials.
 - 2026-09-04 REJECTED MISCONFIG @ affiliates.betpanda.io/actuator + api-docs: Spring Boot actuator/OpenAPI not publicly exposed (SPA catch-all).
+- 2026-09-04 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials confirmed via live OPTIONS probe reflecting arbitrary Origin with ACAC: true; 20+ authenticated endpoints including password-reset and 2FA endpoints
+- 2026-09-04 NEW ENDPOINTS @ affiliates.betpanda.io: JS reveals /agent/set-deposit-withdraw-limit (POST, financial), /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates, /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate, /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/

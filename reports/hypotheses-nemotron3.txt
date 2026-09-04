@@ -1,23 +1,28 @@
-## 2026-09-04 19:59:49 UTC [target] (model nemotron3)
-[PRIO] affiliates.betpanda.io/rest/*,8.30,attack_surface=9,business_value=9,tech_exposure=8,gate_ease=8,cloud_surface=7,freshness=7
+## 2026-09-04 22:11:30 UTC [target] (model nemotron3)
+[NEW] affiliates.betpanda.io/rest/* — SPA redeploy (main.ef021e68.js), expanded endpoint surface: /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate, /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/
+[NEW] affiliates.betpanda.io/rest/user/password/reset + /rest/user/set-2fa-setting — CORS+credentials confirmed via OPTIONS preflight (ACAO reflect + ACAC:true), extends ATO/exfil chain to password reset & 2FA disable
+[CHANGED] affiliates.betpanda.io/rest/* — endpoint count now 20+ authenticated REST endpoints (was 10+), all under wildcard CORS + credentials
+[CHANGED] betpandacasino.io/rest/user/authenticate — confirmed real Spring Boot endpoint (403 JSON, not SPA catch-all), requires x-captcha-token header per CORS allow-headers
+[CHANGED] betpandacasino.io — REFRESH_TOKEN cookie model confirmed (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh), limits cross-origin cookie sending
+[PRIO] affiliates.betpanda.io/rest/*,9.05,attack_surface=10,business_value=9,tech_exposure=9,gate_ease=8,cloud_surface=7,freshness=10
 [PRIO] betpandacasino.io/rest/user/*,8.35,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=7
 [PRIO] cable.betpanda.io/cable/user-event,7.05,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=9,cloud_surface=5,freshness=7
+[PRIO] betpandacasino.io/rest/user/authenticate,6.20,attack_surface=6,business_value=8,tech_exposure=7,gate_ease=6,cloud_surface=7,freshness=9
 [PRIO] betpandacasino.io/rest/properties/manifest,5.20,attack_surface=5,business_value=5,tech_exposure=6,gate_ease=9,cloud_surface=8,freshness=9
-[PRIO] nano-public.s3.eu-west-1.amazonaws.com,4.80,attack_surface=4,business_value=4,tech_exposure=5,gate_ease=10,cloud_surface=9,freshness=9
-[HYP] Wildcard CORS + Credentials Enables Cross-Origin Account Takeover
+[HYP] Wildcard CORS + Credentials Enables Cross-Origin Account Takeover + Password Reset/2FA Bypass
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
-confidence: 90
-reasoning: OPTIONS from https://evil.com returns access-control-allow-origin: https://evil.com + access-control-allow-credentials: true. 20+ authenticated endpoints in JS bundle (/rest/user/players, /rest/player/uid/{id}, /rest/transaction/list, /rest/user/account-settings, /rest/user/set-profile, /rest/user/change-password, /rest/user/payout-config, /rest/affiliate/commissions, /agent/set-deposit-withdraw-limit, /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates). Cookie-based auth (401 on /rest/user unauthenticated). Any origin can read/write victim data via credentialed fetch.
-evidence_needed: Successful cross-origin credentialed GET to /rest/user/players or /rest/transaction/list from attacker-controlled origin returning victim PII/transactions; session riding via credentialed fetch
-verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" → confirm ACAO: evil.com + ACAC: true; GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_session>" (auth-helped) → observe data exfiltration
-impact: Cross-origin exfiltration of player PII, transactions, affiliate commissions; account settings/password/payout config modification — CRITICAL
+confidence: 95
+reasoning: OPTIONS from arbitrary origin returns ACAO: <attacker_origin> + ACAC: true. 20+ authenticated endpoints in JS bundle including /rest/user/players, /rest/transaction/list, /rest/user/account-settings, /rest/user/set-profile, /rest/user/change-password, /rest/user/payout-config, /rest/affiliate/commissions, /agent/set-deposit-withdraw-limit, /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates. NEW: /rest/user/password/reset and /rest/user/set-2fa-setting also under wildcard CORS+credentials — enables full ATO chain (password reset → 2FA disable → account takeover). Cookie-based auth (401 on /rest/user unauthenticated). Any origin can read/write victim data via credentialed fetch.
+evidence_needed: Successful cross-origin credentialed GET to /rest/user/players or /rest/transaction/list from attacker-controlled origin returning victim PII/transactions; successful credentialed POST to /rest/user/password/reset or /rest/user/set-2fa-setting triggering account takeover
+verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" → confirm ACAO: evil.com + ACAC: true; GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_session>" (auth-helped) → observe data exfiltration; POST https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <valid_session>" -H "Content-Type: application/json" -d '{"email":"victim@email.com"}' → observe password reset initiation
+impact: Cross-origin exfiltration of player PII, transactions, affiliate commissions; account settings/password/payout config modification; full account takeover via password reset + 2FA disable — CRITICAL
 testability: AUTH_HELPED
 [HYP] BOLA/IDOR on Player Wallet & Balance Endpoints
 class: IDOR
 asset: betpandacasino.io/rest/user/*
 confidence: 80
-reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403). CORS pinned to own origin but server-side authorization not verified. Real-money gambling platform = critical business value. Endpoints accept/return user-specific financial data. REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed.
+reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403). CORS pinned to own origin but server-side authorization not verified. Real-money gambling platform = critical business value. Endpoints accept/return user-specific financial data. REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed. SameSite=Lax limits cross-origin cookie sending but same-origin IDOR remains.
 evidence_needed: Successful cross-user access to /rest/user/account-balances-and-bonuses or /rest/user/settings returning another user's wallet/balance/bonus data; JWT missing/insufficient scope/claim validation
 verify_steps: PASSIVE: GET https://betpandacasino.io/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <victim_jwt>" (auth-helped) → observe 200 with victim data; test horizontal IDOR by modifying user_id/player_id in request body/params; test vertical IDOR via role manipulation in JWT claims
 impact: Cross-tenant wallet/balance/bonus disclosure or tampering on real-money gambling platform — CRITICAL
@@ -33,14 +38,18 @@ impact: Business logic abuse (bonus fraud, metric poisoning, fraud evasion), pot
 testability: PASSIVE
 [PARKED] S3 Bucket Enumeration / SSRF via PWA Manifest Asset Origin: Bucket listing returns 403; manifest URLs are hardcoded with no query param for base URL override — no attack vector confirmed
 [PARKED] OAuth Redirect_URI Validation Bypass: Already REJECTED — betpanda.io/api/auth/authorize 301 redirects to SPA catch-all on betpandacasino.io; no server-side OAuth endpoint
-[FINAL] 1. Wildcard CORS + Credentials Enables Cross-Origin Account Takeover (affiliates.betpanda.io, 90)
+[FINAL] 1. Wildcard CORS + Credentials Enables Cross-Origin Account Takeover + Password Reset/2FA Bypass (affiliates.betpanda.io, 95)
 [FINAL] 2. BOLA/IDOR on Player Wallet & Balance Endpoints (betpandacasino.io, 80)
 [FINAL] 3. Unauthenticated Event Injection with Reflected Input (cable.betpanda.io, 75)
-[NEXT] HUMAN: Login to affiliates.betpanda.io and capture session cookies + Set-Cookie headers. This is the only way to complete the CORS+credentials POC for the top finding (auth-helped probe requires valid affiliate session).
-[LEARN] REJECTED MISCONFIG @ nano-public.s3.eu-west-1.amazonaws.com: S3 bucket listing returns 403 Forbidden; no enumeration possible
-[LEARN] REJECTED SSRF @ betpandacasino.io/rest/properties/manifest: Manifest is static JSON with hardcoded S3 URLs; no user-controllable parameters for URL manipulation
-[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials confirmed via live OPTIONS probe reflecting arbitrary Origin with ACAC: true
+[NEXT] HUMAN: Login to affiliates.betpanda.io and capture session cookies + Set-Cookie headers. This is the only way to complete the CORS+credentials POC for the top finding (auth-helped probe requires valid affiliate session). Then execute: GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <captured_session>" and POST https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <captured_session>" -H "Content-Type: application/json" -d '{"email":"test@victim.com"}'
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials confirmed via live OPTIONS probe reflecting arbitrary Origin with ACAC: true; 20+ authenticated endpoints including password-reset and 2FA endpoints
 [LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances 405, settings 401); CORS pinned but server-side authZ unverified
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
 [LEARN] REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io SPA catch-all; no server-side OAuth endpoint exists
-[RISK] betpanda: 85 — Wildcard CORS+credentials on affiliate money-flow API (CRITICAL cross-origin data exfil/ATO, strongest finding), real-money gambling API with BOLA surface (CRITICAL financial), unauthenticated analytics injection (chaining vector). OAuth ATO path ELIMINATED (false positive). Program scope covers all company-owned infrastructure.
+[LEARN] REJECTED MISCONFIG @ nano-public.s3.eu-west-1.amazonaws.com: S3 bucket listing returns 403 Forbidden; no enumeration possible
+[LEARN] REJECTED SSRF @ betpandacasino.io/rest/properties/manifest: Manifest is static JSON with hardcoded S3 URLs; no user-controllable parameters for URL manipulation
+[LEARN] NEW ENDPOINT @ betpandacasino.io/rest/user/authenticate: Real Spring Boot endpoint (403 JSON, not SPA catch-all). Returns 403 with dummy creds. Likely requires CAPTCHA token (x-captcha-token in CORS allow-headers).
+[LEARN] AUTH MODEL @ betpandacasino.io: REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout. SameSite=Lax limits cross-origin cookie sending.
+[LEARN] NEW ENDPOINTS @ affiliates.betpanda.io: JS reveals /agent/set-deposit-withdraw-limit (POST, financial), /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates, /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate, /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/
+[LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/actuator + api-docs: Spring Boot actuator/OpenAPI not publicly exposed (SPA catch-all).
+[RISK] betpanda: 90 — Wildcard CORS+credentials on affiliate money-flow API now extends to password-reset + 2FA endpoints (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface (CRITICAL financial), unauthenticated analytics injection (chaining vector). OAuth ATO path ELIMINATED (false positive). Program scope covers all company-owned infrastructure. Fresh SPA redeploy expands attack surface.

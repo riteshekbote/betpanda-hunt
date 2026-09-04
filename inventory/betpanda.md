@@ -105,3 +105,10 @@ www.betpanda.io
 - NEW SPA redeploy on affiliates.betpanda.io — JS bundle main.ef021e68.js (previously main.1ae50aab.js). Fresh passive enumeration.
 - NEW Endpoint surface expanded: /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate (GET-gated 401), /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/
 - NEW CORS+credentials coverage extends to password-reset + 2FA endpoints (OPTIONS preflight confirmed ACAO reflect + ACAC:true). ATO/exfil chain on the top finding now includes password reset and 2FA setti
+
+## 2026-09-04 22:13:28 UTC
+- NEW affiliates.betpanda.io/rest/* — SPA redeploy (main.ef021e68.js), expanded endpoint surface: /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate, /rest/agent/list, /rest
+- NEW affiliates.betpanda.io/rest/user/password/reset + /rest/user/set-2fa-setting — CORS+credentials confirmed via OPTIONS preflight (ACAO reflect + ACAC:true), extends ATO/exfil chain to password reset & 
+- CHANGED affiliates.betpanda.io/rest/* — endpoint count now 20+ authenticated REST endpoints (was 10+), all under wildcard CORS + credentials
+- CHANGED betpandacasino.io/rest/user/authenticate — confirmed real Spring Boot endpoint (403 JSON, not SPA catch-all), requires x-captcha-token header per CORS allow-headers
+- CHANGED betpandacasino.io — REFRESH_TOKEN cookie model confirmed (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh), limits cross-origin cookie sending

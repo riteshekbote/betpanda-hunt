@@ -6720,3 +6720,400 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 - [RISK] BetPanda: 45 — Top finding materially strengthened: the wildcard CORS+credentials umbrella now covers password reset, 2FA settings, and deposit/withdraw-limit endpoints (30+ total), turning the one finding into a full cross-origin ATO chain. All POC still gated on an authenticated affiliate session (SameSite flags unknown); casino path remains SameSite=Lax-limited, cable injection lacks output confirmation. Overall moderate-high.
+===== ANALYST bigpickle 2026-09-04 22:13:28 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mcurl -s -m 15 https://affiliates.betpanda.io/ -o /tmp/opencode/aff_root.html -w "HTTP %{http_code} size=%{size_download}\n"; grep -oE 'src="[^"]+\.js[^"]*"' /tmp/opencode/aff_root.html | sort -u
+HTTP 200 size=2024
+src="/main.ef021e68.js"
+[0m
+[0m$ [0mcurl -s -m 15 -o /dev/null -w "af-audit %{http_code}\n" "https://affiliates.betpanda.io/rest/user/account-settings"; sleep 1; curl -s -m 15 -o /dev/null -w "af-payout %{http_code}\n" "https://affiliates.betpanda.io/rest/payouts/single-currency-list"; sleep 1; curl -s -m 15 -o /dev/null -w "af-player %{http_code}\n" "https://affiliates.betpanda.io/rest/player/uid/1?currency=USD"
+af-audit 401
+af-payout 405
+af-player 401
+[0m
+JS bundle unchanged (still main.ef021e68.js). Endpoints remain auth-gated (401/405). Now mining the bundle for hardcoded hosts/config.
+[0m$ [0mcurl -s -m 30 https://affiliates.betpanda.io/main.ef021e68.js -o /tmp/opencode/aff_main.js -w "HTTP %{http_code} size=%{size_download}\n"; grep -oE 'https?://[a-zA-Z0-9.-]+\.[a-z]{2,}[a-zA-Z0-9./?=&_-]*' /tmp/opencode/aff_main.js | sort -u | head -50
+HTTP 200 size=2089581
+http://fb.me/use-check-prop-types
+http://jedwatson.github.io/classnames
+http://momentjs.com/guides/
+http://ricostacruz.com/nprogress
+http://schemas.microsoft.com/office/excel/2006/main
+http://schemas.microsoft.com/office/mac/excel/2008/main
+http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac
+http://schemas.microsoft.com/office/spreadsheetml/2009/9/main
+http://schemas.openxmlformats.org/markup-compatibility/2006
+http://schemas.openxmlformats.org/officeDocument/2006/relationships
+http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument
+http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet
+http://schemas.openxmlformats.org/package/2006/content-types
+http://schemas.openxmlformats.org/package/2006/relationships
+http://schemas.openxmlformats.org/spreadsheetml/2006/main
+http://stuartk.com/jszip
+http://svgjs.dev
+http://www.w3.org/1998/Math/MathML
+http://www.w3.org/1999/xhtml
+http://www.w3.org/1999/xlink
+http://www.w3.org/2000/svg
+http://www.w3.org/2000/xmlns/
+http://www.w3.org/XML/1998/namespace
+https://epicdomain.com/callback/signup?click_id=
+https://getbootstrap.com/
+https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md
+https://github.com/nodeca/pako/blob/main/LICENSE
+https://github.com/remarkjs/react-markdown/blob/main/changelog.md
+https://github.com/syntax-tree/hast-util-to-jsx-runtime
+https://github.com/twbs/bootstrap/blob/main/LICENSE
+https://github.com/twbs/bootstrap/graphs/contributors
+https://keenthemes.com
+https://nano-public.s3-eu-west-1.amazonaws.com/neobet/neobet-icon-96.png
+https://popper.js.org
+https://raw.github.com/Stuk/jszip/main/LICENSE.markdown.
+https://raw.githubusercontent.com/lipis/flag-icons/main/flags/4x3/
+https://reactjs.org/docs/error-decoder.html?invariant=
+https://reactjs.org/docs/forms.html
+https://stuk.github.io/jszip/documentation/howto/read_zip.html
+[0m
+[0m$ [0mgrep -oiE '[a-z0-9-]+\.betpanda[a-z.]*' /tmp/opencode/aff_main.js | sort -u; echo "---strapi---"; grep -oiE '.{0,40}strapi.{0,60}' /tmp/opencode/aff_main.js | head -5; echo "---config/baseUrl---"; grep -oE 'baseUrl.{0,80}' /tmp/opencode/aff_main.js | head -3
+---strapi---
+,"baseUrl");let n=localStorage.getItem("strapiApiUrlOverride");n?this.baseUrl=n:this.baseUrl=t,this.axios=
+t};class IF{constructor(t,n,r){Ie(this,"strapiClient");Ie(this,"contentfulClient");if(t)this.strapiClient=
+ow new Error("Please provide either the Strapi URL or the Contentful URL.")}getClient(){if(this.strapiClie
+nt)return this.strapiClient;if(this.contentfulClient)return this.contentfulClient
+tionPage().then(t=>{if(t)return this.mapStrapiContent(t)});if(this.getClient()instanceof Eu)return this.ge
+---config/baseUrl---
+baseUrl,tG=()=>M_.favicon,nG=async e=>{try{return e.withDeposit?await Vt.post(Yt()+"/us
+baseUrl for "+Ge);return Ze.endsWith("/")||(Ze+="/"),Ze};async function Ye({context:Ge,
+baseUrl");let n=localStorage.getItem("strapiApiUrlOverride");n?this.baseUrl=n:this.base
+[0m
+No hardcoded betpanda hostnames in bundle. Checking strapi config source and config.json.
+[0m$ [0mgrep -oE '.{80}Please provide either the Strapi URL.{80}' /tmp/opencode/aff_main.js | head -2; echo "===config==="; curl -s -m 15 https://affiliates.betpanda.io/config/config.json -w "\nHTTP %{http_code}\n"
+=new _u(t);else if(n)this.contentfulClient=new Eu(n,r,!1);else throw new Error("Please provide either the Strapi URL or the Contentful URL.")}getClient(){if(this.strapiClient)return this.strapiCli
+===config===
+{
+  "baseUrl" : "https://affiliates.betpanda.io/rest"
+}
+
+HTTP 200
+[0m
+[0m$ [0mgrep -oE '.{60}[A-Z_]{2,}_(?:API|URL|ENV|BASE|STRAPI|CMS|CONTENT).{60}' /tmp/opencode/aff_main.js | head; echo "---env/window globals---"; grep -oE 'window\.[A-Za-z_$]+' /tmp/opencode/aff_main.js | sort -u | head -20; echo "---cms urls---"; grep -oE 'cms[^"]{0,60}|contentful[^"]{0,40}' /tmp/opencode/aff_main.js | grep -iE 'http|url|\.com|\.io' | head
+grep: warning: ? at start of expression
+lass",PA(e.className&&e.className.baseVal||"",t))}const Rc={FIXED_CONTENT:".fixed-top, .fixed-bottom, .is-fixed, .sticky-top",STICKY_
+ddingRight",i=this.isRTL?"marginLeft":"marginRight";bo(n,Rc.FIXED_CONTENT).forEach(a=>this.adjustAndStore(r,a,t.scrollBarWidth)),bo(n
+ddingRight",i=this.isRTL?"marginLeft":"marginRight";bo(n,Rc.FIXED_CONTENT).forEach(a=>this.restore(r,a)),bo(n,Rc.STICKY_CONTENT).forE
+SPONSE","ERR_BAD_REQUEST","ERR_CANCELED","ERR_NOT_SUPPORT","ERR_INVALID_URL"].forEach(e=>{J8[e]={value:e}});Object.defineProperties(qt,
+w TypeError("The URL must be of scheme file");throw t.code="ERR_INVALID_URL_SCHEME",t}return Vwe(e)}function Vwe(e){if(e.hostname!=="")
+host must be "localhost" or empty on darwin');throw r.code="ERR_INVALID_FILE_URL_HOST",r}const t=e.pathname;let n=-1;for(;++n<t.length;)if(t
+ path must not include encoded / characters");throw i.code="ERR_INVALID_FILE_URL_PATH",i}}return decodeURIComponent(t)}const Ix=["history","
+SECTION="gameListSection",e.GAMESPOTLIGHT="gameSpotlight",e.SIDE_MENU_CONTENT="sideMenuContent",e.PROMOPAGE="promoPage",e.USERLEVELS="use
+---env/window globals---
+window.ActiveXObject
+window.Apex
+window.CSS
+window.DOMParser
+window.HTMLElement
+window.HandoffAppearAnimations
+window.MotionDebug
+window.PointerEvent
+window.SVG
+window.TreemapSquared
+window.URL
+window.XMLHttpRequest
+window.addEventListener
+window.cancelAnimationFrame
+window.canvg
+window.classNames
+window.clipboardData
+window.document
+window.event
+window.fetch
+---cms urls---
+contentful.com
+contentful.com
+contentful.com
+contentful.com
+contentful.com
+[0m
+Strapi/Contentful CMS URLs are runtime-injected, not hardcoded — client-side override only, dead end. Pivoting to casino SPA bundle for fresh /rest endpoint enumeration.
+[0m$ [0mcurl -s -m 15 https://betpandacasino.io/ -o /tmp/opencode/cas_root.html -w "HTTP %{http_code} size=%{size_download}\n"; grep -oE 'src="[^"]+\.js[^"]*"' /tmp/opencode/cas_root.html | sort -u
+HTTP 200 size=7598
+src="/assets/index-KqswHEbl.js"
+[0m
+[0m$ [0mcurl -s -m 60 https://betpandacasino.io/assets/index-KqswHEbl.js -o /tmp/opencode/cas_main.js -w "HTTP %{http_code} size=%{size_download}\n"; grep -oE '"/rest/[a-zA-Z0-9/_-]+' /tmp/opencode/cas_main.js | tr -d '"' | sort -u
+HTTP 200 size=795572
+[0m
+[0m$ [0mgrep -oE '[a-zA-Z0-9_/.-]*rest[a-zA-Z0-9_/.-]*' /tmp/opencode/cas_main.js | sort -u | head -20; echo "---quoted api paths---"; grep -oE '"[A-Za-z0-9_]*/[a-z][a-zA-Z0-9/_-]{3,}"' /tmp/opencode/cas_main.js | tr -d '"' | sort -u | head -60
+/rest
+8081/rest
+9081/rest
+__rest
+presto
+restore
+---quoted api paths---
+/appmonitors/
+/casino-pages
+/i18n/locales
+/maintenance
+/rest
+/settings
+/spaces/
+/user/account-balances-and-bonuses
+/user/authenticate
+/user/logout
+/user/zendesk/jwt
+application/json
+application/wasm
+application/x-www-form-urlencoded
+multipart/form-data
+[0m
+[0m$ [0mgrep -oE '"/v?[0-9]?/?[a-z][a-zA-Z0-9/_-]{2,}"' /tmp/opencode/cas_main.js | tr -d '"' | sort -u | head -80
+/app
+/appmonitors/
+/casino-pages
+/i18n/locales
+/maintenance
+/rest
+/settings
+/spaces/
+/user/account-balances-and-bonuses
+/user/authenticate
+/user/logout
+/user/zendesk/jwt
+[0m
+New signal: `/user/zendesk/jwt`, `/appmonitors/`, `/settings`, `/maintenance`, `/casino-pages`. Digging deeper for the full path list.
+[0m$ [0mfor kw in zendesk appmonitor maintenance casino-pages spaces settings refresh token wallet deposit withdraw profile bets transaction bonus promo game kyc verify email phone captcha; do c=$(grep -oiE "\"/(${kw}|[a-z.]*/${kw})[a-zA-Z0-9/_.-]*\"" /tmp/opencode/cas_main.js | tr -d '"' | sort -u | tr '\n' ' '); [ -n "$c" ] && echo "$kw => $c"; done
+zendesk => /user/zendesk/jwt 
+appmonitor => /appmonitors/ 
+maintenance => /maintenance 
+casino-pages => /casino-pages 
+spaces => /spaces/ 
+settings => /settings
+[0m
+Casino SPA surface is small but `/rest/user/zendesk/jwt` is new and interesting (Zendesk SSO token). Probing the non-user paths read-only.
+[0m$ [0mcurl -s -m 15 -o /tmp/opencode/zj.txt -w "zendesk-jwt %{http_code}\n" "https://betpandacasino.io/rest/user/zendesk/jwt"; sleep 1; curl -s -m 15 -o /dev/null -w "rest-settings %{http_code}\n" "https://betpandacasino.io/rest/settings"; sleep 1; curl -s -m 15 -o /dev/null -w "rest-maintenance %{http_code}\n" "https://betpandacasino.io/rest/maintenance"; sleep 1; curl -s -m 15 -o /dev/null -w "rest-appmonitors %{http_code}\n" "https://betpandacasino.io/rest/appmonitors/"
+zendesk-jwt 405
+rest-settings 200
+rest-maintenance 200
+rest-appmonitors 404
+[0m
+`/rest/settings` and `/rest/maintenance` return 200 unauth — need to verify real JSON vs SPA catch-all.
+[0m$ [0mcurl -s -m 15 -D - "https://betpandacasino.io/rest/settings" | head -30; echo; echo "===maintenance==="; curl -s -m 15 -D - "https://betpandacasino.io/rest/maintenance" | head -30
+HTTP/2 200 
+date: Fri, 04 Sep 2026 22:10:35 GMT
+content-type: application/json
+cf-ray: a36053388c46c9a0-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcxiBGeeNoCwNeG; HttpOnly; SameSite=None; Secure; Path=/; Expires=Sat, 05 Sep 2026 21:10:35 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+{"id":4,"defaultFiatExchangeCurrency":"EUR","title":"Betpanda","cssOverrideUrl":"https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/bp_live_v35_ae19875aa1.css","pokerEnabled":false,"casinoEnabled":true,"sportsbookEnabled":true,"originalsEnabled":true,"bonusEnabled":true,"racingEnabled":false,"vouchersEnabled":false,"contenfulSpaceId":"d60p0ocvjh9m","contentfulAccessToken":"_cSqCegtOyyrqJV9Wi60IbmuCEn5bZ29OZm4oa151zg","strapiApiUrl":"/cms","blinkLobbyUrl":"","requireUserChannelVerification":false,"requireEmailVerifiedForPasswordReset":true,"requirePhoneVerifiedForPasswordReset":true,"emailSignupAvailable":true,"phoneSignupAvailable":false,"kycOnWithdrawRequired":false,"kycOnDepositRequired":false,"kycOnPlayRequired":false,"kycOnAllRequired":false,"kycAvailable":false,"kycWithdrawNewUsers":false,"kycDepositNewUsers":false,"kycPlayNewUsers":false,"kycAllNewUsers":false,"kycAvailableNewUsers":false,"faqPageEnabled":false,"currencies":[{"code":"uBTC","fractionalDigits":2,"visible":true,"cryptoCurrency":true,"name":"Bitcoin","prefixSymbol":"μ₿ ","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":0.06870900000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":0.07985236303710523830,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"USDT","fractionalDigits":2,"visible":true,"cryptoCurrency":true,"name":"Tether USD","prefixSymbol":"$","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":0.86045042860000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":1.00000000000000000000,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"ETH","fractionalDigits":8,"visible":true,"cryptoCurrency":true,"name":"Ethereum","prefixSymbol":"Ξ","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":2114.49000000000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":2457.42221715246409257236,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"SOL","fractionalDigits":8,"visible":true,"cryptoCurrency":true,"name":"Solana","prefixSymbol":"SOL","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":87.67000000000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":101.88849593885831902531,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"XRP","fractionalDigits":6,"visible":true,"cryptoCurrency":true,"name":"Ripple","prefixSymbol":"x","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":1.21000000000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":1.40624021998424279709,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"USDC","fractionalDigits":2,"visible":true,"cryptoCurrency":true,"name":"USD Coin","prefixSymbol":"$","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":0.86045042860000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":1.00000000000000000000,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"TRX","fractionalDigits":6,"visible":true,"cryptoCurrency":true,"name":"TRON","prefixSymbol":"TRX","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":0.28535300000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":0.33163212024228399577,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"LTC","fractionalDigits":8,"visible":true,"cryptoCurrency":true,"name":"Litecoin","prefixSymbol":"Ł","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":43.78000000000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":50.88032795942987574915,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"BNB","fractionalDigits":8,"visible":true,"cryptoCurrency":true,"name":"Binance Coin","prefixSymbol":"","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":618.82000000000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":719.18146523194142784578,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"DOGE","fractionalDigits":8,"visible":true,"cryptoCurrency":true,"name":"Dogecoin","prefixSymbol":"Ɖ","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":0.07305100000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":0.08489855728104869469,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"SHIB","fractionalDigits":8,"visible":true,"cryptoCurrency":true,"name":"Shiba Inu","prefixSymbol":"","postfixSymbol":" SHIB","cryptoPrices":{"EUR":{"rate":0.00000451000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":0.00000524144081994127,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"TON","fractionalDigits":8,"visible":true,"cryptoCurrency":true,"name":"Toncoin","prefixSymbol":"TON","postfixSymbol":"","cryptoPrices":{"EUR":{"rate":1.20000000000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":1.39461839998437302190,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"SAND","fractionalDigits":8,"visible":true,"cryptoCurrency":true,"name":"SAND (ERC20)","prefixSymbol":"","postfixSymbol":"SAND","cryptoPrices":{"EUR":{"rate":0.03347868000000000000,"currencyDefinition":{"code":"EUR","fractionalDigits":2,"visible":false,"cryptoCurrency":false,"name":"Euro","prefixSymbol":"€","postfixSymbol":""}},"USD":{"rate":0.03890831927932402450,"currencyDefinition":{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}}}},{"code":"USD","fractionalDigits":2,"visible":true,"cryptoCurrency":false,"name":"US Dollar","prefixSymbol":"$","postfixSymbol":""}],"transferLimits":[{"currency":"BNB","minWithdrawAmount":0.0400000000,"maxWithdrawAmount":9.5000000000},{"currency":"BTC","minDepositAmount":0.0000050000,"maxDepositAmount":0.0100000000,"minWithdrawAmount":0.0000050000,"maxWithdrawAmount":0.1000000000,"defaultDepositAmount":0.0010000000},{"currency":"ETH","minWithdrawAmount":0.0025000000,"maxWithdrawAmount":1.5000000000},{"currency":"EUR"},{"currency":"LTC","minWithdrawAmount":0.1300000000,"maxWithdrawAmount":40.0000000000},{"currency":"DOGE","minWithdrawAmount":140.0000000000,"maxWithdrawAmount":34000.0000000000},{"currency":"SAND","minWithdrawAmount":24.0000000000,"maxWithdrawAmount":7500.0000000000},{"currency":"SHIB","minWithdrawAmount":352000.0000000000,"maxWithdrawAmount":365000000.0000000000},{"currency":"TRX","minWithdrawAmount":39.8700000000,"maxWithdrawAmount":30000.0000000000},{"currency":"USDT","minWithdrawAmount":10.0000000000,"maxWithdrawAmount":5000.0000000000},{"currency":"XRP","minWithdrawAmount":5.0000000000,"maxWithdrawAmount":6000.0000000000},{"currency":"uBTC","minWithdrawAmount":160.0000000000,"maxWithdrawAmount":80000.0000000000},{"currency":"USDC","minWithdrawAmount":10.0000000000,"maxWithdrawAmount":5000.0000000000},{"currency":"TON"},{"currency":"USD"},{"currency":"SOL"}],"facebookAppId":"","useStoreInsteadOfDeposit":false,"useInfoTextSignup":false,"showCurrencySelectOnSignup":true,"freshChatEnabled":false,"freshChatWidgetToken":"4558d950-0cee-4796-ba86-f142ab38971d","freshChatWidgetSiteId":"Betpanda.io","freshChatHost":"https://wchat.eu.freshchat.com","freshChatConfig":{"headerProperty":{"appName":"Betpanda.io","appLogo":"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/betpanda-logo.png","backgroundColor":"#1fe88a","foregroundColor":"#ffffff","backgroundImage":""}},"zendeskEnabled":false,"zendeskWidgetKey":"","zendeskKeyId":"","zendeskSharedSecretConfigured":false,"matiEnabled":true,"matiClientId":"6937e08bf53b06f61b5d801a","bundleBonusCurrency":"","skipDepositPageOnRegister":false,"forceWithdrawCurrency":"","googleAnalyticsId":"G-M7E3WDXGSQ","customScripts":"font:https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap\nscript:https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/betpanda_gtm_20240322_f8a8b1e027.js\nscript:https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/countdownv4_0ece004c33.js\nscript:https://betpanda.sptpub.com/bt-renderer.min.js\nscript:https://d3ec3n7kizfkuy.cloudfront.net/pa_664b193768cac40012000b63_ed75c2908d.js\nscript:https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/livechat_d13b168b94.js\nscript:https://d3ec3n7kizfkuy.cloudfront.net/google_elements_d448675c6b.js\nscript:https://d3ec3n7kizfkuy.cloudfront.net/google_pageview_d7963820bf.js\nfeatureFlags:refer-a-friend\nscript:https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/twitter_8f14a89f21.js\nscript:https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/posthog_4373b2606b.js\nscript:https://static.novacloud.one/widget-react/nova-gamification-react.js\ncss:https://static.novacloud.one/brands/betpanda-brand-tokens.css\nscript:https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/bp-vip-v3.js\nscript:https://d3ec3n7kizfkuy.cloudfront.net/raffle_countdown_d02adc4166.js\ncss:https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/bp_promos_v6_39975d9449.css","acquisitionScript":"","menu":{"items":[{"type":"CASINO","translations":{"fr":"Casino","nl":"Casino","en":"Casino","es":"Casino","ko":"카지노","el":"καζίνο","de":"Casino","it":"Casinò","tr":"Kumarhane","pt":"Casino"},"includeInMobileMenu":true,"includeInDesktopMenu":false,"expandSubmenuOnly":true,"supportLink":false,"downloadAppLink":false,"disableSidebarCollapse":false,"includeInSidebarMenu":true,"icon":"custom-icon-bp-casino","subMenu":{"id":0,"defaultCasinoPage":false,"tabs":[{"id":119997,"url":"/casino/","name":"Lobby","icon":"custom-icon-bp-home","type":"CUSTOM","translations":{"de":"Lobby","ja":"ロビー","zh":"赌场大厅","pt":"Salão","fr":"Hall","tr":"Lobi","ko":"로비","it":"Atrio ","el":"κεντρική σελίδα","ar":"الصفحة الرئيسية","cs":"Hlavní Stránka","ru":"Лобби"}},{"id":975397,"url":"/originals/","name":"Originals","icon":"custom-icon-bp-betpanda","type":"CUSTOM","translations":{"nl":"Originelen","ja":"オリジナル","fr":"Originaux","pt":"Originais ","el":"Πρωτότυπα","ko":"베트판다 오리지널","zh":"原创","tr":"Orijinaller","ar":"أصول ","de":"Originale","cs":"Orignals","es":"Originales","it":"Originali","ru":"Оригиналы"}},{"id":973184,"url":"/casino/13/jackpot/","name":"Jackpot","icon":"custom-icon-jack-pot","type":"CUSTOM","translations":{"zh":"大奖","ru":"Джекпот","ja":"ジャックポット","ar":"حالك بوت","ko":"잭팟"}},{"id":421943,"url":"/casino/16/provably-fair/","name":"Provably Fair","icon":"custom-icon-scale","type":"CUSTOM","translations":{"ja":"立証可能な公平ゲーム","es":"Juegos Provably Fair","pt":"Juegos Provably Fair","tr":"Kanıtlanabilir ","ko":"증명 가능한 공정함","el":"Αποδεδειγμένα Δίκαιο","ar":"عادل وقابل للإثبات","zh":"可证明公平","cs":"Prokazatelně Spravedlivé"}},{"id":301868,"url":"/casino/23/table-games/","name":"Table Games","icon":"custom-icon-bp-table-games","type":"CUSTOM","translations":{"de":"Tischspiele","ja":"テーブルゲーム","nl":"Tafelspellen","ko":"테이블 게임","el":"Επιτραπέζια ","zh":"桌上游戏","es":"Juegos de Mesa","pt":"Jogos de Mesa","fr":"Jeux de Table","tr":"Masa Oyunları","it":"Giochi da Tavolo","cs":"Stolní Hry","ru":"Настольные "}},{"id":919834,"url":"/casino/27/grid/","name":"Grid slots","icon":"custom-icon-bp-grid-slots","type":"CUSTOM","translations":{"de":"Gitterschlitze","ja":"グリッドスロット","ko":"그리드 슬롯","el":"Υποδοχές πλέγματος","ar":"فتحات الشبكة","zh":"网格槽","es":"Cascada","pt":"Cascata","it":"Slot della Griglia","nl":"Raster-Sleuven","cs":"Mřížkové Sloty","tr":"Izgara Yuvaları","fr":"Emplacements de Grille","ru":"Слоты с сеткой"}},{"id":371094,"url":"/casino/5/buy-feature/","name":"Buy feature","icon":"custom-icon-bp-buy-feature","type":"CUSTOM","translations":{"ja":"ボーナス購入","fr":"Acheter Bonus","cs":"Bonusový Nákup","pt":"Comprar de Bônus","es":"Comprar de Bono","de":"Bonus Kaufen","nl":"Bonus Kopen","tr":"Bonus Satın Al","ko":"보너스 구매","it":"Acquistare Bonus","el":"Αγορά Μπόνους","ar":"شراء بونص","zh":"购买奖金功能","ru":"Покупка бонуса"}},{"id":944780,"url":"/casino/12/megaways/","name":"Megaways","icon":"custom-icon-bp-megaways","type":"CUSTOM","translations":{"en":"Megaways","de":"Megaways","ja":"メガウェイズ","fr":"Mégaways","nl":"Megaways","pt":"Megaways","tr":"Megaways","es":"Megaways","ko":"메가웨이","it":"Megaways","el":"Megaways","ar":"الطرق الضخمة","zh":"梅威威","cs":"Megaways"}},{"id":422785,"url":"/casino/25/hold-&-win/","name":"Hold & Win","icon":"custom-icon-bp-hold-win","type":"CUSTOM","translations":{"en":"Hold & win","de":"Halten und gewinnen","ja":"ホールド＆ウィン","fr":"Tenez et gagnez","nl":"Houd vast en win","pt":"Segure e ganhe","tr":"Tut ve kazan","es":"Mantener y ganar","ko":"유지하고 승리하세요","it":"Tieni e vinci","el":"Κράτα και κέρδισε","ar":"عقد والفوز","zh":"守住并获胜","cs":"Držte a vyhrajte"}},{"id":613251,"url":"/casino/40/new/","name":"New Games","icon":"custom-icon-boy","type":"CUSTOM","translations":{"de":"Neue Spiele","ko":"새로운 게임","el":"Νέα παιχνίδια","ar":"العاب جديدة","zh":"新游戏","ja":"新ゲーム","es":"Nuevos","pt":"Novos","fr":"Nouveaux Jeux","nl":"Nieuwe Spellen","tr":"Yeni Oyunlar","it":"Nuovi Giochi","cs":"Nové Hry","ru":"Новые игры"}}]}},{"type":"CUSTOM","url":"/casino/page/2/live-casino/","name":"Live Casino","translations":{"ja":"ライブカジノ","tr":"Canlı Casino","pt":"Cassino Ao Vivo","ko":"라이브 카지노 로비","ar":"كازينو مباشر","es":"Casino en Vivo","it":"Casinò dal Vivo","el":"Ζωντανό Καζίνο","de":"Live-Casino","zh":"真人娱乐场","cs":"Živé kasino","fr":"Casino Live","ru":"Лайв-казино"},"includeInMobileMenu":true,"includeInDesktopMenu":false,"expandSubmenuOnly":true,"supportLink":false,"downloadAppLink":false,"disableSidebarCollapse":false,"includeInSidebarMenu":true,"icon":"custom-icon-bp-live-casino","subMenu":{"id":5,"defaultCasinoPage":false,"tabs":[{"id":859556,"url":"/casino/page/2/live-casino/","name":"Lobby","icon":"custom-icon-trof2","type":"CUSTOM","translations":{"en":"Lobby","de":"Lobby","ja":"ロビー","fr":"Hall d'entrée","es":"Vestíbulo","pt":"Salão","tr":"Lobi","ko":"로비","it":"Hall","el":"Αίθουσα","ar":"ردهة","zh":"大堂"}},{"id":685273,"url":"/casino/page/2/live-casino/7/live-roulette/","name":"Roulette","icon":"custom-icon-bingo","type":"CUSTOM","translations":{"ja":"ルーレット","es":"Ruleta","pt":"Roleta","zh":"轮盘","ko":"룰렛","ar":"الروليت","el":"Pουλέτα","ru":"Рулетка"}},{"id":685358,"url":"/casino/page/2/live-casino/8/live-blackjack/","name":"Blackjack","icon":"custom-icon-spades","type":"CUSTOM","translations":{"ja":"ブラックジャック","ar":"بلاك جاك","el":"μπλακτζάκ","zh":"二十一点","ko":"블랙잭","ru":"Блэкджек"}},{"id":19850,"url":"/casino/page/2/live-casino/9/live-baccarat/","name":"Baccarat","icon":"custom-icon-sixdices","type":"CUSTOM","translations":{"ja":"バカラ","ar":"باكارات","es":"Bacará","pt":"Bacará","zh":"百家乐","ko":"바카라","el":"μπακαράς","ru":"Баккара"}},{"id":967337,"url":"/casino/page/2/live-casino/11/game-shows/","name":"Game Shows","icon":"custom-icon-dealer2","type":"CUSTOM","translations":{"de":" Spielshows","ja":" ゲームショー","nl":" Spelshows","tr":" Oyun Gösterileri","ko":" 게임 쇼","el":"Εκπομπές παιχνιδιών","ar":"عروض الألعاب","zh":"游戏节目","es":"Juegos de Show","pt":"Jogos de Show","fr":" Jeux Télévisés","cs":" Herní Představení","it":"Show di Giochi","ru":"Игровые шоу"}},{"id":478001,"url":"/casino/page/2/live-casino/14/dice/","name":"Dice","icon":"custom-icon-diamon","type":"CUSTOM","translations":{"ja":" サイコロ","es":"Dados","pt":"Dados","de":"Würfel","nl":"Dobbelsteen","tr":"Zar","ko":"주사위","it":"Dado","el":"ζάρι","ar":"نرد","zh":"骰子","cs":"Kostka","fr":"Dés","ru":"Игра в кости"}},{"id":214950,"url":"/casino/page/2/live-casino/26/vip-tables/","name":"VIP Tables","icon":"custom-icon-kings","type":"CUSTOM","translations":{"ja":"VIPテーブル","fr":"Tables VIP","ko":"VIP 테이블","zh":"VIP 牌桌","es":"Mesas VIP","pt":"Mesas VIP","de":"VIP-Tische","el":"VIP Τραπέζια","ar":"بلاك جاك VIP","cs":"VIP Stoly","it":"Tavoli VIP","nl":"VIP-Tafels","ru":"VIP-столы"}}]}},{"type":"CUSTOM","url":"/sportsbook/","name":"Sports","translations":{"fr":"Sportif","ja":"スポーツ","pt":"Esportes","tr":"Spor","es":"Deportes","ko":"스포츠","el":"Αθλητισμός","ar":"الرياضة","zh":"运动的","cs":"Sportovní","de":"Sportwetten","nl":"Sport","ru":"Спорт"},"includeInMobileMenu":true,"includeInDesktopMenu":false,"expandSubmenuOnly":true,"supportLink":false,"downloadAppLink":false,"disableSidebarCollapse":false,"includeInSidebarMenu":true,"icon":"custom-icon-bp-sports","subMenu":{"id":8,"defaultCasinoPage":false,"tabs":[{"id":362911,"url":"/sportsbook/","name":"Lobby","icon":"custom-icon-bp-home","type":"CUSTOM","translations":{"ja":"ロビー","zh":"主页","pt":"Salão","fr":"Hall","tr":"Lobi","ko":"로비","it":"Atrio","el":"κεντρική σελίδα","ar":"الصفحة الرئيسية","cs":"Hlavní Stránka","ru":"Лобби"}},{"id":166732,"url":"/sportsbook/?bt-path=%2Fbets","name":"My bets","icon":"custom-icon-dollarsign","type":"CUSTOM","translations":{"ja":"マイベット","de":"Meine Wetten","tr":"Bahislerim","ko":"내 베팅","el":"Τα στοιχήματά μου","ar":"رهاني","zh":"我的赌注","fr":"Mes Paris","it":"Le mie Scommesse","pt":"Minhas Apostas","es":"Mis Apuestas","cs":"Moje Sázky","nl":"Mijn Bets","ru":"Мои ставки"}},{"id":765426,"url":"/sportsbook/?bt-path=%2Flive","name":"Live","icon":"custom-icon-bp-live","type":"CUSTOM","translations":{"ja":"ライブ","es":"En Vivo","pt":"Ao Vivo","el":"Ζωντανά","zh":"直播","cs":"Živě","fr":"En Direct","ru":"Лайв"}},{"id":571400,"url":"/sportsbook/?bt-path=%2Fevent-builder","name":"Upcoming Events","icon":"custom-icon-bp-events","type":"CUSTOM","translations":{"ja":"近日開始イベント","zh":"即将举行的活动","it":"Prossimi eventi","de":"Kommende Veranstaltungen","fr":"Événements à venir","nl":"Aankomende evenementen","tr":"Yaklaşan Etkinlikler","ko":"다가오는 이벤트","ar":"الأحداث القادمة","es":"Próximos eventos","ru":"Предстоящие события"}},{"id":672672,"url":"/sportsbook/?bt-path=%2Ffavorites","name":"Favourites","icon":"custom-icon-bp-favourites","type":"CUSTOM","translations":{"ja":"お気に入り","de":"Favoriten","fr":"Favoris","it":"Preferiti","nl":"Favorieten","ko":"즐겨찾기","es":"Favoritos","pt":"Favoritos","tr":"Favoriler","zh":"收藏夹","cs":"Oblíbené","ru":"Избранное"}},{"id":233330,"url":"/sportsbook/?bt-path=%2Fsoccer-1","name":"Soccer","icon":"custom-icon-bp-sport-soccer","type":"CUSTOM","translations":{"ja":"サッカー","fr":"Football","tr":"Futbol","it":"Calcio","es":"Fútbol","pt":"Futebol","ko":"축구","zh":"足球","el":"ποδόσφαιρο","nl":"Voetbal","ar":"كرة القدم","cs":"Fotbal","de":"Fußball","ru":"Футбол"}},{"id":85285,"url":"/sportsbook/?bt-path=%2Fbasketball-2","name":"Basketball","icon":"custom-icon-bp-sport-basketball","type":"CUSTOM","translations":{"ja":"バスケットボール","nl":"Basketbal","pt":"Basquetebol","tr":"Basketbol","es":"Baloncesto","it":"Pallacanestro","ko":"농구","el":"Μπάσκετ","ar":"كرة السلة","zh":"篮球","cs":"Basketbal","ru":"Баскетбол"}},{"id":598508,"url":"/sportsbook/?bt-path=%2Fice-hockey-4","name":"Ice Hockey","icon":"custom-icon-bp-sport-icehockey","type":"CUSTOM","translations":{"ja":"アイスホッケー","fr":"Hockey sur Glace","nl":"IJshockey","tr":"Buz Hokeyi","it":"Hockey su Ghiaccio","es":"Hockey sobre Hielo","pt":"Hóquei no Gelo","zh":"冰球","ko":"아이스하키","cs":"Lední Hokej","ar":"هوكي الجليد","el":"χόκεϊ επί πάγου","de":"Eishockey","ru":"Хоккей"}},{"id":911458,"url":"/sportsbook/?bt-path=%2Ftennis-5","name":"Tennis","icon":"custom-icon-bp-sport-tennis","type":"CUSTOM","translations":{"ja":"テニス","pt":"Ténis","ko":"테니스","el":"Τένις","ar":"التنس","zh":"网球","cs":"Tenis","ru":"Теннис","es":"Tenis"}},{"id":250690,"url":"/sportsbook/?bt-path=%2Ffifa-300","name":"Fifa","icon":"custom-icon-bp-fifa","type":"CUSTOM"}]}},{"type":"CUSTOM","url":"/originals/","name":"Originals","translations":{"de":"Originale","nl":"Originelen","ja":"オリジナル","fr":"Originals","es":"Originales","pt":"Originais","el":"Πρωτότυπα","ko":"베트판다","zh":"原创","cs":"Originály","tr":"Orijinaller"},"includeInMobileMenu":true,"includeInDesktopMenu":false,"expandSubmenuOnly":false,"supportLink":false,"downloadAppLink":false,"disableSidebarCollapse":false,"includeInSidebarMenu":false,"icon":"custom-icon-bp-betpanda"},{"type":"CUSTOM","url":"/promo/promotions/","name":"Promotions","translations":{"en":"Promotions","nl":"Promoties","pt":"Promoções","tr":"Promosyonlar","es":"Promociones","ko":"프로모션","ja":"プロモーション","it":"Promozioni","el":"Προσφορές","ar":"الترقيات","zh":"促销活动","cs":"Propagační Akce","de":"Aktionen","ru":"Акции"},"includeInMobileMenu":false,"includeInDesktopMenu":false,"expandSubmenuOnly":false,"supportLink":false,"downloadAppLink":false,"disableSidebarCollapse":false,"includeInSidebarMenu":true,"icon":"custom-icon-bp-promotions"},{"type":"CUSTOM","url":"/promo/vip-club/","name":"VIP Club","translations":{"de":"VIP-Club","fr":"Club VIP","es":"Clube VIP","pt":"Clube VIP","tr":"VIP Kulübü","cs":"VIP klub","zh":"VIP俱乐部","ru":"VIP-клуб","ja":"VIPクラブ","ko":"VIP 클럽","ar":"نادي كبار الشخصيات"},"includeInMobileMenu":false,"includeInDesktopMenu":false,"expandSubmenuOnly":true,"supportLink":false,"downloadAppLink":false,"disableSidebarCollapse":false,"includeInSidebarMenu":true,"icon":"custom-icon-boy"},{"type":"CUSTOM","url":"/info/sponsorships/","name":"Sponsorships","translations":{"de":"Sponsoring","ja":"スポンサーシップ","fr":"Sponsoring","nl":"Sponsorschappen","pt":"Patrocínios","tr":"Sponsorluklar","es":"Patrocinios","ko":"스폰서십","it":"Sponsorizzazioni","el":"Χορηγίες","ar":"الرعايات","zh":"赞助合作","cs":"Sponzorství","ru":"Спонсорства"},"includeInMobileMenu":false,"includeInDesktopMenu":false,"expandSubmenuOnly":false,"supportLink":false,"downloadAppLink":false,"disableSidebarCollapse":false,"includeInSidebarMenu":true,"icon":"custom-icon-sixdices"},{"type":"CUSTOM","url":"/promo/world-cup-750k-race","name":"WC 750K Race","includeInMobileMenu":false,"includeInDesktopMenu":false,"expandSubmenuOnly":false,"supportLink":false,"downloadAppLink":false,"disableSidebarCollapse":false,"includeInSidebarMenu":false,"icon":"custom-icon-takeof"}],"footerItems":[],"settings":{"position":"FIXED","iconPack":"https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/pbicons/style.css","menuComponents":{"loggedInComponent":"CASHBACK","loggedOutComponent":"CASHBACK"},"enabeLogoSideMenu":true,"enableLogoTopMenu":false,"partialCollapsed":false}},"loginRedirectUrl":"/casino","useAmplitude":true,"amplitudeApiKey":"0c3d032749c726f662b6477cd49f592d","clientManifest":"{\n  \"name\": \"Betpanda\",\n  \"short_name\": \"Betpanda\",\n  \"description\": \"Leading Crypto Gaming Platform\",\n  \"lang\": \"en\",\n  \"start_url\": \"/app\",\n  \"display\": \"standalone\",\n  \"theme_color\": \"#171F2B\",\n  \"background_color\": \"#171F2B\",\n  \"icons\": [\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-1024.png\",\n      \"sizes\": \"1024x1024\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-128.png\",\n      \"sizes\": \"128x128\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-144.png\",\n      \"sizes\": \"144x144\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-192.png\",\n      \"sizes\": \"192x192\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-196.png\",\n      \"sizes\": \"196x196\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-256.png\",\n      \"sizes\": \"256x256\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-32.png\",\n      \"sizes\": \"32x32\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-36.png\",\n      \"sizes\": \"36x36\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-48.png\",\n      \"sizes\": \"48x48\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-512.png\",\n      \"sizes\": \"512x512\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-64.png\",\n      \"sizes\": \"64x64\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-72.png\",\n      \"sizes\": \"72x72\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-96.png\",\n      \"sizes\": \"96x96\",\n      \"type\": \"image/png\"\n    }\n  ]\n}","pwaEnabled":true,"currencyOrder":"uBTC,USDT,ETH,SOL,XRP,USDC,TRX,LTC,BNB,DOGE,SHIB,TON,SAND","languageOrder":"","pushNotificationsEnabled":true,"loginsRequiredForPushPrompt":9999,"noOfTimeBeforePromptingAgain":5,"appPopupEnabled":true,"appNativePromptEnabled":false,"delayAppInstallPopup":2,"appInstallButtonsEnabled":true,"countryBlockEnabled":true,"pwaEnabledIOS":true,"pwaEnabledAndroid":true,"pwaEnabledWindows":true,"iosMediaJSON":"{\n  \"type\": \"image/png\",\n  \"images\": [\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-36.png\",\n      \"sizes\": \"36x36\",\n      \"type\": \"image/png\"\n    },\n    {\n      \"src\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-48.png\",\n      \"icons\": [\n        {\n          \"type\": \"all\",\n          \"size\": \"180x180\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-256.png\"\n        }\n      ],\n      \"splashScreens\": [\n        {\n          \"type\": \"iPhone 12, 12 Pro (1170px x 2532px)\",\n          \"width\": \"390px\",\n          \"height\": \"844px\",\n          \"pixelRatio\": \"3\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/iphone-12-pro-1170x2532.png\"\n        },\n        {\n          \"type\": \"iPhone 12 Pro Max (1284px x 2778px)\",\n          \"width\": \"428px\",\n          \"height\": \"926px\",\n          \"pixelRatio\": \"3\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/iphone-12-pro-max-1284x2778.png\"\n        },\n        {\n          \"type\": \"iPhone Xs Max (1242px x 2688px)\",\n          \"width\": \"414px\",\n          \"height\": \"896px\",\n          \"pixelRatio\": \"3\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/LaunchImage-1242%403x~iphoneXsMax-portrait_1242x2688.png\"\n        },\n        {\n          \"type\": \"iPhone Xr (828px x 1792px)\",\n          \"width\": \"414px\",\n          \"height\": \"896px\",\n          \"pixelRatio\": \"2\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/LaunchImage-828%402x~iphoneXr-portrait_828x1792.png\"\n        },\n        {\n          \"type\": \"iPhone X, Xs, 12 mini (1125px x 2436px)\",\n          \"width\": \"375px\",\n          \"height\": \"812px\",\n          \"pixelRatio\": \"3\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/LaunchImage-1125%403x~iphoneX-portrait_1125x2436.png\"\n        },\n        {\n          \"type\": \"iPhone 8 Plus, 7 Plus, 6s Plus, 6 Plus (1242px x 2208px)\",\n          \"width\": \"414px\",\n          \"height\": \"736px\",\n          \"pixelRatio\": \"3\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/LaunchImage-1242%403x~iphone6s-portrait_1242x2208.png\"\n        },\n        {\n          \"type\": \"iPhone 8, 7, 6s, 6 (750px x 1334px)\",\n          \"width\": \"375px\",\n          \"height\": \"667px\",\n          \"pixelRatio\": \"2\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/LaunchImage-750%402x~iphone6-portrait_750x1334.png\"\n        },\n        {\n          \"type\": \"iPad Pro 12.9\\\" (2048px x 2732px)\",\n          \"width\": \"1024px\",\n          \"height\": \"1366px\",\n          \"pixelRatio\": \"2\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/LaunchImage-Portrait%402x~ipad_2048x2732.png\"\n        },\n        {\n          \"type\": \"iPad Mini, Air (1536px x 2048px)\",\n          \"width\": \"768px\",\n          \"height\": \"1024px\",\n          \"pixelRatio\": \"2\",\n          \"href\": \"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/splash/LaunchImage-Portrait%402x~ipad_1536x2048.png\"\n        }\n      ]\n    }\n  ]\n}","requiredUserAttributes":[],"tokenLoginEnabled":false,"sportsbookProvider":"BETBY","operatorName":"Betpandacasino.io","operatorIconUrl":"https://nano-public.s3.eu-west-1.amazonaws.com/operators/betpanda/pwa/icons/Icon-128.png","mfaEnabled":true,"onramperCurrencies":"","showUserLevel":true,"loginRequestCoolDown":30,"loginRequestInterval":15,"maxLoginCount":4,"loginThrottleEnabled":true,"tippingEnabled":false,"displayFiatExchangeByDefault":true,"startPokerOnOpen":false,"widgets":[{"scriptUrl":"https://static.novacloud.one/widget-react/nova-component-inject.js","variableName":"novaRaffle"},{"scriptUrl":"https://d3ec3n7kizfkuy.cloudfront.net/world_cup_750k_race_widget_min_final_5_7bc97a838c.js","variableName":"xpRaceWidget","name":"XP Race","description":"XP Race leaderboard (embed only)"},{"scriptUrl":"https://d3ec3n7kizfkuy.cloudfront.net/xp_loading_widget_v7_a50889223c.js","variableName":"xpLoadingWidget","name":"XP Loading","description":"XP tier progress bar (embed only)"}],"reCaptchaSettings":{"enabled":true,"siteKey":"6LfuwEkrAAAAAKJn2Eo7w-LhphI7zuR8TpCR3mRP","actions":["register","login"]},"maxVerificationAttempts":5,"canonicalBaseUrl":"https://betpandacasino.io","fingerprintEnabled":true,"fingerprintDomain":"fp.betpanda.io","fingerprintPublicKey":"CUg8OobrwnSZYDqaFy5N"}
+===maintenance===
+HTTP/2 200 
+date: Fri, 04 Sep 2026 22:10:36 GMT
+content-type: application/json
+cf-ray: a360533ef85a060a-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqWZHTtbN3KbiwN; HttpOnly; SameSite=None; Secure; Path=/; Expires=Sat, 05 Sep 2026 21:10:36 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+{"serverTime":1788559836327,"maintenanceWindow":{"id":-1,"start":1788559836327,"announceBeforeStart":1788559836327,"enabled":false,"category":"ALL"},"productMaintenance":[]}
+[0m
+Real unauth Spring Boot endpoints confirmed: `/rest/settings` exposes full platform config INCLUDING `strapiApiUrl":"/cms"` and a Contentful access token. Probing `/cms`.
+[0m$ [0mcurl -s -m 15 -D - "https://betpandacasino.io/cms" -o /tmp/opencode/cms_cas.html -w "\nHTTP %{http_code} size=%{size_download}\n"; head -c 400 /tmp/opencode/cms_cas.html; echo; echo "======affiliates cms======"; sleep 1; curl -s -m 15 -D - "https://affiliates.betpanda.io/cms" -o /tmp/opencode/cms_aff.html -w "\nHTTP %{http_code} size=%{size_download}\n"; head -c 400 /tmp/opencode/cms_aff.html
+HTTP/2 301 
+date: Fri, 04 Sep 2026 22:10:55 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/cms/
+server: cloudflare
+cf-ray: a36053b6caee780e-IAD
+
+
+HTTP 301 size=167
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+
+======affiliates cms======
+HTTP/2 200 
+date: Fri, 04 Sep 2026 22:10:56 GMT
+content-type: text/html
+server: cloudflare
+last-modified: Thu, 30 Jul 2026 12:02:44 GMT
+accept-ranges: bytes
+cf-cache-status: DYNAMIC
+cf-ray: a36053bd4e476cf9-IAD
+
+
+HTTP 200 size=2024
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Affiliate</title>
+    <script type="module" crossorigin src="/main.ef021e68.js"></script>
+    <link rel="stylesheet" href="/index.82c23d1f.css">
+  </head
+[0m
+`/cms/` on casino redirects (not SPA catch-all). Following.
+[0m$ [0mcurl -s -m 15 -D - -L "https://betpandacasino.io/cms/" -o /tmp/opencode/cms2.html -w "\nHTTP %{http_code} size=%{size_download}\n"; head -c 600 /tmp/opencode/cms2.html
+HTTP/2 404 
+date: Fri, 04 Sep 2026 22:10:59 GMT
+content-type: application/json; charset=utf-8
+content-length: 94
+cf-ray: a36053cdfe98060a-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcy1A7dEKib9dun; HttpOnly; SameSite=None; Secure; Path=/; Expires=Sat, 05 Sep 2026 21:10:59 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+access-control-allow-credentials: true
+content-security-policy: img-src 'self' data: blob: https://d3ec3n7kizfkuy.cloudfront.net ;media-src 'self' data: blob: market-assets.strapi.io https://d3ec3n7kizfkuy.cloudfront.net ;connect-src 'self' https:;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+
+
+HTTP 404 size=94
+{"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+[0m
+Real Strapi v4 instance confirmed at `/cms/` (Strapi error JSON + `market-assets.strapi.io` in CSP). Enumerating public content-type API.
+[0m$ [0mcurl -s -m 15 -o /tmp/opencode/h.txt -w "health %{http_code} " "https://betpandacasino.io/cms/_health"; head -c 200 /tmp/opencode/h.txt; echo; sleep 1; curl -s -m 15 -o /tmp/opencode/uc.txt -w "users-count %{http_code} " "https://betpandacasino.io/cms/api/users/count"; head -c 300 /tmp/opencode/uc.txt; echo; sleep 1; curl -s -m 15 -o /tmp/opencode/cp.txt -w "casino-pages %{http_code} " "https://betpandacasino.io/cms/api/casino-pages"; head -c 300 /tmp/opencode/cp.txt
+health 404 {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+users-count 404 {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+casino-pages 404 {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+[0m
+[0m$ [0mgrep -oE '"/[a-zA-Z0-9_-]{3,30}(/[a-zA-Z0-9_-]{2,30})?"' /tmp/opencode/cas_main.js | tr -d '"' | grep -viE '^/(assets|casino|sportsbook|promo|info|app|originals|user|rest|i18n|favicon|robots)' | sort -u | head -60
+/412
+/416
+/417
+/419
+/maintenance
+/settings
+[0m
+Guessing blindly — let me mine the casino bundle for actual Strapi content-type paths.
+Casino uses Contentful (space `d60p0ocvjh9m` + access token from settings). Verifying token class: delivery (public-by-design) vs management (critical).
+[0m$ [0mcurl -s -m 20 -o /tmp/opencode/cf_delivery.json -w "delivery %{http_code} " "https://cdn.contentful.com/spaces/d60p0ocvjh9m/entries?access_token=_cSqCegtOyyrqJV9Wi60IbmuCEn5bZ29OZm4oa151zg&limit=5"; head -c 400 /tmp/opencode/cf_delivery.json; echo; sleep 1; curl -s -m 20 -o /tmp/opencode/cf_mgmt.json -w "management %{http_code} " "https://api.contentful.com/spaces/d60p0ocvjh9m?access_token=_cSqCegtOyyrqJV9Wi60IbmuCEn5bZ29OZm4oa151zg"; head -c 300 /tmp/opencode/cf_mgmt.json
+delivery 200 {"sys":{"type":"Array"},"total":0,"skip":0,"limit":5,"items":[]}
+
+management 401 {"requestId":"e4331521-78f8-4055-92a4-1017e2d221f7","message":"The access token you sent could not be found or is invalid.","sys":{"type":"Error","id":"AccessTokenInvalid"}}
+[0m
+Contentful token = public Delivery token (works on CDN, 0 entries) → not a finding. The Strapi `/cms` is promising — trying deterministic Strapi routes incl. docs plugin (would reveal all content types).
+[0m$ [0mcurl -s -m 15 -o /tmp/opencode/s1.txt -w "docs/v1.0.0 %{http_code} " "https://betpandacasino.io/cms/documentation/v1.0.0"; head -c 200 /tmp/opencode/s1.txt; echo; sleep 1; curl -s -m 15 -o /tmp/opencode/s2.txt -w "auth-local %{http_code} " "https://betpandacasino.io/cms/api/auth/local"; head -c 200 /tmp/opencode/s2.txt; echo; sleep 1; curl -s -m 15 -o /tmp/opencode/s3.txt -w "users-permissions-roles %{http_code} " "https://betpandacasino.io/cms/api/users-permissions/roles"; head -c 200 /tmp/opencode/s3.txt
+docs/v1.0.0 404 {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+auth-local 404 {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+users-permissions-roles 404 {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+[0m
+Strapi is a bare instance — no public content types, no plugins, no docs. Dead end. Rounding out the public `/rest` surface before writing up.
+[0m$ [0mcurl -s -m 15 -o /tmp/opencode/i18n.txt -w "i18n-locales %{http_code} " "https://betpandacasino.io/rest/i18n/locales"; head -c 200 /tmp/opencode/i18n.txt; echo; sleep 1; curl -s -m 15 -o /tmp/opencode/games.txt -w "games %{http_code} " "https://betpandacasino.io/rest/games"; head -c 200 /tmp/opencode/games.txt; echo; sleep 1; curl -s -m 15 -o /tmp/opencode/promo.txt -w "promo-pages %{http_code} " "https://betpandacasino.io/rest/promo/pages"; head -c 200 /tmp/opencode/promo.txt
+i18n-locales 404 {"timestamp":1788559938771,"status":404,"error":"Not Found","path":"/rest/i18n/locales"}
+games 404 {"timestamp":1788559940277,"status":404,"error":"Not Found","path":"/rest/games"}
+promo-pages 404 {"timestamp":1788559941757,"status":404,"error":"Not Found","path":"/rest/promo/pages"}
+[0m
+PROBE COMPLETE. Writing up the cycle.
+
+---
+
+**STEP 1 — DELTA**
+- [NEW] `betpandacasino.io/rest/settings`: real unauth Spring JSON (200) — full platform config incl. `strapiApiUrl:"/cms"`, Contentful space+token, freshchat/mati/amplitude/fingerprint public keys, per-currency withdraw limits, KYC flags, throttle settings. Also `x-site-name-id: betpandacasino_io` header (multi-tenant platform signal).
+- [NEW] `betpandacasino.io/rest/maintenance`: real unauth JSON (serverTime + maintenanceWindow + productMaintenance) — same Spring backend, intended-public.
+- [NEW] `betpandacasino.io/cms`: real Strapi v4 (Strapi error format + `market-assets.strapi.io` CSP). All probed routes 404 (`_health`, `api/auth/local`, `api/users-permissions/roles`, `api/casino-pages`, docs plugin) — zero unprotected surface, dead end.
+- [NEW] `betpandacasino.io/rest/user/zendesk/jwt`: exists (405 GET, POST-only) — Zendesk SSO JWT gate.
+- [NEW] `nano-public` Contentful token class verified: `cdn.contentful.com` 200 (0 entries) / `api.contentful.com` 401 → Delivery token, public-by-design → not a finding.
+- [CHANGED] affiliates SPA unchanged (`main.ef021e68.js`); casino SPA `index-KqswHEbl.js` enumerated — minimal /user surface (authenticate, logout, account-balances-and-bonuses, zendesk/jwt).
+
+**STEP 2 — PRIORITIZE**
+- [PRIO] affiliates.betpanda.io/rest/*: 6.8 (b=9,a=9,g=3 auth-gated — CORS+creds+30 endpoints)
+- [PRIO] betpandacasino.io/rest/user/*: 6.4 (b=9,t=8 Cognito JWT, g=2)
+- [PRIO] betpandacasino.io/rest/settings+maintenance: 5.9 (g=10,f=10 but b=4 public-by-design; tenant-headers angle unproven)
+- [PRIO] cable.betpanda.io: 5.7 (g=10 unauth ingestion)
+
+**STEP 3 — HYPOTHESES**
+[HYP] Wildcard CORS + credentials enables cross-origin exfil/ATO incl. password-reset + 2FA + deposit-limit tampering on affiliates API
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 87
+reasoning: OPTIONS preflight reflects any origin + ACAC:true (verified on /rest/user/password/reset). 30+ authed routes; /rest/user/metrics/affiliate GET-gated 401 — cleanest cross-origin exfil. ATO chain: change-password, set-2fa-setting, agent deposit-withdraw-limit. All gated on affiliate session cookie; SameSite flags unconfirmed.
+evidence_needed: (1) Set-Cookie flags from affiliate login; (2) credentialed cross-origin GET returning data; (3) credentialed cross-origin POST returning success
+verify_steps: AUTH_HELPED: login → GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -b session → verify reflected ACAO + data; then POST /rest/user/set-2fa-setting with evil Origin
+impact: Cross-tenant player PII/financial exfil, password reset, 2FA disable, deposit/withdraw-limit tampering → ATO. Critical (~9.1-9.3)
+testability: AUTH_HELPED
+
+[HYP] IDOR/BOLA on casino money-flow REST endpoints via Cognito JWT
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 68
+reasoning: Spring Boot + Cognito JWT confirmed; balances POST-only 405, settings 401, REFRESH_TOKEN cookie SameSite=Lax. No per-user ACL evidence beyond JWT sub claim. CORS pinned reduces cross-origin but same-origin IDOR viable.
+evidence_needed: authenticated session + JWT sub/role manipulation → victim-identity balances/settings diff
+verify_steps: AUTH_HELPED: capture JWT → mutate sub claim → POST /rest/user/account-balances-and-bonuses with victim-identity token → diff response
+impact: Cross-user wallet/balance disclosure on real-money platform; High
+testability: AUTH_HELPED
+
+[HYP] Unauthenticated event ingestion enables stored-XSS/metrics poisoning on admin surfaces
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 65
+reasoning: POST accepts arbitrary JSON, no auth, CORS *, 200 "processed and saved". XSS payloads in fields could render in admin/reporting UIs. No output-side verification possible without account.
+evidence_needed: stored data rendering to other users / admin dashboard consumption
+verify_steps: AUTH_HELPED: POST JSON with XSS payload in referrer/registeredOn → observe admin/reporting interface
+impact: Stored XSS on admin panels / metrics poisoning; Medium
+testability: AUTH_HELPED
+
+**STEP 4 — SELF-CRITIQUE**
+- [PARKED] Public `/rest/settings` exposure: client-consumed pre-auth by design; Contentful token is Delivery-class (cdn-only), widget/analytics keys public-equivalent. No non-public data observed. Not a finding.
+- [PARKED] `x-site-name-id` tenant-confusion: header accepted on public endpoints but only tenant's own public config returned; no cross-tenant evidence. confidence 30.
+- [PARKED] Strapi `/cms`: confirmed live but entirely 404 public surface.
+- [FINAL] survivors ranked: affiliates MISCONFIG (87) > casino IDOR (68) > cable BUSLOGIC (65).
+
+**STEP 5 — NEXT ACTION**
+- [NEXT] HUMAN: Login to affiliates.betpanda.io, capture `Set-Cookie` (SameSite/HttpOnly flags) + session cookie, then run the credentialed cross-origin GET `/rest/user/metrics/affiliate` with `Origin: https://evil.com` — sole remaining blocker for the top finding; all three survivors are AUTH_HELPED.
+
+**STEP 6 — LEARNING**
+- [LEARN] ACCEPTED SURFACE @ betpandacasino.io/rest/settings + /rest/maintenance: real unauth Spring JSON; multi-tenant platform confirmed via x-site-name-id header + `operators/` S3 prefix. Intended-public client config — finding only if non-public tenant data ever leaks through these.
+- [LEARN] REJECTED CRED @ Contentful d60p0ocvjh9m token `_cSq...a151zg`: Delivery-class (cdn 200 with 0 entries; management api 401) — public-by-design, not a finding.
+- [LEARN] REJECTED MISCONFIG @ betpandacasino.io/cms: Strapi v4 confirmed (error format + CSP) but all public routes 404 — no unauth CMS surface.
+- [LEARN] REJECTED XSS @ betpandacasino.io/rest/settings `customScripts`: admin-controlled script injection list is client-consumed public config, not attacker-controllable.
+- [LEARN] ACCEPTED ENDPOINT @ betpandacasino.io/rest/user/zendesk/jwt: real POST-gated endpoint (405 GET) — Zendesk SSO JWT gate, auth unknown.
+
+**STEP 7 — RISK**
+- [RISK] BetPanda: 45 — Affiliates CORS+credentials (30+ endpoints, password-reset/2FA/financial tampering) remains the top channel; casino Spring/Cognito backend mapped (public config + auth-gated user surface now fully bounded). New cycle added real unauth config endpoints and confirmed CMS token/CDN/Strapi are by-design non-findings. All critical impact remains gated behind an authenticated affiliate/casino session.

@@ -70,3 +70,9 @@ https://cable.betpanda.io/cable/user-event -> HTTP 405
 https://flags.betpanda.io` -> ERR <urlopen error [Errno -2] Name or service not know
 https://affiliates.betpanda.io/rest/user -> HTTP 401
 https://affiliates.betpanda.io/rest/user/metrics/affiliate -> HTTP 401
+
+## 2026-09-04 22:13:35 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate -> HTTP 401
