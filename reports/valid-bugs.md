@@ -10,3 +10,7 @@
 - 2 lead(s) marked VALID at 2026-09-05 00:13:34 UTC
   - **VERDICT: VALID**
   - | CORS+credentials | MISCONFIG | affiliates.betpanda.io | **VALID** | 9.1 |
+
+- 2 lead(s) marked VALID at 2026-09-05 04:39:08 UTC
+  - **VERDICT: VALID**
+  - | 1 | CORS+credentials ATO chain | affiliates.betpanda.io | **VALID** | 9.1 |
