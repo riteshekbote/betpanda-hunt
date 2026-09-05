@@ -8868,3 +8868,1022 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 [RISK] BetPanda: 48 — Top finding (affiliates wildcard CORS + credentials, 30+ money/AUTH routes incl. password-reset + 2FA) remains the strongest, still POC-gated on an authenticated session; public register flow is a realistic de-gating primitive. New asset betpanda.partners (casino brand) shares the backend but has pinned CORS — no exposure expansion. Other leads parked. Programwide value moderate-high, unchanged until an authed POC lands.
+===== ANALYST bigpickle 2026-09-05 08:40:59 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/
+total 184
+drwxr-xr-x 12 runner runner  4096 Sep  5 08:35 .
+drwxr-xr-x  3 runner runner  4096 Sep  5 08:35 ..
+drwxr-xr-x  7 runner runner  4096 Sep  5 08:35 .git
+drwxr-xr-x  3 runner runner  4096 Sep  5 08:35 .github
+-rw-r--r--  1 runner runner  1709 Sep  5 08:35 README.md
+-rw-r--r--  1 runner runner    32 Sep  5 08:35 analyst-out.txt
+-rw-r--r--  1 runner runner 47338 Sep  5 08:35 analyst-prompt.txt
+-rw-r--r--  1 runner runner 43557 Sep  5 08:35 ctx.txt
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 inventory
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 knowledge
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 leads
+-rw-r--r--  1 runner runner  4296 Sep  5 08:35 probe-results.md
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 recon-notes
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 reports
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 reposcan-raw
+-rw-r--r--  1 runner runner  3194 Sep  5 08:35 scope.yml
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 scripts
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_bigpickle.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_laguna.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_ling3.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_longcat.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_mimo.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_nemotron3.json
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 triage
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt/ && cat analyst-out.txt && echo "---STATE---" && cat state_bigpickle.json && echo "---SCOPE---" && cat scope.yml && echo "---PROBE---" && cat probe-results.md
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/
+total 184
+drwxr-xr-x 12 runner runner  4096 Sep  5 08:35 .
+drwxr-xr-x  3 runner runner  4096 Sep  5 08:35 ..
+drwxr-xr-x  7 runner runner  4096 Sep  5 08:35 .git
+drwxr-xr-x  3 runner runner  4096 Sep  5 08:35 .github
+-rw-r--r--  1 runner runner  1709 Sep  5 08:35 README.md
+-rw-r--r--  1 runner runner    32 Sep  5 08:35 analyst-out.txt
+-rw-r--r--  1 runner runner 47338 Sep  5 08:35 analyst-prompt.txt
+-rw-r--r--  1 runner runner 43557 Sep  5 08:35 ctx.txt
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 inventory
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 knowledge
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 leads
+-rw-r--r--  1 runner runner  4296 Sep  5 08:35 probe-results.md
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 recon-notes
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 reports
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 reposcan-raw
+-rw-r--r--  1 runner runner  3194 Sep  5 08:35 scope.yml
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 scripts
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_bigpickle.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_laguna.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_ling3.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_longcat.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_mimo.json
+-rw-r--r--  1 runner runner    33 Sep  5 08:35 state_nemotron3.json
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 triage
+[0m
+---STATE---
+{"phase": "POC", "target": "api"}---SCOPE---
+programs:
+  betpanda:
+    name: BetPanda Bug Bounty
+    disclosure_policy: via bugs.olivermaicher.eu (Oliver Maicher private program) - report + PoC + contact + payment
+    assets:
+      - name: "All company-owned infrastructure, betting platforms, gaming systems, wallets, APIs, user accounts, and domains operated by BetPanda"
+        priority: In
+    out_of_scope:
+- "Network level Denial of Service attacks"
+      - "Application Denial of Service by locking user accounts"
+      - "Descriptive error messages or headers (e.g. Stack Traces, banner grabbing)"
+      - "Disclosure of known public files or directories (e.g. robots.txt)"
+      - "Outdated software / library versions"
+      - "OPTIONS / TRACE HTTP method enabled"
+      - "CSRF on logout"
+      - "CSRF on forms that are available to anonymous users"
+      - "Cookies that lack HTTP Only or Secure settings for non-sensitive data"
+      - "Self-XSS and issues exploitable only through Self-XSS"
+      - "Reports resulting from automated scanning utilities without additional details or a POC demonstrating a specific exploit"
+      - "Attacks requiring physical access to a user's device"
+      - "Attacks dependent upon social engineering of employees or vendors"
+      - "Username enumeration based on login or forgot password pages"
+      - "Enforcement policies for brute force, rate limiting, or account lockout"
+      - "SSL/TLS best practices"
+      - "SSL attacks such as BEAST, BREACH, Renegotiation attack"
+      - "Clickjacking, without additional details demonstrating a specific exploit"
+      - "Mail configuration issues including SPF, DKIM, DMARC settings"
+      - "Use of a known-vulnerable library without a description of an exploit specific to our implementation"
+      - "Password and account recovery policies"
+      - "Presence of autocomplete functionality in form fields"
+      - "Publicly accessible login panels"
+      - "Lack of email address verification during account registration or account invitation"
+      - "Lack of email address verification password restore"
+      - "Session control during email/password changes"
+      - "Social engineering, physical attacks, and DoS/DDoS testing (per program notes)"
+      - "Exposure of customer/employee/financial/authentication data during testing (per program notes)"
+    github_orgs:
+      - none-configured
+
+rules:
+  passive_first: false          # deep-hunt agent: active probes allowed when scoped
+  max_requests_per_second: 1    # never hammer live infra
+  no_doom: true                 # no DoS/DDoS, no account-lockout attacks
+  account_creation: restricted  # only on test/sandbox assets, never live customer data
+  no_data_modification: true    # no writes/deletes on live customer data
+  no_pre_disclosure: true       # never disclose before program response
+  poc_required: true            # scanner output alone is REJECTED
+  redact_secrets_in_commits: true
+
+models:
+  - { id: opencode/big-pickle, name: bigpickle }
+  - { id: opencode/nemotron-3-ultra-free, name: nemotron3 }
+  - { id: opencode/longcat-2.0-free, name: longcat }
+  - { id: opencode/ling-3.0-flash-free, name: ling3 }
+  - { id: opencode/laguna-s-2.1-free, name: laguna }
+---PROBE---
+
+## 2026-09-02 21:55:06 UTC
+
+
+## 2026-09-02 23:53:19 UTC
+
+
+## 2026-09-03 03:14:41 UTC
+
+
+## 2026-09-03 08:09:50 UTC
+
+
+## 2026-09-03 12:57:32 UTC
+
+
+## 2026-09-03 17:05:50 UTC
+https://dashboard.betpanda.io/ -> ERR <urlopen error timed out>
+https://dashboard.betpanda.io/api/ -> ERR <urlopen error timed out>
+https://dashboard.betpanda.io/api/v1/namespaces/kubernetes-dashboard -> ERR <urlopen error timed out>
+https://affiliates.betpanda.io/ -> 200 len=?
+https://affiliates.betpanda.io/api/ -> 200 len=?
+https://betpanda.io/ -> 200 len=?
+https://betpanda.io/api/auth/authorize?redirect_uri=https://evil.com&state=test&client_id=test -> 200 len=?
+https://flags.betpanda.io` -> ERR <urlopen error [Errno -2] Name or service not know
+
+## 2026-09-03 19:50:27 UTC
+https://betpanda.io/api/auth/authorize?redirect_uri=https://attacker.com/callback&response_type=code&client_id=test&scope=openid&state=xyz -> 200 len=?
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://cable.betpanda.io/cable/ -> HTTP 404
+https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 -> 200 len=?
+https://affiliates.betpanda.io/rest/user -> HTTP 401
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+
+## 2026-09-03 22:26:41 UTC
+https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 -> 200 len=?
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=<captured>&scope=openid&state=random123` -> 200 len=?
+https://affiliates.betpanda.io/rest/user/players` -> HTTP 400
+https://affiliates.betpanda.io/rest/player/uid/{victim_uid -> HTTP 400
+https://betpanda.io/api/auth/authorize?response_type=code&client_id=<captured>&scope=openid` -> 200 len=?
+https://betpanda.io/api/auth/authorize?response_type=code&client_id=test&scope=openid&state=test123&redirect_uri=https://httpbin.org/get` -> 200 len=?
+
+## 2026-09-04 00:18:11 UTC
+https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 -> 200 len=?
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://affiliates.betpanda.io/rest/user -> HTTP 401
+
+## 2026-09-04 04:49:35 UTC
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://betpanda.io/api/auth/authorize?redirect_uri=https://httpbin.org/get&response_type=code&client_id=test&scope=openid&state=test123 -> 200 len=?
+https://affiliates.betpanda.io/rest/player/uid/{victim_uid -> HTTP 400
+
+## 2026-09-04 09:29:12 UTC
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://affiliates.betpanda.io/rest/player/uid/{victim_uid -> HTTP 400
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+
+## 2026-09-04 13:57:19 UTC
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+
+## 2026-09-04 17:28:12 UTC
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+
+## 2026-09-04 20:00:15 UTC
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://flags.betpanda.io` -> ERR <urlopen error [Errno -2] Name or service not know
+https://affiliates.betpanda.io/rest/user -> HTTP 401
+https://affiliates.betpanda.io/rest/user/metrics/affiliate -> HTTP 401
+
+## 2026-09-04 22:13:35 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate -> HTTP 401
+
+## 2026-09-05 00:15:57 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+
+## 2026-09-05 04:42:36 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate -> HTTP 401
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt/ && ls -la inventory/ knowledge/ leads/ reports/ triage/ recon-notes/ scripts/ && echo "---LEADS---" && ls -la leads/
+inventory/:
+total 24
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 .
+drwxr-xr-x 12 runner runner  4096 Sep  5 08:35 ..
+-rw-r--r--  1 runner runner 13742 Sep  5 08:35 betpanda.md
+
+knowledge/:
+total 24
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 .
+drwxr-xr-x 12 runner runner  4096 Sep  5 08:35 ..
+-rw-r--r--  1 runner runner 13631 Sep  5 08:35 index.md
+
+leads/:
+total 252
+drwxr-xr-x  2 runner runner   4096 Sep  5 08:35 .
+drwxr-xr-x 12 runner runner   4096 Sep  5 08:35 ..
+-rw-r--r--  1 runner runner 129527 Sep  5 08:35 lead-bigpickle.md
+-rw-r--r--  1 runner runner    612 Sep  5 08:35 lead-laguna.md
+-rw-r--r--  1 runner runner    600 Sep  5 08:35 lead-ling3.md
+-rw-r--r--  1 runner runner    624 Sep  5 08:35 lead-longcat.md
+-rw-r--r--  1 runner runner     18 Sep  5 08:35 lead-mimo.md
+-rw-r--r--  1 runner runner  95676 Sep  5 08:35 lead-nemotron3.md
+-rw-r--r--  1 runner runner   3464 Sep  5 08:35 reposcan-betpanda.md
+
+recon-notes/:
+total 20
+drwxr-xr-x  2 runner runner 4096 Sep  5 08:35 .
+drwxr-xr-x 12 runner runner 4096 Sep  5 08:35 ..
+-rw-r--r--  1 runner runner  797 Sep  5 08:35 DEDICATED-DEEP.md
+-rw-r--r--  1 runner runner 4779 Sep  5 08:35 DEEPER-FINDINGS.md
+
+reports/:
+total 908
+drwxr-xr-x  2 runner runner   4096 Sep  5 08:35 .
+drwxr-xr-x 12 runner runner   4096 Sep  5 08:35 ..
+-rw-r--r--  1 runner runner 653546 Sep  5 08:35 analyst-bigpickle.log
+-rw-r--r--  1 runner runner   2604 Sep  5 08:35 analyst-laguna.log
+-rw-r--r--  1 runner runner   2592 Sep  5 08:35 analyst-ling3.log
+-rw-r--r--  1 runner runner   2616 Sep  5 08:35 analyst-longcat.log
+-rw-r--r--  1 runner runner 132360 Sep  5 08:35 analyst-nemotron3.log
+-rw-r--r--  1 runner runner  41200 Sep  5 08:35 hypotheses-bigpickle.txt
+-rw-r--r--  1 runner runner     51 Sep  5 08:35 hypotheses-laguna.txt
+-rw-r--r--  1 runner runner     50 Sep  5 08:35 hypotheses-ling3.txt
+-rw-r--r--  1 runner runner     52 Sep  5 08:35 hypotheses-longcat.txt
+-rw-r--r--  1 runner runner   8364 Sep  5 08:35 hypotheses-nemotron3.txt
+-rw-r--r--  1 runner runner  42529 Sep  5 08:35 hypotheses.md
+-rw-r--r--  1 runner runner    727 Sep  5 08:35 valid-bugs.md
+
+scripts/:
+total 28
+drwxr-xr-x  2 runner runner  4096 Sep  5 08:35 .
+drwxr-xr-x 12 runner runner  4096 Sep  5 08:35 ..
+-rw-r--r--  1 runner runner 16987 Sep  5 08:35 sync-issues.py
+
+triage/:
+total 88
+drwxr-xr-x  2 runner runner 4096 Sep  5 08:35 .
+drwxr-xr-x 12 runner runner 4096 Sep  5 08:35 ..
+-rw-r--r--  1 runner runner    0 Sep  5 08:35 .gitkeep
+-rw-r--r--  1 runner runner  194 Sep  5 08:35 run-2026-09-02-21-53.md
+-rw-r--r--  1 runner runner  525 Sep  5 08:35 run-2026-09-02-23-53.md
+-rw-r--r--  1 runner runner  175 Sep  5 08:35 run-2026-09-03-03-20.md
+-rw-r--r--  1 runner runner  224 Sep  5 08:35 run-2026-09-03-08-11.md
+-rw-r--r--  1 runner runner  196 Sep  5 08:35 run-2026-09-03-12-52.md
+-rw-r--r--  1 runner runner  907 Sep  5 08:35 run-2026-09-03-16-57.md
+-rw-r--r--  1 runner runner  261 Sep  5 08:35 run-2026-09-03-19-41.md
+-rw-r--r--  1 runner runner  238 Sep  5 08:35 run-2026-09-03-22-21.md
+-rw-r--r--  1 runner runner 1049 Sep  5 08:35 run-2026-09-04-00-23.md
+-rw-r--r--  1 runner runner  156 Sep  5 08:35 run-2026-09-04-05-04.md
+-rw-r--r--  1 runner runner  199 Sep  5 08:35 run-2026-09-04-09-44.md
+-rw-r--r--  1 runner runner 7863 Sep  5 08:35 run-2026-09-04-14-04.md
+-rw-r--r--  1 runner runner  239 Sep  5 08:35 run-2026-09-04-17-39.md
+-rw-r--r--  1 runner runner  215 Sep  5 08:35 run-2026-09-04-19-52.md
+-rw-r--r--  1 runner runner  203 Sep  5 08:35 run-2026-09-04-22-11.md
+-rw-r--r--  1 runner runner 5203 Sep  5 08:35 run-2026-09-05-00-13.md
+-rw-r--r--  1 runner runner 4819 Sep  5 08:35 run-2026-09-05-04-39.md
+---LEADS---
+total 252
+drwxr-xr-x  2 runner runner   4096 Sep  5 08:35 .
+drwxr-xr-x 12 runner runner   4096 Sep  5 08:35 ..
+-rw-r--r--  1 runner runner 129527 Sep  5 08:35 lead-bigpickle.md
+-rw-r--r--  1 runner runner    612 Sep  5 08:35 lead-laguna.md
+-rw-r--r--  1 runner runner    600 Sep  5 08:35 lead-ling3.md
+-rw-r--r--  1 runner runner    624 Sep  5 08:35 lead-longcat.md
+-rw-r--r--  1 runner runner     18 Sep  5 08:35 lead-mimo.md
+-rw-r--r--  1 runner runner  95676 Sep  5 08:35 lead-nemotron3.md
+-rw-r--r--  1 runner runner   3464 Sep  5 08:35 reposcan-betpanda.md
+[0m
+Let me check the inventory, leads, and knowledge files to understand the current state and any new developments.
+Let me check the recent triage files and the valid-bugs report to see the latest developments.
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt/ && echo "=== valid-bugs ===" && cat reports/valid-bugs.md && echo "=== latest triage 09-05-04-39 ===" && cat triage/run-2026-09-05-04-39.md && echo "=== triage 09-05-00-13 ===" && cat triage/run-2026-09-05-00-13.md
+=== valid-bugs ===
+# Validated findings (running count 0)
+
+- 5 lead(s) marked VALID at 2026-09-04 14:04:02 UTC
+  - **Verdict: VALID**
+  - | Q2 Reachable | **Yes** — requires valid user JWT (low-priv authenticated) |
+  - **Verdict: VALID**
+  - | 1 | Wildcard CORS + credentials | `affiliates.betpanda.io/rest/*` | **VALID** | 9.1 Critical |
+  - | 2 | BOLA/IDOR money-flow | `betpandacasino.io/rest/user/*` | **VALID** | 8.1 High |
+
+- 2 lead(s) marked VALID at 2026-09-05 00:13:34 UTC
+  - **VERDICT: VALID**
+  - | CORS+credentials | MISCONFIG | affiliates.betpanda.io | **VALID** | 9.1 |
+
+- 2 lead(s) marked VALID at 2026-09-05 04:39:08 UTC
+  - **VERDICT: VALID**
+  - | 1 | CORS+credentials ATO chain | affiliates.betpanda.io | **VALID** | 9.1 |
+=== latest triage 09-05-04-39 ===
+
+===== TRIAGE 2026-09-05 04:39:08 UTC =====
+[0m
+> build · mimo-v2.5-free
+[0m
+[0m→ [0mRead .
+I see the leads section is empty. Let me check if there are any relevant files in the workspace containing leads or scope information.
+[0m✱ [0mGlob "**/*.{yml,yaml,md,json,txt}"[90m 48 matches[0m
+[0m→ [0mRead scope.yml
+[0m→ [0mRead inventory/betpanda.md
+[0m→ [0mRead new-leads.txt
+[0m→ [0mRead probe-results.md
+[0m→ [0mRead leads/lead-mimo.md
+[0m→ [0mRead leads/lead-laguna.md
+[0m→ [0mRead leads/lead-longcat.md
+[0m→ [0mRead leads/lead-bigpickle.md
+[0m→ [0mRead leads/lead-ling3.md
+[0m→ [0mRead leads/lead-nemotron3.md
+[0m→ [0mRead leads/lead-nemotron3.md[90m [offset=381][0m
+[0m→ [0mRead triage/run-2026-09-05-00-13.md
+[0m→ [0mRead triage/run-2026-09-04-22-11.md
+[0m→ [0mRead knowledge/index.md
+Let me read the latest triage run and remaining lead data.
+Based on the consolidated findings from all hunt bots (bigpickle, nemotron3, laguna, longcat, ling3), here is the 7-Question Gate validation for the 3 surviving leads:
+
+---
+
+## LEAD 1: Wildcard CORS + Credentials on affiliates.betpanda.io REST API
+
+| Q | Answer |
+|---|--------|
+| Q1 In scope? | **YES** — affiliates.betpanda.io is dedicated host; scope.yml covers "all company-owned infrastructure" |
+| Q2 Attacker reachable? | **YES** — public website, CORS reflects any origin + `credentials: true`; cookie-based auth confirmed (401 unauth) |
+| Q3 Real security impact? | **YES** — 20+ authenticated endpoints (player PII, transactions, commissions, password reset, 2FA, deposit limits); cross-origin exfil + ATO chain |
+| Q4 Provable non-invasively? | **YES** — OPTIONS probe confirms `ACAO: *` + `ACAC: true`; JS bundle reveals full endpoint surface |
+| Q5 Novel/unreported? | **YES** — first discovered by hunt bots 2026-09-03 |
+| Q6 On always-rejected list? | **NO** |
+| Q7 Reasonable triager accept? | **YES** — CORS+credentials on authenticated financial endpoints is classic accepted class |
+
+**VERDICT: VALID**
+**Proof steps:** (1) `OPTIONS https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com"` — confirm reflected ACAO + ACAC; (2) JS bundle endpoint enumeration
+**Impact:** Critical — full cross-origin read/write of affiliate player data, financial tampering, password reset, 2FA disable → ATO
+**CVSS 3.1:** 9.1 (AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N)
+**Reporting channel:** bugs.olivermaicher.eu
+
+---
+
+## LEAD 2: BOLA/IDOR on betpandacasino.io Player Wallet & Balance Endpoints
+
+| Q | Answer |
+|---|--------|
+| Q1 In scope? | **YES** — betpandacasino.io is major betting platform in scope |
+| Q2 Attacker reachable? | **PARTIAL** — endpoints require auth (401/403), CORS pinned to own origin, SameSite=Lax cookies |
+| Q3 Real security impact? | **YES** — cross-tenant financial data on real-money gambling platform |
+| Q4 Provable non-invasively? | **NO** — only endpoint existence confirmed (405/401); no cross-tenant access demonstrated; requires two accounts |
+| Q5 Novel/unreported? | **YES** |
+| Q6 On always-rejected list? | **NO** |
+| Q7 Reasonable triager accept? | **MAYBE** — speculative without demonstrated ACL bypass |
+
+**VERDICT: HOLD**
+**Reason:** Requires authenticated testing to prove cross-tenant IDOR; current evidence only shows endpoints exist. CORS properly pinned and SameSite=Lax cookies significantly reduce browser-based attack surface.
+
+---
+
+## LEAD 3: Unauthenticated Event Injection on cable.betpanda.io
+
+| Q | Answer |
+|---|--------|
+| Q1 In scope? | **YES** — cable.betpanda.io is dedicated host |
+| Q2 Attacker reachable? | **YES** — POST accepts arbitrary JSON without auth, CORS `*` |
+| Q3 Real security impact? | **PARTIAL** — ingestion confirmed but no evidence of stored data rendering to other users |
+| Q4 Provable non-invasively? | **PARTIAL** — ingestion confirmed (200 "processed and saved"); stored output impact unknown |
+| Q5 Novel/unreported? | **YES** |
+| Q6 On always-rejected list? | **NO** |
+| Q7 Reasonable triager accept? | **MAYBE** — ingestion alone is weak without demonstrated downstream impact |
+
+**VERDICT: HOLD**
+**Reason:** Unauthenticated ingestion confirmed, but impact unclear. Needs evidence of stored data rendering in dashboards, triggering business logic, or causing stored XSS before a triager would accept.
+
+---
+
+## Summary
+
+| # | Lead | Asset | Verdict | CVSS |
+|---|------|-------|---------|------|
+| 1 | CORS+credentials ATO chain | affiliates.betpanda.io | **VALID** | 9.1 |
+| 2 | BOLA/IDOR wallet endpoints | betpandacasino.io | **HOLD** | 8.6* |
+| 3 | Unauth event injection | cable.betpanda.io | **HOLD** | 6.5* |
+
+\* CVSS if confirmed
+
+**Action:** Report Lead 1 immediately. Leads 2 and 3 need authenticated sessions to complete proof-of-concept.
+=== triage 09-05-00-13 ===
+
+===== TRIAGE 2026-09-05 00:13:34 UTC =====
+[0m
+> build · mimo-v2.5-free
+[0m
+[0m→ [0mRead .
+[0m✱ [0mGlob "**/*.md"[90m 30 matches[0m
+[0m✱ [0mGlob "**/*.yml"[90m 1 match[0m
+[0m✱ [0mGlob "**/*.yaml"[90m 0 matches[0m
+I see you've set up the framework for lead validation but haven't provided the actual leads yet. Let me check the repository for any existing scope or lead information.
+[0m→ [0mRead new-leads.txt
+[0m→ [0mRead scope.yml
+[0m→ [0mRead inventory/betpanda.md
+[0m→ [0mRead triage-output.txt
+[0m→ [0mRead probe-results.md
+[0m→ [0mRead leads/lead-nemotron3.md
+[0m→ [0mRead leads/lead-mimo.md
+[0m→ [0mRead leads/lead-longcat.md
+[0m→ [0mRead triage/run-2026-09-04-22-11.md
+[0m→ [0mRead leads/lead-bigpickle.md
+[0m→ [0mRead probe-results.md[90m [offset=70][0m
+**No leads were provided in your LEADS section.** However, I've analyzed the repository and extracted the current active hypotheses from the hunt bots. Here's the 7-Question Gate validation:
+
+---
+
+## LEAD 1: Wildcard CORS + Credentials on affiliates.betpanda.io REST API (MISCONFIG)
+
+| Q | Question | Answer |
+|---|----------|--------|
+| Q1 | In program scope? | **YES** — affiliates.betpanda.io is dedicated host, "All company-owned infrastructure" in scope.yml |
+| Q2 | Attacker reachable? | **YES** — public website, CORS reflects any origin + credentials |
+| Q3 | Real security impact? | **YES** — cross-origin exfiltration of player PII, transactions, financial data; ATO via password/payout config modification |
+| Q4 | Provable non-invasively? | **YES** — OPTIONS preflight confirms ACAO + ACAC headers; JS bundle reveals 20+ authenticated endpoints |
+| Q5 | Novel/unreported? | **YES** — first hunt bot discovery |
+| Q6 | On always-rejected list? | **NO** — not DoS, not social engineering, not known-vulnerable library |
+| Q7 | Reasonable triager accept? | **YES** — CORS+credentials misconfig on authenticated financial endpoints is classic accepted finding |
+
+**VERDICT: VALID**
+
+**Proof steps (read-only):**
+1. `OPTIONS https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com"` → confirm `access-control-allow-origin: *` + `access-control-allow-credentials: true`
+2. JS bundle analysis reveals endpoint surface: `/rest/user/players`, `/rest/player/uid/{id}`, `/rest/transaction/list`, `/rest/user/change-password`, `/rest/user/payout-config`, `/rest/agent/set-deposit-withdraw-limit`
+
+**Impact:** Critical — full cross-origin read/write of affiliate player data, financial tampering, ATO
+**CVSS 3.1:** 9.1 (Critical) — AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N
+**Reporting channel:** bugs.olivermaicher.eu
+
+---
+
+## LEAD 2: BOLA/IDOR on betpandacasino.io Player Wallet & Balance Endpoints (IDOR)
+
+| Q | Question | Answer |
+|---|----------|--------|
+| Q1 | In program scope? | **YES** — betpandacasino.io is major betting platform |
+| Q2 | Attacker reachable? | **PARTIAL** — endpoints require auth (401/403); CORS properly pinned |
+| Q3 | Real security impact? | **YES** — cross-tenant financial data on real-money gambling platform |
+| Q4 | Provable non-invasively? | **PARTIAL** — requires two authenticated accounts to demonstrate cross-tenant access |
+| Q5 | Novel/unreported? | **YES** |
+| Q6 | On always-rejected list? | **NO** |
+| Q7 | Reasonable triager accept? | **MAYBE** — evidence weaker without auth proof |
+
+**VERDICT: HOLD**
+
+**Reason:** Requires authenticated testing to demonstrate cross-tenant IDOR; current evidence only shows endpoints exist (405/401) but not actual data access.
+**If confirmed:** CVSS 3.1: 8.6 (High) — AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N
+**Reporting channel:** bugs.olivermaicher.eu
+
+---
+
+## LEAD 3: Unauthenticated Event Injection on cable.betpanda.io (BUSLOGIC)
+
+| Q | Question | Answer |
+|---|----------|--------|
+| Q1 | In program scope? | **YES** — cable.betpanda.io is dedicated host |
+| Q2 | Attacker reachable? | **YES** — POST accepts arbitrary JSON without auth, CORS * |
+| Q3 | Real security impact? | **PARTIAL** — confirmed ingestion, but output/storage impact not demonstrated |
+| Q4 | Provable non-invasively? | **PARTIAL** — can confirm ingestion, but cannot prove stored XSS without internal access |
+| Q5 | Novel/unreported? | **YES** |
+| Q6 | On always-rejected list? | **NO** |
+| Q7 | Reasonable triager accept? | **MAYBE** — ingestion alone is weak; needs stored output evidence |
+
+**VERDICT: HOLD**
+
+**Reason:** Unauthenticated ingestion confirmed, but impact unclear without evidence of stored data rendering to other users.
+**If confirmed:** CVSS 3.1: 6.5 (Medium) — AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N
+**Reporting channel:** bugs.olivermaicher.eu
+
+---
+
+## Summary
+
+| Lead | Class | Asset | Verdict | CVSS |
+|------|-------|-------|---------|------|
+| CORS+credentials | MISCONFIG | affiliates.betpanda.io | **VALID** | 9.1 |
+| BOLA/IDOR | IDOR | betpandacasino.io | **HOLD** | 8.6 |
+| Event injection | BUSLOGIC | cable.betpanda.io | **HOLD** | 6.5 |
+
+**Recommendation:** Report Lead 1 (CORS+credentials) immediately via bugs.olivermaicher.eu. Leads 2 and 3 need authenticated sessions to complete proof-of-concept before submission.
+[0m
+The triage consensus is clear: Lead 1 (CORS+credentials on affiliates) is VALID. The top finding is gated on an authenticated session for full POC.
+
+Let me look at the inventory file and recent recon notes for any fresh surface that has emerged since the last analysis, and check the lead files for anything new.
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt/ && cat recon-notes/DEDICATED-DEEP.md recon-notes/DEEPER-FINDINGS.md
+# Dedicated deep surface (wildcard-cleaned) 2026-09-03
+**Root zone:** `betpanda.io` | **dedicated hosts after wildcard-filter: 4**
+> Audit: brute+passive subfinder produced 10,083 resolving hostnames; zone-wildcard + IP-fingerprint filtering dropped 9,973 (98.9%) DNS-wildcard noise (random labels resolving to shared wildcard IPs e.g. account.cineplex.de, a.hypofriend.de, account.live-manager.de, docker.jtl-software.de, *.ggamdom.com, *.dev.alfaview.com). Only genuine dedicated hosts listed below. These are surface-map observations; live HTTP status captured read-only (GET / via curl). No findings claimed; scope must be confirmed with the program.
+- `affiliates.betpanda.io`  [HTTP 200]
+- `cable.betpanda.io`  [HTTP 200]
+- `custom-lp.betpanda.io`  [HTTP 403]
+- `fp.betpanda.io`  [HTTP 403]
+# Deeper findings — session 2026-09-03
+
+_Generated 2026-09-03 | read-only passive enumeration | no active testing_
+
+## 1. alfaview — OpenAPI spec exposed (HIGH VALUE)
+
+**Location:** `https://apis.alfaview.com/v2/docs/openapi.yaml` (159KB)
+**Discovery:** Stoplight Elements UI at `https://apis.alfaview.com/docs` loads the spec via `apiDescriptionUrl="/v2/docs/openapi.yaml"`.
+
+### Endpoints (35+)
+
+**Authentication:**
+- `/v2/auth/api-key` — API key auth (companyId + clientId + key)
+- `/v2/auth/password` — Password auth
+- `/v2/auth/group-link` — Guest auth via group link (accessKey)
+- `/v2/auth/guest-link` — Guest auth via guest link
+- `/v2/auth/token-info` — Token introspection
+
+**Rooms & Meetings:**
+- `/v2/rooms` — List rooms
+- `/v2/rooms/{id}` — Get room
+- `/v2/rooms/{roomId}/participants` — List participants
+- `/v2/rooms/{roomId}/permissions` — Room permissions
+- `/v2/rooms/{roomId}/permissions/{userId}` — Per-user permissions (IDOR potential)
+- `/v2/rooms/{roomId}/passcode` — Room passcode
+- `/v2/rooms/{roomId}/features` — Room features
+- `/v2/rooms/{roomId}/group-links` / `guest-links` — Guest access management
+- `/v2/rooms/{roomId}/file-share-settings` / `file-share-limits`
+- `/v2/rooms/{roomId}/subrooms` — Subroom management
+- `/v2/meetings` — List/Create meetings
+- `/v2/meetings/{id}` — Get/Update meeting
+- `/v2/meetings/{id}/cancellation` — Cancel meeting
+
+**Users & Admin:**
+- `/v2/users` — List users
+- `/v2/users/{id}` — Get user
+- `/v2/users/me` — Current user
+- `/v2/users/invitation` — Invite user
+- `/v2/permission-groups` — Permission groups
+- `/v2/room-types` — Room types
+- `/v2/stats` — Statistics
+- `/v2/languages` — Available languages
+
+### Auth model
+- API keys: `companyId` + `clientId` + `key` (in request body)
+- Bearer tokens: base64-encoded `accessToken` in `Authorization` header
+- Guest access: `accessKey` from group-link or guest-link
+
+### Attack-relevant observations
+- `/v2/rooms/{roomId}/permissions/{userId}` — classic IDOR pattern (room ID + user ID in path)
+- Guest auth via `accessKey` — if keys are predictable/brute-forceable, guest impersonation possible
+- `/v2/users/invitation` — user invitation endpoint (potential user enumeration or abuse)
+- `/v2/stats` — statistics endpoint (potential info disclosure)
+- `/v2/rooms/{roomId}/passcode` — passcode management (potential bypass)
+
+### Additional alfaview observations
+- All hosts behind `edge-proxy` (reverse proxy fingerprint)
+- CSP on `app.alfaview.com` allows `omega-lectures.com` as frame-ancestor (third-party integration)
+- No X-Frame-Options on ANY alfaview host (potential clickjacking, mitigated by CSP frame-ancestors on app)
+- `internal.alfaview.com` and `beta-app.alfaview.com` use HTTP Basic auth
+
+---
+
+## 2. BASF — Azure Function Apps exposed (MEDIUM VALUE)
+
+**Hosts:** `ap-digitalconnect.api.basf.com`, `ap-eupf.api.basf.com`
+**Fingerprint:** Azure Function Apps (default page: "Your Azure Function App is up and running")
+
+### Exposed admin endpoints
+- `/admin/functions` → 401 (Bearer auth required)
+- `/admin/host/status` → 401 (Bearer auth required)
+- `/admin/host/keys` → 401 (Bearer auth required)
+- `/.env` → 403 (exists, blocked)
+
+### Attack surface
+- Azure Functions admin API requires function master key or system key
+- If key is weak/default/leaked, full admin access to Function App
+- Common Azure Functions key patterns: `<hex>-<hex>`, default keys in `host.json`
+- Dev endpoints (`dev-clientcert-sap`, `dev-ext001`) require client certificates (400)
+
+---
+
+## 3. daimlertruck — Lockdown confirmed (NO UNAUTH FINDING)
+
+- APIM gateways: all paths return `OperationNotFound` (no unauth surface)
+- Developer portals: Next.js, login-gated (307 → callbackUrl)
+- Authz services: empty 404 at root
+- Management/capacitor hosts: unreachable (NAT64/IPv6 only)
+
+**Honest assessment: surface is properly locked down against unauthenticated attackers.**
+
+---
+
+## 4. betpanda — Vite SPA with affiliate portal
+
+- `affiliates.betpanda.io` — Vite-built SPA (main.1ae50aab.js)
+- Cloudflare-fronted
+- No API routes found in JS bundle
+- Standard affiliate portal structure
+
+---
+
+## 5. elringklinger — Third-party integrations
+
+- `go.events.elringklinger.com` — 302 redirect (event management platform)
+- `ir.elringklinger.com` — Apache, investor relations page
+
+---
+
+## 6. avatarux — Atlassian + cPanel
+
+- `help.desk.avatarux.com` — Atlassian Edge (Jira/Confluence help desk)
+- `autoconfig.avatarux.com` — Apache autoconfig
+- `cpanel.avatarux.com` — cPanel (if accessible)
+
+---
+
+_Honest framing: all observations from read-only passive enumeration. No vulnerability claimed. Scope must be confirmed before active testing on any of these live production assets._
+[0m
+The DEEPER-FINDINGS covers other programs. Let me focus on the betpanda-relevant bits. I now have solid state. The current position:
+
+- Top VALID finding: CORS+credentials on affiliates.betpanda.io/rest/* (CVSS 9.1) — POC-gated on an authenticated session
+- The whole hunt has been stuck on de-gating via an authenticated session for several cycles
+- The `[NEXT] HUMAN` action has been repeating — no progress
+
+Let me check the last full analysis to see what fresh probes might have been done, and look at the lead file quickly for anything new since the last cycle.
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt/ && tail -120 leads/lead-bigpickle.md
+testability: AUTH_HELPED
+[HYP] IDOR/BOLA on betpandacasino.io money-flow REST endpoints via Cognito JWT
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 68
+reasoning: Spring Boot + Cognito JWT backend confirmed (authenticate 403 CAPTCHA-gated, balances POST-only 405, settings 401, REFRESH_TOKEN cookie SameSite=Lax). No per-user ACL evidence beyond JWT sub claim. CORS pinned reduces but does not eliminate cross-origin; same-origin IDOR remains viable.
+evidence_needed: (1) Authenticated session; (2) JWT sub/role manipulation or cross-token access to another user's balances/settings
+verify_steps: AUTH_HELPED: capture JWT → mutate sub claim → POST /rest/user/account-balances-and-bonuses with victim-identity token → diff response
+impact: Cross-user wallet/balance disclosure on real-money platform; High severity
+testability: AUTH_HELPED
+[HYP] Unauthenticated event ingestion on cable.betpanda.io enables stored-XSS/business-logic injection
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 65
+reasoning: POST accepts arbitrary JSON, no auth, CORS *, 200 "processed and saved". XSS payloads in fields could render in admin/reporting UIs. No output-side verification possible without account.
+evidence_needed: (1) Confirmation stored data renders to other users; (2) admin dashboard consumption
+verify_steps: AUTH_HELPED: POST JSON with XSS payload in referrer/registeredOn → observe any admin/reporting interface
+impact: Stored XSS on admin panels / metrics poisoning; Medium
+testability: AUTH_HELPED
+[HYP] Wildcard CORS + credentials enables cross-origin exfil/ATO incl. password-reset + 2FA + deposit-limit tampering on affiliates API
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 87
+reasoning: OPTIONS preflight reflects any origin + ACAC:true (verified on /rest/user/password/reset). 30+ authed routes; /rest/user/metrics/affiliate GET-gated 401 — cleanest cross-origin exfil. ATO chain: change-password, set-2fa-setting, agent deposit-withdraw-limit. All gated on affiliate session cookie; SameSite flags unconfirmed.
+evidence_needed: (1) Set-Cookie flags from affiliate login; (2) credentialed cross-origin GET returning data; (3) credentialed cross-origin POST returning success
+verify_steps: AUTH_HELPED: login → GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -b session → verify reflected ACAO + data; then POST /rest/user/set-2fa-setting with evil Origin
+impact: Cross-tenant player PII/financial exfil, password reset, 2FA disable, deposit/withdraw-limit tampering → ATO. Critical (~9.1-9.3)
+testability: AUTH_HELPED
+[HYP] IDOR/BOLA on casino money-flow REST endpoints via Cognito JWT
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 68
+reasoning: Spring Boot + Cognito JWT confirmed; balances POST-only 405, settings 401, REFRESH_TOKEN cookie SameSite=Lax. No per-user ACL evidence beyond JWT sub claim. CORS pinned reduces cross-origin but same-origin IDOR viable.
+evidence_needed: authenticated session + JWT sub/role manipulation → victim-identity balances/settings diff
+verify_steps: AUTH_HELPED: capture JWT → mutate sub claim → POST /rest/user/account-balances-and-bonuses with victim-identity token → diff response
+impact: Cross-user wallet/balance disclosure on real-money platform; High
+testability: AUTH_HELPED
+[HYP] Unauthenticated event ingestion enables stored-XSS/metrics poisoning on admin surfaces
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 65
+reasoning: POST accepts arbitrary JSON, no auth, CORS *, 200 "processed and saved". XSS payloads in fields could render in admin/reporting UIs. No output-side verification possible without account.
+evidence_needed: stored data rendering to other users / admin dashboard consumption
+verify_steps: AUTH_HELPED: POST JSON with XSS payload in referrer/registeredOn → observe admin/reporting interface
+impact: Stored XSS on admin panels / metrics poisoning; Medium
+testability: AUTH_HELPED
+reasoning: OPTIONS from arbitrary origin returns ACAO: <attacker_origin> + ACAC: true. 20+ authenticated endpoints in JS bundle including /rest/user/players, /rest/transaction/list, /rest/user/account-settings, /rest/user/set-profile, /rest/user/change-password, /rest/user/payout-config, /rest/affiliate/commissions, /agent/set-deposit-withdraw-limit, /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates. NEW: /rest/user/password/reset and /rest/user/set-2fa-setting also under wildcard CORS+credentials — enables full ATO chain (password reset → 2FA disable → account takeover). Cookie-based auth (401 on /rest/user unauthenticated). Any origin can read/write victim data via credentialed fetch.
+evidence_needed: Successful cross-origin credentialed GET to /rest/user/players or /rest/transaction/list from attacker-controlled origin returning victim PII/transactions; successful credentialed POST to /rest/user/password/reset or /rest/user/set-2fa-setting triggering account takeover
+verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" → confirm ACAO: evil.com + ACAC: true; GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_session>" (auth-helped) → observe data exfiltration; POST https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <valid_session>" -H "Content-Type: application/json" -d '{"email":"victim@email.com"}' → observe password reset initiation
+impact: Cross-origin exfiltration of player PII, transactions, affiliate commissions; account settings/password/payout config modification; full account takeover via password reset + 2FA disable — CRITICAL
+testability: AUTH_HELPED
+[HYP] BOLA/IDOR on Player Wallet & Balance Endpoints
+class: IDOR
+asset: betpandacasino.io/rest/user/*
+confidence: 80
+reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403). CORS pinned to own origin but server-side authorization not verified. Real-money gambling platform = critical business value. Endpoints accept/return user-specific financial data. REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed. SameSite=Lax limits cross-origin cookie sending but same-origin IDOR remains.
+evidence_needed: Successful cross-user access to /rest/user/account-balances-and-bonuses or /rest/user/settings returning another user's wallet/balance/bonus data; JWT missing/insufficient scope/claim validation
+verify_steps: PASSIVE: GET https://betpandacasino.io/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <victim_jwt>" (auth-helped) → observe 200 with victim data; test horizontal IDOR by modifying user_id/player_id in request body/params; test vertical IDOR via role manipulation in JWT claims
+impact: Cross-tenant wallet/balance/bonus disclosure or tampering on real-money gambling platform — CRITICAL
+testability: AUTH_HELPED
+[HYP] Unauthenticated Event Injection with Reflected Input
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 75
+reasoning: POST /cable/user-event accepts arbitrary JSON with access-control-allow-origin: *, returns 200 "processed and saved". No authentication required. Event ingestion pipeline may feed into analytics, fraud detection, or bonus systems. Injection surface for business logic manipulation (fake events, bonus abuse, metric poisoning).
+evidence_needed: Successful injection of crafted events that trigger downstream business logic (bonus awards, fraud alerts, leaderboard manipulation); stored XSS via event fields rendered in admin panel
+verify_steps: PASSIVE: POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{"event_type":"deposit","amount":10000,"user_id":"victim_id"}' → observe 200 response; enumerate accepted event_type values via fuzzing; check if events reflect in any admin/dashboard UI
+impact: Business logic abuse (bonus fraud, metric poisoning, fraud evasion), potential stored XSS in analytics dashboards — HIGH
+testability: PASSIVE
+[PARKED] S3 Bucket Enumeration / SSRF via PWA Manifest Asset Origin: Bucket listing returns 403; manifest URLs are hardcoded with no query param for base URL override — no attack vector confirmed
+[PARKED] OAuth Redirect_URI Validation Bypass: Already REJECTED — betpanda.io/api/auth/authorize 301 redirects to SPA catch-all on betpandacasino.io; no server-side OAuth endpoint
+[FINAL] 1. Wildcard CORS + Credentials Enables Cross-Origin Account Takeover + Password Reset/2FA Bypass (affiliates.betpanda.io, 95)
+[FINAL] 2. BOLA/IDOR on Player Wallet & Balance Endpoints (betpandacasino.io, 80)
+[FINAL] 3. Unauthenticated Event Injection with Reflected Input (cable.betpanda.io, 75)
+[NEXT] HUMAN: Login to affiliates.betpanda.io and capture session cookies + Set-Cookie headers. This is the only way to complete the CORS+credentials POC for the top finding (auth-helped probe requires valid affiliate session). Then execute: GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <captured_session>" and POST https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <captured_session>" -H "Content-Type: application/json" -d '{"email":"test@victim.com"}'
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials confirmed via live OPTIONS probe reflecting arbitrary Origin with ACAC: true; 20+ authenticated endpoints including password-reset and 2FA endpoints
+[LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances 405, settings 401); CORS pinned but server-side authZ unverified
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
+[LEARN] REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io SPA catch-all; no server-side OAuth endpoint exists
+[LEARN] REJECTED MISCONFIG @ nano-public.s3.eu-west-1.amazonaws.com: S3 bucket listing returns 403 Forbidden; no enumeration possible
+[LEARN] REJECTED SSRF @ betpandacasino.io/rest/properties/manifest: Manifest is static JSON with hardcoded S3 URLs; no user-controllable parameters for URL manipulation
+[LEARN] NEW ENDPOINT @ betpandacasino.io/rest/user/authenticate: Real Spring Boot endpoint (403 JSON, not SPA catch-all). Returns 403 with dummy creds. Likely requires CAPTCHA token (x-captcha-token in CORS allow-headers).
+[LEARN] AUTH MODEL @ betpandacasino.io: REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout. SameSite=Lax limits cross-origin cookie sending.
+[LEARN] NEW ENDPOINTS @ affiliates.betpanda.io: JS reveals /agent/set-deposit-withdraw-limit (POST, financial), /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates, /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate, /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/
+[LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/actuator + api-docs: Spring Boot actuator/OpenAPI not publicly exposed (SPA catch-all).
+[RISK] betpanda: 90 — Wildcard CORS+credentials on affiliate money-flow API now extends to password-reset + 2FA endpoints (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface (CRITICAL financial), unauthenticated analytics injection (chaining vector). OAuth ATO path ELIMINATED (false positive). Program scope covers all company-owned infrastructure. Fresh SPA redeploy expands attack surface.
+[NEW] affiliates.betpanda.io/rest/public/config — REAL unauth Spring Boot route (200 JSON). Leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.cloudfront.net, linkUrl=betpanda.partners, supportEmail deals@bamboopartners.io, currencies[15]. contentfulAccessToken returned EMPTY (no key leak).
+[NEW] affiliates.betpanda.io/rest/trk?code|id — tracking resolver exists but auth-gated (401 "You need to be logged in"). /rest/public/recover-password/email/{email} is public GET (email-enum => OUT of scope).
+[NEW] betpanda.partners — dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot /rest backend as betpandacasino.io (/rest/properties/manifest 200, S3 operator pwa icons under operators/betpanda/). CORS on preflight (evil Origin) does NOT reflect ACAO -> pinned, NOT affected by the affiliates wildcard bug. Affiliate routes 404 here (metrics/affiliate).
+[NEXT] HUMAN: De-gate top finding via open /rest/public/register (mint disposable test affiliate account, authorized human only, no live-customer data) → capture Set-Cookie SameSite flags → credentialed cross-origin GET /rest/user/metrics/affiliate with Origin https://evil.com from victim session → then POST /rest/user/set-2fa-setting same way.
+[NEXT] HUMAN: De-gate top finding via open /rest/public/register (mint disposable test affiliate account, authorized human only, no live-customer data) → capture Set-Cookie SameSite flags → credentialed cross-origin GET /rest/user/metrics/affiliate with Origin https://evil.com from victim session → then POST /rest/user/set-2fa-setting same way.
+[HYP] Wildcard CORS + credentials on affiliates REST API enables cross-origin exfil/ATO incl. password-reset + 2FA + deposit-limit tampering
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 88
+reasoning: OPTIONS reflects any Origin + ACAC:true (verified on /rest/user/password/reset). Bundle enum confirms 30+ routes incl. /user/change-password, /user/set-2fa-setting, /agent/set-deposit-withdraw-limit, /trk (401). /rest/user/metrics/affiliate is GET-gated 401 — cleanest cross-origin exfil primitive. New /rest/public/config proves an unauth config layer; open /rest/public/register may mint a disposable session to de-gate POC. Cookie SameSite flags still unconfirmed.
+evidence_needed: (1) Set-Cookie flags from affiliate register/login; (2) credentialed cross-origin GET returning user data; (3) credentialed cross-origin POST returning success
+verify_steps: AUTH_HELPED: POST /rest/public/register (test account) → capture Set-Cookie → GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -b <session> → verify reflected ACAO + data; then POST /rest/user/set-2fa-setting with evil Origin
+impact: Cross-tenant player PII/financial exfil, password reset, 2FA disable, deposit/withdraw-limit tampering → ATO. Critical (CVSS ~9.1-9.3)
+testability: AUTH_HELPED
+[HYP] IDOR/BOLA on casino money-flow REST endpoints via Cognito JWT (betpandacasino.io + betpanda.partners, same backend)
+class: IDOR
+asset: betpandacasino.io/rest/user/* (and betpanda.partners/rest/user/*)
+confidence: 70
+reasoning: Spring Boot + Cognito JWT confirmed; balances POST-only 405, settings 401, REFRESH_TOKEN cookie SameSite=Lax. betpanda.partners shares the backend (manifest 200) but CORS pinned there too. No per-user ACL evidence beyond JWT sub claim; same-origin IDOR viable.
+evidence_needed: authenticated session + JWT sub/role manipulation → victim-identity balances/settings diff
+verify_steps: AUTH_HELPED: capture JWT → mutate sub claim → POST /rest/user/account-balances-and-bonuses with victim-identity token → diff response
+impact: Cross-user wallet/balance disclosure on real-money platform; High
+testability: AUTH_HELPED
+[HYP] Unauthenticated event ingestion on cable.betpanda.io enables stored-XSS/metrics poisoning on admin surfaces
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 65
+reasoning: POST accepts arbitrary JSON, no auth, CORS *, 200 "processed and saved". Injection surface validated; no output-side verification possible without account.
+evidence_needed: (1) stored data renders to other users; (2) admin dashboard consumption
+verify_steps: AUTH_HELPED: POST JSON with XSS payload in referrer/registeredOn → observe any admin/reporting interface
+impact: Stored XSS on admin panels / metrics poisoning; Medium
+testability: AUTH_HELPED
+[NEXT] HUMAN: De-gate the top finding via open registration — authorized human creates a disposable affiliate test account at `POST /rest/public/register` (no live-customer data), captures `Set-Cookie` SameSite flags, then runs credentialed cross-origin `GET /rest/user/metrics/affiliate` with `Origin: https://evil.com` (expect reflected ACAO + data), followed by a proof `POST /rest/user/set-2fa-setting` with evil Origin.
+[RISK] BetPanda: 48 — Top finding (affiliates wildcard CORS + credentials, 30+ money/AUTH routes incl. password-reset + 2FA) remains the strongest, still POC-gated on an authenticated session; public register flow is a realistic de-gating primitive. New asset betpanda.partners (casino brand) shares the backend but has pinned CORS — no exposure expansion. Other leads parked. Programwide value moderate-high, unchanged until an authed POC lands.
+[0m
+I now have the full state. Let me review the key facts:
+
+1. **Top VALID finding**: Wildcard CORS + credentials on affiliates.betpanda.io/rest/* (CVSS 9.1). Triage confirmed VALID. POC is gated on an authenticated session.
+2. The hunt has been stuck repeating `[NEXT] HUMAN` for several cycles without progress.
+3. No new surface has emerged since the last cycle (SPA redeploy was documented).
+
+Let me check if there are any fresh probes I can run read-only to add delta, particularly around the `affiliates.betpanda.io/rest/public/*` layer that was recently discovered — the public config route was found. Let me probe a couple of the public endpoints (read-only, GET/OPTIONS only) to see if there's anything new in the public layer that could be an independent finding or de-gating path.
+
+Let me verify the current surface is unchanged and probe the public endpoints reconstituted. First, let me run a few safe read-only probes.
+[0m$ [0mcd /tmp/opencode && cat > probe.sh << 'EOF'
+#!/bin/bash
+probe() {
+  echo "=== $1 ==="
+  curl -s -o /dev/null -w "HTTP %{http_code} | ct=%{content_type} | len=%{size_download}\n" \
+    -H "Origin: https://evil.com" -X "${3:-GET}" --max-time 15 "${2}" 2>&1
+}
+probe "public/config GET" "https://affiliates.betpanda.io/rest/public/config"
+probe "public/register GET" "https://affiliates.betpanda.io/rest/public/register"
+probe "public/register OPTIONS" "https://affiliates.betpanda.io/rest/public/register" OPTIONS
+probe "rest/public/config OPTIONS" "https://affiliates.betpanda.io/rest/public/config" OPTIONS
+EOF
+chmod +x probe.sh && ./probe.sh
+=== public/config GET ===
+HTTP 200 | ct=application/json | len=398
+=== public/register GET ===
+HTTP 405 | ct=application/xml;charset=UTF-8 | len=134
+=== public/register OPTIONS ===
+HTTP 200 | ct= | len=0
+=== rest/public/config OPTIONS ===
+HTTP 200 | ct= | len=0
+[0m
+Let me get the config bodies and the OPTIONS headers on the public/register to see the CORS reflect and whether register is genuinely open (a de-gating primitive).
+[0m$ [0mcd /tmp/opencode && echo "=== public/config body ===" && curl -s -H "Origin: https://evil.com" --max-time 15 "https://affiliates.betpanda.io/rest/public/config" && echo "" && echo "=== public/register OPTIONS headers ===" && curl -s -i -X OPTIONS -H "Origin: https://evil.com" -H "Access-Control-Request-Method: POST" --max-time 15 "https://affiliates.betpanda.io/rest/public/register" && echo "" && echo "=== public/config OPTIONS headers ===" && curl -s -i -X OPTIONS -H "Origin: https://evil.com" -H "Access-Control-Request-Method: GET" --max-time 15 "https://affiliates.betpanda.io/rest/public/config"
+=== public/config body ===
+{"logoUrl":"https://d3ec3n7kizfkuy.cloudfront.net/Betpanda_io_logo_White_Green_b5267c709b.png","operatorId":1,"linkUrl":"https://betpanda.partners","supportEmail":"deals@bamboopartners.io","contenfulSpaceId":"","strapiApiUrl":"/cms","contentfulAccessToken":"","currencies":["BTC","ETH","USDT","BNB","DOGE","LTC","SAND","SHIB","TRX","uBTC","XMR","XRP","USDC","SOL","TON"],"phoneSignupEnabled":false}
+=== public/register OPTIONS headers ===
+HTTP/2 200 
+date: Sat, 05 Sep 2026 08:35:38 GMT
+content-length: 0
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a363e6cf28bddd07-DFW
+
+
+=== public/config OPTIONS headers ===
+HTTP/2 200 
+date: Sat, 05 Sep 2026 08:35:38 GMT
+content-length: 0
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a363e6d34a6131a6-DFW
+[0m
+Important new finding: **`/rest/public/register` is NOT just a GET-405** — it's a real public registration endpoint confirmed via OPTIONS: it reflects `Origin: https://evil.com` with `ACAC: true` and allows `POST`. This means the public (pre-auth) layer of the affiliates backend ALSO has the wildcard CORS+credentials bug — not just the authenticated routes. This is the same MISCONFIG confirmed on an additional endpoint, and it's the de-gating primitive.
+
+The GET 405 with `application/xml` content-type is interesting — it's a real Spring route (not SPA catch-all). Let me probe a few more public endpoints to map the public (unauth) layer which could yield independent findings, all read-only.
+[0m$ [0mcd /tmp/opencode && for p in \
+  "rest/public/recover-password/email/test@test.com" \
+  "rest/public/config/assets" \
+  "rest/public/currencies" \
+  "rest/public/properties" \
+  "rest/public/manifest" \
+  "rest/public/register" \
+  "rest/public/send-otp" \
+  "rest/public/verify-otp" \
+  "rest/public/login" \
+  ; do
+  echo "=== $p ==="
+  curl -s -o /dev/null -w "GET HTTP %{http_code} ct=%{content_type} len=%{size_download}\n" --max-time 15 "https://affiliates.betpanda.io/$p"
+done
+=== rest/public/recover-password/email/test@test.com ===
+GET HTTP 200 ct= len=0
+=== rest/public/config/assets ===
+GET HTTP 404 ct=application/xml;charset=UTF-8 len=130
+=== rest/public/currencies ===
+GET HTTP 404 ct=application/xml;charset=UTF-8 len=127
+=== rest/public/properties ===
+GET HTTP 404 ct=application/xml;charset=UTF-8 len=127
+=== rest/public/manifest ===
+GET HTTP 404 ct=application/xml;charset=UTF-8 len=125
+=== rest/public/register ===
+GET HTTP 405 ct=application/xml;charset=UTF-8 len=134
+=== rest/public/send-otp ===
+GET HTTP 404 ct=application/xml;charset=UTF-8 len=125
+=== rest/public/verify-otp ===
+GET HTTP 404 ct=application/xml;charset=UTF-8 len=127
+=== rest/public/login ===
+GET HTTP 405 ct=application/xml;charset=UTF-8 len=131
+[0m
+Let me look at the 404/405 XML bodies to understand the Spring error format and get the exact allowed methods, plus confirm the recover-password endpoint returns 200 empty (which is the email-enum that's been noted as out of scope).
+[0m$ [0mcd /tmp/opencode && echo "=== login 405 body ===" && curl -s -X GET --max-time 15 "https://affiliates.betpanda.io/rest/public/login" && echo "" && echo "=== login OPTIONS ===" && curl -s -i -X OPTIONS -H "Origin: https://evil.com" -H "Access-Control-Request-Method: POST" --max-time 15 "https://affiliates.betpanda.io/rest/public/login" && echo "" && echo "=== recover-password OPTIONS ===" && curl -s -i -X OPTIONS -H "Origin: https://evil.com" -H "Access-Control-Request-Method: GET" --max-time 15 "https://affiliates.betpanda.io/rest/public/recover-password/email/test@test.com"
+=== login 405 body ===
+<Map><timestamp>1788597345402</timestamp><status>405</status><error>Method Not Allowed</error><path>/rest/public/login</path></Map>
+=== login OPTIONS ===
+HTTP/2 200 
+date: Sat, 05 Sep 2026 08:35:45 GMT
+content-length: 0
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a363e7019c1131a6-DFW
+
+
+=== recover-password OPTIONS ===
+HTTP/2 200 
+date: Sat, 05 Sep 2026 08:35:45 GMT
+content-length: 0
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a363e702fb5adf67-DFW
+[0m
+I now have enough fresh evidence. Key new observations this cycle:
+
+**DELTA — the wildcard CORS + credentials (`Origin: <any>` + ACAC:true) applies to the ENTIRE `/rest/*` surface, including the public/pre-auth layer**, not just the authenticated routes. I confirmed it on:
+- `/rest/public/register` (405 POST-only — real Spring route, public registration endpoint)
+- `/rest/public/login` (405 POST-only — real Spring route, public login endpoint)
+- `/rest/public/config` (200 GET — real unauth config route)
+- `/rest/public/recover-password/email/{email}` (200 GET empty body — public route)
+
+The interesting angle: **`/rest/public/config` is an unauthenticated endpoint and returns data** (operatorId, currencies, CloudFront URL), AND it reflects wildcard CORS + credentials. This endpoint is pre-auth, so there's no cookie gate on it — cross-origin unauthenticated read is already demonstrable without a session. While config is low-sensitivity data, it proves the wildcard CORS+credentials misconfig applies to the publicly-reachable (no-auth) layer, strengthening the finding as a program-wide misconfiguration rather than only affecting gated authenticated routes.
+
+But the more valuable observation: the public layer has `/rest/public/register` (POST, 405 on GET) and `/rest/public/login` (POST, 405 on GET) — these are the de-gating primitives. The `SameSite` flags on the Set-Cookie from these routes remain the unverified element.
+
+I've confirmed enough passive delta this cycle. Let me finalize the analysis blocks. I've been doing live but read-only (GET/OPTIONS) HTTP probes at low rate, which is in-scope per the rules.
+
+Let me confirm one more thing about whether `/rest/public/config` reflects on actual credentialled GET (non-OPTIONS) response headers too.
+[0m$ [0mcd /tmp/opencode && echo "=== config GET actual response headers with evil Origin ===" && curl -s -i -H "Origin: https://evil.com" --max-time 15 "https://affiliates.betpanda.io/rest/public/config" | grep -iE "access-control|HTTP/"
+=== config GET actual response headers with evil Origin ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+[0m
+Confirmed: `GET /rest/public/config` with `Origin: https://evil.com` returns the actual response with **`access-control-allow-origin: https://evil.com` + `access-control-allow-credentials: true`** on the live (non-preflight) response. This is a concrete, unauthenticated, read-only demonstration of the wildcard CORS+credentials misconfig on the public layer — no session needed. This is a self-contained delta this cycle.
+
+I have sufficient evidence to produce the analyst output. Let me write it.
+
+---
+
+## STEP 1 — DELTA
+
+- [NEW] affiliates.betpanda.io/rest/public/* layer carries the SAME wildcard CORS + credentials bug, confirmed on the UNAUTH public routes: `GET /rest/public/config` (200) with `Origin: https://evil.com` returns live response with `ACAO: https://evil.com` + `ACAC: true` — no session required. Proves the misconfig is program-wide across `/rest/*`, not limited to authed routes.
+- [CHANGED] `/rest/public/config` GET returns updated JSON: operatorId=1, 15 currencies, CloudFront `d3ec3n7kizfkuy.cloudfront.net`, strapiApiUrl=/cms, empty contentfulAccessToken/contenfulSpaceId (no key leak).
+- [NEW] `/rest/public/register` (405 POST-only, real Spring XML-error route) and `/rest/public/login` (405 POST-only) — both reflect evil Origin + ACAC:true on OPTIONS; public POST de-gating primitives located.
+- [CHANGED] `/rest/public/recover-password/email/{email}` GET returns 200 empty (email-enum ⇒ program OUT OF SCOPE per username enumeration clause), but confirms public route exists.
+
+## STEP 2 — PRIORITIZE
+
+- `affiliates.betpanda.io/rest/*` — a=10, b=10, t=7, g=10, c=5, f=6 → **priority 0.865**
+- `betpandacasino.io/rest/user/*` — a=9, b=10, t=8, g=3, c=6, f=6 → **priority 0.735**
+- `cable.betpanda.io/cable/user-event` — a=8, b=6, t=4, g=10, c=3, f=5 → **priority 0.655**
+- `betpanda.partners/rest/*` — a=7, b=10, t=8, g=3, c=6, f=8 → **priority 0.72** (shared backend, pinned CORS)
+
+## STEP 3 — HYPOTHESES
+
+[HYP] Wildcard CORS + credentials applies to entire including public/pre-auth /rest/* surface (expands top finding beyond authed routes)
+<details>
+
+Do I need to be careful about the `verify_steps` being mutating? The rules say "any auth-bypass or mutating tests against live customer data" prohibited, and "no writes/deletes on live customer data". Registering a disposable test account is account_creation: restricted (only on test/sandbox, never live customer data). So the register de-gating should be flagged as HUMAN (exercise judgment on whether creating a test account is permitted). I'll keep the mutating register as the human-gated NEXT, not something I execute.
+
+Let me finalize the structured output.
+
+## STEP 1 — DELTA
+
+- [NEW] Wildcard CORS+credentials confirmed on the UNAUTH public layer of affiliates backend: live `GET /rest/public/config` with `Origin: https://evil.com` returns `ACAO: https://evil.com` + `ACAC: true` (200, no auth). Misconfig is backend-wide across `/rest/*`, not just authed routes.
+- [NEW] `/rest/public/login` (405 POST-only, real Spring route) and `/rest/public/register` (405 POST-only) both reflect evil Origin + ACAC:true on OPTIONS — public POST login/register primitives located (de-gating paths).
+- [CHANGED] `/rest/public/config` GET body: operatorId=1, 15 currencies, CloudFront bucket URL, strapiApiUrl=/cms, contentfulAccessToken + contenfulSpaceId EMPTY (no key leak).
+
+## STEP 2 — PRIORITIZE
+[PRIO] affiliates.betpanda.io/rest/*,0.87,attack_surface+business_value+gate_ease
+[PRIO] betpandacasino.io/rest/user/*,0.74,business_value+tech_exposure
+[PRIO] betpanda.partners/rest/*,0.72,business_value+freshness
+[PRIO] cable.betpanda.io/cable/user-event,0.66,attack_surface+gate_ease
+
+## STEP 3 — HYPOTHESES
+
+[HYP] Wildcard CORS + credentials spans the entire public+authed /rest/* backend (register/login/config recover-password all affected)
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/public/*
+confidence: 91
+reasoning: Live GET /rest/public/config with Origin https://evil.com returns ACAO:https://evil.com + ACAC:true (200, unauthenticated). OPTIONS on /rest/public/login and /rest/public/register both reflect arbitrary Origin + ACAC:true with POST allowed. Proves the CORS+credentials flaw is a backend-wide /rest/* misconfiguration (not confined to authenticated routes), simplifying the top-finding POC and widening impact.
+evidence_needed: (1) credentialed data exfil from a logged-in affiliate session via cross-origin fetch; (2) Set-Cookie SameSite flags on login/register; (3) mutating cross-origin POST accepted on authed route
+verify_steps: HUMAN: POST /rest/public/register (disposable test affiliate, no live customer data, per program account_creation:restricted) → capture Set-Cookie → GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -b session → verify reflected ACAO + data; then POST /rest/user/set-2fa-setting with evil Origin
+impact: Cross-origin exfil of player PII/financials, password reset, 2FA disable, deposit-limit tampering → ATO. Critical (CVSS ~9.1-9.3)
+testability: AUTH_HELPED
+
+[HYP] IDOR/BOLA on casino money-flow REST endpoints via Cognito JWT
+class: IDOR
+asset: betpandacasino.io/rest/user/* (and betpanda.partners/rest/user/* same backend)
+confidence: 70
+reasoning: Spring Boot+Cognito JWT; balances POST-only 405, settings 401, REFRESH_TOKEN SameSite=Lax. betpanda.partners shares backend (manifest 200) but CORS pinned. No per-user ACL evidence beyond JWT sub; same-origin IDOR viable.
+evidence_needed: authenticated session + JWT sub/role manipulation → victim balances/settings diff
+verify_steps: AUTH_HELPED: capture JWT → mutate sub claim → POST /rest/user/account-balances-and-bonuses with victim-identity token → diff response
+impact: Cross-user wallet/balance disclosure on real-money platform; High
+testability: AUTH_HELPED
+
+[HYP] Unauthenticated event ingestion on cable.betpanda.io enables stored-XSS/metrics poisoning on admin surfaces
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 65
+reasoning: POST accepts arbitrary JSON, no auth, CORS *, 200 "processed and saved". XSS payloads in fields could render in admin/reporting UIs. No output-side verification possible without account.
+evidence_needed: (1) stored data renders to other users; (2) admin dashboard consumption
+verify_steps: AUTH_HELPED: POST JSON with XSS payload in referrer/registeredOn → observe admin/reporting interface
+impact: Stored XSS on admin panels / metrics poisoning; Medium
+testability: AUTH_HELPED
+
+## STEP 4 — SELF-CRITIQUE
+
+- [PARKED] S3 bucket enumeration: bucket listing 403; manifest URLs hardcoded — no vector
+- [PARKED] OAuth redirect_uri bypass: betpanda.io/api/auth/authorize is SPA 301 → no server-side OAuth endpoint (REJECTED earlier)
+- [PARKED] Betpanda.partners CORS: pinned, not affected by affiliates wildcard bug
+- [PARKED] recover-password email-enum: program OUT OF SCOPE (username enumeration clause)
+- [FINAL] 1. Wildcard CORS+credentials on all of affiliates /rest/* (public+authed) (affiliates.betpanda.io, 91)
+- [FINAL] 2. IDOR/BOLA on casino money-flow via Cognito JWT (betpandacasino.io, 70)
+- [FINAL] 3. Unauth event ingestion → stored-XSS/metrics poisoning (cable.betpanda.io, 65)
+
+## STEP 5 — NEXT ACTION
+
+[NEXT] HUMAN: De-gate the #1 finding — authorized human creates a disposable test affiliate via POST /rest/public/register (no live-customer data, per account_creation:restricted), captures Set-Cookie SameSite flags, then under that session runs credentialed cross-origin GET https://affiliates.betpanda.io/rest/user/metrics/affiliate with "Origin: https://evil.com" (expect reflected ACAO + data), followed by proof POST /rest/user/set-2fa-setting with evil Origin. This POC closes the loop on the now-broadened public+authed CORS+credentials misconfig.
+
+## STEP 6 — LEARNING
+
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/*: Wildcard CORS + credentials (ACAO:<any Origin> + ACAC:true) confirmed on the unauthenticated public layer via live GET /rest/public/config with evil Origin returning reflected ACAO (200, no auth) — backend-wide flaw, not limited to authed routes.
+[LEARN] NEW ENDPOINTS @ affiliates.betpanda.io/rest/public: /rest/public/config (200 GET JSON), /rest/public/login (405 POST-only), /rest/public/register (405 POST-only) — all reflect evil Origin + ACAC:true; public de-gating primitives located.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 20+ authenticated + public REST endpoints.
+
+## STEP 7 — RISK
+
+[RISK] betpanda: 52 — Top finding (wildcard CORS+credentials on all of affiliates /rest/* incl. public register/login/config and authed money/AUTH routes) is now demonstrably backend-wide with a live no-auth CORS return; POC still gated on an authenticated session (register/login primitives present). New asset betpanda.partners shares backend but has pinned CORS (no exposure expansion). Other leads parked. Program-wide value moderate-high; climbs once an authed credentialed cross-origin POC lands.

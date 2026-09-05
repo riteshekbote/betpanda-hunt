@@ -130,3 +130,16 @@ www.betpanda.io
 - NEW affiliates.betpanda.io/rest/public/config — REAL unauth Spring Boot route (200 JSON). Leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.cloudfront.net, linkUrl=betpanda.partners, suppor
 - NEW affiliates.betpanda.io/rest/trk?code|id — tracking resolver exists but auth-gated (401 "You need to be logged in"). /rest/public/recover-password/email/{email} is public GET (email-enum => OUT of scop
 - NEW betpanda.partners — dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot /rest backend as betpandacasino.io (/rest/properties/manifest 200, S3 operator pwa icons under operat
+
+## 2026-09-05 08:40:59 UTC
+- NEW affiliates.betpanda.io/rest/public/config — REAL unauth Spring Boot route (200 JSON). Leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.cloudfront.net, linkUrl=betpanda.partners, suppor
+- NEW affiliates.betpanda.io/rest/trk?code|id — tracking resolver exists but auth-gated (401 "You need to be logged in"). /rest/public/recover-password/email/{email} is public GET (email-enum => OUT of scop
+- NEW betpanda.partners — dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot /rest backend as betpandacasino.io (/rest/properties/manifest 200, S3 operator pwa icons under operat
+- NEW betpanda.partners — dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot /rest backend as betpandacasino.io (/rest/properties/manifest 200, S3 operator PWA icons under operat
+- NEW affiliates.betpanda.io/rest/public/config — REAL unauth Spring Boot route (200 JSON) leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.cloudfront.net, linkUrl=betpanda.partners, support
+- NEW affiliates.betpanda.io/rest/trk?code|id — tracking resolver exists but auth-gated (401 "You need to be logged in")
+- NEW affiliates.betpanda.io/rest/public/recover-password/email/{email} — public GET (email enumeration => OUT of scope per program rules)
+- NEW betpandacasino.io/rest/user/authenticate — Real Spring Boot endpoint (403 JSON, not SPA catch-all), returns 403 with dummy creds, requires CAPTCHA token (x-captcha-token in CORS allow-headers)
+- NEW AUTH MODEL @ betpandacasino.io — REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout; SameSite=Lax limits cross-origin cookie sending
+- CHANGED affiliates.betpanda.io/rest/* — SPA redeploy (main.ef021e68.js), endpoint surface expanded to 20+ authenticated REST endpoints including /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/ag
+- CHANGED affiliates.betpanda.io/rest/user/password/reset + /rest/user/set-2fa-setting — CORS+credentials confirmed via OPTIONS preflight (ACAO reflect + ACAC:true), extends ATO/exfil chain to password reset & 

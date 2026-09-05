@@ -81,3 +81,8 @@
 - 2026-09-05 REJECTED AUTH @ flags.betpanda.io: Cloudflare JS challenge blocks probes.
 - 2026-09-05 REJECTED MISCONFIG @ dashboard.betpanda.io: k8s dashboard not exposed on ALB.
 - 2026-09-05 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: password-reset + 2FA endpoints confirmed under wildcard CORS + credentials.
+- 2026-09-05 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/*: Wildcard CORS + credentials (ACAO:<any Origin> + ACAC:true) confirmed on the unauthenticated public layer via live GET /rest/public/config with evil Origin returning reflected ACAO (200, no auth) — backend-wide flaw, not limited to authed routes.
+- 2026-09-05 NEW ENDPOINTS @ affiliates.betpanda.io/rest/public: /rest/public/config (200 GET JSON), /rest/public/login (405 POST-only), /rest/public/register (405 POST-only) — all reflect evil Origin + ACAC:true; public de-gating primitives located.
+- 2026-09-05 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 20+ authenticated + public REST endpoints.
+- 2026-09-05 NEW ASSET @ betpanda.partners: Dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot /rest backend as betpandacasino.io
+- 2026-09-05 NEW ENDPOINT @ affiliates.betpanda.io/rest/public/config: Unauth Spring Boot route (200 JSON) leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.cloudfront.net, linkUrl=betpanda.partners, support@betpanda.io
