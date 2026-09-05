@@ -1,4 +1,4 @@
-## 2026-09-04 22:11:30 UTC [target] (model nemotron3)
+## 2026-09-05 00:15:36 UTC [target] (model nemotron3)
 [NEW] affiliates.betpanda.io/rest/* — SPA redeploy (main.ef021e68.js), expanded endpoint surface: /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate, /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/
 [NEW] affiliates.betpanda.io/rest/user/password/reset + /rest/user/set-2fa-setting — CORS+credentials confirmed via OPTIONS preflight (ACAO reflect + ACAC:true), extends ATO/exfil chain to password reset & 2FA disable
 [CHANGED] affiliates.betpanda.io/rest/* — endpoint count now 20+ authenticated REST endpoints (was 10+), all under wildcard CORS + credentials

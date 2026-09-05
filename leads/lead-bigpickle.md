@@ -630,3 +630,4 @@ evidence_needed: stored data rendering to other users / admin dashboard consumpt
 verify_steps: AUTH_HELPED: POST JSON with XSS payload in referrer/registeredOn → observe admin/reporting interface
 impact: Stored XSS on admin panels / metrics poisoning; Medium
 testability: AUTH_HELPED
+## 2026-09-05 00:11:23 UTC [target] (model bigpickle)
