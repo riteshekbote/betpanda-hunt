@@ -147,3 +147,6 @@ www.betpanda.io
 ## 2026-09-05 12:13:01 UTC
 
 ## 2026-09-05 15:38:16 UTC
+
+## 2026-09-05 17:34:36 UTC
+- CHANGED RE-AFFIRMED @ affiliates.betpanda.io: password/reset, set-2fa-setting, change-password, set-profile all 405-GET real POST routes reflecting evil Origin + ACAC:true (fresh probes this cycle).

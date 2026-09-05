@@ -395,3 +395,28 @@
 - LEARN: NEW ENDPOINT @ affiliates.betpanda.io/rest/public/config: Unauth Spring Boot route (200 JSON) leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.c
 - LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/*: Wildcard CORS + credentials (ACAO:<any Origin> + ACAC:true) confirmed on the unauthenticated public l
 - LEARN: REJECTED BUSLOGIC @ affiliates.betpanda.io/rest/public/recover-password/email/{email}: Email-enumeration oracle is explicitly OUT of scope; no novel logic reach
+
+## RANKED HYPOTHESES 2026-09-05 17:34:36 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials Enables Cross-Origin Account Takeover + Password Reset/2FA Bypass (from art/lead_nemotron3.txt)
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials Enables Cross-Origin ATO + State Mutation on Affiliate Money/Auth API (incl. GET state-change) (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: Authorized human creates ONE disposable test affiliate via POST https://affiliates.betpanda.io/rest/public/register (per account_creation:restricted; sch
+- NEXT(hypotheses-nemotron3.txt): HUMAN: Login to affiliates.betpanda.io and capture session cookies + Set-Cookie headers. This is the only way to complete the CORS+credentials POC for the top f
+- LEARN: REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS properly pinned — OPTIONS and GET with evil Origin return Vary:Origin but NO ACAO reflection; same Spring Bo
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: full schema reverse-derived (eventType/userId/registeredOn/amount/referrer/currency/ip/device/metadata);
+- LEARN: NEW ENDPOINTS @ affiliates.betpanda.io: /rest/v2/report (POST-only 405-GET), /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/
+- LEARN: NEW SPA ROUTE @ affiliates.betpanda.io: /reset-password/:affiliateId/:resetPasswordCode — reset code in URL is the credential binding for POST /rest/user/passwo
+- LEARN: NEW ENDPOINTS @ affiliates.betpanda.io/rest/public/phone/*: signin/verify + register/verify POST-only JSON (415 on form-encoded ⇒ handler present), reflect evil
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials confirmed via live OPTIONS probe reflecting arbitrary Origin with ACAC: true; 20
+- LEARN: ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints confirmed (POST-only balances 405, settings 401); CORS pinned but server-side authZ unverifi
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
+- LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: 301 redirects to betpandacasino.io SPA catch-all; no server-side OAuth endpoint exists
+- LEARN: REJECTED MISCONFIG @ nano-public.s3.eu-west-1.amazonaws.com: S3 bucket listing returns 403 Forbidden; no enumeration possible
+- LEARN: REJECTED SSRF @ betpandacasino.io/rest/properties/manifest: Manifest is static JSON with hardcoded S3 URLs; no user-controllable parameters for URL manipulation
+- LEARN: NEW ENDPOINT @ betpandacasino.io/rest/user/authenticate: Real Spring Boot endpoint (403 JSON, not SPA catch-all). Returns 403 with dummy creds. Likely requires 
+- LEARN: AUTH MODEL @ betpandacasino.io: REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout. SameSite=Lax limits cross-o
+- LEARN: NEW ENDPOINTS @ affiliates.betpanda.io: JS reveals /agent/set-deposit-withdraw-limit (POST, financial), /payouts/single-currency-list, /reports/commission, /rep
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/actuator + api-docs: Spring Boot actuator/OpenAPI not publicly exposed (SPA catch-all).
+- LEARN: NEW ASSET @ betpanda.partners: Dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot /rest backend as betpandacasino.io
+- LEARN: NEW ENDPOINT @ affiliates.betpanda.io/rest/public/config: Unauth Spring Boot route (200 JSON) leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.c
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/*: Wildcard CORS + credentials (ACAO:<any Origin> + ACAC:true) confirmed on the unauthenticated public l
+- LEARN: REJECTED BUSLOGIC @ affiliates.betpanda.io/rest/public/recover-password/email/{email}: Email-enumeration oracle is explicitly OUT of scope; no novel logic reach

