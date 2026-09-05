@@ -145,3 +145,5 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io/rest/user/password/reset + /rest/user/set-2fa-setting — CORS+credentials confirmed via OPTIONS preflight (ACAO reflect + ACAC:true), extends ATO/exfil chain to password reset & 
 
 ## 2026-09-05 12:13:01 UTC
+
+## 2026-09-05 15:38:16 UTC
