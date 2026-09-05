@@ -6,3 +6,7 @@
   - **Verdict: VALID**
   - | 1 | Wildcard CORS + credentials | `affiliates.betpanda.io/rest/*` | **VALID** | 9.1 Critical |
   - | 2 | BOLA/IDOR money-flow | `betpandacasino.io/rest/user/*` | **VALID** | 8.1 High |
+
+- 2 lead(s) marked VALID at 2026-09-05 00:13:34 UTC
+  - **VERDICT: VALID**
+  - | CORS+credentials | MISCONFIG | affiliates.betpanda.io | **VALID** | 9.1 |
