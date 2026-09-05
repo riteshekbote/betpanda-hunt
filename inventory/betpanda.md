@@ -150,3 +150,13 @@ www.betpanda.io
 
 ## 2026-09-05 17:34:36 UTC
 - CHANGED RE-AFFIRMED @ affiliates.betpanda.io: password/reset, set-2fa-setting, change-password, set-profile all 405-GET real POST routes reflecting evil Origin + ACAC:true (fresh probes this cycle).
+
+## 2026-09-05 19:34:03 UTC
+- NEW `betpanda.partners` — dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot `/rest` backend as `betpandacasino.io` (manifest 200, S3 operator PWA icons under `/operators/`)
+- NEW `affiliates.betpanda.io/rest/public/config` — unauth Spring Boot route (200 JSON) leaks `operatorId=1`, `strapiApiUrl=/cms`, CloudFront `d3ec3n7kizfkuy.cloudfront.net`, `linkUrl=betpanda.partners`, `s
+- NEW `affiliates.betpanda.io/rest/public/*` — `/rest/public/login` (405 POST-only), `/rest/public/register` (405 POST-only), `/rest/public/phone/signin/verify`, `/rest/public/phone/register/verify` — all r
+- NEW `affiliates.betpanda.io` SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL is credential binding for POST `/rest/user/password/reset`
+- NEW `affiliates.betpanda.io/rest/v2/*` — `/rest/v2/report` (POST-only 405-GET), `/rest/v2/report/sub-affiliates`, `/rest/v2/report/daily-stats-with-comparison`, `/rest/user/selectable-payout-currencies`, 
+- CHANGED `affiliates.betpanda.io/rest/*` — password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + `ACAC:true` (fresh probes this cycle)
+- CHANGED `betpanda.partners/rest/*` — CORS properly pinned: OPTIONS/GET with evil Origin return `Vary:Origin` but NO `ACAO` reflection; cross-origin credential vector ABSENT (only `affiliates.betpanda.io` is w
+- CHANGED `cable.betpanda.io/cable/user-event` — full schema reverse-derived (`eventType`/`userId`/`registeredOn`/`amount`/`referrer`/`currency`/`ip`/`device`/`metadata`); arbitrary `eventType` accepted incl. X
