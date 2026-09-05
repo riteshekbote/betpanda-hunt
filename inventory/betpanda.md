@@ -119,3 +119,14 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io/rest/* — endpoint count now 20+ authenticated REST endpoints (was 10+), all under wildcard CORS + credentials
 - CHANGED betpandacasino.io/rest/user/authenticate — confirmed real Spring Boot endpoint (403 JSON, not SPA catch-all), requires x-captcha-token header per CORS allow-headers
 - CHANGED betpandacasino.io — REFRESH_TOKEN cookie model confirmed (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh), limits cross-origin cookie sending
+
+## 2026-09-05 04:42:30 UTC
+- NEW SPA redeploy on affiliates.betpanda.io — JS bundle main.ef021e68.js (previously main.1ae50aab.js). Fresh passive enumeration.
+- NEW Endpoint surface expanded: /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate (GET-gated 401), /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/
+- NEW CORS+credentials coverage extends to password-reset + 2FA endpoints (OPTIONS preflight confirmed ACAO reflect + ACAC:true). ATO/exfil chain on the top finding now includes password reset and 2FA setti
+- NEW SPA redeploy on affiliates.betpanda.io — JS bundle main.ef021e68.js (previously main.1ae50aab.js). Fresh passive enumeration.
+- NEW Endpoint surface expanded: /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/metrics/affiliate (GET-gated 401), /rest/agent/list, /rest/agent/create, /rest/agent/events/list, /rest/v2/
+- NEW CORS+credentials coverage extends to password-reset + 2FA endpoints (OPTIONS preflight confirmed ACAO reflect + ACAC:true). ATO/exfil chain on the top finding now includes password reset and 2FA setti
+- NEW affiliates.betpanda.io/rest/public/config — REAL unauth Spring Boot route (200 JSON). Leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.cloudfront.net, linkUrl=betpanda.partners, suppor
+- NEW affiliates.betpanda.io/rest/trk?code|id — tracking resolver exists but auth-gated (401 "You need to be logged in"). /rest/public/recover-password/email/{email} is public GET (email-enum => OUT of scop
+- NEW betpanda.partners — dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot /rest backend as betpandacasino.io (/rest/properties/manifest 200, S3 operator pwa icons under operat
