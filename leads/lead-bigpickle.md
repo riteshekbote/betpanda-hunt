@@ -1375,3 +1375,4 @@ asset: dashboard.betpanda.io
 confidence: 65
 reasoning: CNAME resolves to AWS ALB with k8s naming pattern (k8s-kubernet-albdashb-). Kubernetes dashboards frequently exposed via ALB with weak/default auth or misconfigured RBAC.
 evidence_needed: HTTP response showing k8s dashboard UI or unauthenticated API endpoints (/api/v1/namespaces/kubernetes-dashboard)
+## 2026-09-05 23:35:02 UTC [target] (model bigpickle)
