@@ -86,3 +86,5 @@
 - 2026-09-05 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 20+ authenticated + public REST endpoints.
 - 2026-09-05 NEW ASSET @ betpanda.partners: Dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot /rest backend as betpandacasino.io
 - 2026-09-05 NEW ENDPOINT @ affiliates.betpanda.io/rest/public/config: Unauth Spring Boot route (200 JSON) leaks operatorId=1, strapiApiUrl=/cms, CloudFront d3ec3n7kizfkuy.cloudfront.net, linkUrl=betpanda.partners, support@betpanda.io
+- 2026-09-05 REJECTED BUSLOGIC @ affiliates.betpanda.io/rest/public/recover-password/email/{email}: Email-enumeration oracle is explicitly OUT of scope; no novel logic reachable without a test account. Not pursued.
+- 2026-09-05 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/*: Wildcard CORS + credentials (ACAO:<any Origin> + ACAC:true) reaffirmed as backend-wide across public + authed /rest/*, POC still gated on an authenticated session (no new probes added this cycle).

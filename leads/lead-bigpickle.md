@@ -1060,3 +1060,41 @@ testability: AUTH_HELPED
 [LEARN] NEW ENDPOINTS @ affiliates.betpanda.io/rest/public: /rest/public/config (200 GET JSON), /rest/public/login (405 POST-only), /rest/public/register (405 POST-only) — all reflect evil Origin + ACAC:true; public de-gating primitives located.
 [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials reflected from any origin; 20+ authenticated + public REST endpoints.
 [RISK] betpanda: 52 — Top finding (wildcard CORS+credentials on all of affiliates /rest/* incl. public register/login/config and authed money/AUTH routes) is now demonstrably backend-wide with a live no-auth CORS return; POC still gated on an authenticated session (register/login primitives present). New asset betpanda.partners shares backend but has pinned CORS (no exposure expansion). Other leads parked. Program-wide value moderate-high; climbs once an authed credentialed cross-origin POC lands.
+## 2026-09-05 12:04:15 UTC [target] (model bigpickle)
+[PRIO] affiliates.betpanda.io/rest/public/*,0.88,attack_surface+business_value+gate_ease
+[PRIO] affiliates.betpanda.io/rest/*,0.87,attack_surface+business_value+gate_ease
+[PRIO] betpandacasino.io/rest/user/*,0.74,business_value+tech_exposure
+[PRIO] betpanda.partners/rest/*,0.72,business_value+freshness
+[PRIO] cable.betpanda.io/cable/user-event,0.66,attack_surface+gate_ease
+[HYP] Wildcard CORS+credentials on unauth public recover-password/email/{email} enables cross-origin account-recovery oracle + possible reset-flow manipulation
+class: BUSLOGIC
+asset: affiliates.betpanda.io/rest/public/recover-password/email/{email}
+confidence: 55
+reasoning: /rest/public/config confirmed 200 JSON with reflected ACAO + ACAC:true (no auth). Program shows /rest/public/recover-password/email/{email} is public GET. If the CORS+credentials flaw spans all of /rest/public/*, a cross-origin fetch with an evil Origin could invoke public recovery primitives and observe responses, potentially chaining into account-recovery flow abuse. Email-enumeration itself is OUT of scope per program, so only non-enumeration aspects (flow-level logic, response differentiation on valid reset tokens) count.
+evidence_needed: reflected ACAO+ACAC on the recover-password GET path; any response-body differentiation beyond boolean account existence; mutating recovery step that accepts an attacker-chosen email/token
+verify_steps: PASSIVE: OPTIONS /rest/public/recover-password/email/test@example.com -H "Origin: https://evil.com" (expect ACAO reflect + ACAC:true); GET same with evil Origin → confirm keep scope to logic not enumeration
+impact: Cross-origin abuse of password-recovery flow (supports top-finding ATO chain); Medium-High (in context of top finding)
+testability: PASSIVE
+[HYP] IDOR/BOLA on casino money-flow REST endpoints via Cognito JWT sub claim (betpandacasino.io + betpanda.partners, same backend)
+class: IDOR
+asset: betpandacasino.io/rest/user/* (and betpanda.partners/rest/user/*)
+confidence: 70
+reasoning: Spring Boot + Cognito JWT; balances POST-only 405, settings 401, REFRESH_TOKEN cookie SameSite=Lax. betpanda.partners shares backend but CORS pinned. No per-user ACL evidence beyond JWT sub claim; same-origin IDOR viable on POST-only money endpoints.
+evidence_needed: authenticated session + JWT sub/role mutation → victim-identity balance/settings response diff
+verify_steps: AUTH_HELPED: capture JWT → mutate sub claim → POST /rest/user/account-balances-and-bonuses with victim-identity token → diff response
+impact: Cross-user wallet/balance disclosure on real-money platform; High
+testability: AUTH_HELPED
+[HYP] Unauthenticated event ingestion on cable.betpanda.io enables stored-XSS/metrics poisoning on admin surfaces
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 65
+reasoning: POST accepts arbitrary JSON, no auth, CORS *, 200 "processed and saved". Injection surface validated; no output-side verification possible without account.
+evidence_needed: (1) stored data renders to other users; (2) admin dashboard consumption
+verify_steps: AUTH_HELPED: POST JSON with XSS payload in referrer/registeredOn → observe any admin/reporting interface
+impact: Stored XSS on admin panels / metrics poisoning; Medium
+testability: AUTH_HELPED
+[FINAL] ranked: (1) affiliates /rest/public + /rest/* wildcard CORS+credentials [95, POC-gated on auth], (2) casino IDOR/BOLA JWT sub [70], (3) cable stored-XSS/poisoning [65].
+[NEXT] HUMAN: De-gate the top finding — authorized human creates one disposable test affiliate at POST /rest/public/register (no live-customer data, program account_creation:restricted), captures Set-Cookie SameSite flags, then under that session runs credentialed cross-origin GET https://affiliates.betpanda.io/rest/user/metrics/affiliate with "Origin: https://evil.com" (expect reflected ACAO + real data), followed by proof POST /rest/user/set-2fa-setting with evil Origin. This is the only path to close the CORS+credentials POC for the #1 finding, whose impact is now widened by the confirmed public + authed /rest/* coverage.
+[LEARN] REJECTED BUSLOGIC @ affiliates.betpanda.io/rest/public/recover-password/email/{email}: Email-enumeration oracle is explicitly OUT of scope; no novel logic reachable without a test account. Not pursued.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/*: Wildcard CORS + credentials (ACAO:<any Origin> + ACAC:true) reaffirmed as backend-wide across public + authed /rest/*, POC still gated on an authenticated session (no new probes added this cycle).
+[RISK] betpanda: 52 — Top finding (wildcard CORS+credentials on all of affiliates /rest/*, public + authed incl. register/login/config and money/AUTH routes) remains strongest and backend-wide with a live no-auth CORS return; still POC-gated on one authenticated session (register/login primitives point the way). IDOR/BOLA on casino money-flow (JWT sub) and cable stored-XSS/poisoning parked as next tier. No surface change this cycle; program-wide value moderate-high, climbs once an authed credentialed cross-origin POC lands.

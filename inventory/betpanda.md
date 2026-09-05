@@ -143,3 +143,5 @@ www.betpanda.io
 - NEW AUTH MODEL @ betpandacasino.io — REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout; SameSite=Lax limits cross-origin cookie sending
 - CHANGED affiliates.betpanda.io/rest/* — SPA redeploy (main.ef021e68.js), endpoint surface expanded to 20+ authenticated REST endpoints including /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/ag
 - CHANGED affiliates.betpanda.io/rest/user/password/reset + /rest/user/set-2fa-setting — CORS+credentials confirmed via OPTIONS preflight (ACAO reflect + ACAC:true), extends ATO/exfil chain to password reset & 
+
+## 2026-09-05 12:13:01 UTC
