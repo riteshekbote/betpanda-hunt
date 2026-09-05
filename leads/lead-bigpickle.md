@@ -1362,3 +1362,16 @@ confidence: 75
 reasoning: POST to /cable/user-event accepts arbitrary JSON body with Access-Control-Allow-Origin: *, returns 200 "processed and saved". No authentication required. Could be abused for event injection, log poisoning, or SSRF if backend processes the payload.
 impact: Medium (depends on how events are processed/stored; potential for event injection or resource exhaustion)
 verify_steps: Send crafted JSON payloads to /cable/user-event; check if events are stored in database or forwarded to other services; test for SSRF via URL fields in event payload.
+## 2026-09-05 21:44:08 UTC [target] (model bigpickle)
+[PRIO] dashboard.betpanda.io,7.3,attack_surface=8,business_value=9,tech_exposure=8,gate_ease=3,cloud_surface=9,freshness=5
+[PRIO] affiliates.betpanda.io,7.0,attack_surface=7,business_value=8,tech_exposure=5,gate_ease=8,cloud_surface=6,freshness=7
+[PRIO] betpanda.io,6.3,attack_surface=6,business_value=8,tech_exposure=5,gate_ease=7,cloud_surface=6,freshness=4
+[PRIO] cable.betpanda.io,6.15,attack_surface=6,business_value=6,tech_exposure=5,gate_ease=8,cloud_surface=5,freshness=7
+[PRIO] fp.betpanda.io,4.8,attack_surface=5,business_value=4,tech_exposure=6,gate_ease=3,cloud_surface=5,freshness=7
+[PRIO] custom-lp.betpanda.io,4.5,attack_surface=4,business_value=5,tech_exposure=4,gate_ease=3,cloud_surface=5,freshness=7
+[HYP] k8s Dashboard Exposure via AWS ALB
+class: MISCONFIG
+asset: dashboard.betpanda.io
+confidence: 65
+reasoning: CNAME resolves to AWS ALB with k8s naming pattern (k8s-kubernet-albdashb-). Kubernetes dashboards frequently exposed via ALB with weak/default auth or misconfigured RBAC.
+evidence_needed: HTTP response showing k8s dashboard UI or unauthenticated API endpoints (/api/v1/namespaces/kubernetes-dashboard)

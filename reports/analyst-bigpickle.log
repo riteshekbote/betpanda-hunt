@@ -12830,3 +12830,613 @@ STEP 6 — LEARNING:
 
 STEP 7 — RISK:
 - [RISK] betpanda: 55 — No surface change at gate; top CORS+credentials ATO finding still POC-gated on one authenticated affiliate session (register/login primitives are the path). New Low-sev unauth config-disclosure confirmed on casino /rest/settings incl. a live (but read-only, empty-space) Contentful delivery token + login-protection intel feeding the #1 chain. cable event-injection schema fully mapped (poisoning/XSS stake). Program value climbs materially once an authenticated evil-Origin POC lands.
+===== ANALYST bigpickle 2026-09-05 21:50:35 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la && ls -la /tmp/opencode 2>/dev/null
+total 200
+drwxr-xr-x 12 runner runner  4096 Sep  5 21:40 .
+drwxr-xr-x  3 runner runner  4096 Sep  5 21:40 ..
+drwxr-xr-x  7 runner runner  4096 Sep  5 21:41 .git
+drwxr-xr-x  3 runner runner  4096 Sep  5 21:40 .github
+-rw-r--r--  1 runner runner  1709 Sep  5 21:40 README.md
+-rw-r--r--  1 runner runner    32 Sep  5 21:41 analyst-out.txt
+-rw-r--r--  1 runner runner 55150 Sep  5 21:40 analyst-prompt.txt
+-rw-r--r--  1 runner runner 51369 Sep  5 21:40 ctx.txt
+drwxr-xr-x  2 runner runner  4096 Sep  5 21:40 inventory
+drwxr-xr-x  2 runner runner  4096 Sep  5 21:40 knowledge
+drwxr-xr-x  2 runner runner  4096 Sep  5 21:40 leads
+-rw-r--r--  1 runner runner  5704 Sep  5 21:40 probe-results.md
+drwxr-xr-x  2 runner runner  4096 Sep  5 21:40 recon-notes
+drwxr-xr-x  2 runner runner  4096 Sep  5 21:40 reports
+drwxr-xr-x  2 runner runner  4096 Sep  5 21:40 reposcan-raw
+-rw-r--r--  1 runner runner  3194 Sep  5 21:40 scope.yml
+drwxr-xr-x  2 runner runner  4096 Sep  5 21:40 scripts
+-rw-r--r--  1 runner runner    33 Sep  5 21:40 state_bigpickle.json
+-rw-r--r--  1 runner runner    33 Sep  5 21:40 state_laguna.json
+-rw-r--r--  1 runner runner    33 Sep  5 21:40 state_ling3.json
+-rw-r--r--  1 runner runner    33 Sep  5 21:40 state_longcat.json
+-rw-r--r--  1 runner runner    33 Sep  5 21:40 state_mimo.json
+-rw-r--r--  1 runner runner    33 Sep  5 21:40 state_nemotron3.json
+drwxr-xr-x  2 runner runner  4096 Sep  5 21:40 triage
+total 8
+drwxr-xr-x  2 runner runner 4096 Sep  5 21:40 .
+drwxrwxrwt 15 root   root   4096 Sep  5 21:41 ..
+[0m
+[0m✱ [0mGlob "**/*.{yml,yaml,md}"[90m 38 matches[0m
+[0m→ [0mRead scope.yml
+[0m→ [0mRead probe-results.md
+[0m→ [0mRead state_bigpickle.json
+[0m→ [0mRead triage/run-2026-09-05-19-28.md
+[0m→ [0mRead leads/lead-bigpickle.md
+[0m→ [0mRead knowledge/index.md
+[0m
+[0m$ [0mfor f in leads/lead-nemotron3.md leads/lead-laguna.md leads/lead-ling3.md leads/lead-longcat.md leads/lead-mimo.md; do echo "=== $f ==="; head -c 1200 "$f"; echo; done
+=== leads/lead-nemotron3.md ===
+## 2026-09-03 17:03:40 UTC [target] (model nemotron3)
+[PRIO] dashboard.betpanda.io,7.3,attack_surface=8,business_value=9,tech_exposure=8,gate_ease=3,cloud_surface=9,freshness=5
+[PRIO] affiliates.betpanda.io,7.0,attack_surface=7,business_value=8,tech_exposure=5,gate_ease=8,cloud_surface=6,freshness=7
+[PRIO] betpanda.io,6.3,attack_surface=6,business_value=8,tech_exposure=5,gate_ease=7,cloud_surface=6,freshness=4
+[PRIO] cable.betpanda.io,6.15,attack_surface=6,business_value=6,tech_exposure=5,gate_ease=8,cloud_surface=5,freshness=7
+[PRIO] fp.betpanda.io,4.8,attack_surface=5,business_value=4,tech_exposure=6,gate_ease=3,cloud_surface=5,freshness=7
+[PRIO] custom-lp.betpanda.io,4.5,attack_surface=4,business_value=5,tech_exposure=4,gate_ease=3,cloud_surface=5,freshness=7
+[HYP] k8s Dashboard Exposure via AWS ALB
+class: MISCONFIG
+asset: dashboard.betpanda.io
+confidence: 65
+reasoning: CNAME resolves to AWS ALB with k8s naming pattern (k8s-kubernet-albdashb-). Kubernetes dashboards frequently exposed via ALB with weak/default auth or misconfigured RBAC.
+evidence_needed: HTTP response showing k8s dashboard UI or unauthenticated API endpoints (/api/v1/namespaces/kubernetes-dashboard)
+verify_steps
+=== leads/lead-laguna.md ===
+## 2026-09-03 16:56:54 UTC [target] (model laguna)
+## 2026-09-03 19:41:02 UTC [target] (model laguna)
+## 2026-09-03 22:20:10 UTC [target] (model laguna)
+## 2026-09-04 00:10:58 UTC [target] (model laguna)
+## 2026-09-04 04:42:16 UTC [target] (model laguna)
+## 2026-09-04 09:20:55 UTC [target] (model laguna)
+## 2026-09-04 13:45:05 UTC [target] (model laguna)
+## 2026-09-04 17:23:07 UTC [target] (model laguna)
+## 2026-09-04 19:50:41 UTC [target] (model laguna)
+## 2026-09-04 22:09:24 UTC [target] (model laguna)
+## 2026-09-05 00:10:11 UTC [target] (model laguna)
+## 2026-09-05 04:38:16 UTC [target] (model laguna)
+## 2026-09-05 08:35:17 UTC [target] (model laguna)
+## 2026-09-05 12:02:16 UTC [target] (model laguna)
+## 2026-09-05 15:19:49 UTC [target] (model laguna)
+## 2026-09-05 17:24:52 UTC [target] (model laguna)
+## 2026-09-05 19:27:13 UTC [target] (model laguna)
+
+=== leads/lead-ling3.md ===
+## 2026-09-03 16:56:59 UTC [target] (model ling3)
+## 2026-09-03 19:41:39 UTC [target] (model ling3)
+## 2026-09-03 22:20:08 UTC [target] (model ling3)
+## 2026-09-04 00:11:00 UTC [target] (model ling3)
+## 2026-09-04 04:42:14 UTC [target] (model ling3)
+## 2026-09-04 09:20:55 UTC [target] (model ling3)
+## 2026-09-04 13:45:06 UTC [target] (model ling3)
+## 2026-09-04 17:23:43 UTC [target] (model ling3)
+## 2026-09-04 19:50:40 UTC [target] (model ling3)
+## 2026-09-04 22:09:24 UTC [target] (model ling3)
+## 2026-09-05 00:10:13 UTC [target] (model ling3)
+## 2026-09-05 04:38:14 UTC [target] (model ling3)
+## 2026-09-05 08:35:18 UTC [target] (model ling3)
+## 2026-09-05 12:02:17 UTC [target] (model ling3)
+## 2026-09-05 15:19:54 UTC [target] (model ling3)
+## 2026-09-05 17:24:54 UTC [target] (model ling3)
+## 2026-09-05 19:27:15 UTC [target] (model ling3)
+
+=== leads/lead-longcat.md ===
+## 2026-09-03 16:57:11 UTC [target] (model longcat)
+## 2026-09-03 19:41:03 UTC [target] (model longcat)
+## 2026-09-03 22:20:08 UTC [target] (model longcat)
+## 2026-09-04 00:10:58 UTC [target] (model longcat)
+## 2026-09-04 04:42:14 UTC [target] (model longcat)
+## 2026-09-04 09:20:54 UTC [target] (model longcat)
+## 2026-09-04 13:45:03 UTC [target] (model longcat)
+## 2026-09-04 17:23:43 UTC [target] (model longcat)
+## 2026-09-04 19:50:37 UTC [target] (model longcat)
+## 2026-09-04 22:09:26 UTC [target] (model longcat)
+## 2026-09-05 00:10:14 UTC [target] (model longcat)
+## 2026-09-05 04:38:15 UTC [target] (model longcat)
+## 2026-09-05 08:35:19 UTC [target] (model longcat)
+## 2026-09-05 12:02:17 UTC [target] (model longcat)
+## 2026-09-05 15:19:48 UTC [target] (model longcat)
+## 2026-09-05 17:24:53 UTC [target] (model longcat)
+## 2026-09-05 19:27:13 UTC [target] (model longcat)
+
+=== leads/lead-mimo.md ===
+# Lead log (seed)
+[0m
+Knowledge reviewed. Running fresh passive probes against unexplored surface (Strapi `/cms` admin, in-context OpenAPI docs, casino public layer, CloudFront asset host).
+[0m$ [0mprobe() {
+  url="$1"; echo "=== $url ===";
+  code=$(curl -sS -m 20 -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36" \
+    -o /tmp/oc_out.txt -D /tmp/oc_hdr.txt -w "%{http_code}" "$url");
+  ct=$(grep -i '^content-type:' /tmp/oc_hdr.txt | head -1 | tr -d '\r');
+  loc=$(grep -i '^location:' /tmp/oc_hdr.txt | head -1 | tr -d '\r');
+  acao=$(grep -i '^access-control-allow-origin:' /tmp/oc_hdr.txt | head -1 | tr -d '\r');
+  srv=$(grep -i '^server:' /tmp/oc_hdr.txt | head -1 | tr -d '\r');
+  acac=$(grep -i '^access-control-allow-credentials:' /tmp/oc_hdr.txt | head -1 | tr -d '\r');
+  echo "HTTP $code | $ct | $srv | $acao $acac | $loc";
+  head -c 300 /tmp/oc_out.txt | tr -d '\r' | tr '\n' ' '; echo; echo;
+}
+probe "https://affiliates.betpanda.io/cms/admin/init"
+sleep 1
+probe "https://affiliates.betpanda.io/cms/"
+sleep 1
+probe "https://affiliates.betpanda.io/rest/v3/api-docs"
+sleep 1
+probe "https://betpandacasino.io/rest/v3/api-docs"
+sleep 1
+probe "https://betpandacasino.io/rest/public/config"
+sleep 1
+probe "https://d3ec3n7kizfkuy.cloudfront.net/"
+=== https://affiliates.betpanda.io/cms/admin/init ===
+HTTP 200 | content-type: text/html | server: cloudflare |   | 
+<!DOCTYPE html> <html lang="en">   <head>     <meta charset="UTF-8" /> <!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />     <title>Affiliate</title>     <script type="module" crossorig
+
+=== https://affiliates.betpanda.io/cms/ ===
+HTTP 200 | content-type: text/html | server: cloudflare |   | 
+<!DOCTYPE html> <html lang="en">   <head>     <meta charset="UTF-8" /> <!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />     <title>Affiliate</title>     <script type="module" crossorig
+
+=== https://affiliates.betpanda.io/rest/v3/api-docs ===
+HTTP 404 | content-type: application/xml;charset=UTF-8 | server: cloudflare |  access-control-allow-credentials: true | 
+<Map><timestamp>1788644512571</timestamp><status>404</status><error>Not Found</error><path>/rest/v3/api-docs</path></Map>
+
+=== https://betpandacasino.io/rest/v3/api-docs ===
+HTTP 404 | content-type: application/json | server: cloudflare | access-control-allow-origin: https://betpandacasino.io access-control-allow-credentials: true | 
+{"timestamp":1788644514345,"status":404,"error":"Not Found","path":"/rest/v3/api-docs"}
+
+=== https://betpandacasino.io/rest/public/config ===
+HTTP 404 | content-type: application/json | server: cloudflare | access-control-allow-origin: https://betpandacasino.io access-control-allow-credentials: true | 
+{"timestamp":1788644516132,"status":404,"error":"Not Found","path":"/rest/public/config"}
+
+=== https://d3ec3n7kizfkuy.cloudfront.net/ ===
+HTTP 403 | content-type: application/xml | server: AmazonS3 |   | 
+<?xml version="1.0" encoding="UTF-8"?> <Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>
+[0m
+OpenAPI not at `/rest/v3/api-docs` on either backend; `/cms` is SPA catch-all; CloudFront is S3-backed (403). One notable signal: affiliates `/rest/*` 404s return a Spring Boot XML error map (real backend, not SPA catch-all). Probing swagger variants + re-fetching the SPA bundle for new endpoint strings.
+[0m$ [0mprobe() {
+  url="$1"; echo "=== $url ===";
+  code=$(curl -sS -m 20 -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36" \
+    -o /tmp/oc_out.txt -D /tmp/oc_hdr.txt -w "%{http_code}" "$url");
+  ct=$(grep -i '^content-type:' /tmp/oc_hdr.txt | head -1 | tr -d '\r');
+  acao=$(grep -i '^access-control-allow-origin:' /tmp/oc_hdr.txt | head -1 | tr -d '\r');
+  echo "HTTP $code | $ct | $acao";
+  head -c 200 /tmp/oc_out.txt | tr -d '\r' | tr '\n' ' '; echo; echo;
+}
+probe "https://affiliates.betpanda.io/rest/swagger-ui/index.html"
+sleep 1
+probe "https://affiliates.betpanda.io/rest/v2/api-docs"
+sleep 1
+probe "https://betpandacasino.io/rest/v2/api-docs"
+sleep 1
+probe "https://betpandacasino.io/rest/swagger-ui.html"
+sleep 1
+probe "https://affiliates.betpanda.io/rest/swagger-ui.html"
+sleep 1
+probe "https://affiliates.betpanda.io/"
+# extract bundle script src
+curl -sS -m 20 -A "Mozilla/5.0" "https://affiliates.betpanda.io/" -o /tmp/spa.html
+grep -oE 'src="[^"]+\.js"' /tmp/spa.html | head -5
+=== https://affiliates.betpanda.io/rest/swagger-ui/index.html ===
+HTTP 404 | content-type: application/xml;charset=UTF-8 | 
+<Map><timestamp>1788644535700</timestamp><status>404</status><error>Not Found</error><path>/rest/swagger-ui/index.html</path></Map>
+
+=== https://affiliates.betpanda.io/rest/v2/api-docs ===
+HTTP 404 | content-type: application/xml;charset=UTF-8 | 
+<Map><timestamp>1788644536862</timestamp><status>404</status><error>Not Found</error><path>/rest/v2/api-docs</path></Map>
+
+=== https://betpandacasino.io/rest/v2/api-docs ===
+HTTP 404 | content-type: application/json | access-control-allow-origin: https://betpandacasino.io
+{"timestamp":1788644538567,"status":404,"error":"Not Found","path":"/rest/v2/api-docs"}
+
+=== https://betpandacasino.io/rest/swagger-ui.html ===
+HTTP 404 | content-type: application/json | access-control-allow-origin: https://betpandacasino.io
+{"timestamp":1788644540326,"status":404,"error":"Not Found","path":"/rest/swagger-ui.html"}
+
+=== https://affiliates.betpanda.io/rest/swagger-ui.html ===
+HTTP 404 | content-type: application/xml;charset=UTF-8 | 
+<Map><timestamp>1788644541534</timestamp><status>404</status><error>Not Found</error><path>/rest/swagger-ui.html</path></Map>
+
+=== https://affiliates.betpanda.io/ ===
+HTTP 200 | content-type: text/html | 
+<!DOCTYPE html> <html lang="en">   <head>     <meta charset="UTF-8" /> <!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->     <meta name="viewport" content="width=device-width, ini
+
+src="/main.ef021e68.js"
+[0m
+No OpenAPI surface on either backend. Fetching the fresh SPA bundle to grep for new endpoint/identity-provider strings.
+[0m$ [0mcurl -sS -m 60 -A "Mozilla/5.0" "https://affiliates.betpanda.io/main.ef021e68.js" -o /tmp/bundle.js
+echo "size: $(wc -c < /tmp/bundle.js)"
+echo "--- strapi/cms refs ---"
+grep -oE '.{80}(strapi|/cms|cms\.[a-z./-]+).{120}' /tmp/bundle.js | head -20
+echo "--- cognito/flipt/cloudfront refs ---"
+grep -oE '.{60}(cognito|flipt|cloudfront|amazonaws|grafana|sentry|socket\.io).{100}' /tmp/bundle.js | head -20
+size: 2089581
+--- strapi/cms refs ---
+{constructor(t){Ie(this,"axios");Ie(this,"baseUrl");let n=localStorage.getItem("strapiApiUrlOverride");n?this.baseUrl=n:this.baseUrl=t,this.axios=j_.create({headers:{"Content-type":"application/json"}})}fet
+width,name:n.attributes.name,type:""})),t};class IF{constructor(t,n,r){Ie(this,"strapiClient");Ie(this,"contentfulClient");if(t)this.strapiClient=new _u(t);else if(n)this.contentfulClient=new Eu(n,r,!1);els
+ease provide either the Strapi URL or the Contentful URL.")}getClient(){if(this.strapiClient)return this.strapiClient;if(this.contentfulClient)return this.contentfulClient;throw new Error("No client initial
+useState(void 0),[s,c]=$.useState(void 0),u=async()=>{const p=new IF(e.settings.strapiApiUrl,e.settings.contenfulSpaceId,e.settings.contentfulAccessToken);p.getClient()instanceof _u&&p.getTermspageContent()
+),s=()=>{setTimeout(()=>{var k,E,T;const w=new IF((k=e.settings)==null?void 0:k.strapiApiUrl,(E=e.settings)==null?void 0:E.contenfulSpaceId,(T=e.settings)==null?void 0:T.contentfulAccessToken);w.getClient()
+ludes.Asset})})},300)};$.useEffect(()=>{s()},[e&&((v=e.settings)==null?void 0:v.strapiApiUrl)||e&&((x=e.settings)==null?void 0:x.contenfulSpaceId)]);const c=w=>{var k;e&&((k=e.settings)!=null&&k.strapiApiUr
+--- cognito/flipt/cloudfront refs ---
+alhost:9095/rest",favicon:"https://nano-public.s3-eu-west-1.amazonaws.com/neobet/neobet-icon-96.png"}),JN("https://nano-public.s3-eu-west-1.amazonaws.com/neobet/neobet-i
+[0m
+[0m$ [0mecho "--- /rest path strings ---"
+grep -oE '"/[a-z0-9/_-]*rest[a-z0-9/_{}.-]*"' /tmp/bundle.js | sort -u | head -60
+echo "--- 9095 / dev host refs ---"
+grep -oE '.{60}9095.{80}' /tmp/bundle.js | head -10
+echo "--- jwt/cognito/graphql/presign ---"
+grep -oE '.{50}(cognito|cognito|graphql|presign|socket|zendesk).{90}' /tmp/bundle.js | head -15
+echo "--- phone/verify/signin ---"
+grep -oE '"/?rest/[a-z0-9/_-]+(phone|verify|signin|register)[a-z0-9/_{}.-]*"' /tmp/bundle.js | sort -u | head
+--- /rest path strings ---
+--- 9095 / dev host refs ---
+?e.appTitle:"Affiliate"}catch{XA({baseUrl:"http://localhost:9095/rest",favicon:"https://nano-public.s3-eu-west-1.amazonaws.com/neobet/neobet-ico
+--- jwt/cognito/graphql/presign ---
+ransport:s,httpAgent:s,httpsAgent:s,cancelToken:s,socketPath:s,responseEncoding:s,validateStatus:c,headers:(d,p)=>i(WA(d),WA(p),!0)};return Xe.for
+ransport:T,httpAgent:T,httpsAgent:T,cancelToken:T,socketPath:T,responseEncoding:T,validateStatus:O};return d.forEach(Object.keys(p).concat(Object.
+--- phone/verify/signin ---
+[0m
+[0m$ [0mgrep -oE '"[^"]{1,50}"' /tmp/bundle.js | grep -E '^\"/?' | grep -viE 'http://|https://' | sort -u | head -120
+""
+""
+""
+"	"
+"  "
+" "
+" $& "
+" %"
+" ("
+" (anonymous)"
+" */)"
+" - "
+" -> "
+" ."
+" .apexcharts-series"
+" .apexcharts-series[data\\:realIndex='"
+" .apexcharts-series[rel='"
+" .apexcharts-yaxis[rel='"
+" /><path d="
+" 0 "
+" 0 0)"
+" </div></div>"
+" => "
+" Configuration of callback URL"
+" Extension="
+" H"
+" H: "
+" L"
+" PartName="
+" Target="
+" Type="
+" V"
+" Z"
+" ]"
+" ago"
+" and will be removed in the near future"
+" apexcharts-theme-"
+" apexcharts-yaxistooltip-hidden"
+" apexcharts-yaxistooltip-left"
+" apexcharts-yaxistooltip-right"
+" argument"
+" at "
+" at new "
+" bytes."
+" chart is not supported."
+" due to a bad percent encoding ("
+" embedded asset"
+" encoding="
+" exists, but the property is not available."
+" failed"
+" for language "
+" for languages "
+" for nesting "
+" has been deprecated since v"
+" has been removed"
+" height="
+" id: "
+" in "
+" in key: "
+" is not a valid compression method !"
+" is not supported by this method"
+" is not supported by this platform"
+" more character"
+" must be "
+" name="
+" no-pointer-events"
+" not found. Did you forget to load it?"
+" or empty on darwin');throw r.code="
+" p-2"
+" point type!"
+" points="
+" px-5 text-gray-700 fs-5 paginate-status"
+" r:id="
+" react-mount-point-unstable "
+" records in central dir, got "
+" role="
+" ry="
+" sheetId="
+" standalone="
+" style="
+" to json"
+" unknown (inner file : "
+" viewBox="
+" w"
+" was not yet loaded'),"
+" width="
+" won't get resolved as namespace "
+" x2="
+" xmlns:mc="
+" xmlns:mv="
+" xmlns:mx="
+" xmlns:r="
+" xmlns:x14="
+" xmlns:x14ac="
+" xmlns:xm="
+" y1="
+" y2="
+" y="
+" z"
+" { "
+" }"
+"  "
+" €"
+"!"
+"!["
+"!important"
+"#"
+"###"
+"#${this.element.getAttribute("
+"#000"
+"#000000"
+"#008FFB"
+"#00B1F2"
+"#00B746"
+"#00E396"
+"#039ef7"
+"#03a9f4"
+"#0D47A1"
+"#111"
+"#13d8aa"
+[0m
+[0m$ [0mfor kw in "password/reset" "set-2fa" "/public/" "user/players" "account-balances" "recover-password" "phone/signin" "generate" "register" "login"; do
+  echo "=== $kw ===";
+  grep -oE '.{40}'"$kw"'.{60}' /tmp/bundle.js | head -3;
+done
+=== password/reset ===
+,POe=e=>{try{return Vt.post(Yt()+"/user/password/reset",e)}catch(t){throw new Error(t)}},Y0e=e=>{let t=e;const n=U
+=== set-2fa ===
+,n;try{return await Vt.post(Yt()+"/user/set-2fa-setting",e)}catch(r){throw new Error((t=r==null?void 0:r.da
+=== /public/ ===
+,COe=async e=>{try{return Vt.post(Yt()+"/public/register",e)}catch(t){throw new Error(t)}},OOe=async e=>{try
+r(e)}},W0e=()=>{try{return Vt.get(Yt()+"/public/logout")}catch(e){throw new Error(e)}},AOe=e=>{try{return Vt
+async()=>{try{return await Vt.get(Yt()+"/public/config")}catch(e){throw new Error(e.message)}};var q0={},r2e
+=== user/players ===
+turn e.withDeposit?await Vt.post(Yt()+"/user/players",{limit:e.limit,offset:e.offset,orderBy:e.orderBy??"id",asc
+it:e.withDeposit}):await Vt.post(Yt()+"/user/players",{limit:e.limit,offset:e.offset,orderBy:e.orderBy??"id",asc
+=== account-balances ===
+=== recover-password ===
+AOe=e=>{try{return Vt.get(Yt()+`/public/recover-password/email/${e}`)}catch(t){throw new Error(t)}},POe=e=>{try{retu
+=== phone/signin ===
+=== generate ===
+RProvider> to ensure consistent ids are generated between the client and server.");let n=dW(!!e);return e||`
+obal:G8,isContextDefined:q8,ALPHABET:Z8,generateString:gX,isSpecCompliantForm:yX,toJSONObject:vX};function q
+eIndex=sK;eo.getMonthDisplayRange=oK;eo.generateStyles=lK;var Jq=cl(as),eK=cl(Uv),tK=cl(EI),nK=cl(U_),rK=cl(
+=== register ===
+ e.status===200&&(N1(/\/public\/phone\/(register|signin)\/verify$/,t)?((n=e.data)==null?void 0:n.status)==="
+t&&a.then(()=>n(this.id))}mount(){const{register:t}=this.node.presenceContext||{};t&&(this.unmount=t(this.id
+ull];const{isPresent:t,onExitComplete:n,register:r}=e,i=$.useId();return $.useEffect(()=>r(i),[]),!t&&n?[!1,
+=== login ===
+Item(0 .toString(),1 .toString()):N1(/\/login$/,t)&&localStorage.setItem(0 .toString(),1 .toString())),N1
+nc e=>{try{return Vt.post(Yt()+"/public/login",e)}catch(t){throw new Error(t)}},VM=async()=>{try{return V
+ta.attributes.url),t.data[0].attributes.loginFooter&&(n.loginFooter=t.data[0].attributes.loginFooter),t.d
+[0m
+[0m$ [0mfor kw in '"/trk' '"/v2/' '"/agent' '"/report' '"/payout' '"/refresh' '"/token' '"/logout' '"/validate' '"/verify' '"/metrics' '"/transaction' '"/player' '"/wallet' '"/withdraw' '"/deposit'; do
+  echo "=== ${kw} ===";
+  grep -oE '.{15}'"$kw"'.{40}' /tmp/bundle.js | head -2;
+done
+=== "/trk ===
+t Vt.post(Yt()+"/trk/list",{limit:e.limit,offset:e.offset,or
+=== "/v2/ ===
+=>Vt.post(Yt()+"/v2/report/sub-affiliates",{from:e.from,to:e
+t Vt.post(Yt()+"/v2/report",{from:e.from,to:e.to,period:e.pe
+=== "/agent ===
+t Vt.post(Yt()+"/agent/create",e)}catch(t){throw new Error(t==
+t Vt.post(Yt()+"/agent/list",{limit:e.limit,offset:e.offset,or
+=== "/report ===
+),y.jsx(pa,{to:"/reports/details",icon:"document",title:e("side
+),y.jsx(pa,{to:"/reports/commission",icon:"wallet",title:e("sid
+=== "/payout ===
+=>Vt.post(Yt()+"/payouts/single-currency-list",{limit:e.limit,o
+=>Vt.post(Yt()+"/payouts/single-currency-list",{limit:e.limit,o
+=== "/refresh ===
+=== "/token ===
+=== "/logout ===
+=== "/validate ===
+=== "/verify ===
+=== "/metrics ===
+=>Vt.post(Yt()+"/metrics/top-metrics-revenue-chart",{from:e.from
+=== "/transaction ===
+t Vt.post(Yt()+"/transaction/list",{from:e.from,to:e.to,limit:e.limi
+=== "/player ===
+),y.jsx(pa,{to:"/players",icon:"people",title:e("sidebar.menuLi
+y.jsx(hn,{path:"/players",element:y.jsx(Zye,{})}),y.jsx(hn,{pat
+=== "/wallet ===
+=== "/withdraw ===
+=== "/deposit ===
+[0m
+Bundle confirms known endpoint set. Now checking the casino SPA (betpandacasino.io) bundle for concrete money-flow / auth endpoints and Cognito pool IDs to strengthen the BOLA hypothesis.
+[0m$ [0mcurl -sS -m 30 -A "Mozilla/5.0" "https://betpandacasino.io/" -o /tmp/cas.html
+grep -oE 'src="[^"]+\.js"' /tmp/cas.html | head
+grep -oE 'href="[^"]+\.(js|json)"' /tmp/cas.html | head
+src="/assets/index-KqswHEbl.js"
+[0m
+[0m$ [0mcurl -sS -m 90 -A "Mozilla/5.0" "https://betpandacasino.io/assets/index-KqswHEbl.js" -o /tmp/casbundle.js
+echo "size: $(wc -c < /tmp/casbundle.js)"
+echo "=== /rest endpoints ==="
+grep -oE '"/rest/[a-z0-9/_{}.-]+"' /tmp/casbundle.js | sort -u | head -60
+echo "=== cognito refs ==="
+grep -oE '.{60}(cognito|UserPool|userPool|CognitoIdentity|amazoncognito|auth\.aws).{100}' /tmp/casbundle.js | head -5
+echo "=== upsert/secured/refresh/token/socket/graphql/presign ==="
+grep -oE '.{40}(graphql|socket\.io|websocket|presign|refresh|/token|/wallet|/payment|/withdraw|/deposit).{60}' /tmp/casbundle.js | grep -iE 'rest|wallet|payment|graphql|socket' | head -20
+size: 795572
+=== /rest endpoints ===
+=== cognito refs ===
+e:"rum.aws.amazon.com",urlsToInclude:[/.*/],urlsToExclude:[/cognito\-identity\.([^\.]*\.)?amazonaws\.com/,/sts\.([^\.]*\.)?amazonaws\.com/],stackTraceLength:200,record
+d="POST",Cd="application/x-amz-json-1.1",Qd="https:",ad="AWSCognitoIdentityService.GetId",Bd="AWSCognitoIdentityService.GetOpenIdToken",Ed="AWSCognitoIdentityService.GetCreden
+i},protocol:Qd,hostname:t.hostname,body:n})},this.hostname="cognito-identity.".concat(e.region,".amazonaws.com"),this.fetchRequestHandler=e.fetchRequestHandler,this.co
+})};var i=e.identityPoolId.split(":")[0];this.config=e,this.cognitoIdentityClient=new sd({fetchRequestHandler:new ti,region:i,clientConfig:e,applicationId:t}),this.cre
+ase 1:a.label=2;case 2:return a.trys.push([2,6,,7]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return o=a.sent(),[4,this.
+=== upsert/secured/refresh/token/socket/graphql/presign ===
+[0m
+[0m$ [0mfor kw in 'properties/manifest' 'user/authenticate' 'REFRESH_TOKEN' 'refresh' 'logout' 'register' 'graphql' 'captcha' 'turnstile' 'x-captcha' 'trk' 'track' 'affiliate' 'attribution'; do
+  echo "=== ${kw} ===";
+  grep -oE '.{50}'"$kw"'.{70}' /tmp/casbundle.js | head -2;
+done
+=== properties/manifest ===
+=== user/authenticate ===
+orage.getItem("salt");return!(!t||!g||e.indexOf("/user/authenticate")!=-1||e.indexOf("/user/logout")!=-1||e.endsWith("/user/zendesk/jwt")
+=== REFRESH_TOKEN ===
+=== refresh ===
+eaders:{"Content-type":"application/json"}}),this.refreshUrl=`${this.baseUrl}/user/refresh`}inFlight;axios;refreshUrl;static RE
+_MAX_MS=1e3;static DEFAULT_503_RETRY_DELAY_MS=200;refresh(){return this.inFlight?this.inFlight:(this.inFlight=this.run().finall
+=== logout ===
+dexOf("/user/authenticate")!=-1||e.indexOf("/user/logout")!=-1||e.endsWith("/user/zendesk/jwt"))}async handleResponseError(e){
+=== register ===
+eURIComponent(e)}`;function Eh(A){if(console.log("registering service worker"),"serviceWorker"in navigator){if(new URL("/",windo
+(t,A)})}}function Aa(A,e){navigator.serviceWorker.register(A).then(t=>{t.onupdatefound=()=>{console.log("onupdatefound");const g
+=== graphql ===
+=== captcha ===
+=== turnstile ===
+=== x-captcha ===
+=== trk ===
+=== track ===
+=== affiliate ===
+=== attribution ===
+dState:JI(o.startTime)})}}return Object.assign(i,{attribution:I})}(t);A(g)},e)},La=0,vn=1/0,Cg=0,Ld=function(A){A.forEach(function(
+oadState:JI(n.startTime)};return Object.assign(i,{attribution:l})}(t);A(g)},e)},xC=[2500,4e3],Zn={},Vd=function(A,e){(function(t,g)
+[0m
+[0m$ [0mgrep -oE '(this\.baseUrl|baseUrl ?\+|baseUrl \+|e\+)"? ?/ ?/user/[a-z0-9/_-]+' /tmp/casbundle.js | sort -u | head -40
+echo "=== all /user/ and /rest/ substring paths ==="
+grep -oE '/user/[a-z0-9_-]+' /tmp/casbundle.js | sort -u | head -40
+grep -oE '/rest/[a-z0-9/_-]+' /tmp/casbundle.js | sort -u | head -40
+echo "=== salt usage ==="
+grep -oE '.{70}salt.{60}' /tmp/casbundle.js | head -6
+=== all /user/ and /rest/ substring paths ===
+/user/account-balances-and-bonuses
+/user/authenticate
+/user/logout
+/user/refresh
+/user/zendesk
+=== salt usage ===
+ogin(e){const t=localStorage.getItem("token"),g=localStorage.getItem("salt");return!(!t||!g||e.indexOf("/user/authenticate")!=-1||e.in
+[0m
+[0m$ [0mgrep -oE 'assets/[A-Za-z0-9_-]+\.js' /tmp/casbundle.js | sort -u | head -40
+echo "=== total chunk refs ==="
+grep -oE 'assets/[A-Za-z0-9_-]+\.js' /tmp/casbundle.js | sort -u | wc -l
+echo "=== search all chunk names including .css/images ==="
+grep -oE 'assets/[A-Za-z0-9_.-]+' /tmp/casbundle.js | sort -u | wc -l
+assets/Maintenance-UKG0FIUk.js
+assets/load-CR4EjGu3.js
+assets/maintenance-on-load-nTw0CjuY.js
+=== total chunk refs ===
+3
+=== search all chunk names including .css/images ===
+5
+[0m
+[0m$ [0mgrep -oE '"/[a-z0-9/_{}.-]{3,60}"' /tmp/casbundle.js | grep -viE 'assets/|\.svg|\.png|\.css|\.js|fonts|node_modules|/@|/favicon' | sort -u | head -80
+"/412"
+"/416"
+"/417"
+"/419"
+"/app"
+"/appmonitors/"
+"/casino-pages"
+"/i18n/locales"
+"/locales/add/{{lng}}/{{ns}}"
+"/maintenance"
+"/rest"
+"/settings"
+"/spaces/"
+"/translations/{{lng}}"
+"/user/account-balances-and-bonuses"
+"/user/authenticate"
+"/user/logout"
+"/user/zendesk/jwt"
+[0m
+Casino bundle uses AWS Amplify with a Cognito Identity Pool (anonymous guest creds). Extracting pool ID/region — a potential anonymous AWS credential exposure.
+[0m$ [0mgrep -oE '[a-z0-9-]+:[a-f0-9-]{12}:[a-z0-9-]+' /tmp/casbundle.js | sort -u | head
+echo "=== IdentityPoolId context ==="
+grep -oE '.{80}identityPoolId.{120}' /tmp/casbundle.js | head -4
+echo "=== region context ==="
+grep -oE 'region:"[a-z0-9-]+"' /tmp/casbundle.js | sort -u | head
+grep -oE 'IdentityPoolId:"[^"]+"' /tmp/casbundle.js | sort -u | head
+=== IdentityPoolId context ===
+.expiration)}),n.renewCredentials())return C();o(n.credentials)})]})})};var i=e.identityPoolId.split(":")[0];this.config=e,this.cognitoIdentityClient=new sd({fetchRequestHandler:new ti,region:i,clientConfig:e,appli
+.push([2,6,,7]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return o=a.sent(),[4,this.cognitoIdentityClient.getOpenIdToken(o)];case 4:return C=a.sent(),[4,this.stsClient
+tch failed:",Q),Q;return[3,7];case 7:return[3,1];case 8:return[2]}})})};var n=t.identityPoolId.split(":")[0];return i.stsClient=new rd({fetchRequestHandler:new ti,region:n}),i}return e}(va),fd=function(){var A=func
+.push([2,5,,6]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return I=r.sent(),[4,this.cognitoIdentityClient.getCredentialsForIdentity(I.IdentityId)];case 4:o=r.sent(),th
+=== region context ===
+[0m
+[0m$ [0mgrep -oE '.{0,10}identityPoolId[=:][" ]?[a-z0-9_:-]+' /tmp/casbundle.js | sort -u | head
+echo "=== find literal pool id pattern around 'cognito' calls arg ==="
+grep -oE 'identityPoolId[=:][^,;}]{5,60}' /tmp/casbundle.js | sort -u | head
+echo "=== any 'amplify' auth config object ==="
+grep -oE 'Auth:\{[^}]{0,200}' /tmp/casbundle.js | head -3
+grep -oE '(AWSCognito|Amplify|aws_cognito|userPoolId|clientId|aws_project_region)[^,;}]{0,60}' /tmp/casbundle.js | sort -u | head -20
+ATE))):.1,identityPoolId:t
+=== find literal pool id pattern around 'cognito' calls arg ===
+=== any 'amplify' auth config object ===
+AWSCognitoIdentityService.GetCredentialsForIdentity"
+AWSCognitoIdentityService.GetId"
+AWSCognitoIdentityService.GetOpenIdToken"
+[0m
+`identityPoolId` is injected at runtime (likely from `/rest/properties`). Probing the properties config endpoint on both casino hosts.
+[0m$ [0mfor u in "https://betpandacasino.io/rest/properties" "https://betpanda.partners/rest/properties"; do
+  echo "=== $u ===";
+  curl -sS -m 20 -A "Mozilla/5.0" -o /tmp/oc_out.txt -D /tmp/oc_hdr.txt -w "HTTP %{http_code} | %{content_type}\n" "$u";
+  head -c 1500 /tmp/oc_out.txt; echo; echo;
+  sleep 1;
+done
+=== https://betpandacasino.io/rest/properties ===
+HTTP 200 | application/json
+{}
+
+=== https://betpanda.partners/rest/properties ===
+HTTP 200 | application/json
+{}
+[0m
+[0m$ [0mgrep -oE '.{150}identityPoolId:.{40}' /tmp/casbundle.js | head -4
+echo "=== config fetch URLs in casino bundle ==="
+grep -oE '(fetch|axios call|get)\(("|\x27)[^"\x27]{1,70}' /tmp/casbundle.js | grep -viE 'https?://' | sort -u | head -30
+!g)return;const i={sessionSampleRate:window.GLOBAL_CLOUDWATCH_SAMPLE_RATE?Math.min(1,Math.max(0,parseFloat(window.GLOBAL_CLOUDWATCH_SAMPLE_RATE))):.1,identityPoolId:t,endpoint:`https://dataplane.rum.${g}.a
+=== config fetch URLs in casino bundle ===
+get("/
+get("/config/config.json
+get("/maintenance
+get("Content-Length
+get("Content-Type
+get("X-Request-URL
+get("assets
+get("content-length
+get("content-type
+get("content_types
+get("entries
+get("etag
+get("locales
+get("set-cookie
+get("sync
+get("tags
+[0m
+[93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
+[0m✗ [0mfor u in "https://betpandacasino.io/config/config.json" "https://betpanda.partners/config/config.json"; do
+  echo "=== $u ===";
+  curl -sS -m 20 -A "Mozilla/5.0" -o /tmp/oc_out.txt -D /tmp/oc_hdr.txt -w "HTTP %{http_code} | %{content_type}\n" "$u";
+  cat /tmp/oc_out.txt | head -c 1200; echo; echo;
+  sleep 1;
+done failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.
+CloudWatch RUM pool config comes from `/config/config.json`. Fetching it on the casino host.

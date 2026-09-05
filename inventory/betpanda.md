@@ -160,3 +160,5 @@ www.betpanda.io
 - CHANGED `affiliates.betpanda.io/rest/*` — password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + `ACAC:true` (fresh probes this cycle)
 - CHANGED `betpanda.partners/rest/*` — CORS properly pinned: OPTIONS/GET with evil Origin return `Vary:Origin` but NO `ACAO` reflection; cross-origin credential vector ABSENT (only `affiliates.betpanda.io` is w
 - CHANGED `cable.betpanda.io/cable/user-event` — full schema reverse-derived (`eventType`/`userId`/`registeredOn`/`amount`/`referrer`/`currency`/`ip`/`device`/`metadata`); arbitrary `eventType` accepted incl. X
+
+## 2026-09-05 21:50:35 UTC

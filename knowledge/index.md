@@ -94,3 +94,5 @@
 - 2026-09-05 NEW SPA ROUTE @ affiliates.betpanda.io: /reset-password/:affiliateId/:resetPasswordCode — reset code in URL is the credential binding for POST /rest/user/password/reset.
 - 2026-09-05 NEW ENDPOINTS @ affiliates.betpanda.io/rest/public/phone/*: signin/verify + register/verify POST-only JSON (415 on form-encoded ⇒ handler present), reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated).
 - 2026-09-05 NEW ASSET @ betpanda.partners: Dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot `/rest` backend as betpandacasino.io
+- 2026-09-05 ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
+- 2026-09-05 ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauthenticated event ingestion with CORS * confirmed — injection surface validated
