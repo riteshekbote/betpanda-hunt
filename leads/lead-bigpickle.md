@@ -1474,3 +1474,4 @@ evidence_needed: whether any /cms/api/{contentType} is public-read and what it s
 verify_steps: PASSIVE — GET /cms/api/global, /cms/api/home-page, /cms/_health, /cms/admin (fingerprint); none touch auth.
 impact: public CMS content disclosure; chaining primitive for stored-content injection via override — Low-Medium.
 testability: PASSIVE
+## 2026-09-06 06:05:50 UTC [target] (model bigpickle)

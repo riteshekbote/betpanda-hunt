@@ -13935,3 +13935,16 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 - [RISK] betpanda: 68 — Flagship CORS+credentials ATO chain is confirmed backend-wide on affiliates (public+authed, incl. password-reset/2FA/deposit-limit tampering) but its final exploitability STILL hinges on the unaudited affiliate session cookie SameSite attribute — if SameSite=Lax (as the casino's REFRESH_TOKEN already is), the cross-origin vector downgrades to Medium and only BOLA/injection findings remain, both gated. Multi-tenant backend now confirmed, raising BOLA value. Live Strapi v4 + CloudFront CDN mapped (no exposure yet). OAuth and S3 paths eliminated. Net: one strong but cookie-model-dependent finding; no demonstrated Critical POC landable without an authorized session.
+===== ANALYST bigpickle 2026-09-06 06:09:00 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mcurl -sS -m 20 -o /tmp/str_health.txt -D /tmp/str_health.hdr -w "health|%{http_code}|%{content_type}|%{size_download}\n" https://betpandacasino.io/cms/_health; sleep 1.2; curl -sS -m 20 -o /tmp/str_global.txt -D /tmp/str_global.hdr -w "global|%{http_code}|%{content_type}|%{size_download}\n" https://betpandacasino.io/cms/api/global; sleep 1.2; curl -sS -m 20 -o /tmp/str_admin.txt -D /tmp/str_admin.hdr -w "admin|%{http_code}|%{content_type}|%{size_download}\n" "https://betpandacasino.io/cms/admin"; sleep 1.2; curl -sS -m 20 -o /tmp/str_cms.txt -w "cmsroot|%{http_code}|%{content_type}|%{size_download}\n" https://betpandacasino.io/cms
+health|404|application/json; charset=utf-8|94
+global|404|application/json; charset=utf-8|94
+admin|404|application/json; charset=utf-8|94
+cmsroot|301|text/html; charset=UTF-8|167
+[0m
+[93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
+[0m✗ [0mcat /tmp/str_health.txt; echo "---GLOBAL---"; cat /tmp/str_global.txt; echo "---HEADERS health---"; head -20 /tmp/str_health.hdr; echo "---CMS301---"; curl -sS -m 20 -I https://betpandacasino.io/cms; sleep 1.0; curl -sS -m 20 -o /tmp/str_cms2.txt -D - -w "cms-slash|%{http_code}|%{content_type}\n" https://betpandacasino.io/cms/ failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.
