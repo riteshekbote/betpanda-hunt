@@ -1,23 +1,19 @@
-## 2026-09-06 06:08:50 UTC [target] (model nemotron3)
-[PRIO] affiliates.betpanda.io/rest/*,8.80,attack_surface=9,business_value=9,tech_exposure=8,gate_ease=10,cloud_surface=6,freshness=10
-[PRIO] betpandacasino.io/rest/user/*,7.55,attack_surface=7,business_value=9,tech_exposure=7,gate_ease=6,cloud_surface=7,freshness=9
-[PRIO] betpanda.partners/rest/user/*,7.15,attack_surface=6,business_value=8,tech_exposure=7,gate_ease=6,cloud_surface=8,freshness=9
-[PRIO] cable.betpanda.io/cable/user-event,7.15,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=10,cloud_surface=5,freshness=7
-[PRIO] betpandacasino.io/rest/user/authenticate,7.05,attack_surface=6,business_value=8,tech_exposure=7,gate_ease=6,cloud_surface=7,freshness=9
-[PRIO] affiliates.betpanda.io/rest/public/config,6.90,attack_surface=5,business_value=6,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=10
+## 2026-09-06 11:13:55 UTC [target] (model nemotron3)
+[PRIO] affiliates.betpanda.io/rest/*,8.30,attack_surface=9,business_value=9,tech_exposure=8,gate_ease=8,cloud_surface=7,freshness=7
+[PRIO] betpandacasino.io/rest/user/*,8.35,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=7
+[PRIO] cable.betpanda.io/cable/user-event,7.05,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=9,cloud_surface=5,freshness=7
+[PRIO] betpandacasino.io/rest/user/authenticate,7.05,attack_surface=7,business_value=9,tech_exposure=8,gate_ease=4,cloud_surface=7,freshness=9
+[PRIO] affiliates.betpanda.io/rest/public/config,6.90,attack_surface=6,business_value=6,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=10
 [PRIO] affiliates.betpanda.io/rest/v2/*,6.30,attack_surface=6,business_value=7,tech_exposure=6,gate_ease=5,cloud_surface=5,freshness=9
+[PRIO] betpanda.partners/rest/*,5.90,attack_surface=6,business_value=8,tech_exposure=6,gate_ease=4,cloud_surface=7,freshness=8
+[PRIO] betpandacasino.io/rest/properties/manifest,5.20,attack_surface=5,business_value=5,tech_exposure=6,gate_ease=9,cloud_surface=8,freshness=9
 [HYP] Wildcard CORS + Credentials Enables Cross-Origin Account Takeover + Password Reset/2FA Bypass
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
 confidence: 95
 reasoning: Live OPTIONS from arbitrary origin (evil.com) returns ACAO: https://evil.com + ACAC: true on /rest/user/players, /rest/user/password/reset, /rest/user/set-2fa-setting, /rest/public/config. 20+ authenticated endpoints in JS bundle including /rest/user/players, /rest/transaction/list, /rest/user/account-settings, /rest/user/set-profile, /rest/user/change-password, /rest/user/payout-config, /rest/affiliate/commissions, /agent/set-deposit-withdraw-limit, /payouts/single-currency-list, /reports/commission, /reports/details, /reports/sub-affiliates. Cookie-based auth (401 on /rest/user unauthenticated). Backend-wide flaw extends to unauthenticated /rest/public/* layer (GET /rest/public/config 200 with evil Origin + ACAC:true). Any origin can read/write victim data via credentialed fetch.
 evidence_needed: Successful cross-origin credentialed GET to /rest/user/players or /rest/transaction/list from attacker-controlled origin returning victim PII/transactions; successful credentialed POST to /rest/user/password/reset or /rest/user/set-2fa-setting triggering account takeover
-verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" → confirm ACAO: evil.com + ACAC: true; GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_session>" (auth-helped) → observe data exfiltration; POST https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <valid_session>" -H "Content-Type: application/json" -d '{"email":"victim@email.com"}' → observe password reset initiation
-impact: Cross-origin exfiltration of player PII, transactions, affiliate commissions; account settings/password/payout config modification; full account takeover via password reset + 2FA disable — CRITICAL
-testability: AUTH_HELPED
-[HYP] BOLA/IDOR on Player Wallet & Balance Endpoints Across Shared Spring Boot Backend
-class: IDOR
-asset: betpandacasino.io/rest/user/*, betpanda.partners/rest/user/*
+verify_steps: [0m
 confidence: 80
 reasoning: Spring Boot + Cognito JWT API exposes per-user money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403). CORS pinned to betpandacasino.io origin but server-side authorization not verified. betpanda.partners shares SAME /rest backend — cross-brand IDOR possible. REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed. SameSite=Lax limits cross-origin cookie sending but same-origin IDOR remains. Real-money gambling platform = critical business value.
 evidence_needed: Successful cross-user access to /rest/user/account-balances-and-bonuses or /rest/user/settings returning another user's wallet/balance/bonus data; JWT missing/insufficient scope/claim validation; cross-brand access via betpanda.partners/rest/user/* with betpandacasino.io session
