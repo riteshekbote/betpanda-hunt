@@ -781,3 +781,15 @@
 - LEARN: NEW ENDPOINTS @ affiliates.betpanda.io: /rest/v2/report (POST-only 405-GET), /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/
 - LEARN: NEW SPA ROUTE @ affiliates.betpanda.io: /reset-password/:affiliateId/:resetPasswordCode — reset code in URL is the credential binding for POST /rest/user/passwo
 - LEARN: NEW ENDPOINTS @ affiliates.betpanda.io/rest/public/phone/*: signin/verify + register/verify POST-only JSON (415 on form-encoded ⇒ handler present), reflect evil
+
+## RANKED HYPOTHESES 2026-09-06 19:36:26 UTC
+- [90] affiliates.betpanda.io/rest/*: Wildcard CORS + credentials enables cross-origin ATO on affiliate money/account API (from art/lead_bigpickle.txt)
+- [75] betpanda.partners/rest/user/*: Cross-Brand BOLA via Shared Spring Boot Backend — JWT Missing aud/iss Validation (from art/lead_nemotron3.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: Login to affiliates.betpanda.io (or second casino account) and capture session + Set-Cookie headers; then `GET /rest/user/players -H "Origin: https://evi
+- NEXT(hypotheses-nemotron3.txt): PROBE: OPTIONS https://affiliates.betpanda.io/rest/public/phone/signin/verify -H "Origin: https://evil.com" (passive, read-only, confirm wildcard CORS + credent
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials re-confirmed this cycle (bundle unchanged main.ef021e68.js; password/reset, set-
+- LEARN: ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints re-confirmed; CORS pinned; server-side authZ unverified → BOLA stands.
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth event ingestion re-confirmed (405/200 baseline stable).
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under 
+- LEARN: REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.
+- LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).

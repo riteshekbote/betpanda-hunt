@@ -1501,3 +1501,86 @@ testability: PASSIVE
 [LEARN] NEW SPA ROUTE @ affiliates.betpanda.io: /reset-password/:affiliateId/:resetPasswordCode — reset code in URL is the credential binding for POST /rest/user/password/reset.
 [LEARN] NEW ENDPOINTS @ affiliates.betpanda.io/rest/public/phone/*: signin/verify + register/verify POST-only JSON (415 on form-encoded ⇒ handler present), reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated).
 [RISK] betpanda: 90 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + phone auth endpoints (CRITICAL cross-origin ATO chain), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), unauthenticated analytics injection with negative amounts/XSS (chaining vector). OAuth ATO path ELIMINATED (false positive). Program scope covers all company-owned infrastructure. Fresh SPA redeploy expands attack surface.
+## 2026-09-06 19:36:17 UTC [target] (model nemotron3)
+[CHANGED] betpandacasino.io/cms/*: Fresh probes confirm real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under guessed names and NO admin at default path — CMS content-disclosure hypothesis dropped (was confidence 45), not a finding
+[CHANGED] affiliates.betpanda.io/rest/*: JS bundle unchanged (main.ef021e68.js); password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + ACAC:true — flagship wildcard CORS+credentials finding stable
+[CHANGED] betpanda.partners/rest/*: CORS properly pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io has wildcard CORS+credentials
+[CHANGED] betpandacasino.io/cms/*: Fresh probes confirm real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under guessed names and NO admin at default path — CMS content-disclosure hypothesis dropped (was confidence 45), not a finding
+[CHANGED] affiliates.betpanda.io/rest/*: JS bundle unchanged (main.ef021e68.js); password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + ACAC:true — flagship wildcard CORS+credentials finding stable
+[CHANGED] betpanda.partners/rest/*: CORS properly pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io has wildcard CORS+credentials
+[PRIO] betpandacasino.io/rest/user/*,8.35,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=7
+[PRIO] affiliates.betpanda.io/rest/*,8.30,attack_surface=9,business_value=9,tech_exposure=8,gate_ease=8,cloud_surface=7,freshness=7
+[PRIO] betpanda.partners/rest/user/*,8.00,attack_surface=8,business_value=10,tech_exposure=7,gate_ease=5,cloud_surface=8,freshness=9
+[PRIO] cable.betpanda.io/cable/user-event,7.20,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=10,cloud_surface=5,freshness=7
+[PRIO] affiliates.betpanda.io/rest/public/*,7.05,attack_surface=6,business_value=6,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=9
+[PRIO] affiliates.betpanda.io/rest/public/phone/*,6.90,attack_surface=6,business_value=7,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=9
+[PRIO] betpandacasino.io/rest/user/*,8.35,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=7
+[PRIO] affiliates.betpanda.io/rest/*,8.30,attack_surface=9,business_value=9,tech_exposure=8,gate_ease=8,cloud_surface=7,freshness=7
+[PRIO] betpanda.partners/rest/user/*,8.00,attack_surface=8,business_value=10,tech_exposure=7,gate_ease=5,cloud_surface=8,freshness=9
+[PRIO] cable.betpanda.io/cable/user-event,7.20,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=10,cloud_surface=5,freshness=7
+[PRIO] affiliates.betpanda.io/rest/public/*,7.05,attack_surface=6,business_value=6,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=9
+[PRIO] affiliates.betpanda.io/rest/public/phone/*,6.90,attack_surface=6,business_value=7,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=9
+[HYP] Cross-Brand BOLA via Shared Spring Boot Backend — JWT Missing aud/iss Validation
+class: IDOR
+asset: betpanda.partners/rest/user/*
+confidence: 75
+reasoning: betpanda.partners is a dedicated in-scope host fronting the SAME Spring Boot `/rest` backend as betpandacasino.io (confirmed via identical `/rest/properties/manifest` 200 response and S3 operator icons). betpandacasino.io exposes money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403) with Cognito JWT auth. CORS on betpanda.partners is properly pinned (no ACAO reflection), but server-side authorization is unverified. SameSite=Lax REFRESH_TOKEN cookie limits cross-origin but same-origin IDOR remains. Cross-brand session reuse possible if JWT validation lacks audience/issuer checks.
+evidence_needed: Successful access to betpanda.partners/rest/user/account-balances-and-bonuses with betpandacasino.io JWT returning victim wallet data; JWT missing aud/iss validation allowing cross-brand token reuse; horizontal IDOR via user_id manipulation in request body
+verify_steps: PASSIVE: GET https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" → observe 200/401/403; PASSIVE: POST https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" -H "Content-Type: application/json" -d '{}' → observe response; PASSIVE: test JWT claims manipulation (aud/iss/sub) against betpanda.partners endpoints
+impact: Cross-brand wallet/balance/bonus disclosure or tampering on real-money gambling platform; cross-tenant account compromise — CRITICAL
+testability: AUTH_HELPED
+[HYP] Wildcard CORS + Credentials on Password-Reset/2FA Endpoints Enables Full ATO Chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/change-password
+confidence: 85
+reasoning: Affiliate backend reflects arbitrary Origin + ACAC:true on ALL /rest/* endpoints including password-reset (POST), set-2fa-setting (POST), change-password (POST), set-profile (POST) — confirmed via fresh OPTIONS/GET probes this cycle (405-GET on each). Cookie-based auth (401 on /rest/user unauthenticated) + wildcard CORS+credentials = any origin can trigger password reset, disable 2FA, change password, modify profile for authenticated victims. SPA route `/reset-password/:affiliateId/:resetPasswordCode` binds reset code in URL to POST /rest/user/password/reset.
+evidence_needed: Successful cross-origin credentialed POST to /rest/user/password/reset from attacker.com with victim session returning 200 (password reset initiated); successful cross-origin POST to /rest/user/set-2fa-setting disabling 2FA; successful cross-origin POST to /rest/user/change-password changing password
+verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" → confirm ACAO: evil.com + ACAC: true; PASSIVE: GET https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <valid_affiliate_session>" (auth-helped) → observe 405 (POST-only); PASSIVE: POST https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <valid_affiliate_session>" -H "Content-Type: application/json" -d '{"resetPasswordCode":"<code>","newPassword":"pwned"}' → observe response
+impact: Full affiliate account takeover via cross-origin password reset + 2FA bypass + password change; commission/payout config manipulation — CRITICAL
+testability: AUTH_HELPED
+[HYP] Unauthenticated Phone Auth Endpoints with Wildcard CORS + Credentials Enable Credential Stuffing / Account Enumeration
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/public/phone/signin/verify and /rest/public/phone/register/verify
+confidence: 70
+reasoning: Two unauthenticated POST-only JSON endpoints (`/rest/public/phone/signin/verify`, `/rest/public/phone/register/verify`) confirmed via probes: 415 on form-encoded (handler present), 404 on JSON (schema obfuscated). Both reflect arbitrary Origin + `ACAC:true` (wildcard CORS + credentials on public layer). No rate limiting observed in probes. Phone-based auth endpoints are high-value for credential stuffing, phone enumeration, or OTP bypass. Backend-wide wildcard CORS + credentials flaw extends to these public auth primitives.
+evidence_needed: Successful POST with valid phone/OTP schema returning 200 (proving handler exists); observation of rate limiting (or lack thereof) via repeated requests; successful cross-origin credentialed request from attacker origin with victim session
+verify_steps: PASSIVE: POST https://affiliates.betpanda.io/rest/public/phone/signin/verify -H "Origin: https://evil.com" -H "Content-Type: application/json" -d '{"phone":"+15551234567","code":"123456"}' → observe response code/schema; PASSIVE: repeat 10x rapidly to test rate limiting; PASSIVE: POST https://affiliates.betpanda.io/rest/public/phone/register/verify -H "Origin: https://evil.com" -H "Content-Type: application/json" -d '{"phone":"+15551234567","code":"123456"}' → observe response
+impact: Credential stuffing, phone enumeration, OTP bypass, account takeover via phone auth flow — HIGH (auth flow + wildcard CORS + credentials)
+testability: PASSIVE
+[HYP] Cross-Brand BOLA via Shared Spring Boot Backend — JWT Missing aud/iss Validation
+class: IDOR
+asset: betpanda.partners/rest/user/*
+confidence: 75
+reasoning: betpanda.partners is a dedicated in-scope host fronting the SAME Spring Boot `/rest` backend as betpandacasino.io (confirmed via identical `/rest/properties/manifest` 200 response and S3 operator icons). betpandacasino.io exposes money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403) with Cognito JWT auth. CORS on betpanda.partners is properly pinned (no ACAO reflection), but server-side authorization is unverified. SameSite=Lax REFRESH_TOKEN cookie limits cross-origin but same-origin IDOR remains. Cross-brand session reuse possible if JWT validation lacks audience/issuer checks.
+evidence_needed: Successful access to betpanda.partners/rest/user/account-balances-and-bonuses with betpandacasino.io JWT returning victim wallet data; JWT missing aud/iss validation allowing cross-brand token reuse; horizontal IDOR via user_id manipulation in request body
+verify_steps: PASSIVE: GET https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" → observe 200/401/403; PASSIVE: POST https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" -H "Content-Type: application/json" -d '{}' → observe response; PASSIVE: test JWT claims manipulation (aud/iss/sub) against betpanda.partners endpoints
+impact: Cross-brand wallet/balance/bonus disclosure or tampering on real-money gambling platform; cross-tenant account compromise — CRITICAL
+testability: AUTH_HELPED
+[HYP] Wildcard CORS + Credentials on Password-Reset/2FA Endpoints Enables Full ATO Chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/change-password
+confidence: 85
+reasoning: Affiliate backend reflects arbitrary Origin + ACAC:true on ALL /rest/* endpoints including password-reset (POST), set-2fa-setting (POST), change-password (POST), set-profile (POST) — confirmed via fresh OPTIONS/GET probes this cycle (405-GET on each). Cookie-based auth (401 on /rest/user unauthenticated) + wildcard CORS+credentials = any origin can trigger password reset, disable 2FA, change password, modify profile for authenticated victims. SPA route `/reset-password/:affiliateId/:resetPasswordCode` binds reset code in URL to POST /rest/user/password/reset.
+evidence_needed: Successful cross-origin credentialed POST to /rest/user/password/reset from attacker.com with victim session returning 200 (password reset initiated); successful cross-origin POST to /rest/user/set-2fa-setting disabling 2FA; successful cross-origin POST to /rest/user/change-password changing password
+verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" → confirm ACAO: evil.com + ACAC: true; PASSIVE: GET https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <valid_affiliate_session>" (auth-helped) → observe 405 (POST-only); PASSIVE: POST https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <valid_affiliate_session>" -H "Content-Type: application/json" -d '{"resetPasswordCode":"<code>","newPassword":"pwned"}' → observe response
+impact: Full affiliate account takeover via cross-origin password reset + 2FA bypass + password change; commission/payout config manipulation — CRITICAL
+testability: AUTH_HELPED
+[HYP] Unauthenticated Phone Auth Endpoints with Wildcard CORS + Credentials Enable Credential Stuffing / Account Enumeration
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/public/phone/signin/verify and /rest/public/phone/register/verify
+confidence: 70
+reasoning: Two unauthenticated POST-only JSON endpoints (`/rest/public/phone/signin/verify`, `/rest/public/phone/register/verify`) confirmed via probes: 415 on form-encoded (handler present), 404 on JSON (schema obfuscated). Both reflect arbitrary Origin + `ACAC:true` (wildcard CORS + credentials on public layer). No rate limiting observed in probes. Phone-based auth endpoints are high-value for credential stuffing, phone enumeration, or OTP bypass. Backend-wide wildcard CORS + credentials flaw extends to these public auth primitives.
+evidence_needed: Successful POST with valid phone/OTP schema returning 200 (proving handler exists); observation of rate limiting (or lack thereof) via repeated requests; successful cross-origin credentialed request from attacker origin with victim session
+verify_steps: PASSIVE: POST https://affiliates.betpanda.io/rest/public/phone/signin/verify -H "Origin: https://evil.com" -H "Content-Type: application/json" -d '{"phone":"+15551234567","code":"123456"}' → observe response code/schema; PASSIVE: repeat 10x rapidly to test rate limiting; PASSIVE: POST https://affiliates.betpanda.io/rest/public/phone/register/verify -H "Origin: https://evil.com" -H "Content-Type: application/json" -d '{"phone":"+15551234567","code":"123456"}' → observe response
+impact: Credential stuffing, phone enumeration, OTP bypass, account takeover via phone auth flow — HIGH (auth flow + wildcard CORS + credentials)
+testability: PASSIVE
+[PARKED] None — all three hypotheses have confidence ≥70, valid classes (IDOR, MISCONFIG), concrete verify_steps (PASSIVE or AUTH_HELPED), and no REJECTED-class overlap.
+[FINAL] 1. Wildcard CORS + Credentials on Password-Reset/2FA Endpoints Enables Full ATO Chain (affiliates.betpanda.io, 85)
+[FINAL] 2. Cross-Brand BOLA via Shared Spring Boot Backend — JWT Missing aud/iss Validation (betpanda.partners, 75)
+[FINAL] 3. Unauthenticated Phone Auth Endpoints with Wildcard CORS + Credentials (affiliates.betpanda.io, 70)
+[PARKED] None — all three hypotheses have confidence ≥70, valid classes (IDOR, MISCONFIG), concrete verify_steps (PASSIVE or AUTH_HELPED), and no REJECTED-class overlap.
+[FINAL] 1. Wildcard CORS + Credentials on Password-Reset/2FA Endpoints Enables Full ATO Chain (affiliates.betpanda.io, 85)
+[FINAL] 2. Cross-Brand BOLA via Shared Spring Boot Backend — JWT Missing aud/iss Validation (betpanda.partners, 75)
+[FINAL] 3. Unauthenticated Phone Auth Endpoints with Wildcard CORS + Credentials (affiliates.betpanda.io, 70)
+[NEXT] PROBE: OPTIONS https://affiliates.betpanda.io/rest/public/phone/signin/verify -H "Origin: https://evil.com" (passive, read-only, confirm wildcard CORS + credentials on unauthenticated phone auth endpoint)
+[NEXT] PROBE: OPTIONS https://affiliates.betpanda.io/rest/public/phone/signin/verify -H "Origin: https://evil.com" (passive, read-only, confirm wildcard CORS + credentials on unauthenticated phone auth endpoint)

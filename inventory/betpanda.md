@@ -213,3 +213,11 @@ www.betpanda.io
 - CHANGED betpandacasino.io/rest/user/authenticate — Real Spring Boot endpoint (403 JSON, not SPA catch-all), returns 403 with dummy creds, requires CAPTCHA token (`x-captcha-token` in CORS allow-headers)
 - CHANGED betpandacasino.io — REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout; SameSite=Lax limits cross-origin cookie sending
 - CHANGED affiliates.betpanda.io/rest/* — password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + `ACAC:true` (fresh probes this cycle)
+
+## 2026-09-06 19:36:26 UTC
+- CHANGED betpandacasino.io/cms/*: Fresh probes confirm real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under guessed names and NO admin at default 
+- CHANGED affiliates.betpanda.io/rest/*: JS bundle unchanged (main.ef021e68.js); password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + A
+- CHANGED betpanda.partners/rest/*: CORS properly pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io has wildcard CORS+credentials
+- CHANGED betpandacasino.io/cms/*: Fresh probes confirm real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under guessed names and NO admin at default 
+- CHANGED affiliates.betpanda.io/rest/*: JS bundle unchanged (main.ef021e68.js); password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + A
+- CHANGED betpanda.partners/rest/*: CORS properly pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io has wildcard CORS+credentials
