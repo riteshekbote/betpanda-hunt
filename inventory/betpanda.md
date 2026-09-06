@@ -190,3 +190,26 @@ www.betpanda.io
 - CHANGED cable.betpanda.io/cable/user-event — full schema reverse-derived (`eventType`/`userId`/`registeredOn`/`amount`/`referrer`/`currency`/`ip`/`device`/`metadata`); arbitrary `eventType` accepted incl. XSS
 - CHANGED betpandacasino.io/rest/user/authenticate — Real Spring Boot endpoint (403 JSON, not SPA catch-all), returns 403 with dummy creds, requires CAPTCHA token (`x-captcha-token` in CORS allow-headers)
 - CHANGED betpandacasino.io — REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout; SameSite=Lax limits cross-origin cookie sending
+
+## 2026-09-06 17:24:00 UTC
+- NEW betpanda.partners — dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot `/rest` backend as betpandacasino.io (manifest 200, S3 operator PWA icons under `/operators/`)
+- NEW affiliates.betpanda.io/rest/public/config — unauth Spring Boot route (200 JSON) leaks `operatorId=1`, `strapiApiUrl=/cms`, CloudFront `d3ec3n7kizfkuy.cloudfront.net`, `linkUrl=betpanda.partners`, `sup
+- NEW affiliates.betpanda.io/rest/public/* — `/rest/public/login` (405 POST-only), `/rest/public/register` (405 POST-only), `/rest/public/phone/signin/verify`, `/rest/public/phone/register/verify` — all ref
+- NEW affiliates.betpanda.io SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL is credential binding for POST `/rest/user/password/reset`
+- NEW affiliates.betpanda.io/rest/v2/* — `/rest/v2/report` (POST-only 405-GET), `/rest/v2/report/sub-affiliates`, `/rest/v2/report/daily-stats-with-comparison`, `/rest/user/selectable-payout-currencies`, `/
+- CHANGED affiliates.betpanda.io/rest/* — password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + `ACAC:true` (fresh probes this cycle)
+- CHANGED betpanda.partners/rest/* — CORS properly pinned: OPTIONS/GET with evil Origin return `Vary:Origin` but NO `ACAO` reflection; cross-origin credential vector ABSENT (only affiliates.betpanda.io is wildc
+- CHANGED cable.betpanda.io/cable/user-event — full schema reverse-derived (`eventType`/`userId`/`registeredOn`/`amount`/`referrer`/`currency`/`ip`/`device`/`metadata`); arbitrary `eventType` accepted incl. XSS
+- CHANGED betpandacasino.io/rest/user/authenticate — Real Spring Boot endpoint (403 JSON, not SPA catch-all), returns 403 with dummy creds, requires CAPTCHA token (`x-captcha-token` in CORS allow-headers)
+- CHANGED betpandacasino.io — REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout; SameSite=Lax limits cross-origin cookie sending
+- CHANGED betpandacasino.io/cms/* — fresh probes this cycle: `/cms/_health`, `/cms/api/{global,home-page,operators,...}`, `/cms/admin` ALL return proper Strapi v4 JSON 404 (`{"data":null,"error":{...}}`) ⇒ real
+- NEW betpanda.partners — dedicated in-scope host, "Betpanda" casino brand SPA fronting SAME Spring Boot `/rest` backend as betpandacasino.io (manifest 200, S3 operator PWA icons under `/operators/`)
+- NEW affiliates.betpanda.io/rest/public/config — unauth Spring Boot route (200 JSON) leaks `operatorId=1`, `strapiApiUrl=/cms`, CloudFront `d3ec3n7kizfkuy.cloudfront.net`, `linkUrl=betpanda.partners`, `sup
+- NEW affiliates.betpanda.io/rest/public/* — `/rest/public/login` (405 POST-only), `/rest/public/register` (405 POST-only), `/rest/public/phone/signin/verify`, `/rest/public/phone/register/verify` — all ref
+- NEW affiliates.betpanda.io SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL is credential binding for POST `/rest/user/password/reset`
+- NEW affiliates.betpanda.io/rest/v2/* — `/rest/v2/report` (POST-only 405-GET), `/rest/v2/report/sub-affiliates`, `/rest/v2/report/daily-stats-with-comparison`, `/rest/user/selectable-payout-currencies`, `/
+- CHANGED betpanda.partners/rest/* — CORS properly pinned: OPTIONS/GET with evil Origin return `Vary:Origin` but NO `ACAO` reflection; cross-origin credential vector ABSENT (only affiliates.betpanda.io is wildc
+- CHANGED cable.betpanda.io/cable/user-event — full schema reverse-derived (`eventType`/`userId`/`registeredOn`/`amount`/`referrer`/`currency`/`ip`/`device`/`metadata`); arbitrary `eventType` accepted incl. XSS
+- CHANGED betpandacasino.io/rest/user/authenticate — Real Spring Boot endpoint (403 JSON, not SPA catch-all), returns 403 with dummy creds, requires CAPTCHA token (`x-captcha-token` in CORS allow-headers)
+- CHANGED betpandacasino.io — REFRESH_TOKEN cookie (HttpOnly, SameSite=Lax, Secure, Path=/rest/user/refresh) confirmed via logout; SameSite=Lax limits cross-origin cookie sending
+- CHANGED affiliates.betpanda.io/rest/* — password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + `ACAC:true` (fresh probes this cycle)
