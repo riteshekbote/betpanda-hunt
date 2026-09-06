@@ -14,3 +14,8 @@
 - 2 lead(s) marked VALID at 2026-09-05 04:39:08 UTC
   - **VERDICT: VALID**
   - | 1 | CORS+credentials ATO chain | affiliates.betpanda.io | **VALID** | 9.1 |
+
+- 3 lead(s) marked VALID at 2026-09-06 06:07:25 UTC
+  - | Q5 | Novel/unreported? | **Yes** — independently discovered by bigpickle and nemotron3; no prior reports in valid-bugs.md prior to 2026-09-04 |
+  - **Verdict: VALID**
+  - | 1 | Wildcard CORS+creds (`affiliates.betpanda.io`) | **VALID** | 9.1 | Report to bugs.olivermaicher.eu |
