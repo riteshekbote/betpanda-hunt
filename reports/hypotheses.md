@@ -793,3 +793,24 @@
 - LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under 
 - LEARN: REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.
 - LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
+
+## RANKED HYPOTHESES 2026-09-06 21:29:38 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (from art/lead_nemotron3.txt)
+- [85] affiliates.betpanda.io/rest/user/password/reset,: Wildcard CORS + Credentials on Password-Reset/2FA Endpoints Enables Full ATO Chain (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): PROBE: OPTIONS https://affiliates.betpanda.io/rest/public/phone/signin/verify -H "Origin: https://evil.com" (passive, read-only, confirm wildcard CORS + credent
+- NEXT(hypotheses-nemotron3.txt): PROBE: OPTIONS https://affiliates.betpanda.io/rest/public/phone/signin/verify -H "Origin: https://evil.com" (passive, read-only, confirm wildcard CORS + credent
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials re-confirmed this cycle (bundle unchanged main.ef021e68.js; password/reset, set-
+- LEARN: ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints re-confirmed; CORS pinned; server-side authZ unverified → BOLA stands.
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth event ingestion re-confirmed (405/200 baseline stable).
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under 
+- LEARN: REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.
+- LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials re-confirmed this cycle (bundle unchanged main.ef021e68.js; password/reset, set-
+- LEARN: ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints re-confirmed; CORS pinned; server-side authZ unverified → BOLA stands.
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth event ingestion re-confirmed (405/200 baseline stable).
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under 
+- LEARN: REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.
+- LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
+- LEARN: NEW ENDPOINTS @ affiliates.betpanda.io/rest/public/phone/*: signin/verify + register/verify POST-only JSON (415 on form-encoded ⇒ handler present), reflect evil
+- LEARN: NEW ENDPOINTS @ affiliates.betpanda.io/rest/v2/*: /rest/v2/report, /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/user/selec
+- LEARN: NEW SPA ROUTE @ affiliates.betpanda.io: /reset-password/:affiliateId/:resetPasswordCode — reset code in URL is the credential binding for POST /rest/user/passwo

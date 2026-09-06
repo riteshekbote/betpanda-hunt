@@ -221,3 +221,5 @@ www.betpanda.io
 - CHANGED betpandacasino.io/cms/*: Fresh probes confirm real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under guessed names and NO admin at default 
 - CHANGED affiliates.betpanda.io/rest/*: JS bundle unchanged (main.ef021e68.js); password/reset, set-2fa-setting, change-password, set-profile all re-affirmed 405-GET real POST routes reflecting evil Origin + A
 - CHANGED betpanda.partners/rest/*: CORS properly pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io has wildcard CORS+credentials
+
+## 2026-09-06 21:29:38 UTC
