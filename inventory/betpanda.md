@@ -223,3 +223,5 @@ www.betpanda.io
 - CHANGED betpanda.partners/rest/*: CORS properly pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io has wildcard CORS+credentials
 
 ## 2026-09-06 21:29:38 UTC
+
+## 2026-09-06 23:09:34 UTC
