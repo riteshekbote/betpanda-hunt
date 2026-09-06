@@ -14757,3 +14757,89 @@ Analysis complete and recorded. Here is the structured output:
 **STEP 5 — [NEXT] HUMAN**: passive surface fully exhausted. The one exploitability gate is the affiliate session-cookie SameSite attribute — capture Set-Cookie on affiliates login; then `GET /rest/user/players -H "Origin: https://evil.com" -H "Cookie:<sess>"`.
 
 **STEP 6/7** — no new exposure this cycle; all re-probes negative. [RISK] betpanda: 68 — flagship finding confirmed but Critical-vs-Medium still hinges on the unaudited cookie SameSite.
+===== ANALYST bigpickle 2026-09-06 14:23:37 UTC =====
+################################################################
+# BetPanda deep-hunt · analyst bigpickle · 2026-09-06 11:xx UTC #
+################################################################
+
+STEP 1 — DELTA
+- NO_DELTA (surface identical to prior cycles). Passive re-probes: affiliates /rest/public/config 200; /rest/user/password/reset 405; cable /cable/user-event 405 — all unchanged from established baselines.
+
+STEP 2 — PRIORITIZE
+[PRIO] affiliates.betpanda.io/rest/*,9.05,a10/b9/t9/g8/c7/f8  (a=9,b=9,t=9,g=8,c=7,f=8 => 0.25*9+0.25*9+0.15*9+0.15*8+0.10*7+0.10*8=9.05)
+[PRIO] betpandacasino.io+betpanda.partners /rest/user/*,8.15,a8/b10/t8/g5/c8/f7
+[PRIO] cable.betpanda.io/cable/user-event,6.90,a7/b6/t8/g9/c5/f7
+[PRIO] affiliates.betpanda.io/rest/public/config,5.80,a5/b6/t6/g10/c6/f9 (unauth, leaks operatorId=1 + infra)
+
+STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS+credentials enables cross-origin ATO on affiliate money/account API (flagship, unchanged)
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/* (incl. password/reset, set-2fa-setting, agent/set-deposit-withdraw-limit, v2/report)
+confidence: 90
+reasoning: Re-confirmed this cycle that ACAO reflects arbitrary Origin (`access-control-allow-origin: https://evil.com`, `vary: Origin`) + `access-control-allow-credentials: true` on the UNAUTH public layer (GET /rest/public/config, 200 no auth) — backend-wide, not just authed routes. 20+ authenticated endpoints incl. password-reset, 2FA, deposit-limit tampering. Exploitability of the cross-origin vector hinges ENTIRELY on the affiliate session cookie SameSite (casino's REFRESH_TOKEN is already SameSite=Lax; affiliate unknown). No new probes changed surface.
+evidence_needed: (1) Set-Cookie flags from a real affiliates login; (2) credentialed cross-origin GET /rest/user/players + POST /rest/user/password/reset returning data with Origin: evil.com.
+verify_steps: AUTH_HELPED — HUMAN login to affiliates.betpanda.io, capture Set-Cookie; then `GET /rest/user/players -H "Origin: https://evil.com" -H "Cookie: <sess>"`; `OPTIONS/POST /rest/user/password/reset` with mirror Origin+Cookie.
+impact: SameSite=None/absent → full player PII+financial exfil, password reset + 2FA disable + deposit-limit tamper from any hostile page → Critical. SameSite=Lax → residual same-origin/session CSRF only → Medium.
+testability: HUMAN_ONLY
+
+[HYP] BOLA across shared tenant backend via operatorId/uid parameterization
+class: IDOR
+asset: betpandacasino.io + betpanda.partners /rest/user/*, /rest/player/uid/{id}
+confidence: 72
+reasoning: Same Spring Boot backend serves both casino leases (partners 404s on tenant-scoped config ⇒ multi-tenant verified). Money endpoints confirmed present (405 POST-only balances, 401 settings). No evidence ACL binds player-uid/affiliate to session server-side; classic BOLA + cross-tenant path via partners lease.
+evidence_needed: 2 accounts across the two brands; reading account B's balances/player record while authed as A, or operatorId toggle.
+verify_steps: AUTH_HELPED — POST /rest/user/account-balances-and-bonuses as tenant-A session with tenant-B operatorId/uid; GET /rest/player/uid/{id} from accounts list.
+impact: cross-tenant wallet/balance/player PII disclosure on real-money platform → Critical.
+testability: AUTH_HELPED
+
+[HYP] Unauth analytics injection into fraud/anti-abuse feed
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 72
+reasoning: Unauth POST, CORS *, full schema reverse-derived (eventType/userId/registeredOn/amount/referrer/currency/ip/device/metadata); arbitrary eventType accepted incl. XSS strings; negative amounts and nested script accepted (200). Downstream consumption proof not passively available.
+evidence_needed: operator-side visibility of aggregation/risk use.
+verify_steps: PASSIVE — exhausted (405-GET baseline); any further step non-mutating only; consistent with established.
+impact: analytics poisoning / potential stored-XSS in internal dashboards → Medium-High if risk-engine consumed.
+testability: PASSIVE
+
+STEP 4 — SELF-CRITIQUE
+[PARKED] Strapi /cms content-API read (conf 45): needs live content-type validation; no novel `expose:true` proof; overridden by higher-value money/account hypotheses.
+[FINAL] ranked survivors:
+  1. affiliates.betpanda.io/rest/* Wildcard CORS ATO (MISCONFIG, 90) — flagship, HUMAN-only POC
+  2. BOLA cross-tenant backend (IDOR, 72) — AUTH_HELPED
+  3. cable unauth event injection (BUSLOGIC, 72) — PASSIVE/exhausted
+
+STEP 5 — NEXT ACTION
+[NEXT] HUMAN: Obtain an authenticated affiliates.betpanda.io session (register/request a test affiliate account). Capture Set-Cookie flags (SameSite) from the /rest/public/login POST response and the session cookie; then run `curl -b <sess> GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com"` and `POST /rest/user/players` from evil Origin to complete the cross-origin exfiltration POC. Without it, the flagship stays un-POC'd and continuously gated.
+
+STEP 7 — RISK
+[RISK] betpanda: 50 — Flagship (affiliates wildcard CORS+credentials) is confirmed live and unmitigated across public+authed `/rest/*`, but every critical-impact demonstration is gated on an authenticated affiliate session (HUMAN) — the program blocks credentialed/mutating tests against live customer data until a test account is provisioned. Casino money/BOLA requires two test accounts. Cable injection is PASSIVE-exhausted. Surfaced surface has been stable for ~5 days with zero remediation signal, keeping value moderate but static.
+
+STEP 6 — LEARNING
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/*: ACAO reflects arbitrary Origin + ACAC:true reconfirmed this cycle via HEAD/GET /rest/public/config (200, no auth) — wildcard-credential CORS is backend-wide and UNMITIGATED as of 2026-09-06.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: /rest/user/password/reset still 405-GET (POST live under wildcard CORS) — ATO/exfil chain surface unchanged.
+[LEARN] NO-DELTA: passive probes (public/config 200, password/reset 405, cable 405) identical to established baselines; no new endpoints or remediation observed.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       [0m
+[0m← [0mWrite analyst-out.txt
+Wrote file successfully.
+[0m
+I've completed the analysis and written the structured output. Here's my run of the 8-step process:
+
+## STEP 1 — DELTA
+**NO_DELTA** — Fresh passive re-probes confirm surface identical: `affiliates /rest/public/config` 200, `/rest/user/password/reset` 405, `cable /cable/user-event` 405, all unchanged.
+
+## STEP 2 — PRIORITIZE
+- `[PRIO] affiliates.betpanda.io/rest/*, 9.05` — flagship (a9/b9/t9/g8/c7/f8)
+- `[PRIO] casino+partners /rest/user/*, 8.15` — BOLA money-flow
+- `[PRIO] cable /cable/user-event, 6.90`
+
+## STEP 3-4 — HYPOTHESES (survivors)
+1. **[MISCONFIG, 90]** Affiliates wildcard CORS+credentials ATO — re-confirmed this cycle: `access-control-allow-origin: https://evil.com` + `access-control-allow-credentials: true` on the **unauthenticated** public layer, proving it's backend-wide and **unmitigated**. HUMAN-only POC.
+2. **[IDOR, 72]** BOLA across shared tenant backend (casino + partners, multi-tenant verified).
+3. **[BUSLOGIC, 72]** Unauth cable event injection (PASSIVE/exhausted).
+
+## STEP 5 — NEXT ACTION
+`[NEXT] HUMAN`: Obtain an authenticated affiliates session + capture Set-Cookie (SameSite) flags, then run credentialed cross-origin GET `/rest/user/metrics/affiliate` and POST `/rest/user/players` from `Origin: evil.com` — the only blocker to closing the flagship POC.
+
+## STEP 6-7 — LEARNING / RISK
+[LEARN] reaffirmed wildcard-credential CORS is backend-wide and unpatched. `[RISK] betpanda: 50` — real and unmitigated finding, but every critical demonstration stays gated on a provisioned test account, and the surface has been static ~5 days.
