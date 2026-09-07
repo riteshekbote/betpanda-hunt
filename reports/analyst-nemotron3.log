@@ -4710,3 +4710,74 @@ testability: PASSIVE
 ```
 [RISK] betpanda: 90 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + change-password + public /rest/* layer (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), unauthenticated analytics injection with fully reverse-derived schema accepting XSS/negative amounts (chaining vector). OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure. Fresh SPA redeploy (main.ef021e68.js) expands attack surface with 30+ mapped endpoints.
 ```
+===== ANALYST nemotron3 2026-09-07 21:38:56 UTC =====
+[0m
+> build · nemotron-3-ultra-free
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt
+total 260
+drwxr-xr-x 12 runner runner  4096 Sep  7 21:35 .
+drwxr-xr-x  3 runner runner  4096 Sep  7 21:35 ..
+drwxr-xr-x  7 runner runner  4096 Sep  7 21:35 .git
+drwxr-xr-x  3 runner runner  4096 Sep  7 21:35 .github
+-rw-r--r--  1 runner runner  1709 Sep  7 21:35 README.md
+-rw-r--r--  1 runner runner    43 Sep  7 21:35 analyst-out.txt
+-rw-r--r--  1 runner runner 83188 Sep  7 21:35 analyst-prompt.txt
+-rw-r--r--  1 runner runner 79407 Sep  7 21:35 ctx.txt
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 inventory
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 knowledge
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 leads
+-rw-r--r--  1 runner runner  9150 Sep  7 21:35 probe-results.md
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 recon-notes
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 reports
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 reposcan-raw
+-rw-r--r--  1 runner runner  3194 Sep  7 21:35 scope.yml
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 scripts
+-rw-r--r--  1 runner runner    33 Sep  7 21:35 state_bigpickle.json
+-rw-r--r--  1 runner runner    33 Sep  7 21:35 state_laguna.json
+-rw-r--r--  1 runner runner    33 Sep  7 21:35 state_ling3.json
+-rw-r--r--  1 runner runner    33 Sep  7 21:35 state_longcat.json
+-rw-r--r--  1 runner runner    33 Sep  7 21:35 state_mimo.json
+-rw-r--r--  1 runner runner    33 Sep  7 21:35 state_nemotron3.json
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 triage
+[0m
+[0m→ [0mRead scope.yml
+[0m→ [0mRead inventory/betpanda.md
+[0m→ [0mRead analyst-out.txt
+[0m→ [0mRead probe-results.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/knowledge/
+total 40
+drwxr-xr-x  2 runner runner  4096 Sep  7 21:35 .
+drwxr-xr-x 12 runner runner  4096 Sep  7 21:35 ..
+-rw-r--r--  1 runner runner 29371 Sep  7 21:35 index.md
+[0m
+[0m→ [0mRead knowledge/index.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/leads/
+total 696
+drwxr-xr-x  2 runner runner   4096 Sep  7 21:35 .
+drwxr-xr-x 12 runner runner   4096 Sep  7 21:35 ..
+-rw-r--r--  1 runner runner 342487 Sep  7 21:35 lead-bigpickle.md
+-rw-r--r--  1 runner runner   1581 Sep  7 21:35 lead-laguna.md
+-rw-r--r--  1 runner runner   1550 Sep  7 21:35 lead-ling3.md
+-rw-r--r--  1 runner runner   1612 Sep  7 21:35 lead-longcat.md
+-rw-r--r--  1 runner runner     18 Sep  7 21:35 lead-mimo.md
+-rw-r--r--  1 runner runner 335471 Sep  7 21:35 lead-nemotron3.md
+-rw-r--r--  1 runner runner   7519 Sep  7 21:35 reposcan-betpanda.md
+[0m
+[0m← [0mWrite analyst-output-2026-09-07.md
+Wrote file successfully.
+[0m
+Now I have a complete picture. Let me execute the 8-step analysis.
+[0m→ [0mRead analyst-output-2026-09-07.md
+Analysis complete. Output written to `analyst-output-2026-09-07.md`.
+
+**Summary:**
+- **Top finding (95% confidence)**: Wildcard CORS + credentials on `affiliates.betpanda.io/rest/*` — backend-wide (30+ endpoints including password-reset, 2FA, money-flow, v2 reports), unauthenticated public layer also affected (`/rest/public/config` 200 with evil Origin + ACAC:true). Cross-origin ATO chain: exfil PII/transactions → disable 2FA → reset password → change password.
+- **Cross-brand BOLA (80%)**: Shared Spring Boot backend across `betpanda.partners` + `betpandacasino.io` — CORS pinned on partners but JWT `aud`/`iss` validation unverified; test cross-brand token reuse on money-flow endpoints.
+- **Unauth event injection (75%)**: `cable.betpanda.io/cable/user-event` accepts arbitrary `eventType` (XSS strings), negative amounts, nested objects — feeds analytics/fraud/bonus pipelines.
+
+**Next probe**: Test cross-brand JWT acceptance on `betpanda.partners/rest/user/account-balances-and-bonuses` with a `betpandacasino.io` JWT (AUTH_HELPED).
+
+**Overall risk**: 90/100 — CRITICAL ATO chain + CRITICAL financial BOLA + chaining injection vector. OAuth ATO path eliminated (SPA catch-all).

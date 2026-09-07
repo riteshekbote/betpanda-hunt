@@ -257,3 +257,5 @@ www.betpanda.io
 - CHANGED betpandacasino.io/cms/* — Strapi v4 confirmed (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dropp
 - CHANGED betpanda.io/api/auth/authorize — 301 to betpandacasino.io SPA catch-all; NO server-side OAuth endpoint (OAuth ATO path eliminated)
 - CHANGED cable.betpanda.io/cable/user-event — full schema reverse-derived, arbitrary eventType/XSS/negative amounts accepted (200) stable baseline
+
+## 2026-09-07 21:38:56 UTC

@@ -905,3 +905,12 @@
 - LEARN: NEW ENDPOINTS @ affiliates.betpanda.io/rest/public/phone/*: signin/verify + register/verify POST-only JSON (415 on form-encoded ⇒ handler present), reflect evil
 - LEARN: NEW ENDPOINTS @ affiliates.betpanda.io/rest/v2/*: /rest/v2/report, /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/user/selec
 - LEARN: NEW SPA ROUTE @ affiliates.betpanda.io: /reset-password/:affiliateId/:resetPasswordCode — reset code in URL is the credential binding for POST /rest/user/passwo
+
+## RANKED HYPOTHESES 2026-09-07 21:38:56 UTC
+- [95] affiliates.betpanda.io/rest/*: Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): PROBE: capture ONE betpandacasino.io test-session (REFRESH_TOKEN cookie per /rest/user/refresh), then GET https://betpanda.partners/rest/user/account-balances-a
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-confirmed fresh (config 200 ACAO-reflect+ACAC:true, password/reset OPTIONS 200 
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test is the cheapest d
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling.
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: health/captcha/recaptcha/version/metrics/phone all 404 — no undiscovered unauth public handlers
+- LEARN: REJECTED MISCONFIG @ d3ec3n7kizfkuy.cloudfront.net: S3-backed CF origin; root + /operators/ 403, no listing — not a finding.

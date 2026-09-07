@@ -151,3 +151,8 @@
 - 2026-09-07 NEW ENDPOINTS @ affiliates.betpanda.io/rest/v2/*: /rest/v2/report, /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/user/selectable-payout-currencies, /rest/user/selectable-payout-networks, /rest/metrics/top-metrics-revenue-chart, /rest/trk/list, /rest/agent/id/{id}, /rest/agent/enable/{id}/{enabled} (GET state-changing, 401).
 - 2026-09-07 NEW SPA ROUTE @ affiliates.betpanda.io: /reset-password/:affiliateId/:resetPasswordCode — reset code in URL is the credential binding for POST /rest/user/password/reset.
 - 2026-09-07 ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints re-confirmed; CORS pinned (ACAO: betpandacasino.io only); server-side authZ unverified → BOLA stands.
+- 2026-09-07 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-confirmed fresh (config 200 ACAO-reflect+ACAC:true, password/reset OPTIONS 200 ACAO-reflect+ACAC:true); bundle unchanged main.ef021e68.js; POC remains auth-gated.
+- 2026-09-07 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test is the cheapest de-gate.
+- 2026-09-07 ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling.
+- 2026-09-07 REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: health/captcha/recaptcha/version/metrics/phone all 404 — no undiscovered unauth public handlers.
+- 2026-09-07 REJECTED MISCONFIG @ d3ec3n7kizfkuy.cloudfront.net: S3-backed CF origin; root + /operators/ 403, no listing — not a finding.

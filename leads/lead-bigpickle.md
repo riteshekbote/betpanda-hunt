@@ -2190,3 +2190,43 @@ testability: PASSIVE
 [LEARN] REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.
 [LEARN] REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
 [RISK] betpanda: 90 — Flagship wildcard CORS+credentials now re-confirmed across the entire affiliate /rest/* surface including unauth public+phone layers (password reset, 2FA disable, deposit-limit tamper, player PII exfil → CRITICAL), still un-POC'd solely on one affiliate session capture; shared casino/partners BOLA surface open (AUTH_HELPED); unauth analytics injection confirmed at ceiling. Springdoc/Online-doc/CMS angles closed. No novel critical added this cycle — risk holds pending the auth-gated POC.
+## 2026-09-07 21:38:45 UTC [target] (model bigpickle)
+[PRIO] affiliates.betpanda.io/rest/*, 9.0, a=10 b=9 t=3 g=3 c=2 f=10 — wildcard CORS+credentials on 20+ money/auth endpoints (public+authed layers), flagship, unchanged
+[PRIO] betpandacasino.io + betpanda.partners shared /rest/*, 7.0, a=5 b=9 t=3 g=2 c=1 f=10 — same Spring Boot backend, CORS pinned, cross-brand BOLA/session-confusion, single-account proof path open
+[PRIO] cable.betpanda.io/cable/user-event, 5.5, a=7 b=5 t=2 g=10 c=1 f=10 — unauth injection stable, impact ceiling uncertain
+[HYP] Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/* (password/reset, set-2fa-setting, agent/set-deposit-withdraw-limit, public/phone/*)
+confidence: 95
+reasoning: Fresh probes this cycle: GET /rest/public/config with Origin https://evil.example → 200 + ACAO:https://evil.example + ACAC:true; OPTIONS /rest/user/password/reset → 200 + ACAO-reflect + ACAC:true + allow-methods GET,POST,PUT,DELETE. Bundle unchanged (main.ef021e68.js). Public+authed /rest/* both reflect arbitrary Origin with credentials. Cookie-based auth (no Authorization in allow-headers). POC solely gated on one affiliate session.
+evidence_needed: Set-Cookie flags from real login; credentialed cross-origin GET /rest/user/players returning PII; POST /rest/user/password/reset completing ATO.
+verify_steps: HUMAN — login affiliates.betpanda.io, capture cookie; GET /rest/user/players -H "Origin: https://evil.com" -H "Cookie: <sess>"; POST /rest/user/password/reset mirroring Origin+Cookie+resetPasswordCode.
+impact: player PII/transaction exfil, password reset, 2FA disable, deposit/withdraw-limit tamper from hostile page → CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Cross-Brand Session Confusion on Shared Casino/Partners Backend
+class: IDOR
+asset: betpandacasino.io + betpanda.partners /rest/user/* (shared Spring Boot app)
+confidence: 75
+reasoning: betpanda.partners serves identical /rest backend as betpandacasino.io (same manifest 200, same JSON 404 serializer, S3 operator icons). CORS pinned on both (re-confirmed) ⇒ only same-origin/session confusion applies. No evidence the token/tenant binding checks hostname or operatorId. If one casino session authenticates betpanda.partners, cross-brand access is proven with ONE account (de-gates prior 2-account BOLA).
+evidence_needed: casino access token (REFRESH_TOKEN cookie / access_token from /rest/user/refresh) accepted on betpanda.partners /rest/user/* returning 200 vs 401 control.
+verify_steps: AUTH_HELPED — capture casino session, then GET https://betpanda.partners/rest/user/account-balances-and-bonuses (Bearer or cookie) vs same request on betpandacasino.io as control; add /rest/player/uid/{idB} for cross-uid probe.
+impact: cross-brand wallet/balance/player PII on real-money platform → CRITICAL.
+testability: AUTH_HELPED
+[HYP] Unauth Event Injection into Analytics/Fraud Feed (CORS *)
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 70
+reasoning: Unauth POST (405-GET), ACAO:*, schema reverse-derived (eventType/userId/registeredOn/amount/referrer/currency/ip/device/metadata); arbitrary eventType incl. XSS, negative amounts, nested script accepted (200). Baseline stable. No novel non-mutating probe remains; impact requires operator-side visibility.
+evidence_needed: operator confirmation injected events reach fraud/risk/bonus consumers or render in internal dashboards.
+verify_steps: PASSIVE — surface exhausted; chained impact needs operator visibility.
+impact: analytics/fraud/bonus feed poisoning; potential stored-XSS in internal dashboards → Medium-High.
+testability: PASSIVE
+[PARKED] None — all three hypotheses ≥70 and verification paths concrete; flagships re-validated fresh this cycle.
+[FINAL] Ranked: (1) affiliates.betpanda.io wildcard CORS+credentials — 95, POC auth-gated; (2) cross-brand shared-backend session confusion — 75, single-account proof path (nemotron3-aligned); (3) cable.betpanda.io injection — 70, impact-ceiling gated.
+[NEXT] PROBE: capture ONE betpandacasino.io test-session (REFRESH_TOKEN cookie per /rest/user/refresh), then GET https://betpanda.partners/rest/user/account-balances-and-bonuses (cookie or `Authorization: Bearer <token>`, Origin: betpanda.partners) with control GET of the same path on betpandacasino.io — 200 on partners proves cross-brand session confusion with a single account (nil on 2-account BOLA gate); 401/403 keeps BOLA two-account gated. Read-only, second rps-checked request only.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-confirmed fresh (config 200 ACAO-reflect+ACAC:true, password/reset OPTIONS 200 ACAO-reflect+ACAC:true); bundle unchanged main.ef021e68.js; POC remains auth-gated.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test is the cheapest de-gate.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling.
+[LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: health/captcha/recaptcha/version/metrics/phone all 404 — no undiscovered unauth public handlers.
+[LEARN] REJECTED MISCONFIG @ d3ec3n7kizfkuy.cloudfront.net: S3-backed CF origin; root + /operators/ 403, no listing — not a finding.
+[RISK] betpanda: 90 — Flagship wildcard CORS+credentials stands re-validated across public+authed layers (PII exfil, password reset, 2FA disable, deposit-limit tamper → CRITICAL), un-POC'd solely on one affiliate session; single-account cross-brand session-confusion path identified as cheapest BOLA de-gate; unauth analytics injection at ceiling; public-breadth + CloudFront/S3 angles closed. No novel critical added — risk holds pending auth-gated POC.
