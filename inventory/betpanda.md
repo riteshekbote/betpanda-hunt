@@ -247,3 +247,13 @@ www.betpanda.io
 - CHANGED betpandacasino.io/cms/* — Strapi v4 confirmed (proper JSON 404s) but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dropped
 - CHANGED betpanda.io/api/auth/authorize — 301 to betpandacasino.io SPA catch-all; NO server-side OAuth endpoint (OAuth ATO path eliminated)
 - CHANGED cable.betpanda.io/cable/user-event — full schema reverse-derived, arbitrary eventType/XSS/negative amounts accepted (200) stable baseline
+
+## 2026-09-07 18:10:46 UTC
+- NEW affiliates.betpanda.io/rest/public/phone/signin/verify + /register/verify — POST-only JSON (415 form-encoded), reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated) — unauthentica
+- NEW affiliates.betpanda.io/rest/v2/report, /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/user/selectable-payout-currencies, /rest/user/selectable-payout-networks, /res
+- NEW affiliates.betpanda.io SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL binds to POST /rest/user/password/reset (ATO chain primitive)
+- CHANGED betpanda.partners/rest/* — CORS properly pinned (Vary:Origin, no ACAO reflection) re-confirmed; cross-origin credential vector ABSENT on shared backend (only affiliates.betpanda.io is wildcard)
+- CHANGED affiliates.betpanda.io/rest/* — JS bundle unchanged (main.ef021e68.js); password/reset, set-2fa-setting, change-password, set-profile all 405-GET reflecting evil Origin + ACAC:true re-affirmed
+- CHANGED betpandacasino.io/cms/* — Strapi v4 confirmed (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dropp
+- CHANGED betpanda.io/api/auth/authorize — 301 to betpandacasino.io SPA catch-all; NO server-side OAuth endpoint (OAuth ATO path eliminated)
+- CHANGED cable.betpanda.io/cable/user-event — full schema reverse-derived, arbitrary eventType/XSS/negative amounts accepted (200) stable baseline

@@ -1,10 +1,10 @@
-## 2026-09-07 12:59:13 UTC [target] (model nemotron3)
-[NEW] affiliates.betpanda.io/rest/public/phone/* — signin/verify + register/verify POST-only JSON endpoints reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated) — unauthenticated public layer wildcard CORS+creds confirmed
-[NEW] affiliates.betpanda.io/rest/v2/* — v2 report endpoints (POST-only 405-GET), agent enable/id endpoints (GET state-changing, 401) — expands attack surface
-[NEW] affiliates.betpanda.io SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL is credential binding for POST /rest/user/password/reset (ATO chain primitive)
+## 2026-09-07 18:10:36 UTC [target] (model nemotron3)
+[NEW] affiliates.betpanda.io/rest/public/phone/signin/verify + /register/verify — POST-only JSON (415 form-encoded), reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated) — unauthenticated public layer wildcard CORS+creds expanded
+[NEW] affiliates.betpanda.io/rest/v2/report, /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/user/selectable-payout-currencies, /rest/user/selectable-payout-networks, /rest/metrics/top-metrics-revenue-chart, /rest/trk/list, /rest/agent/id/{id}, /rest/agent/enable/{id}/{enabled} (GET state-changing, 401) — v2 financial/reporting surface
+[NEW] affiliates.betpanda.io SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL binds to POST /rest/user/password/reset (ATO chain primitive)
 [CHANGED] betpanda.partners/rest/* — CORS properly pinned (Vary:Origin, no ACAO reflection) re-confirmed; cross-origin credential vector ABSENT on shared backend (only affiliates.betpanda.io is wildcard)
 [CHANGED] affiliates.betpanda.io/rest/* — JS bundle unchanged (main.ef021e68.js); password/reset, set-2fa-setting, change-password, set-profile all 405-GET reflecting evil Origin + ACAC:true re-affirmed
-[CHANGED] betpandacasino.io/cms/* — Strapi v4 confirmed (proper JSON 404s) but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dropped
+[CHANGED] betpandacasino.io/cms/* — Strapi v4 confirmed (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dropped
 [CHANGED] betpanda.io/api/auth/authorize — 301 to betpandacasino.io SPA catch-all; NO server-side OAuth endpoint (OAuth ATO path eliminated)
 [CHANGED] cable.betpanda.io/cable/user-event — full schema reverse-derived, arbitrary eventType/XSS/negative amounts accepted (200) stable baseline
 [PRIO] affiliates.betpanda.io/rest/*,9.35,attack_surface=10,business_value=9,tech_exposure=9,gate_ease=9,cloud_surface=8,freshness=10
@@ -12,6 +12,7 @@
 [PRIO] betpanda.partners/rest/user/*,8.10,attack_surface=8,business_value=9,tech_exposure=8,gate_ease=6,cloud_surface=8,freshness=9
 [PRIO] cable.betpanda.io/cable/user-event,7.05,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=9,cloud_surface=5,freshness=7
 [PRIO] affiliates.betpanda.io/rest/public/*,6.90,attack_surface=6,business_value=5,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=10
+[PRIO] affiliates.betpanda.io/rest/v2/*,6.70,attack_surface=7,business_value=7,tech_exposure=7,gate_ease=5,cloud_surface=6,freshness=10
 [HYP] Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
@@ -45,7 +46,7 @@ testability: PASSIVE
 [FINAL] 3. Unauthenticated Event Injection with Arbitrary Schema Feeding Analytics/Fraud/Bonus Systems (cable.betpanda.io, 75)
 [NEXT] PROBE: GET https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" (passive, auth-helped, test cross-brand JWT acceptance on shared backend for POC of Cross-Brand BOLA)
 [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials re-confirmed this cycle (bundle unchanged main.ef021e68.js; password/reset, set-2fa-setting, change-password, set-profile all 405-GET reflecting evil Origin + ACAC:true). Flagship finding, POC still auth-gated.
-[LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints re-confirmed; CORS pinned; server-side authZ unverified → BOLA stands.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints re-confirmed; CORS pinned (ACAO: betpandacasino.io only); server-side authZ unverified → BOLA stands.
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth event ingestion re-confirmed (405/200 baseline stable).
 [LEARN] REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under guessed names and NO admin at default path — CMS content-disclosure hypothesis dropped.
 [LEARN] REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.

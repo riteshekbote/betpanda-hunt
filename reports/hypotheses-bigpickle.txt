@@ -1,4 +1,4 @@
-## 2026-09-07 12:45:39 UTC [target] (model bigpickle)
+## 2026-09-07 18:08:06 UTC [target] (model bigpickle)
 [PRIO] affiliates.betpanda.io/rest/*, 9.0, a=10 b=9 t=3 g=2 c=2 f=10 — wildcard CORS+credentials, 20+ money/auth endpoints, backend-wide flaw, unchanged since discovery
 [PRIO] betpandacasino.io/rest/user/*, 7.0, a=5 b=9 t=3 g=2 c=1 f=10 — money-flow endpoints, BOLA hypothesis, CORS pinned limits cross-origin
 [PRIO] cable.betpanda.io/cable/user-event, 5.5, a=7 b=5 t=2 g=1 c=10 f=10 — unauth injection, but impact uncertain without operator visibility
@@ -29,8 +29,7 @@ evidence_needed: operator-side confirmation injected events reach fraud/risk/bon
 verify_steps: PASSIVE — surface exhausted (baseline stable, no novel non-mutating probe); chained impact needs operator visibility.
 impact: analytics/fraud/bonus feed poisoning; potential stored-XSS in internal dashboards → Medium-High.
 testability: PASSIVE
-[PARKED] None — all three hypotheses rank above threshold.
-[FINAL] Ranked:
+[FINAL] Ranked: (1) affiliates.betpanda.io wildcard CORS+credentials — confidence 95, flagship, POC-gated on human login; (2) betpandacasino.io cross-brand BOLA — confidence 75, needs two accounts; (3) cable.betpanda.io injection — confidence 70, impact ceiling uncertain.
 [NEXT] HUMAN: Login to affiliates.betpanda.io with a test affiliate account, capture the session `Set-Cookie` (SameSite/Secure/HttpOnly flags), then execute `GET /rest/user/players -H "Origin: https://evil.com" -H "Cookie: <sess>"` (cross-origin credentialed PII read) and `POST /rest/user/password/reset -H "Origin: https://evil.com"` with mirror Cookie + `resetPasswordCode` for the flagship ATO POC. Passive surface on the API target is fully exhausted — all known 20+ routes re-verified this cycle with unchanged baselines.
 [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS + credentials re-confirmed this cycle (bundle unchanged main.ef021e68.js; password/reset, set-2fa-setting, change-password, set-profile all 405-GET reflecting evil Origin + ACAC:true). Flagship finding, POC still auth-gated.
 [LEARN] ACCEPTED IDOR @ betpandacasino.io/rest/user/*: Money-flow endpoints re-confirmed; CORS pinned (ACAO: betpandacasino.io only); server-side authZ unverified → BOLA stands.
