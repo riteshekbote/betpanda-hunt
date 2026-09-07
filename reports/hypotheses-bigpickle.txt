@@ -1,4 +1,4 @@
-## 2026-09-07 06:11:20 UTC [target] (model bigpickle)
+## 2026-09-07 12:45:39 UTC [target] (model bigpickle)
 [PRIO] affiliates.betpanda.io/rest/*, 9.0, a=10 b=9 t=3 g=2 c=2 f=10 — wildcard CORS+credentials, 20+ money/auth endpoints, backend-wide flaw, unchanged since discovery
 [PRIO] betpandacasino.io/rest/user/*, 7.0, a=5 b=9 t=3 g=2 c=1 f=10 — money-flow endpoints, BOLA hypothesis, CORS pinned limits cross-origin
 [PRIO] cable.betpanda.io/cable/user-event, 5.5, a=7 b=5 t=2 g=1 c=10 f=10 — unauth injection, but impact uncertain without operator visibility
