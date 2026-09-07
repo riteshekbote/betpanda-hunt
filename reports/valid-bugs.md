@@ -19,3 +19,7 @@
   - | Q5 | Novel/unreported? | **Yes** — independently discovered by bigpickle and nemotron3; no prior reports in valid-bugs.md prior to 2026-09-04 |
   - **Verdict: VALID**
   - | 1 | Wildcard CORS+creds (`affiliates.betpanda.io`) | **VALID** | 9.1 | Report to bugs.olivermaicher.eu |
+
+- 2 lead(s) marked VALID at 2026-09-07 21:36:23 UTC
+  - **VERDICT: VALID**
+  - | 1 | Affiliates CORS+credentials | **VALID** | 9.1 | YES — bugs.olivermaicher.eu |
