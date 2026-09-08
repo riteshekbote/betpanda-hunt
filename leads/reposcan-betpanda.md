@@ -112,3 +112,6 @@ TARGET_ORG not configured for betpanda; skipping public-org deep scan.
 ## REPOSCAN 2026-09-08 10:57:12 UTC
 [HYP] (none)
 TARGET_ORG not configured for betpanda; skipping public-org deep scan.
+## REPOSCAN 2026-09-08 14:53:05 UTC
+[HYP] (none — no repos to scan)
+TARGET_ORG not configured for betpanda; skipping public-org deep scan.
