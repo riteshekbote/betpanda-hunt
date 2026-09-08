@@ -2448,3 +2448,33 @@ testability: PASSIVE
 [LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test remains cheapest de-gate.
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling.
 [RISK] betpanda: 90 — Flagship wildcard CORS+credentials re-verified live again (backend-wide, ACAO-reflect + ACAC:true on unauth /rest/public/config). This cycle's pending probe (OPTIONS handler-discrimination) proved methodologically invalid — OPTIONS is a global envelope, so no surface expansion and no new critical. All open proofs remain HUMAN-gated: one affiliate session for ATO POC, one casino session for cross-brand BOLA de-gate; cable at ceiling. No novel critical added — risk holds.
+## 2026-09-08 19:59:31 UTC [target] (model bigpickle)
+[HYP] Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live OPTIONS this cycle on /rest/v2/report, /rest/v2/report/sub-affiliates, /rest/user/selectable-payout-currencies, /rest/agent/enable/1/true all returned 200 `ACAO:https://evil.example` + `ACAC:true`; GET /rest/public/config 200 with ACAO:evil reflected, no auth; bundle unchanged main.ef021e68.js.
+evidence_needed: Set-Cookie (SameSite) from real affiliate login; credentialed cross-origin GET /rest/user/metrics/affiliate returning PII; POST /rest/user/password/reset completing ATO.
+verify_steps: HUMAN_ONLY — login, capture cookie; GET /rest/user/metrics/affiliate -H Origin:https://evil.com -b cookie; POST /rest/user/password/reset mirroring Origin+Cookie.
+impact: player PII/transaction exfil, password reset, 2FA disable, deposit-limit tamper → CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Cross-Brand Session Confusion on Shared Casino/Partners Backend
+class: IDOR
+asset: betpandacasino.io + betpanda.partners /rest/user/*
+confidence: 80
+reasoning: Both hosts 401 on /rest/user/settings, 405 Allow:POST on /rest/user/authenticate — identical handler parity on shared Spring backend; CORS pinned on both. Token↔operatorId binding unverified; betpanda.partners exposes NO /rest/public layer (404) unlike affiliates, so session ownership is the only axis.
+evidence_needed: betpandacasino.io session/token accepted on betpanda.partners returning 200 vs 401 control.
+verify_steps: AUTH_HELPED — GET betpanda.partners/rest/user/settings -H Bearer <casino_jwt> vs control on betpandacasino.io.
+impact: cross-brand wallet/balance/player PII on real-money platform → CRITICAL.
+testability: AUTH_HELPED
+[HYP] Unauth Event Injection into Analytics/Fraud Feed
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 70
+reasoning: Unauth POST (405-GET), ACAO:*, arbitrary eventType/XSS/negative amounts accepted (200); 10-path sweep confirms it is the only reachable cable handler. At passive ceiling.
+evidence_needed: operator confirmation injected events reach fraud/risk/bonus consumers.
+verify_steps: PASSIVE — surface exhausted; chained impact needs operator visibility.
+impact: analytics/fraud/bonus feed poisoning; stored-XSS in dashboards → Medium-High.
+testability: PASSIVE
+[NEXT] PROBE: re-baseline one App-B cross-brand signal that does NOT need auth but was only captured on betpandacasino.io before: `OPTIONS https://betpanda.partners/rest/user/refresh` vs `OPTIONS https://betpandacasino.io/rest/user/refresh` with `Origin: https://evil.example` + `Access-Control-Request-Method: POST` — compare ACAO/ACAC (expect betpandacasino.io pinned ACAO + ACAC:true; betpanda.partners Vary:Origin only) to confirm REFRESH_TOKEN rotate handler parity on partners for the eventual credentialed cross-brand test.
+[RISK] betpanda: 90 — Flagship wildcard CORS+credentials re-verified this cycle on the newest /rest/v2/* and agent namespaces (ACAO:evil + ACAC:true), confirming backend-wide scope including report/money-flow handlers; config rotated but adds no new leverage. All proofs remain HUMAN-gated (one affiliate session for ATO, one casino session for cross-brand BOLA); cable at ceiling. No novel critical — risk holds at 90.

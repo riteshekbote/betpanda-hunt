@@ -1003,3 +1003,19 @@
 - LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live this cycle (GET /rest/public/config 200, ACAO:https://evil.exampl
 - LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test remains cheapest 
 - LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling.
+
+## RANKED HYPOTHESES 2026-09-08 20:01:02 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (from art/lead_nemotron3.txt)
+- [95] affiliates.betpanda.io/rest/*: Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): PROBE: re-baseline one App-B cross-brand signal that does NOT need auth but was only captured on betpandacasino.io before: `OPTIONS https://betpanda.partners/re
+- NEXT(hypotheses-nemotron3.txt): PROBE: GET https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" (passive, auth-helped, test cross
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live this cycle (GET /rest/public/config 200, ACAO:https://evil.exampl
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test remains cheapest 
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling.
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under 
+- LEARN: REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.
+- LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: health/captcha/recaptcha/version/metrics/phone all 404 — no undiscovered unauth public handlers
+- LEARN: REJECTED MISCONFIG @ d3ec3n7kizfkuy.cloudfront.net: S3-backed CF origin; root + /operators/ 403, no listing — not a finding.
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/user/balance: 400 signal did not reproduce; GET+POST both 404 identical to /rest/user/notreal123 control — not 
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/rest/user/account-balances-and-bonuses: OPTIONS returns generic 200 CORS envelope (ACAO own-host + ACAC:true + full allow
