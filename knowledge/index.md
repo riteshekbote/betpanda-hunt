@@ -179,3 +179,6 @@
 - 2026-09-08 REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
 - 2026-09-08 REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: health/captcha/recaptcha/version/metrics/phone all 404 — no undiscovered unauth public handlers.
 - 2026-09-08 REJECTED MISCONFIG @ d3ec3n7kizfkuy.cloudfront.net: S3-backed CF origin; root + /operators/ 403, no listing — not a finding.
+- 2026-09-08 REJECTED MISCONFIG @ affiliates.betpanda.io/rest/user/balance: 400 signal did not reproduce; GET+POST both 404 identical to /rest/user/notreal123 control — not a real handler, prior "balance" delta was transient.
+- 2026-09-08 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live this cycle (ACAO evil + ACAC:true on both balance and unknown-control paths); bundle unchanged main.ef021e68.js; POC remains auth-gated.
+- 2026-09-08 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test is cheapest de-gate.

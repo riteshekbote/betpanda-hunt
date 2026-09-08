@@ -1,4 +1,4 @@
-## 2026-09-08 08:16:37 UTC [target] (model nemotron3)
+## 2026-09-08 13:04:59 UTC [target] (model nemotron3)
 [PRIO] affiliates.betpanda.io/rest/*,9.35,attack_surface=10,business_value=9,tech_exposure=9,gate_ease=9,cloud_surface=8,freshness=10
 [PRIO] betpandacasino.io/rest/user/*,8.55,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=8
 [PRIO] betpanda.partners/rest/user/*,8.10,attack_surface=8,business_value=9,tech_exposure=8,gate_ease=6,cloud_surface=8,freshness=9
@@ -32,7 +32,7 @@ evidence_needed: Successful injection of crafted events that trigger downstream 
 verify_steps: PASSIVE: POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{"eventType":"deposit","amount":10000,"userId":"victim_id","currency":"EUR"}' → observe 200 response; fuzz eventType enum via wordlist; probe for reflection in any admin/dashboard UI (if discoverable)
 impact: Business logic abuse (bonus fraud, metric poisoning, fraud evasion), potential stored XSS in analytics dashboards — HIGH
 testability: PASSIVE
-[PARKED] None — all three hypotheses have confidence ≥70, valid classes (MISCONFIG, IDOR, BUSLOGIC), concrete verify_steps (PASSIVE or AUTH_HELPED), no REJECTED-class overlap
+[PARKED] None — all three hypotheses have confidence ≥70, valid classes (MISCONFIG, IDOR, BUSLOGIC), concrete verify_steps (PASSIVE or AUTH_HELPED), no REJECTED-class overlap.
 [FINAL] 1. Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (affiliates.betpanda.io, 95)
 [FINAL] 2. Cross-Brand BOLA via Shared Spring Boot Backend — JWT Missing aud/iss Validation (betpanda.partners/betpandacasino.io, 80)
 [FINAL] 3. Unauthenticated Event Injection with Arbitrary Schema Feeding Analytics/Fraud/Bonus Systems (cable.betpanda.io, 75)
