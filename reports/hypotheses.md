@@ -995,3 +995,11 @@
 - LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
 - LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: health/captcha/recaptcha/version/metrics/phone all 404 — no undiscovered unauth public handlers
 - LEARN: REJECTED MISCONFIG @ d3ec3n7kizfkuy.cloudfront.net: S3-backed CF origin; root + /operators/ 403, no listing — not a finding.
+
+## RANKED HYPOTHESES 2026-09-08 17:26:11 UTC
+- [95] affiliates.betpanda.io/rest/*: Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): PROBE: cross-brand/baseline status re-check: `GET https://betpanda.partners/rest/user/settings` vs `GET https://betpandacasino.io/rest/user/settings` (both unau
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/rest/user/account-balances-and-bonuses: OPTIONS returns generic 200 CORS envelope (ACAO own-host + ACAC:true + full allow
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live this cycle (GET /rest/public/config 200, ACAO:https://evil.exampl
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test remains cheapest 
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling.
