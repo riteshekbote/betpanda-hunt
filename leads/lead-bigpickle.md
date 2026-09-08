@@ -2356,3 +2356,17 @@ evidence_needed: operator confirmation injected events reach fraud/risk/bonus co
 verify_steps: PASSIVE — surface exhausted; chained impact needs operator visibility.
 impact: analytics/fraud/bonus feed poisoning; potential stored-XSS in internal dashboards → Medium-High.
 testability: PASSIVE
+## 2026-09-08 08:13:51 UTC [target] (model bigpickle)
+[PRIO] affiliates.betpanda.io/rest/*,7.5,a:10,b:10,t:3,g:5,c:5,f:8
+[PRIO] betpandacasino.io+betpanda.partners /rest/user/*,7.0,a:8,b:10,t:3,g:5,c:5,f:8
+[PRIO] cable.betpanda.io/cable/user-event,5.1,a:6,b:5,t:2,g:5,c:5,f:8
+[NEXT] PROBE: Live passive probe batch — check for additional unauth endpoints on affiliates.betpanda.io and betpandacasino.io that we haven't tried: (1) `GET https://betpandacasino.io/rest/user/balance` (2) `GET https://betpandacasino.io/rest/user/profile` (3) `GET https://betpandacasino.io/rest/user/history` (4) `GET https://affiliates.betpanda.io/rest/user/balance` (5) `GET https://betpandacasino.io/rest/properties/operators` — read-only GET, 1 req/sec max.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-confirmed fresh (config 200 ACAO-reflect+ACAC:true, password/reset OPTIONS 200 ACAO-reflect+ACAC:true); bundle unchanged main.ef021e68.js; POC remains auth-gated
+[LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test is the cheapest de-gate
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under guessed names and NO admin at default path — CMS content-disclosure hypothesis dropped
+[LEARN] REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard
+[LEARN] REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged)
+[LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: health/captcha/recaptcha/version/metrics/phone all 404 — no undiscovered unauth public handlers
+[LEARN] REJECTED MISCONFIG @ d3ec3n7kizfkuy.cloudfront.net: S3-backed CF origin; root + /operators/ 403, no listing — not a finding
+[RISK] betpanda: 90 — Flagship wildcard CORS+credentials re-verified live this cycle; App B /rest surface fully enumerated and closed beyond user+properties; open proofs remain HUMAN-gated (one affiliate session for ATO POC, one casino session for cross-brand BOLA de-gate); cable injection at ceiling. No novel critical added — risk holds.

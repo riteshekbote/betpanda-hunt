@@ -206,3 +206,9 @@ https://cable.betpanda.io/cable/user-event -> HTTP 405
 https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
 https://affiliates.betpanda.io/rest/user/players -> HTTP 405
 https://cable.betpanda.io/cable/user-event -> HTTP 405
+
+## 2026-09-08 08:16:53 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/balance` -> HTTP 400
