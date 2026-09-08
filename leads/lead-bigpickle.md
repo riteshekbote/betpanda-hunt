@@ -2478,3 +2478,46 @@ impact: analytics/fraud/bonus feed poisoning; stored-XSS in dashboards → Mediu
 testability: PASSIVE
 [NEXT] PROBE: re-baseline one App-B cross-brand signal that does NOT need auth but was only captured on betpandacasino.io before: `OPTIONS https://betpanda.partners/rest/user/refresh` vs `OPTIONS https://betpandacasino.io/rest/user/refresh` with `Origin: https://evil.example` + `Access-Control-Request-Method: POST` — compare ACAO/ACAC (expect betpandacasino.io pinned ACAO + ACAC:true; betpanda.partners Vary:Origin only) to confirm REFRESH_TOKEN rotate handler parity on partners for the eventual credentialed cross-brand test.
 [RISK] betpanda: 90 — Flagship wildcard CORS+credentials re-verified this cycle on the newest /rest/v2/* and agent namespaces (ACAO:evil + ACAC:true), confirming backend-wide scope including report/money-flow handlers; config rotated but adds no new leverage. All proofs remain HUMAN-gated (one affiliate session for ATO, one casino session for cross-brand BOLA); cable at ceiling. No novel critical — risk holds at 90.
+## 2026-09-08 22:29:05 UTC [target] (model bigpickle)
+[CHANGED] betpanda.partners/rest/user/refresh: OPTIONS (Origin:https://evil.example, ACRM:POST) → 200, Vary:Origin, NO ACAO, NO ACAC — handler envelope identical to betpandacasino.io; refresh-parity signal now captured on partners (was casino-only)
+[CHANGED] betpandacasino.io/rest/user/refresh: ACAO pinned to own host + ACAC:true re-confirmed; emits new response header `x-site-name-id: betpandacasino_io`; `__cflb` LB cookie SameSite=None;Secure
+[NEW] betpanda.partners `__cflb` (Cloudflare LB affinity) is SameSite=Lax vs betpandacasino.io SameSite=None;Secure — affinity-only, not auth; no impact
+[NEW] `x-site-name-id: notcasino` sent to betpandacasino.io → response still `betpandacasino_io`; tenant discriminator is host-derived, client value ignored at CORS-filter layer
+[PRIO] affiliates.betpanda.io/rest/* — 8.4, attack_surface(backend-wide CORS+creds, 20+ money-flow/2FA/password handlers)
+[PRIO] betpandacasino.io+betpanda.partners /rest/user/* — 7.1, business_value(real-money wallet/PII, shared App B)
+[PRIO] cable.betpanda.io/cable/user-event — 5.6, gate_ease(unauth POST, ACAO:*, at ceiling)
+[HYP] Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live probes this cycle on both App-B hosts confirm the shared backend serves the same CORS allow-headers (x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context) — but only affiliates reflects ACAO:<any Origin>+ACAC:true (re-verified prior cycles on config/password-reset). Bundle unchanged main.ef021e68.js.
+evidence_needed: Set-Cookie (SameSite) from real affiliate login; credentialed cross-origin GET /rest/user/metrics/affiliate returning PII; POST /rest/user/password/reset completing ATO.
+verify_steps: HUMAN_ONLY — login, capture cookie; GET /rest/user/metrics/affiliate -H Origin:https://evil.com -b cookie; POST /rest/user/password/reset mirroring Origin+Cookie.
+impact: player PII/transaction exfil, password reset, 2FA disable, deposit-limit tamper → CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Cross-Brand Session Confusion on Shared Casino/Partners Backend
+class: IDOR
+asset: betpandacasino.io + betpanda.partners /rest/user/*
+confidence: 80
+reasoning: Identical /rest handler envelope on both hosts (refresh OPTIONS parity confirmed this cycle; settings 401 "No http-session found", authenticate 403/405). CORS pinned both hosts. x-site-name-id is host-derived (client value ignored). Token↔operatorId binding still unverified.
+evidence_needed: betpandacasino.io session/token accepted on betpanda.partners returning 200 vs 401 control.
+verify_steps: AUTH_HELPED — GET betpanda.partners/rest/user/settings -H Bearer <casino_jwt> vs control on betpandacasino.io; drop in REFRESH_TOKEN cookie to /rest/user/refresh on partners.
+impact: cross-brand wallet/balance/player PII on real-money platform → CRITICAL.
+testability: AUTH_HELPED
+[HYP] Unauth Event Injection into Analytics/Fraud Feed
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 70
+reasoning: Unauth POST (405-GET), ACAO:*, arbitrary eventType/XSS/negative amounts accepted (200); only reachable cable handler; at passive ceiling.
+evidence_needed: operator confirmation injected events reach fraud/risk/bonus consumers.
+verify_steps: PASSIVE — surface exhausted; chained impact needs operator visibility.
+impact: analytics/fraud/bonus feed poisoning; stored-XSS in dashboards → Medium-High.
+testability: PASSIVE
+[PARKED] Tenant-switch mass-assignment via x-site-name-id: CORS-filter layer ignores client value (rejected), but controller-layer routing can only be discriminated with an authed/captcha'd POST (403/403) — not passively testable; revisit only after a session is obtained.
+[PARKED] betpandacasino.io/rest/user/account-balances-and-bonuses handler confirmation: OPTIONS is a global envelope (identical to 404 control) → methodologically dead (unchanged).
+[FINAL] 1. affiliates wildcard CORS ATO (95). 2. Cross-brand session confusion App B (80). 3. Unauth cable injection (70).
+[NEXT] HUMAN: cheapest de-gate is cross-brand BOLA — operator logs into betpandacasino.io, captures Bearer JWT (Cognito) + REFRESH_TOKEN cookie, then run read-only `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs control `GET https://betpandacasino.io/rest/user/settings` (expect 401 on control, non-401 on partners = cross-brand acceptance).
+[LEARN] ACCEPTED MISCONFIG @ betpanda.partners+betpandacasino.io/rest/user/refresh: OPTIONS envelope parity confirmed — identical allow-headers/methods (incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context); shared App B handler set on both brands, supports credentialed cross-brand test.
+[LEARN] ACCEPTED MISCONFIG @ betpandacasino.io/rest/user/refresh: CORS re-confirmed pinned (ACAO own-host + ACAC:true); __cflb SameSite=None;Secure is LB-affinity only, no auth value — cross-origin read still blocked.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived; no client-controlled tenant switch at filter layer.
+[RISK] betpanda: 90 — Flagship (95) unchanged and re-anchored: shared-backend CORS allow-headers parity plus the known affiliates-only ACAO-reflection keeps the ATO chain live but HUMAN-gated on one affiliate session. Cross-brand BOLA (80) remains the cheapest open proof, gated on one casino session. Two negatives this cycle (x-site-name-id not client-routable; refresh envelope parity confirmed, not exploitable passively) add no new critical. Cable at ceiling. No novel critical — risk holds at 90.

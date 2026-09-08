@@ -287,3 +287,9 @@ www.betpanda.io
 ## 2026-09-08 17:26:11 UTC
 
 ## 2026-09-08 20:01:02 UTC
+
+## 2026-09-08 22:29:15 UTC
+- CHANGED betpanda.partners/rest/user/refresh: OPTIONS (Origin:https://evil.example, ACRM:POST) → 200, Vary:Origin, NO ACAO, NO ACAC — handler envelope identical to betpandacasino.io; refresh-parity signal now 
+- CHANGED betpandacasino.io/rest/user/refresh: ACAO pinned to own host + ACAC:true re-confirmed; emits new response header `x-site-name-id: betpandacasino_io`; `__cflb` LB cookie SameSite=None;Secure
+- NEW betpanda.partners `__cflb` (Cloudflare LB affinity) is SameSite=Lax vs betpandacasino.io SameSite=None;Secure — affinity-only, not auth; no impact
+- NEW `x-site-name-id: notcasino` sent to betpandacasino.io → response still `betpandacasino_io`; tenant discriminator is host-derived, client value ignored at CORS-filter layer
