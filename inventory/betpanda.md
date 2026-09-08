@@ -277,3 +277,5 @@ www.betpanda.io
 - NEW affiliates.betpanda.io/rest/public/phone/signin/verify + /register/verify — POST-only JSON (415 form-encoded), reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated) — unauthentica
 - NEW affiliates.betpanda.io/rest/v2/report, /rest/v2/report/sub-affiliates, /rest/v2/report/daily-stats-with-comparison, /rest/user/selectable-payout-currencies, /rest/user/selectable-payout-networks, /res
 - NEW affiliates.betpanda.io SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL binds to POST /rest/user/password/reset (ATO chain primitive)
+
+## 2026-09-08 03:19:52 UTC
