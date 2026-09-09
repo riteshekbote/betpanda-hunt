@@ -323,3 +323,5 @@ www.betpanda.io
 - CHANGED betpandacasino.io/rest/user/account-balances-and-bonuses — OPTIONS returns generic 200 CORS envelope identical to `/rest/user/notreal123` 404 control — OPTIONS cannot distinguish real handler from cat
 - CHANGED affiliates.betpanda.io/rest/public/config — `x-site-name-id` header + `operatorId`/`code`/`operator`/`id` query params all return identical operatorId=1 — no client-controlled tenant switch on wildcar
 - CHANGED affiliates.betpanda.io/rest/public/config — supportEmail rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, contentful access token fields empty — vendor ope
+
+## 2026-09-09 14:23:13 UTC
