@@ -2846,3 +2846,28 @@ testability: PASSIVE
 [LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared App B backend re-confirmed live — both /rest/user/settings identical 401 control; CORS pinned both; cross-brand session test remains the cheapest de-gate.
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion baseline stable (405-GET); at passive ceiling.
 [RISK] betpanda: 88 — Flagship (95) re-anchored fresh live this cycle, bundle unchanged, still HUMAN-gated on one affiliate session. Cross-brand BOLA (80) re-supported by identical shared SPA + 401-control parity, remains cheapest open proof (one casino session). Cable at passive ceiling. No novel critical surface this cycle. Risk holds at 88.
+## 2026-09-09 22:47:59 UTC [target] (model bigpickle)
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: GET /rest/public/config 200 ACAO:https://evil.example + ACAC:true (unauth); OPTIONS /rest/user/password/reset 200 ACAO:evil.example + ACAC:true + full allow-methods. Bundle main.ef021e68.js unchanged. 30+ endpoints (password/reset, set-2fa-setting, change-password, players, transaction/list, agent/set-deposit-withdraw-limit) under credentialed wildcard CORS.
+evidence_needed: credentialed cross-origin GET /rest/user/metrics/affiliate or players returning PII; POST /rest/user/password/reset (resetPasswordCode in URL binds account) completing ATO.
+verify_steps: HUMAN_ONLY — capture affiliate session; GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -b cookie; then mirrored POST /rest/user/password/reset with resetPasswordCode+newPassword from SPA route /reset-password/:affiliateId/:resetPasswordCode.
+impact: player PII/transaction exfil, password reset, 2FA disable, deposit-limit tamper — CRITICAL.
+testability: HUMAN_ONLY
+class: IDOR
+asset: betpandacasino.io + betpanda.partners /rest/user/*
+confidence: 80
+reasoning: Identical SPA (index-KqswHEbl.js) + identical App B handler envelope on both; /rest/user/settings identical 401 no-token control on both; refresh OPTIONS parity (x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context). Tenant discriminator host-derived (forged x-site-name-id ignored). CORS pinned both. Token↔operatorId binding is the only unverified axis.
+evidence_needed: betpandacasino.io session/JWT accepted on betpanda.partners returning !=401.
+verify_steps: AUTH_HELPED — GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>" vs control same on betpandacasino.io (401 baseline); non-401 = cross-brand acceptance.
+impact: cross-brand wallet/balance/player PII on real-money platform — CRITICAL.
+testability: AUTH_HELPED
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 70
+reasoning: Unauth POST-only, ACAO:*, arbitrary eventType/XSS/negative amounts accepted (200); 14-path sweep this cycle confirms it is the ONLY handler. Downstream consumers (fraud/bonus/leaderboard) unobservable passively.
+evidence_needed: operator confirmation injected events reach downstream consumers; dashboards reflect stored fields.
+verify_steps: PASSIVE — surface exhausted; chained impact requires operator visibility.
+impact: analytics/fraud/bonus feed poisoning, stored-XSS in dashboards — Medium-High.
+testability: PASSIVE

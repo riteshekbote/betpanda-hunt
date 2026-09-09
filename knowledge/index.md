@@ -231,3 +231,4 @@
 - 2026-09-09 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified fresh live this cycle (GET /rest/public/config 200 ACAO:https://evil.example + ACAC:true; OPTIONS /rest/user/password/reset 200 ACAO:https://evil.example + ACAC:true). Bundle unchanged main.ef021e68.js; POC remains auth-gated.
 - 2026-09-09 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared App B backend re-confirmed live — both /rest/user/settings identical 401 control; CORS pinned both; cross-brand session test remains the cheapest de-gate.
 - 2026-09-09 ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion baseline stable (405-GET); at passive ceiling.
+- 2026-09-09 REJECTED MISCONFIG @ betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived, no client-controlled tenant switch at filter layer.

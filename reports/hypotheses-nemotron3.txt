@@ -1,4 +1,4 @@
-## 2026-09-09 20:32:32 UTC [target] (model nemotron3)
+## 2026-09-09 22:46:37 UTC [target] (model nemotron3)
 [PRIO] affiliates.betpanda.io/rest/*,9.35,attack_surface=10,business_value=9,tech_exposure=9,gate_ease=9,cloud_surface=8,freshness=10
 [PRIO] betpandacasino.io/rest/user/*,8.55,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=8
 [PRIO] betpanda.partners/rest/user/*,8.10,attack_surface=8,business_value=9,tech_exposure=8,gate_ease=6,cloud_surface=8,freshness=9
@@ -52,7 +52,7 @@ testability: PASSIVE
 [LEARN] REJECTED MISCONFIG @ betpandacasino.io/rest/user/account-balances-and-bonuses: OPTIONS returns generic 200 CORS envelope (ACAO own-host + ACAC:true + full allow-methods) identical to /rest/user/notreal123 404 control — OPTIONS cannot distinguish real handler from catch-all on App B; no new reachable handler confirmed.
 [LEARN] ACCEPTED MISCONFIG @ betpanda.partners+betpandacasino.io/rest/user/refresh: OPTIONS envelope parity confirmed — identical allow-headers/methods (incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context); shared App B handler set on both brands, supports credentialed cross-brand test.
 [LEARN] ACCEPTED MISCONFIG @ betpandacasino.io/rest/user/refresh: CORS re-confirmed pinned (ACAO own-host + ACAC:true); __cflb SameSite=None;Secure is LB-affinity only, no auth value — cross-origin read still blocked.
-[LEARN] REJECTED MISCONFIG @ betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived; no client-controlled tenant switch at filter layer.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived, no client-controlled tenant switch at filter layer.
 [LEARN] CHANGED @ affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io), phoneSignupEnabled:false, contentful access token fields empty — vendor operator-config churn, not a finding.
 [LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1; no client-controlled tenant switch on wildcard host public layer.
 [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (ACAO:https://evil.example).

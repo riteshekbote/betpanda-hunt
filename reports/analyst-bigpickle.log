@@ -21725,3 +21725,183 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 [RISK] betpanda: 88 — Flagship (95) re-anchored fresh live this cycle, bundle unchanged, still HUMAN-gated on one affiliate session. Cross-brand BOLA (80) re-supported by identical shared SPA + 401-control parity, remains cheapest open proof (one casino session). Cable at passive ceiling. No novel critical surface this cycle. Risk holds at 88.
+===== ANALYST bigpickle 2026-09-09 22:48:10 UTC =====
+[0m
+> build · big-pickle
+[0m
+I'll run a couple of read-only passive probes to compute a real DELTA this cycle, then produce the structured analysis.
+[0m$ [0mcurl -s -m 20 -D /tmp/opencode/bp_root_hdr.txt -o /tmp/opencode/bp_root.html https://betpandacasino.io/ && echo "---HEADERS---" && head -20 /tmp/opencode/bp_root_hdr.txt && echo "---SCRIPT TAGS---" && grep -oE '<script[^>]*src="[^"]*"' /tmp/opencode/bp_root.html | head -40
+---HEADERS---
+HTTP/2 200 
+date: Wed, 09 Sep 2026 22:45:22 GMT
+content-type: text/html; charset=utf-8
+cf-ray: a389b9079eed67f3-SJC
+cf-cache-status: DYNAMIC
+cache-control: no-store, no-cache, must-revalidate, max-age=0
+expires: 0
+last-modified: Thu, 03 Sep 2026 07:48:21 GMT
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqX2nFUAZ1HUboS; HttpOnly; SameSite=None; Secure; Path=/; Expires=Thu, 10 Sep 2026 21:45:22 GMT
+vary: accept-encoding
+pragma: no-cache
+x-geo-time-debug: country=US blocked=false timeGated=false tz=America/Los_Angeles officeHours=true popup=false
+
+---SCRIPT TAGS---
+<script type="module" crossorigin src="/assets/index-KqswHEbl.js"
+[0m
+[0m$ [0mcurl -s -m 30 -o /tmp/opencode/bp_bundle.js https://betpandacasino.io/assets/index-KqswHEbl.js && wc -c /tmp/opencode/bp_bundle.js
+795572 /tmp/opencode/bp_bundle.js
+[0m
+[0m$ [0mgrep -oE 'cognito[^"'"'"' ,;}{]{0,120}' /tmp/opencode/bp_bundle.js | head -20; echo "---userPool---"; grep -oE 'userPool[A-Za-z]*[":=]+[^"'"'"' ,;}{]{0,80}' /tmp/opencode/bp_bundle.js | head -10; echo "---clientId---"; grep -oE 'clientId["'"'"']?\s*[:=]\s*["'"'"'][a-zA-Z0-9]{15,}' /tmp/opencode/bp_bundle.js | head -10; echo "---amplify---"; grep -oE 'amplify[^"'"'"' ,;}{]{0,80}' /tmp/opencode/bp_bundle.js | head -10
+cognito\-identity\.([^\.]*\.)?amazonaws\.com/
+cognito-identity.
+cognitoIdentityClient=new
+cognitoIdentityClient.getId(
+cognitoIdentityClient.getOpenIdToken(o)]
+cognitoIdentityClient.getId(
+cognitoIdentityClient.getCredentialsForIdentity(I.IdentityId)]
+cognito
+---userPool---
+---clientId---
+---amplify---
+[0m
+[0m$ [0mecho "---cognito-idp/idp refs---"; grep -oE '[a-z0-9-]*cognito[a-z0-9-]*\.amazonaws\.com' /tmp/opencode/bp_bundle.js | sort -u | head; echo "---IdentityPool---"; grep -oE 'IdentityPoolId["'"'"']?\s*[:=]\s*["'"'"'][a-zA-Z0-9:-]{5,}' /tmp/opencode/bp_bundle.js | head; grep -oE 'identityPoolId["'"'"']?\s*[:=]\s*["'"'"'][^"'"'"']{5,80}' /tmp/opencode/bp_bundle.js | head; echo "---region---"; grep -oE '"eu-[a-z]+-[0-9]"' /tmp/opencode/bp_bundle.js | sort -u; echo "---provider/endpoint config---"; grep -oE '(endpoint|baseUrl|base_url|apiUrl|API_URL)["'"'"']?\s*[:=]\s*["'"'"'][^"'"'"']{0,90}' /tmp/opencode/bp_bundle.js | sort -u | head -20
+---cognito-idp/idp refs---
+---IdentityPool---
+---region---
+---provider/endpoint config---
+baseUrl:"http://
+baseUrl:"http://host.docker.internal:9081/rest
+baseUrl:"http://localhost:8081/rest
+baseUrl:"https://
+[0m
+[0m$ [0mecho "---amazoncognito/hosted UI---"; grep -oE '[a-zA-Z0-9.-]*amazoncognito\.com[a-zA-Z0-9./-]*' /tmp/opencode/bp_bundle.js | sort -u | head; echo "---UserPool words---"; grep -oE '(UserPool|userPool|us-east|us-west|eu-central|ap-south)[^"'"'"' ,;:{}]{0,50}' /tmp/opencode/bp_bundle.js | sort -u | head -20; echo "---docker.local ctx---"; grep -oE '.{60}host\.docker\.internal.{60}' /tmp/opencode/bp_bundle.js | head -6; echo "---localhost ctx---"; grep -oE '.{60}localhost:8081.{60}' /tmp/opencode/bp_bundle.js | head -6
+---amazoncognito/hosted UI---
+---UserPool words---
+us-west-2
+---docker.local ctx---
+?void 0;else if(e=="localhost"||e=="nano"||e=="nano-2"||e=="host.docker.internal"||e?.startsWith("127.0")||e?.startsWith("10.0")||e?.startsW
+es("localhost")&&(A.baseUrl=A.baseUrl.replace(/localhost/g,"host.docker.internal"))}catch(c){console.error("[bootstrap] public/config/config
+missing.",c);const h=document.location.hostname;h.includes("host.docker.internal")?A={baseUrl:"http://host.docker.internal:9081/rest"}:h.sta
+host:8081/rest"}}A||(A={baseUrl:"https://"+e+"/rest"}),e==="host.docker.internal"&&A?.baseUrl?.includes("localhost")&&(A.baseUrl=A.baseUrl.r
+---localhost ctx---
+8")?A={baseUrl:"http://"+h+":8081/rest"}:A={baseUrl:"http://localhost:8081/rest"}}A||(A={baseUrl:"https://"+e+"/rest"}),e==="host.dock
+[0m
+[0m$ [0mecho "---getId ctx---"; grep -oE '.{40}cognitoIdentityClient\.getId.{120}' /tmp/opencode/bp_bundle.js | head -4; echo "---pool param---"; grep -oE '(IdentityPoolId|identityPoolId|PoolId|poolId)["'"'"']?\s*[:=]\s*[^,;}{]{0,70}' /tmp/opencode/bp_bundle.js | head -10; echo "---region param near cognito---"; grep -oE '.{30}cognito[^;]{0,200}' /tmp/opencode/bp_bundle.js | grep -oE 'region["'"'"']?\s*[:=]\s*["'"'"'][a-z0-9-]{5,20}' | sort -u | head; echo "---CredentialsProvider---"; grep -oE 'fromCognitoIdentityPool|fromCognitoIdentity|CredentialProviders|Q[A-Za-z]*\s*=\s*\{region' /tmp/opencode/bp_bundle.js | sort -u | head
+---getId ctx---
+ 2:return a.trys.push([2,6,,7]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return o=a.sent(),[4,this.cognitoIdentityClient.getOpenIdToken(o)]
+ 2:return r.trys.push([2,5,,6]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return I=r.sent(),[4,this.cognitoIdentityClient.getCredentialsForI
+---pool param---
+IdentityPoolId:this.config.identityPoolId
+IdentityPoolId:this.config.identityPoolId
+identityPoolId:t
+---region param near cognito---
+---CredentialsProvider---
+[0m
+[0m$ [0mecho "---config.identityPoolId sources---"; grep -oE '.{80}identityPoolId.{120}' /tmp/opencode/bp_bundle.js | head -8; echo "---config object keys near bundle top---"; grep -oE '(identityPoolId|region|userPoolId|clientId|captchaKey|captchaSiteKey|recaptchaKey|sentryDsn|contentful|graphql|appContext|siteNameId):' /tmp/opencode/bp_bundle.js | sort | uniq -c | head -30
+---config.identityPoolId sources---
+.expiration)}),n.renewCredentials())return C();o(n.credentials)})]})})};var i=e.identityPoolId.split(":")[0];this.config=e,this.cognitoIdentityClient=new sd({fetchRequestHandler:new ti,region:i,clientConfig:e,appli
+.push([2,6,,7]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return o=a.sent(),[4,this.cognitoIdentityClient.getOpenIdToken(o)];case 4:return C=a.sent(),[4,this.stsClient
+tch failed:",Q),Q;return[3,7];case 7:return[3,1];case 8:return[2]}})})};var n=t.identityPoolId.split(":")[0];return i.stsClient=new rd({fetchRequestHandler:new ti,region:n}),i}return e}(va),fd=function(){var A=func
+.push([2,5,,6]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return I=r.sent(),[4,this.cognitoIdentityClient.getCredentialsForIdentity(I.IdentityId)];case 4:o=r.sent(),th
+ local storage"),localStorage.removeItem(this.credentialStorageKey),this.config.identityPoolId?(j.info("Rebuilding client with fresh cognito credentials"),localStorage.removeItem(this.identityStorageKey),this.setCo
+ndpointUrl,this.eventCache,this.config);return this.config.signing&&this.config.identityPoolId&&g.setCognitoCredentials(this.config.identityPoolId,this.config.guestRoleArn),g},A.prototype.initPluginManager=function
+ATE?Math.min(1,Math.max(0,parseFloat(window.GLOBAL_CLOUDWATCH_SAMPLE_RATE))):.1,identityPoolId:t,endpoint:`https://dataplane.rum.${g}.amazonaws.com`,telemetries:["performance","errors","http"],allowCookies:!0,enabl
+---config object keys near bundle top---
+      1 identityPoolId:
+      5 region:
+      2 siteNameId:
+[0m
+[0m$ [0mgrep -oE '"/rest/[a-zA-Z0-9/_-]+' /tmp/opencode/bp_bundle.js | sort -u | head -60; echo "---zendesk/other---"; grep -oE '(zendesk|servehub|bamboo|contentful|alexa|sku|graphql|v2|internal|admin|backoffice)[^"'"'"' ,;:]{0,30}' /tmp/opencode/bp_bundle.js | grep -iE '(zendesk|servehub|bamboo|contentful|graphql|admin|backoffice)' | sort -u | head -20
+---zendesk/other---
+contentful-paint
+contentful-ratelimit-reset
+contentful-ratelimit-second-limit
+contentful.com
+contentful.delivery.v1+json
+contentful.js/9.3.7
+contentfulAccessToken?I.contentfulAccess
+contentful_environment
+contentful_paint_event
+zendesk/jwt
+[0m
+Now a quick read-only breadth check on the cable service (the one host whose handler sweep isn't explicitly documented in the KB):
+[0m$ [0mfor p in info auth status health events stats collect ingest user-events; do code=$(curl -s -m 10 -o /dev/null -w "%{http_code}" "https://cable.betpanda.io/cable/$p"); echo "/cable/$p -> $code"; sleep 1.2; done
+/cable/info -> 404
+/cable/auth -> 404
+/cable/status -> 404
+/cable/health -> 404
+/cable/events -> 404
+/cable/stats -> 404
+/cable/collect -> 404
+/cable/ingest -> 404
+/cable/user-events -> 404
+[0m
+[0m$ [0mfor p in health metrics admin console swagger api graphql env config; do code=$(curl -s -m 10 -o /dev/null -w "%{http_code}" "https://cable.betpanda.io/$p"); echo "/$p -> $code"; sleep 1.2; done
+/health -> 404
+/metrics -> 404
+/admin -> 404
+/console -> 404
+/swagger -> 404
+/api -> 404
+/graphql -> 404
+/env -> 404
+/config -> 404
+[0m
+Security analysis complete. Live probes this cycle: casino SPA bundle mine + cable breadth sweep (all read-only GET, ~1 rps).
+
+STEP 1 — DELTA:
+- NO_DELTA on surface: bundles unchanged (aff `main.ef021e68.js`, casino/partners `index-KqswHEbl.js`), CORS envelopes stable, cable single-handler.
+- NEW (analysis, non-finding): casino bundle `android`-bootstrap resolves `baseUrl` via host allow-list `localhost|nano|nano-2|host.docker.internal|127.0|10.0` → dev backends `http://localhost:8081/rest` and `http://host.docker.internal:9081/rest`; identity SDK (cognito-identity) is standard CloudWatch RUM guest config (`dataplane.rum.<region>.amazonaws.com`). Client-side dev-init only, no secrets.
+- NEW (probe): 14-path cable get/head sweep (root health/metrics/admin/console/swagger/api/graphql/env/config + cable/info,auth,status,health,events,stats,collect,ingest,user-events) all 404 — only `/cable/user-event` exists.
+
+STEP 2 — PRIORITIZE:
+- [PRIO] affiliates.betpanda.io/rest/*,8.50,a9/b10/t6/g2/c4/f9
+- [PRIO] betpandacasino.io+betpanda.partners /rest/user/*,8.00,a8/b10/t7/g3/c3/f8
+- [PRIO] cable.betpanda.io/cable/*,6.50,a6/b5/t4/g10/c1/f8
+
+STEP 3 — HYPOTHESES:
+- [HYP] Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: GET /rest/public/config 200 ACAO:https://evil.example + ACAC:true (unauth); OPTIONS /rest/user/password/reset 200 ACAO:evil.example + ACAC:true + full allow-methods. Bundle main.ef021e68.js unchanged. 30+ endpoints (password/reset, set-2fa-setting, change-password, players, transaction/list, agent/set-deposit-withdraw-limit) under credentialed wildcard CORS.
+evidence_needed: credentialed cross-origin GET /rest/user/metrics/affiliate or players returning PII; POST /rest/user/password/reset (resetPasswordCode in URL binds account) completing ATO.
+verify_steps: HUMAN_ONLY — capture affiliate session; GET https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -b cookie; then mirrored POST /rest/user/password/reset with resetPasswordCode+newPassword from SPA route /reset-password/:affiliateId/:resetPasswordCode.
+impact: player PII/transaction exfil, password reset, 2FA disable, deposit-limit tamper — CRITICAL.
+testability: HUMAN_ONLY
+- [HYP] Cross-Brand Session Reuse on Shared App B Backend (Missing aud/iss Binding)
+class: IDOR
+asset: betpandacasino.io + betpanda.partners /rest/user/*
+confidence: 80
+reasoning: Identical SPA (index-KqswHEbl.js) + identical App B handler envelope on both; /rest/user/settings identical 401 no-token control on both; refresh OPTIONS parity (x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context). Tenant discriminator host-derived (forged x-site-name-id ignored). CORS pinned both. Token↔operatorId binding is the only unverified axis.
+evidence_needed: betpandacasino.io session/JWT accepted on betpanda.partners returning !=401.
+verify_steps: AUTH_HELPED — GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>" vs control same on betpandacasino.io (401 baseline); non-401 = cross-brand acceptance.
+impact: cross-brand wallet/balance/player PII on real-money platform — CRITICAL.
+testability: AUTH_HELPED
+- [HYP] Unauth Event Injection into Analytics/Fraud/Bonus Feed
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 70
+reasoning: Unauth POST-only, ACAO:*, arbitrary eventType/XSS/negative amounts accepted (200); 14-path sweep this cycle confirms it is the ONLY handler. Downstream consumers (fraud/bonus/leaderboard) unobservable passively.
+evidence_needed: operator confirmation injected events reach downstream consumers; dashboards reflect stored fields.
+verify_steps: PASSIVE — surface exhausted; chained impact requires operator visibility.
+impact: analytics/fraud/bonus feed poisoning, stored-XSS in dashboards — Medium-High.
+testability: PASSIVE
+
+STEP 4 — SELF-CRITIQUE:
+- [PARKED] Cognito open-signup/unauth-identity lead: no userPoolId/clientId in casino bundle; cognito-identity SDK = standard CloudWatch RUM guest role (scoped to RUM dataplane) — expected behavior, no misconfig signal.
+- [PARKED] cable second-handler lead: 14-path sweep all 404; single-handler confirmed empirically, hypothesis exhausted.
+- [PARKED] dev baseUrl fallback: descriptive dev-info in client bundle, no server reachability or secret — REJECTED class.
+- [FINAL] 1. affiliates wildcard CORS ATO (95). 2. Cross-brand BOLA App B (80). 3. Unauth cable injection (70).
+
+STEP 5 — NEXT ACTION:
+- [NEXT] HUMAN: cheapest open proof — operator with ONE betpandacasino.io account captures the Cognito Bearer JWT from browser devtools, then read-only runs `curl -s -D- https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` and control `curl -s -D- https://betpandacasino.io/rest/user/settings -H "Authorization: Bearer <casino_jwt>"`; non-401 on partners vs 401 control = cross-brand session acceptance → CRITICAL POC for flagship BOLA.
+
+STEP 6 — LEARNING:
+- [LEARN] REJECTED MISCONFIG @ betpandacasino.io SPA bundle: dev baseUrl fallbacks (localhost:8081, host.docker.internal:9081) in bootstrap allow-list — client-side dev-init only, no secrets, non-exploitable.
+- [LEARN] REJECTED MISCONFIG @ betpandacasino.io Cognito: bundle ships only standard CloudWatch RUM guest-identity (runtime identityPoolId, dataplane.rum endpoint); no user pool config, open-signup lead dropped.
+- [LEARN] REJECTED MISCONFIG @ cable.betpanda.io breadth: 14-path sweep all 404 — single-handler service confirmed, surface exhausted.
+
+STEP 7 — RISK:
+- [RISK] betpanda: 88 — Flagship (95) stable against bundle/config drift; cross-brand BOLA (80) remains the cheapest open proof, still gated on one casino session; cable at passive ceiling; bundle mine + cable sweep surfaced no novel exploitable surface this cycle. Risk holds at 88.
