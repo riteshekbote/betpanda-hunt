@@ -1,10 +1,13 @@
-## 2026-09-08 22:28:48 UTC [target] (model nemotron3)
+## 2026-09-09 00:36:45 UTC [target] (model nemotron3)
+[CHANGED] betpanda.partners/rest/user/refresh: OPTIONS parity with betpandacasino.io confirmed (identical allow-headers/methods incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context); shared App B handler set on both brands
+[CHANGED] betpandacasino.io/rest/user/refresh: CORS pinned (ACAO own-host + ACAC:true); emits x-site-name-id: betpandacasino_io; __cflb SameSite=None;Secure is LB-affinity only
+[CHANGED] betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived, no client-controlled tenant switch
+[CHANGED] affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live (GET /rest/public/config 200, ACAO:evil.example reflected + ACAC:true, no auth); bundle unchanged main.ef021e68.js
+[CHANGED] betpandacasino.io/rest/user/account-balances-and-bonuses: OPTIONS returns generic 200 CORS envelope identical to /rest/user/notreal123 404 control — OPTIONS cannot distinguish real handler from catch-all on App B
 [PRIO] affiliates.betpanda.io/rest/*,9.35,attack_surface=10,business_value=9,tech_exposure=9,gate_ease=9,cloud_surface=8,freshness=10
 [PRIO] betpandacasino.io/rest/user/*,8.55,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=8
 [PRIO] betpanda.partners/rest/user/*,8.10,attack_surface=8,business_value=9,tech_exposure=8,gate_ease=6,cloud_surface=8,freshness=9
 [PRIO] cable.betpanda.io/cable/user-event,7.05,attack_surface=7,business_value=6,tech_exposure=8,gate_ease=9,cloud_surface=5,freshness=7
-[PRIO] affiliates.betpanda.io/rest/public/*,6.90,attack_surface=6,business_value=5,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=10
-[PRIO] affiliates.betpanda.io/rest/v2/*,6.70,attack_surface=7,business_value=7,tech_exposure=7,gate_ease=5,cloud_surface=6,freshness=10
 [HYP] Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
@@ -18,7 +21,7 @@ testability: AUTH_HELPED
 class: IDOR
 asset: betpanda.partners/rest/user/*, betpandacasino.io/rest/user/*
 confidence: 80
-reasoning: betpanda.partners is dedicated in-scope host fronting SAME Spring Boot `/rest` backend as betpandacasino.io (identical `/rest/properties/manifest` 200, S3 operator icons). betpandacasino.io exposes money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403) with Cognito JWT auth. CORS on betpanda.partners properly pinned (no ACAO reflection), but server-side authorization unverified. SameSite=Lax REFRESH_TOKEN cookie limits cross-origin but same-origin IDOR remains. Cross-brand session reuse possible if JWT validation lacks audience/issuer checks.
+reasoning: betpanda.partners is dedicated in-scope host fronting SAME Spring Boot `/rest` backend as betpandacasino.io (identical `/rest/properties/manifest` 200, S3 operator icons). betpandacasino.io exposes money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403) with Cognito JWT auth. CORS on betpanda.partners properly pinned (no ACAO reflection), but server-side authorization unverified. SameSite=Lax REFRESH_TOKEN cookie limits cross-origin but same-origin IDOR remains. Cross-brand session reuse possible if JWT validation lacks audience/issuer checks. OPTIONS parity on /rest/user/refresh confirms identical handler set.
 evidence_needed: Successful access to betpanda.partners/rest/user/account-balances-and-bonuses with betpandacasino.io JWT returning victim wallet data; JWT missing aud/iss validation allowing cross-brand token reuse; horizontal IDOR via user_id manipulation in request body
 verify_steps: PASSIVE: GET https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" → observe 200/401/403; PASSIVE: POST https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" -H "Content-Type: application/json" -d '{}' → observe response; PASSIVE: test JWT claims manipulation (aud/iss/sub) against betpanda.partners endpoints
 impact: Cross-brand wallet/balance/bonus disclosure or tampering on real-money gambling platform; cross-tenant account compromise — CRITICAL

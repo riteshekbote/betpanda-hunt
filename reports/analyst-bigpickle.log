@@ -19861,3 +19861,420 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 [RISK] betpanda: 90 — Flagship (95) unchanged and re-anchored: shared-backend CORS allow-headers parity plus the known affiliates-only ACAO-reflection keeps the ATO chain live but HUMAN-gated on one affiliate session. Cross-brand BOLA (80) remains the cheapest open proof, gated on one casino session. Two negatives this cycle (x-site-name-id not client-routable; refresh envelope parity confirmed, not exploitable passively) add no new critical. Cable at ceiling. No novel critical — risk holds at 90.
+===== ANALYST bigpickle 2026-09-09 00:37:30 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt && ls -R /home/runner/work/betpanda-hunt/betpanda-hunt | head -80
+total 276
+drwxr-xr-x 12 runner runner  4096 Sep  9 00:34 .
+drwxr-xr-x  3 runner runner  4096 Sep  9 00:34 ..
+drwxr-xr-x  7 runner runner  4096 Sep  9 00:34 .git
+drwxr-xr-x  3 runner runner  4096 Sep  9 00:34 .github
+-rw-r--r--  1 runner runner  1709 Sep  9 00:34 README.md
+-rw-r--r--  1 runner runner    32 Sep  9 00:34 analyst-out.txt
+-rw-r--r--  1 runner runner 91227 Sep  9 00:34 analyst-prompt.txt
+-rw-r--r--  1 runner runner 87446 Sep  9 00:34 ctx.txt
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 inventory
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 knowledge
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 leads
+-rw-r--r--  1 runner runner 10542 Sep  9 00:34 probe-results.md
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 recon-notes
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 reports
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 reposcan-raw
+-rw-r--r--  1 runner runner  3194 Sep  9 00:34 scope.yml
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 scripts
+-rw-r--r--  1 runner runner    33 Sep  9 00:34 state_bigpickle.json
+-rw-r--r--  1 runner runner    33 Sep  9 00:34 state_laguna.json
+-rw-r--r--  1 runner runner    33 Sep  9 00:34 state_ling3.json
+-rw-r--r--  1 runner runner    33 Sep  9 00:34 state_longcat.json
+-rw-r--r--  1 runner runner    33 Sep  9 00:34 state_mimo.json
+-rw-r--r--  1 runner runner    33 Sep  9 00:34 state_nemotron3.json
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 triage
+/home/runner/work/betpanda-hunt/betpanda-hunt:
+README.md
+analyst-out.txt
+analyst-prompt.txt
+ctx.txt
+inventory
+knowledge
+leads
+probe-results.md
+recon-notes
+reports
+reposcan-raw
+scope.yml
+scripts
+state_bigpickle.json
+state_laguna.json
+state_ling3.json
+state_longcat.json
+state_mimo.json
+state_nemotron3.json
+triage
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/inventory:
+betpanda.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/knowledge:
+index.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/leads:
+lead-bigpickle.md
+lead-laguna.md
+lead-ling3.md
+lead-longcat.md
+lead-mimo.md
+lead-nemotron3.md
+reposcan-betpanda.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/recon-notes:
+DEDICATED-DEEP.md
+DEEPER-FINDINGS.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/reports:
+analyst-bigpickle.log
+analyst-laguna.log
+analyst-ling3.log
+analyst-longcat.log
+analyst-nemotron3.log
+hypotheses-bigpickle.txt
+hypotheses-laguna.txt
+hypotheses-ling3.txt
+hypotheses-longcat.txt
+hypotheses-nemotron3.txt
+hypotheses.md
+valid-bugs.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/reposcan-raw:
+summary.txt
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/scripts:
+sync-issues.py
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/triage:
+run-2026-09-02-21-53.md
+run-2026-09-02-23-53.md
+run-2026-09-03-03-20.md
+run-2026-09-03-08-11.md
+run-2026-09-03-12-52.md
+run-2026-09-03-16-57.md
+run-2026-09-03-19-41.md
+run-2026-09-03-22-21.md
+run-2026-09-04-00-23.md
+run-2026-09-04-05-04.md
+run-2026-09-04-09-44.md
+run-2026-09-04-14-04.md
+run-2026-09-04-17-39.md
+run-2026-09-04-19-52.md
+run-2026-09-04-22-11.md
+run-2026-09-05-00-13.md
+run-2026-09-05-04-39.md
+run-2026-09-05-08-36.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/art 2>/dev/null; ls -la /home/runner/work/betpanda-hunt/betpanda-hunt/inventory 2>/dev/null
+total 44
+drwxr-xr-x  2 runner runner  4096 Sep  9 00:34 .
+drwxr-xr-x 12 runner runner  4096 Sep  9 00:34 ..
+-rw-r--r--  1 runner runner 35747 Sep  9 00:34 betpanda.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/triage | tail -8; echo ---; cat /home/runner/work/betpanda-hunt/betpanda-hunt/state_bigpickle.json; echo ---; tail -5 /home/runner/work/betpanda-hunt/betpanda-hunt/leads/lead-bigpickle.md
+-rw-r--r--  1 runner runner  6506 Sep  9 00:34 run-2026-09-07-21-36.md
+-rw-r--r--  1 runner runner   198 Sep  9 00:34 run-2026-09-07-23-44.md
+-rw-r--r--  1 runner runner  1611 Sep  9 00:34 run-2026-09-08-03-28.md
+-rw-r--r--  1 runner runner   210 Sep  9 00:34 run-2026-09-08-08-20.md
+-rw-r--r--  1 runner runner   196 Sep  9 00:34 run-2026-09-08-12-56.md
+-rw-r--r--  1 runner runner   202 Sep  9 00:34 run-2026-09-08-17-08.md
+-rw-r--r--  1 runner runner   183 Sep  9 00:34 run-2026-09-08-19-56.md
+-rw-r--r--  1 runner runner  1482 Sep  9 00:34 run-2026-09-08-22-29.md
+---
+{"phase": "POC", "target": "api"}---
+[NEXT] HUMAN: cheapest de-gate is cross-brand BOLA — operator logs into betpandacasino.io, captures Bearer JWT (Cognito) + REFRESH_TOKEN cookie, then run read-only `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs control `GET https://betpandacasino.io/rest/user/settings` (expect 401 on control, non-401 on partners = cross-brand acceptance).
+[LEARN] ACCEPTED MISCONFIG @ betpanda.partners+betpandacasino.io/rest/user/refresh: OPTIONS envelope parity confirmed — identical allow-headers/methods (incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context); shared App B handler set on both brands, supports credentialed cross-brand test.
+[LEARN] ACCEPTED MISCONFIG @ betpandacasino.io/rest/user/refresh: CORS re-confirmed pinned (ACAO own-host + ACAC:true); __cflb SameSite=None;Secure is LB-affinity only, no auth value — cross-origin read still blocked.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived; no client-controlled tenant switch at filter layer.
+[RISK] betpanda: 90 — Flagship (95) unchanged and re-anchored: shared-backend CORS allow-headers parity plus the known affiliates-only ACAO-reflection keeps the ATO chain live but HUMAN-gated on one affiliate session. Cross-brand BOLA (80) remains the cheapest open proof, gated on one casino session. Two negatives this cycle (x-site-name-id not client-routable; refresh envelope parity confirmed, not exploitable passively) add no new critical. Cable at ceiling. No novel critical — risk holds at 90.
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && curl -s --max-time 20 "https://affiliates.betpanda.io/rest/public/config" -H "Origin: https://evil.example" -o /tmp/opencode/cfg0.json -w "baseline: %{http_code}\n"
+baseline: 200
+[0m
+[0m$ [0mcat /tmp/opencode/cfg0.json | head -c 2000
+{"logoUrl":"https://d3ec3n7kizfkuy.cloudfront.net/Betpanda_io_logo_White_Green_b5267c709b.png","operatorId":1,"linkUrl":"https://betpanda.partners","supportEmail":"deals@bamboopartners.io","contenfulSpaceId":"","strapiApiUrl":"/cms","contentfulAccessToken":"","currencies":["BTC","ETH","USDT","BNB","DOGE","LTC","SAND","SHIB","TRX","uBTC","XMR","XRP","USDC","SOL","TON"],"phoneSignupEnabled":false}
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && for h in betpandacasino_io affiliates_betpanda_io random123 notreal; do curl -s --max-time 20 "https://affiliates.betpanda.io/rest/public/config" -H "Origin: https://evil.example" -H "x-site-name-id: $h" | python3 -c "import sys,json; d=json.load(sys.stdin); print('$h -> operatorId='+str(d.get('operatorId'))+' linkUrl='+str(d.get('linkUrl'))+' strapi='+str(d.get('strapiApiUrl')))"; done
+betpandacasino_io -> operatorId=1 linkUrl=https://betpanda.partners strapi=/cms
+affiliates_betpanda_io -> operatorId=1 linkUrl=https://betpanda.partners strapi=/cms
+random123 -> operatorId=1 linkUrl=https://betpanda.partners strapi=/cms
+notreal -> operatorId=1 linkUrl=https://betpanda.partners strapi=/cms
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && for q in "operatorId=2" "code=abc" "operator=2" "id=2"; do curl -s --max-time 20 "https://affiliates.betpanda.io/rest/public/config?$q" -H "Origin: https://evil.example" | python3 -c "import sys,json; d=json.load(sys.stdin); print('?$q -> operatorId='+str(d.get('operatorId'))+' linkUrl='+str(d.get('linkUrl')))" 2>/dev/null || echo "?$q -> non-json"; done
+?operatorId=2 -> operatorId=1 linkUrl=https://betpanda.partners
+?code=abc -> operatorId=1 linkUrl=https://betpanda.partners
+?operator=2 -> operatorId=1 linkUrl=https://betpanda.partners
+?id=2 -> operatorId=1 linkUrl=https://betpanda.partners
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && curl -s --max-time 20 "https://affiliates.betpanda.io/" -o /tmp/opencode/aff_index.html -w "index: %{http_code}\n" && grep -oE 'main\.[a-f0-9]+\.js' /tmp/opencode/aff_index.html | head -3
+index: 200
+main.ef021e68.js
+[0m
+[0m$ [0mcd /tmp/opencode && curl -s --max-time 30 "https://affiliates.betpanda.io/assets/main.ef021e68.js" -o aff.js -w "bundle: %{http_code} %{size_download} bytes\n"
+bundle: 200 1086 bytes
+[0m
+[0m$ [0mcat /tmp/opencode/aff.js | head -c 1200
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Affiliate</title>
+    <script type="module" crossorigin src="/main.ef021e68.js"></script>
+    <link rel="stylesheet" href="/index.82c23d1f.css">
+  </head>
+  <body id="kt_body" class="page-loading" data-kt-app-layout="dark-sidebar">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!--begin::Theme mode setup on page load-->
+    <script>
+      let themeMode = 'system'
+
+      if (localStorage.getItem('kt_theme_mode_value')) {
+        themeMode = localStorage.getItem('kt_theme_mode_value')
+      }
+
+      if (themeMode === 'system') {
+        themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      }
+
+      document.documentElement.setAttribute('data-bs-theme', 'light')
+    </script>
+    <div id="root" class="d-flex flex-column flex-root"></div>
+    
+  </body>
+</html>
+[0m
+[0m$ [0mcd /tmp/opencode && curl -s --max-time 40 "https://affiliates.betpanda.io/main.ef021e68.js" -o aff.js -w "bundle: %{http_code} %{size_download} bytes\n"
+bundle: 200 2089581 bytes
+[0m
+[0m$ [0mcd /tmp/opencode && grep -oE '"/rest/[a-zA-Z0-9/_${}.-]*"' aff.js | sort -u | head -60; echo ===; grep -oE 'x-site-name-id|x-tenant|operator[A-Za-z]*Id|x-operator' aff.js | sort | uniq -c | head
+===
+[0m
+[0m$ [0mcd /tmp/opencode && grep -oE 'rest/[a-zA-Z0-9/_-]+' aff.js | sort -u | grep -vE '\.(js|css|png|svg|json)' | head -80
+(no output)
+[0m
+[0m$ [0mcd /tmp/opencode && grep -c 'x-site-name-id\|x-preferred\|x-captcha' aff.js; grep -oE 'site-name-id|preferred-app-context|captcha-token|maintenance-reason' aff.js | sort | uniq -c; echo ===; grep -oE '"rest"|/rest/|rest/' aff.js | sort | uniq -c | head
+0
+===
+[0m
+[0m$ [0mcd /tmp/opencode && grep -oE '[a-zA-Z0-9_-]+-[a-f0-9]{8}\.js|index\.[a-f0-9]{8}\.js' aff.js | sort -u | head -40; echo ===; grep -oE '"assets/[a-zA-Z0-9/_-]+\.js"|"[a-zA-Z0-9_-]+\.[a-f0-9]{8}\.js"' aff.js | sort -u | head
+===
+"Alert.9bde7cb5.js"
+"FeedbackCard.cd2ddc22.js"
+"LoginPage.0f68a2b3.js"
+"PendingApprovalPage.f4c515b0.js"
+"RecoverPasswordPage.69569289.js"
+"RegisterPage.108afdb7.js"
+"ResetPasswordPage.66718c12.js"
+"inertProps.0c7d00dd.js"
+[0m
+[0m$ [0mcd /tmp/opencode && grep -oE '"[A-Za-z0-9.-]+\.js"' aff.js | tr -d '"' | sort -u | wc -l; grep -oE '"[A-Za-z0-9.-]+\.[a-f0-9]{8}\.js"' aff.js | tr -d '"' | sed -E 's/\.[a-f0-9]{8}\.js$//' | sort -u | head -60
+8
+Alert
+FeedbackCard
+LoginPage
+PendingApprovalPage
+RecoverPasswordPage
+RegisterPage
+ResetPasswordPage
+inertProps
+[0m
+[0m$ [0mcd /tmp/opencode && grep -oE '[A-Za-z0-9]{3,40}\.[a-f0-9]{6,10}\.js' aff.js | sort -u | head -80
+Alert.9bde7cb5.js
+AuthTemplate.94575bd3.js
+FeedbackCard.cd2ddc22.js
+LoginPage.0f68a2b3.js
+PendingApprovalPage.f4c515b0.js
+RecoverPasswordPage.69569289.js
+RegisterPage.108afdb7.js
+ResetPasswordPage.66718c12.js
+inertProps.0c7d00dd.js
+[0m
+[0m$ [0mcd /tmp/opencode && for f in AuthTemplate.94575bd3 LoginPage.0f68a2b3 RecoverPasswordPage.69569289 RegisterPage.108afdb7 ResetPasswordPage.66718c12; do curl -s --max-time 25 "https://affiliates.betpanda.io/$f.js" -o "$f.js" -w "$f: %{http_code} %{size_download}\n"; done
+AuthTemplate.94575bd3: 200 2933
+LoginPage.0f68a2b3: 200 7390
+RecoverPasswordPage.69569289: 200 1545
+RegisterPage.108afdb7: 200 7862
+ResetPasswordPage.66718c12: 200 1544
+[0m
+[0m$ [0mcd /tmp/opencode && grep -oE '[0-9]{2,4}\.[a-f0-9]{8}\.js' aff.js | sort -u | head -30; echo ===; grep -oE '"/[a-zA-Z0-9_/.-]+\.js"' aff.js | tr -d '"' | sort -u | head -30
+===
+[0m
+[0m$ [0mcd /tmp/opencode && head -c 1500 aff.js | tr ',' '\n' | head -40
+var _$=Object.defineProperty;var C$=(e
+t
+n)=>t in e?_$(e
+t
+{enumerable:!0
+configurable:!0
+writable:!0
+value:n}):e[t]=n;var Ie=(e
+t
+n)=>(C$(e
+typeof t!="symbol"?t+"":t
+n)
+n);function eD(e
+t){for(var n=0;n<t.length;n++){const r=t[n];if(typeof r!="string"&&!Array.isArray(r)){for(const i in r)if(i!=="default"&&!(i in e)){const a=Object.getOwnPropertyDescriptor(r
+i);a&&Object.defineProperty(e
+i
+a.get?a:{enumerable:!0
+get:()=>r[i]})}}}return Object.freeze(Object.defineProperty(e
+Symbol.toStringTag
+{value:"Module"}))}(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const i of document.querySelectorAll('link[rel="modulepreload"]'))r(i);new MutationObserver(i=>{for(const a of i)if(a.type==="childList")for(const s of a.addedNodes)s.tagName==="LINK"&&s.rel==="modulepreload"&&r(s)}).observe(document
+{childList:!0
+subtree:!0});function n(i){const a={};return i.integrity&&(a.integrity=i.integrity)
+i.referrerPolicy&&(a.referrerPolicy=i.referrerPolicy)
+i.crossOrigin==="use-credentials"?a.credentials="include":i.crossOrigin==="anonymous"?a.credentials="omit":a.credentials="same-origin"
+a}function r(i){if(i.ep)return;i.ep=!0;const a=n(i);fetch(i.href
+a)}})();var zn=typeof globalThis<"u"?globalThis:typeof window<"u"?window:typeof global<"u"?global:typeof self<"u"?self:{};function Xk(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e
+"default")?e.default:e}function ln(e){if(e.__esModule)return e;var t=e.default;if(
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && curl -s -X OPTIONS --max-time 20 "https://affiliates.betpanda.io/rest/user/password/reset" -H "Origin: https://evil.example" -H "Access-Control-Request-Method: POST" -D - -o /dev/null | grep -iE 'access-control|vary|HTTP|site-name'
+HTTP/2 200 
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && tail -12 reports/hypotheses-bigpickle.txt; echo ===; tail -4 leads/lead-bigpickle.md
+evidence_needed: operator confirmation injected events reach fraud/risk/bonus consumers.
+verify_steps: PASSIVE — surface exhausted; chained impact needs operator visibility.
+impact: analytics/fraud/bonus feed poisoning; stored-XSS in dashboards → Medium-High.
+testability: PASSIVE
+[PARKED] Tenant-switch mass-assignment via x-site-name-id: CORS-filter layer ignores client value (rejected), but controller-layer routing can only be discriminated with an authed/captcha'd POST (403/403) — not passively testable; revisit only after a session is obtained.
+[PARKED] betpandacasino.io/rest/user/account-balances-and-bonuses handler confirmation: OPTIONS is a global envelope (identical to 404 control) → methodologically dead (unchanged).
+[FINAL] 1. affiliates wildcard CORS ATO (95). 2. Cross-brand session confusion App B (80). 3. Unauth cable injection (70).
+[NEXT] HUMAN: cheapest de-gate is cross-brand BOLA — operator logs into betpandacasino.io, captures Bearer JWT (Cognito) + REFRESH_TOKEN cookie, then run read-only `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs control `GET https://betpandacasino.io/rest/user/settings` (expect 401 on control, non-401 on partners = cross-brand acceptance).
+[LEARN] ACCEPTED MISCONFIG @ betpanda.partners+betpandacasino.io/rest/user/refresh: OPTIONS envelope parity confirmed — identical allow-headers/methods (incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context); shared App B handler set on both brands, supports credentialed cross-brand test.
+[LEARN] ACCEPTED MISCONFIG @ betpandacasino.io/rest/user/refresh: CORS re-confirmed pinned (ACAO own-host + ACAC:true); __cflb SameSite=None;Secure is LB-affinity only, no auth value — cross-origin read still blocked.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived; no client-controlled tenant switch at filter layer.
+[RISK] betpanda: 90 — Flagship (95) unchanged and re-anchored: shared-backend CORS allow-headers parity plus the known affiliates-only ACAO-reflection keeps the ATO chain live but HUMAN-gated on one affiliate session. Cross-brand BOLA (80) remains the cheapest open proof, gated on one casino session. Two negatives this cycle (x-site-name-id not client-routable; refresh envelope parity confirmed, not exploitable passively) add no new critical. Cable at ceiling. No novel critical — risk holds at 90.
+===
+[LEARN] ACCEPTED MISCONFIG @ betpanda.partners+betpandacasino.io/rest/user/refresh: OPTIONS envelope parity confirmed — identical allow-headers/methods (incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context); shared App B handler set on both brands, supports credentialed cross-brand test.
+[LEARN] ACCEPTED MISCONFIG @ betpandacasino.io/rest/user/refresh: CORS re-confirmed pinned (ACAO own-host + ACAC:true); __cflb SameSite=None;Secure is LB-affinity only, no auth value — cross-origin read still blocked.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived; no client-controlled tenant switch at filter layer.
+[RISK] betpanda: 90 — Flagship (95) unchanged and re-anchored: shared-backend CORS allow-headers parity plus the known affiliates-only ACAO-reflection keeps the ATO chain live but HUMAN-gated on one affiliate session. Cross-brand BOLA (80) remains the cheapest open proof, gated on one casino session. Two negatives this cycle (x-site-name-id not client-routable; refresh envelope parity confirmed, not exploitable passively) add no new critical. Cable at ceiling. No novel critical — risk holds at 90.
+[0m
+[0m$ [0mcd /home/runner/work/betpanda-hunt/betpanda-hunt && cat >> reports/hypotheses-bigpickle.txt <<'EOF'
+
+## 2026-09-09 cycle (bigpickle)
+[DELTA] CHANGED affiliates.betpanda.io/rest/public/config — supportEmail rotated support@betpanda.io → deals@bamboopartners.io; phoneSignupEnabled:false; contentful tokens empty; bundle unchanged (main.ef021e68.js)
+[DELTA] NEW x-site-name-id ignored on affiliates public layer; query-param operator selection absent — no client-controlled tenant/operator switch on wildcard-CORS host's public layer
+[DELTA] CHANGED affiliates.betpanda.io/rest/user/password/reset — wildcard CORS+ACAC re-confirmed fresh (OPTIONS ACAO:https://evil.example + ACAC:true + full allow-methods)
+[HYP] Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Re-verified live this cycle — OPTIONS /rest/user/password/reset with Origin https://evil.example → 200 ACAO:https://evil.example + ACAC:true + GET,POST,OPTIONS,PUT,HEAD,DELETE. Bundle unchanged main.ef021e68.js; 20+ money/2FA/password handlers. Config static operatorId=1 (tenant host-derived; x-site-name-id + operatorId/code/operator/id params ignored) → scope is same-operator, unchanged.
+evidence_needed: Set-Cookie from real affiliate login; credentialed cross-origin GET /rest/user/metrics/affiliate returning PII; POST /rest/user/password/reset completing ATO.
+verify_steps: HUMAN_ONLY — login, capture cookie; GET /rest/user/metrics/affiliate -H Origin:https://evil.com -b cookie; POST /rest/user/password/reset mirroring Origin+Cookie.
+impact: player PII/transaction exfil, password reset, 2FA disable, deposit-limit tamper → CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Cross-Brand Session Confusion on Shared Casino/Partners Backend
+class: IDOR
+asset: betpandacasino.io + betpanda.partners /rest/user/*
+confidence: 80
+reasoning: Identical handler envelope both hosts (refresh OPTIONS parity; settings 401 control; authenticate 403/405). CORS pinned both. x-site-name-id host-derived (ignored client-side) ⇒ tenant routed from host, token↔operatorId binding the only unverified axis.
+evidence_needed: betpandacasino.io session/token accepted on betpanda.partners returning 200 vs 401 control.
+verify_steps: AUTH_HELPED — GET betpanda.partners/rest/user/settings -H Bearer <casino_jwt> vs control on betpandacasino.io; drop REFRESH_TOKEN cookie to /rest/user/refresh on partners.
+impact: cross-brand wallet/balance/player PII on real-money platform → CRITICAL.
+testability: AUTH_HELPED
+[HYP] Unauth Event Injection into Analytics/Fraud Feed
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 70
+reasoning: Unauth POST (405-GET), ACAO:*, arbitrary eventType/XSS/negative amounts accepted (200); only reachable cable handler; at passive ceiling.
+evidence_needed: operator confirmation injected events reach fraud/risk/bonus consumers.
+verify_steps: PASSIVE — surface exhausted; chained impact needs operator visibility.
+impact: analytics/fraud/bonus feed poisoning; stored-XSS in dashboards → Medium-High.
+testability: PASSIVE
+[PARKED] affiliates operator-switch via client header/query: x-site-name-id values + operatorId/code/operator/id params return identical operatorId=1 config → control dead; tenant is host-bound. No client-routable operator axis remains on the wildcard host's public layer.
+[FINAL] 1. affiliates wildcard CORS ATO (95). 2. Cross-brand session confusion App B (80). 3. Unauth cable injection (70).
+[NEXT] HUMAN: cheapest de-gate is cross-brand BOLA — operator logs into betpandacasino.io, captures Bearer JWT (Cognito) + REFRESH_TOKEN cookie, then run read-only `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs control `GET https://betpandacasino.io/rest/user/settings` (expect 401 control, non-401 on partners = cross-brand acceptance).
+[LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: x-site-name-id header values (betpandacasino_io/affiliates_betpanda_io/random/notreal) + query params (operatorId=2/code/operator/id) all return identical operatorId=1 config — no client-controlled tenant/operator switch on the wildcard-CORS host's public layer; config is static per host.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (OPTIONS ACAO:https://evil.example + ACAC:true + full allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE) — flagship anchor stable, bundle main.ef021e68.js unchanged.
+[LEARN] CHANGED @ affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io), phoneSignupEnabled:false, contentful access token fields empty — vendor operator-config churn, not a finding.
+[RISK] betpanda: 88 — Flagship (95) re-anchored fresh this cycle but remains HUMAN-gated on one affiliate session. New negatives narrow it to same-operator scope (tenant host-bound; x-site-name-id/operator params ignored on the wildcard host's public layer), removing a hypothetical cross-operator amplification axis — net same-operator CRITICAL ATO unchanged. Cross-brand BOLA (80) still cheapest open proof via one casino session. Cable at ceiling. No novel critical — risk eased 90→88.
+EOF
+cat >> leads/lead-bigpickle.md <<'EOF'
+## 2026-09-09 cycle (bigpickle)
+[DELTA] affiliates config supportEmail rotated → deals@bamboopartners.io; x-site-name-id + operator query params ignored on affiliates public layer (operatorId static=1); bundle unchanged main.ef021e68.js; flagship OPTIONS re-confirmed ACAO:evil + ACAC:true.
+[NEXT] HUMAN: cross-brand BOLA — casino Bearer JWT from betpandacasino.io → GET betpanda.partners/rest/user/settings vs 401 control (unchanged, still cheapest de-gate).
+[LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1; no client-controlled tenant switch on wildcard host public layer.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (ACAO:https://evil.example).
+[RISK] betpanda: 88 — Flagship re-anchored, same-operator scope (tenant host-bound), HUMAN-gated; BOLA cheapest open proof; no novel critical; risk eased 90→88.
+EOF
+echo done
+done
+[0m
+Appending this cycle's record to the workspace files, then emitting the structured analysis.
+## 2026-09-09 cycle — bigpickle analysis
+
+**STEP 1 — DELTA**
+- [CHANGED] affiliates.betpanda.io/rest/public/config — supportEmail rotated `support@betpanda.io`→`deals@bamboopartners.io`; `phoneSignupEnabled:false`; contentful tokens empty; bundle unchanged `main.ef021e68.js`
+- [NEW] x-site-name-id header values + `operatorId/code/operator/id` query params all return identical `operatorId=1` config — no client-controlled tenant/operator switch on the wildcard-CORS host's public layer
+- [CHANGED] affiliates.betpanda.io/rest/user/password/reset — wildcard CORS+ACAC re-confirmed fresh (OPTIONS `ACAO:https://evil.example` + `ACAC:true` + GET,POST,OPTIONS,PUT,HEAD,DELETE)
+
+**STEP 2 — PRIORITIZE**
+- [PRIO] affiliates.betpanda.io/rest/* — 7.3 — attack_surface(backend-wide wildcard CORS+creds, 20+ money/2FA/password handlers; tenant host-bound, same-operator scope)
+- [PRIO] betpandacasino.io+betpanda.partners /rest/user/* — 6.3 — business_value(real-money wallet/PII, shared App B)
+- [PRIO] cable.betpanda.io/cable/user-event — 5.3 — gate_ease(unauth POST, ACAO:*)
+
+**STEP 3 — HYPOTHESES**
+```
+[HYP] Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Fresh live probe this cycle — OPTIONS /rest/user/password/reset w/ Origin https://evil.example → 200, ACAO:https://evil.example, ACAC:true, allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE. Bundle unchanged main.ef021e68.js. Config static operatorId=1 (x-site-name-id + operatorId/code/operator/id params ignored; tenant host-bound) ⇒ same-operator scope, unchanged.
+evidence_needed: Set-Cookie from real affiliate login; credentialed cross-origin GET /rest/user/metrics/affiliate returning PII; POST /rest/user/password/reset completing ATO.
+verify_steps: HUMAN_ONLY — login, capture cookie; GET /rest/user/metrics/affiliate -H Origin:https://evil.com -b cookie; POST /rest/user/password/reset mirroring Origin+Cookie.
+impact: player PII/transaction exfil, password reset, 2FA disable, deposit-limit tamper → CRITICAL.
+testability: HUMAN_ONLY
+```
+```
+[HYP] Cross-Brand Session Confusion on Shared Casino/Partners Backend
+class: IDOR
+asset: betpandacasino.io + betpanda.partners /rest/user/*
+confidence: 80
+reasoning: Identical handler envelope both hosts (refresh OPTIONS parity; settings 401 control; authenticate 403/405). CORS pinned both. x-site-name-id host-derived (client value ignored) ⇒ tenant routed from host; token↔operatorId binding is the only unverified axis.
+evidence_needed: betpandacasino.io session/token accepted on betpanda.partners returning 200 vs 401 control.
+verify_steps: AUTH_HELPED — GET betpanda.partners/rest/user/settings -H Bearer <casino_jwt> vs control on betpandacasino.io; drop REFRESH_TOKEN cookie to /rest/user/refresh on partners.
+impact: cross-brand wallet/balance/player PII on real-money platform → CRITICAL.
+testability: AUTH_HELPED
+```
+```
+[HYP] Unauth Event Injection into Analytics/Fraud Feed
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event
+confidence: 70
+reasoning: Unauth POST (405-GET), ACAO:*, arbitrary eventType/XSS/negative amounts accepted (200); only reachable cable handler; at passive ceiling.
+evidence_needed: operator confirmation injected events reach fraud/risk/bonus consumers.
+verify_steps: PASSIVE — surface exhausted; chained impact needs operator visibility.
+impact: analytics/fraud/bonus feed poisoning; stored-XSS in dashboards → Medium-High.
+testability: PASSIVE
+```
+
+**STEP 4 — SELF-CRITIQUE**
+- [PARKED] affiliates operator-switch via client header/query: x-site-name-id values + operatorId/code/operator/id params → identical operatorId=1; control dead, tenant host-bound, no client-routable operator axis remains.
+- [FINAL] 1. affiliates wildcard CORS ATO (95). 2. Cross-brand session confusion App B (80). 3. Unauth cable injection (70).
+
+**STEP 5 — NEXT ACTION**
+- [NEXT] HUMAN: cross-brand BOLA remains the cheapest de-gate — operator logs into betpandacasino.io, captures Bearer JWT (Cognito) + REFRESH_TOKEN cookie, then read-only `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs control `GET https://betpandacasino.io/rest/user/settings` (expect 401 control, non-401 on partners = cross-brand acceptance).
+
+**STEP 6 — LEARNING**
+- [LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: x-site-name-id header values + operatorId/code/operator/id query params all return identical operatorId=1 — no client-controlled tenant/operator switch on the wildcard-CORS host's public layer; config static per host.
+- [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (ACAO:https://evil.example + ACAC:true) — flagship anchor stable, bundle unchanged.
+- [LEARN] CHANGED @ affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io) — vendor operator-config churn, not a finding.
+
+**STEP 7 — RISK**
+- [RISK] betpanda: 88 — Flagship (95) re-anchored fresh but HUMAN-gated on one affiliate session; new negatives narrow it to same-operator scope (tenant host-bound), removing a hypothetical cross-operator amplification axis — net same-operator CRITICAL ATO unchanged. Cross-brand BOLA (80) still the cheapest open proof via one casino session. Cable at ceiling. No novel critical — risk eased 90→88.

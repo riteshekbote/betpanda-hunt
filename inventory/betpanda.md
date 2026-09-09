@@ -293,3 +293,10 @@ www.betpanda.io
 - CHANGED betpandacasino.io/rest/user/refresh: ACAO pinned to own host + ACAC:true re-confirmed; emits new response header `x-site-name-id: betpandacasino_io`; `__cflb` LB cookie SameSite=None;Secure
 - NEW betpanda.partners `__cflb` (Cloudflare LB affinity) is SameSite=Lax vs betpandacasino.io SameSite=None;Secure — affinity-only, not auth; no impact
 - NEW `x-site-name-id: notcasino` sent to betpandacasino.io → response still `betpandacasino_io`; tenant discriminator is host-derived, client value ignored at CORS-filter layer
+
+## 2026-09-09 00:37:30 UTC
+- CHANGED betpanda.partners/rest/user/refresh: OPTIONS parity with betpandacasino.io confirmed (identical allow-headers/methods incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-contex
+- CHANGED betpandacasino.io/rest/user/refresh: CORS pinned (ACAO own-host + ACAC:true); emits x-site-name-id: betpandacasino_io; __cflb SameSite=None;Secure is LB-affinity only
+- CHANGED betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived, no client-controlled tenant switch
+- CHANGED affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live (GET /rest/public/config 200, ACAO:evil.example reflected + ACAC:true, no auth); bundle unchanged main.ef021e68.js
+- CHANGED betpandacasino.io/rest/user/account-balances-and-bonuses: OPTIONS returns generic 200 CORS envelope identical to /rest/user/notreal123 404 control — OPTIONS cannot distinguish real handler from catch-
