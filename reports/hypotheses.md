@@ -1089,3 +1089,28 @@
 - LEARN: CHANGED @ affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io), phoneSignupEnabled:false, conten
 - LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1; n
 - LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (ACAO:https://evil.example).
+
+## RANKED HYPOTHESES 2026-09-09 09:58:09 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (from art/lead_nemotron3.txt)
+- [95] affiliates.betpanda.io/rest/*: Cross-Origin ATO on Affiliate Money-Flow API via Wildcard CORS+Credentials (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: cheapest de-gate is cross-brand BOLA — operator logs into betpandacasino.io, captures Bearer JWT (Cognito) + REFRESH_TOKEN cookie, then run read-only `GE
+- NEXT(hypotheses-nemotron3.txt): PROBE: GET https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" (passive, auth-helped, test cross
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live fresh this cycle (GET /rest/public/config 200 ACAO:https://evil.e
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared App B backend re-confirmed live — both /rest/user/settings return identical 401 control; both serve 
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion baseline re-confirmed stable (405-GET, 400 on minimal-body control); at passive ceiling
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live this cycle (GET `/rest/public/config` 200, ACAO:https://evil.exam
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared backend re-confirmed; CORS pinned on both; single-account cross-brand session test remains cheapest 
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Unauth ingestion re-confirmed stable; at passive ceiling.
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on `/cms/_health`, `/cms/api/*`, `/cms/admin`) but NO public content types 
+- LEARN: REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.
+- LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: health/captcha/recaptcha/version/metrics/phone all 404 — no undiscovered unauth public handlers
+- LEARN: REJECTED MISCONFIG @ d3ec3n7kizfkuy.cloudfront.net: S3-backed CF origin; root + `/operators/` 403, no listing — not a finding.
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/user/balance: 400 signal did not reproduce; GET+POST both 404 identical to `/rest/user/notreal123` control — no
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/rest/user/account-balances-and-bonuses: OPTIONS returns generic 200 CORS envelope (ACAO own-host + ACAC:true + full allow
+- LEARN: ACCEPTED MISCONFIG @ betpanda.partners+betpandacasino.io/rest/user/refresh: OPTIONS envelope parity confirmed — identical allow-headers/methods (incl x-captcha-
+- LEARN: ACCEPTED MISCONFIG @ betpandacasino.io/rest/user/refresh: CORS re-confirmed pinned (ACAO own-host + ACAC:true); `__cflb` SameSite=None;Secure is LB-affinity onl
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-de
+- LEARN: CHANGED @ affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io), phoneSignupEnabled:false, conten
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1; n
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (ACAO:https://evil.example).

@@ -310,3 +310,16 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io), phoneSignupEnabled:false, contentful access token fields empty — vendor operator-c
 - CHANGED affiliates.betpanda.io/rest/public/config: x-site-name-id header + operatorId/code/operator/id query params all return identical operatorId=1 — no client-controlled tenant switch on wildcard host publ
 - CHANGED affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (OPTIONS ACAO:https://evil.example + ACAC:true + full allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE) — flagship 
+
+## 2026-09-09 09:58:09 UTC
+- NEW betpanda.partners — dedicated in-scope host confirmed, "Betpanda" casino brand SPA fronting SAME Spring Boot `/rest` backend as betpandacasino.io (manifest 200, S3 operator PWA icons under `/operators
+- NEW affiliates.betpanda.io/rest/public/config — unauth Spring Boot route (200 JSON) leaks `operatorId=1`, `strapiApiUrl=/cms`, CloudFront `d3ec3n7kizfkuy.cloudfront.net`, `linkUrl=betpanda.partners`, `sup
+- NEW affiliates.betpanda.io/rest/public/phone/* — `signin/verify` + `register/verify` POST-only JSON endpoints reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated)
+- NEW affiliates.betpanda.io/rest/v2/* — v2 report endpoints (POST-only 405-GET), `/rest/v2/report/sub-affiliates`, `/rest/v2/report/daily-stats-with-comparison`, `/rest/user/selectable-payout-currencies`, 
+- NEW affiliates.betpanda.io SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL is credential binding for POST `/rest/user/password/reset` (ATO chain primitive)
+- CHANGED affiliates.betpanda.io/rest/* — Wildcard CORS+credentials re-verified live (GET `/rest/public/config` 200, ACAO:https://evil.example reflected + ACAC:true, no auth); bundle unchanged main.ef021e68.js
+- CHANGED affiliates.betpanda.io/rest/user/password/reset — wildcard CORS+ACAC re-confirmed fresh (OPTIONS ACAO:https://evil.example + ACAC:true + full allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE)
+- CHANGED betpanda.partners+betpandacasino.io/rest/user/refresh — OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-ap
+- CHANGED betpandacasino.io/rest/user/account-balances-and-bonuses — OPTIONS returns generic 200 CORS envelope identical to `/rest/user/notreal123` 404 control — OPTIONS cannot distinguish real handler from cat
+- CHANGED affiliates.betpanda.io/rest/public/config — `x-site-name-id` header + `operatorId`/`code`/`operator`/`id` query params all return identical operatorId=1 — no client-controlled tenant switch on wildcar
+- CHANGED affiliates.betpanda.io/rest/public/config — supportEmail rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, contentful access token fields empty — vendor ope
