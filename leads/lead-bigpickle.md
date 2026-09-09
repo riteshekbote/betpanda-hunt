@@ -2608,3 +2608,6 @@ evidence_needed: operator confirmation injected events reach fraud/risk/bonus co
 verify_steps: PASSIVE — surface exhausted; chained impact needs operator visibility.
 impact: analytics/fraud/bonus feed poisoning; stored-XSS in dashboards → Medium-High.
 testability: PASSIVE
+## 2026-09-09 05:21:31 UTC [target] (model bigpickle)
+[NEXT] HUMAN: cross-brand BOLA — `GET betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs 401 control on betpandacasino.io (cheapest de-gate, unchanged).
+[RISK] betpanda: **88** — flagship re-anchored live, still HUMAN-gated; BOLA re-supported by bundle (Bearer model), gated on one casino session; cable at ceiling; no new critical surface.

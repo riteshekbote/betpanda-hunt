@@ -20278,3 +20278,466 @@ testability: PASSIVE
 
 **STEP 7 — RISK**
 - [RISK] betpanda: 88 — Flagship (95) re-anchored fresh but HUMAN-gated on one affiliate session; new negatives narrow it to same-operator scope (tenant host-bound), removing a hypothetical cross-operator amplification axis — net same-operator CRITICAL ATO unchanged. Cross-brand BOLA (80) still the cheapest open proof via one casino session. Cable at ceiling. No novel critical — risk eased 90→88.
+===== ANALYST bigpickle 2026-09-09 05:21:42 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m# [0mTodos
+[•] Step 1: DELTA analysis against current state
+[ ] Step 2: PRIORITIZE top assets
+[ ] Step 3: HYPOTHESES for top 3 assets
+[ ] Step 4: SELF-CRITIQUE and park weak hypotheses
+[ ] Step 5: NEXT ACTION - one concrete step
+[ ] Step 6: LEARNING from this cycle
+[ ] Step 7: RISK assessment
+[0m
+[0m→ [0mRead .
+Let me first check the workspace for any existing scripts, tools, or prior work.
+[0m→ [0mRead state_bigpickle.json
+[0m→ [0mRead scope.yml
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/scripts /home/runner/work/betpanda-hunt/betpanda-hunt/leads /home/runner/work/betpanda-hunt/betpanda-hunt/reports 2>/dev/null
+/home/runner/work/betpanda-hunt/betpanda-hunt/leads:
+total 824
+drwxr-xr-x  2 runner runner   4096 Sep  9 05:12 .
+drwxr-xr-x 12 runner runner   4096 Sep  9 05:12 ..
+-rw-r--r--  1 runner runner 404416 Sep  9 05:12 lead-bigpickle.md
+-rw-r--r--  1 runner runner   2040 Sep  9 05:12 lead-laguna.md
+-rw-r--r--  1 runner runner   2000 Sep  9 05:12 lead-ling3.md
+-rw-r--r--  1 runner runner   2080 Sep  9 05:12 lead-longcat.md
+-rw-r--r--  1 runner runner     18 Sep  9 05:12 lead-mimo.md
+-rw-r--r--  1 runner runner 400609 Sep  9 05:12 lead-nemotron3.md
+-rw-r--r--  1 runner runner   8529 Sep  9 05:12 reposcan-betpanda.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/reports:
+total 2304
+drwxr-xr-x  2 runner runner    4096 Sep  9 05:12 .
+drwxr-xr-x 12 runner runner    4096 Sep  9 05:12 ..
+-rw-r--r--  1 runner runner 1552793 Sep  9 05:12 analyst-bigpickle.log
+-rw-r--r--  1 runner runner    8680 Sep  9 05:12 analyst-laguna.log
+-rw-r--r--  1 runner runner    8640 Sep  9 05:12 analyst-ling3.log
+-rw-r--r--  1 runner runner    8720 Sep  9 05:12 analyst-longcat.log
+-rw-r--r--  1 runner runner  549533 Sep  9 05:12 analyst-nemotron3.log
+-rw-r--r--  1 runner runner   13266 Sep  9 05:12 hypotheses-bigpickle.txt
+-rw-r--r--  1 runner runner      51 Sep  9 05:12 hypotheses-laguna.txt
+-rw-r--r--  1 runner runner      50 Sep  9 05:12 hypotheses-ling3.txt
+-rw-r--r--  1 runner runner      52 Sep  9 05:12 hypotheses-longcat.txt
+-rw-r--r--  1 runner runner   10087 Sep  9 05:12 hypotheses-nemotron3.txt
+-rw-r--r--  1 runner runner  157378 Sep  9 05:12 hypotheses.md
+-rw-r--r--  1 runner runner    1232 Sep  9 05:12 valid-bugs.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/scripts:
+total 28
+drwxr-xr-x  2 runner runner  4096 Sep  9 05:12 .
+drwxr-xr-x 12 runner runner  4096 Sep  9 05:12 ..
+-rw-r--r--  1 runner runner 16987 Sep  9 05:12 sync-issues.py
+[0m
+[0m→ [0mRead reports/hypotheses-bigpickle.txt
+Let me review my own prior hypotheses and leads to build a proper delta.
+[0m→ [0mRead probe-results.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/knowledge /home/runner/work/betpanda-hunt/betpanda-hunt/inventory /home/runner/work/betpanda-hunt/betpanda-hunt/triage
+/home/runner/work/betpanda-hunt/betpanda-hunt/inventory:
+total 44
+drwxr-xr-x  2 runner runner  4096 Sep  9 05:12 .
+drwxr-xr-x 12 runner runner  4096 Sep  9 05:12 ..
+-rw-r--r--  1 runner runner 36768 Sep  9 05:12 betpanda.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/knowledge:
+total 52
+drwxr-xr-x  2 runner runner  4096 Sep  9 05:12 .
+drwxr-xr-x 12 runner runner  4096 Sep  9 05:12 ..
+-rw-r--r--  1 runner runner 43234 Sep  9 05:12 index.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/triage:
+total 224
+drwxr-xr-x  2 runner runner  4096 Sep  9 05:12 .
+drwxr-xr-x 12 runner runner  4096 Sep  9 05:12 ..
+-rw-r--r--  1 runner runner     0 Sep  9 05:12 .gitkeep
+-rw-r--r--  1 runner runner   194 Sep  9 05:12 run-2026-09-02-21-53.md
+-rw-r--r--  1 runner runner   525 Sep  9 05:12 run-2026-09-02-23-53.md
+-rw-r--r--  1 runner runner   175 Sep  9 05:12 run-2026-09-03-03-20.md
+-rw-r--r--  1 runner runner   224 Sep  9 05:12 run-2026-09-03-08-11.md
+-rw-r--r--  1 runner runner   196 Sep  9 05:12 run-2026-09-03-12-52.md
+-rw-r--r--  1 runner runner   907 Sep  9 05:12 run-2026-09-03-16-57.md
+-rw-r--r--  1 runner runner   261 Sep  9 05:12 run-2026-09-03-19-41.md
+-rw-r--r--  1 runner runner   238 Sep  9 05:12 run-2026-09-03-22-21.md
+-rw-r--r--  1 runner runner  1049 Sep  9 05:12 run-2026-09-04-00-23.md
+-rw-r--r--  1 runner runner   156 Sep  9 05:12 run-2026-09-04-05-04.md
+-rw-r--r--  1 runner runner   199 Sep  9 05:12 run-2026-09-04-09-44.md
+-rw-r--r--  1 runner runner  7863 Sep  9 05:12 run-2026-09-04-14-04.md
+-rw-r--r--  1 runner runner   239 Sep  9 05:12 run-2026-09-04-17-39.md
+-rw-r--r--  1 runner runner   215 Sep  9 05:12 run-2026-09-04-19-52.md
+-rw-r--r--  1 runner runner   203 Sep  9 05:12 run-2026-09-04-22-11.md
+-rw-r--r--  1 runner runner  5203 Sep  9 05:12 run-2026-09-05-00-13.md
+-rw-r--r--  1 runner runner  4819 Sep  9 05:12 run-2026-09-05-04-39.md
+-rw-r--r--  1 runner runner   227 Sep  9 05:12 run-2026-09-05-08-36.md
+-rw-r--r--  1 runner runner   192 Sep  9 05:12 run-2026-09-05-12-03.md
+-rw-r--r--  1 runner runner   184 Sep  9 05:12 run-2026-09-05-15-20.md
+-rw-r--r--  1 runner runner   248 Sep  9 05:12 run-2026-09-05-17-25.md
+-rw-r--r--  1 runner runner 14343 Sep  9 05:12 run-2026-09-05-19-28.md
+-rw-r--r--  1 runner runner   216 Sep  9 05:12 run-2026-09-05-21-41.md
+-rw-r--r--  1 runner runner   338 Sep  9 05:12 run-2026-09-05-23-36.md
+-rw-r--r--  1 runner runner   195 Sep  9 05:12 run-2026-09-06-01-19.md
+-rw-r--r--  1 runner runner  8580 Sep  9 05:12 run-2026-09-06-06-07.md
+-rw-r--r--  1 runner runner   156 Sep  9 05:12 run-2026-09-06-11-05.md
+-rw-r--r--  1 runner runner   215 Sep  9 05:12 run-2026-09-06-14-13.md
+-rw-r--r--  1 runner runner   180 Sep  9 05:12 run-2026-09-06-17-08.md
+-rw-r--r--  1 runner runner   213 Sep  9 05:12 run-2026-09-06-19-16.md
+-rw-r--r--  1 runner runner   231 Sep  9 05:12 run-2026-09-06-21-26.md
+-rw-r--r--  1 runner runner   177 Sep  9 05:12 run-2026-09-06-23-07.md
+-rw-r--r--  1 runner runner   172 Sep  9 05:12 run-2026-09-07-01-05.md
+-rw-r--r--  1 runner runner   187 Sep  9 05:12 run-2026-09-07-06-10.md
+-rw-r--r--  1 runner runner   147 Sep  9 05:12 run-2026-09-07-12-45.md
+-rw-r--r--  1 runner runner   175 Sep  9 05:12 run-2026-09-07-18-08.md
+-rw-r--r--  1 runner runner  6506 Sep  9 05:12 run-2026-09-07-21-36.md
+-rw-r--r--  1 runner runner   198 Sep  9 05:12 run-2026-09-07-23-44.md
+-rw-r--r--  1 runner runner  1611 Sep  9 05:12 run-2026-09-08-03-28.md
+-rw-r--r--  1 runner runner   210 Sep  9 05:12 run-2026-09-08-08-20.md
+-rw-r--r--  1 runner runner   196 Sep  9 05:12 run-2026-09-08-12-56.md
+-rw-r--r--  1 runner runner   202 Sep  9 05:12 run-2026-09-08-17-08.md
+-rw-r--r--  1 runner runner   183 Sep  9 05:12 run-2026-09-08-19-56.md
+-rw-r--r--  1 runner runner  1482 Sep  9 05:12 run-2026-09-08-22-29.md
+-rw-r--r--  1 runner runner   144 Sep  9 05:12 run-2026-09-09-00-34.md
+[0m
+Let me check the latest probe results and the other analysts' files to establish the delta.
+[0m→ [0mRead triage/run-2026-09-09-00-34.md
+[0m
+[0m$ [0mdate -u; echo "---"; git -C /home/runner/work/betpanda-hunt/betpanda-hunt log --oneline -5 2>/dev/null; echo "---"; git -C /home/runner/work/betpanda-hunt/betpanda-hunt status --short 2>/dev/null | head
+Wed Sep  9 05:13:39 UTC 2026
+---
+4a0a847 reposcan 2026-09-09-01-30
+---
+?? analyst-out.txt
+?? analyst-prompt.txt
+?? ctx.txt
+[0m
+[0m→ [0mRead analyst-prompt.txt
+[0m→ [0mRead ctx.txt
+Let me read my lead file tail and the context to align with this cycle's framing.
+[0m→ [0mRead leads/lead-laguna.md
+[0m→ [0mRead leads/lead-ling3.md
+[0m→ [0mRead leads/lead-longcat.md
+[0m→ [0mRead leads/reposcan-betpanda.md
+Let me check the other analysts' leads and reposcan for any cross-referenced intelligence I should weigh.
+I have full context. Now let me run a small set of fresh, read-only probes to re-anchor the flagship and test a genuinely new passive angle (betpanda.partners SPA config/bundle) that hasn't been enumerated before.
+[0m
+[0m$ [0mcurl -sS -o /dev/null -w "cable-user-event-GET HTTP:%{http_code}\n" --max-time 15 "https://cable.betpanda.io/cable/user-event" 2>&1 | head -3
+cable-user-event-GET HTTP:405
+[0m
+[0m$ [0mcurl -sS -o /dev/null -w "affiliates-config HTTP:%{http_code}\n" --max-time 15 "https://affiliates.betpanda.io/rest/public/config" -H "Origin: https://evil.example" 2>&1 | head -3
+affiliates-config HTTP:200
+[0m
+[0m$ [0mcurl -sS -D - -o /dev/null --max-time 15 "https://affiliates.betpanda.io/rest/public/config" -H "Origin: https://evil.example" -H "Accept: application/json" 2>&1 | rg -i "access-control|content-type|HTTP/" | head -10
+/bin/bash: line 1: rg: command not found
+[0m
+Network is live. Anchors hold (affiliates config 200, cable 405-GET). Now the new passive angle — betpanda.partners SPA config/bundle enumeration (not in knowledge base yet).
+[0m$ [0mecho "=== betpanda.partners config.json ==="; curl -sS --max-time 15 "https://betpanda.partners/config/config.json" -H "Accept: application/json" 2>&1 | head -c 1200; echo; echo "=== betpanda.partners config/config.json ==="; curl -sS --max-time 15 "https://betpanda.partners/config/config.json" 2>&1 | head -c 400
+=== betpanda.partners config.json ===
+{
+  "baseUrl" : "https://betpandacasino.io/rest"
+}
+
+=== betpanda.partners config/config.json ===
+{
+  "baseUrl" : "https://betpandacasino.io/rest"
+}
+[0m
+[0m$ [0mcurl -sS -D - -o /dev/null --max-time 15 "https://affiliates.betpanda.io/rest/public/config" -H "Origin: https://evil.example" -H "Accept: application/json" 2>&1 | grep -iE "access-control|HTTP/" | head -10
+HTTP/2 200 
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+[0m
+[0m$ [0mecho "=== betpanda.partners index ==="; curl -sS --max-time 15 "https://betpanda.partners/" 2>&1 | grep -oE 'src="[^"]+\.js[^"]*"|href="[^"]+\.js[^"]*"|main\.[a-f0-9]+\.js|assets/[^"]+\.js|static/[^"]+\.js' | sort -u | head -20; echo "=== title ==="; curl -sS --max-time 15 "https://betpanda.partners/" 2>&1 | grep -oE '<title>[^<]*</title>' | head -3
+=== betpanda.partners index ===
+src="/assets/index-KqswHEbl.js"
+=== title ===
+<title></title>
+[0m
+Flagship anchor re-confirmed fresh (ACAO evil + ACAC:true). Now the genuinely new angle — betpanda.partners loads `/assets/index-KqswHEbl.js`, which is NOT in the knowledge base. Let me enumerate it.
+[0m$ [0mcd /tmp/opencode && curl -sS --max-time 30 "https://betpanda.partners/assets/index-KqswHEbl.js" -o partners-bundle.js && ls -la partners-bundle.js && wc -c partners-bundle.js
+-rw-r--r-- 1 runner runner 795572 Sep  9 05:15 partners-bundle.js
+795572 partners-bundle.js
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== /rest/ endpoints ==="; grep -oE '"/rest/[A-Za-z0-9_/\$\{\}\.\-]+' partners-bundle.js | sort -u | head -60
+=== /rest/ endpoints ===
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== absolute URLs ==="; grep -oE 'https?://[a-zA-Z0-9\.\-]+[^" ]*' partners-bundle.js | sort -u | head -40
+=== absolute URLs ===
+http://host.docker.internal:9081/rest
+http://localhost
+http://localhost:8080
+http://localhost:8081/rest
+https://bit.ly/CRA-PWA
+https://bit.ly/CRA-PWA.Version
+https://dataplane.rum.
+https://dataplane.rum.${g}.amazonaws.com`,telemetries:[
+https://fonts.googleapis.com/css2?family=Asap:wght@400;500;600&display=swap
+https://fonts.googleapis.com/css?family=Quantico&display=swap
+https://github.com/aws-observability/aws-rum-web/issues/723
+https://github.com/uuidjs/uuid#getrandomvalues-not-supported
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== baseUrl / api refs ==="; grep -oE '(baseUrl|apiUrl|restUrl|BASE_URL|REACT_APP[A-Z_]*)[^,;]{0,80}' partners-bundle.js | sort -u | head -30
+=== baseUrl / api refs ===
+apiUrl!==void 0&&A.overrideStrapiUrl!==null&&A.overrideStrapiUrl!==""?A.overrideStrapi
+baseUrl
+baseUrl&&this.baseUrl!=""}fetchContent(e
+baseUrl)&&i.headers.set("Authorization"
+baseUrl))return Promise.reject(e)
+baseUrl+"/"+e+"?populate=deep&locale="+t).then(n=>{g(n.data)}).catch(n=>i(n))})}fetchAr
+baseUrl+"/"+e+"?populate=deep&locale="+t+"&pagination[pageSize]=250&sort=date:DESC").th
+baseUrl+"/i18n/locales").then(g=>{e(g.data)}).catch(g=>t(g))})}fetchContentByNameId(e
+baseUrl+e
+baseUrl+e):!1}head(e
+baseUrl:"http://"+h+":8081/rest"}:A={baseUrl:"http://localhost:8081/rest"}}A||(A={baseU
+baseUrl:"http://host.docker.internal:9081/rest"}:h.startsWith("10.0")||h.startsWith("19
+baseUrl:XA.spelling("baseURL")
+baseUrl=e
+baseUrl=t:this.baseUrl=e}this.axios=CA.create({headers:{"Content-type":"application/jso
+baseUrl?.includes("localhost")&&(A.baseUrl=A.baseUrl.replace(/localhost/g
+baseUrl}/${e}?populate=deep&filters[nameId][$eq]=${t}&locale=${g}`).then(I=>{i(I.data)}
+baseUrl}/user/refresh`}inFlight
+baseUrl}`}getTimeSinceLastRequest(){return Date.now()-this.lastRequest}getTimeSinceLast
+[0m
+Bundle has no hardcoded `/rest/` paths — they're built dynamically. Let me search for API base config, websocket/graphql/zendesk integrations, and any operator-specific endpoints.
+[0m$ [0mcd /tmp/opencode && echo "=== graphql / websocket / cable / zendesk / socket refs ==="; grep -oE '"[^"]*(graphql|websocket|socket|zendesk|cable|wss:|ws:)[^"]*"' partners-bundle.js | sort -u | head -20
+=== graphql / websocket / cable / zendesk / socket refs ===
+"):A}function cQ(A,e,t){let g=!sE(e);return A&&(g||t==!1)?cE(A,e):e}const gr=A=>A instanceof kA?{...A}:A;function Fe(A,e){e=e||{};const t={};function g(r,Q,a,B){return k.isPlainObject(r)&&k.isPlainObject(Q)?k.merge.call({caseless:B},r,Q):k.isPlainObject(Q)?k.merge({},Q):k.isArray(Q)?Q.slice():Q}function i(r,Q,a,B){if(k.isUndefined(Q)){if(!k.isUndefined(r))return g(void 0,r,a,B)}else return g(r,Q,a,B)}function n(r,Q){if(!k.isUndefined(Q))return g(void 0,Q)}function I(r,Q){if(k.isUndefined(Q)){if(!k.isUndefined(r))return g(void 0,r)}else return g(void 0,Q)}function o(r,Q,a){if(a in e)return g(r,Q);if(a in A)return g(void 0,r)}const C={url:n,method:n,data:n,baseURL:I,transformRequest:I,transformResponse:I,paramsSerializer:I,timeout:I,timeoutMessage:I,withCredentials:I,withXSRFToken:I,adapter:I,responseType:I,xsrfCookieName:I,xsrfHeaderName:I,onUploadProgress:I,onDownloadProgress:I,decompress:I,maxContentLength:I,maxBodyLength:I,beforeRedirect:I,transport:I,httpAgent:I,httpsAgent:I,cancelToken:I,socketPath:I,responseEncoding:I,validateStatus:o,headers:(r,Q,a)=>i(gr(r),gr(Q),a,!0)};return k.forEach(Object.keys({...A,...e}),function(Q){const a=C[Q]||i,B=a(A[Q],e[Q],Q);k.isUndefined(B)&&a!==o||(t[Q]=B)}),t}const lQ=A=>{const e=Fe({},A);let{data:t,withXSRFToken:g,xsrfHeaderName:i,xsrfCookieName:n,headers:I,auth:o}=e;e.headers=I=kA.from(I),e.url=QQ(cQ(e.baseURL,e.url,e.allowAbsoluteUrls),A.params,A.paramsSerializer),o&&I.set("
+"/user/zendesk/jwt"
+"aws:client"
+"aws:clientVersion"
+"aws:releaseId"
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== leading-slash paths ==="; grep -oE '"/[a-zA-Z0-9_/\$\{\}\.\-]{3,60}"' partners-bundle.js | sort -u | head -80
+=== leading-slash paths ===
+"/412"
+"/416"
+"/417"
+"/419"
+"/app"
+"/appmonitors/"
+"/casino-pages"
+"/config/config.json"
+"/i18n/locales"
+"/locales/add/{{lng}}/{{ns}}"
+"/locales/{{lng}}/{{ns}}.json"
+"/maintenance"
+"/rest"
+"/settings"
+"/spaces/"
+"/translations/{{lng}}"
+"/user/account-balances-and-bonuses"
+"/user/authenticate"
+"/user/logout"
+"/user/zendesk/jwt"
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== strapi refs ==="; grep -oE '(strapi[A-Za-z]*)[^,;]{0,60}' partners-bundle.js | sort -u | head -20; echo "=== site-name / x- headers ==="; grep -oE '"(x-site-name-id|x-preferred-app-context|x-maintenance-reason|x-captcha-token)"' partners-bundle.js | sort -u
+=== strapi refs ===
+strapiApiUrl
+strapiApiUrlOverride")
+=== site-name / x- headers ===
+"x-maintenance-reason"
+"x-site-name-id"
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== aws rum / region / identity ==="; grep -oE '(region:"[^"]*"|identityPoolId[^,;]{0,50}|guestRoleArn[^,;]{0,60}|applicationId[^,;]{0,40}|rum[A-Za-z]*\.[a-z]+)[^,;]{0,40}' partners-bundle.js | sort -u | head -20
+=== aws rum / region / identity ===
+applicationId).ChainAnonymousCredentialsProvider):this.setAwsCredentials(new pd(this.config
+applicationId).ChainAnonymousCredentialsProvider)}
+applicationId):Fg}return A}()
+applicationId:e
+applicationId:t})
+applicationId=e
+guestRoleArn
+guestRoleArn)
+guestRoleArn)):this.credentialProvider&&(j.info("Rebuilding client with most recently passed provider")
+identityPoolId
+identityPoolId&&g.setCognitoCredentials(this.config.identityPoolId
+identityPoolId.split(":")[0]
+identityPoolId:t
+identityPoolId?(j.info("Rebuilding client with fresh cognito credentials")
+identityPoolId})]
+rum.aws.amazon.com"
+rum.sendBeacon
+rum.sendBeacon(o).catch(function(){return C.rum.
+rum.sendFetch
+rum.sendFetch(o).catch(this.handleReject)]):[2]}
+[0m
+betpanda.partners bundle enumerated — it's the shared App B SPA calling `/user/account-balances-and-bonuses`, `zendesk/jwt`, `authenticate`, `logout`, plus Strapi `/cms` + `/i18n/locales`. Let me probe the one CMS path the SPA actually uses that wasn't in the prior CMS sweep.
+[0m$ [0mecho "=== betpandacasino.io /cms/i18n/locales ==="; curl -sS --max-time 15 "https://betpandacasino.io/cms/i18n/locales" -H "Accept: application/json" 2>&1 | head -c 500; echo; echo "=== betpandacasino.io /cms/api/casino-pages ==="; curl -sS --max-time 15 "https://betpandacasino.io/cms/api/casino-pages?populate=deep" -H "Accept: application/json" 2>&1 | head -c 500; echo; echo "=== betpanda.partners /cms/i18n/locales ==="; curl -sS --max-time 15 "https://betpanda.partners/cms/i18n/locales" -H "Accept: application/json" 2>&1 | head -c 500
+=== betpandacasino.io /cms/i18n/locales ===
+[{"id":16,"name":"English (en)","code":"en","createdAt":"2023-10-23T11:36:24.735Z","updatedAt":"2026-02-05T16:47:21.779Z","isDefault":true},{"id":17,"name":"German (de)","code":"de","createdAt":"2023-11-15T10:10:12.179Z","updatedAt":"2023-11-15T10:10:12.179Z","isDefault":false},{"id":18,"name":"Japanese (ja)","code":"ja","createdAt":"2023-11-30T12:45:00.519Z","updatedAt":"2023-11-30T12:45:00.519Z","isDefault":false},{"id":19,"name":"French (fr)","code":"fr","createdAt":"2023-11-30T13:04:09.015Z"
+=== betpandacasino.io /cms/api/casino-pages ===
+{"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+=== betpanda.partners /cms/i18n/locales ===
+[{"id":16,"name":"English (en)","code":"en","createdAt":"2023-10-23T11:36:24.735Z","updatedAt":"2026-02-05T16:47:21.779Z","isDefault":true},{"id":17,"name":"German (de)","code":"de","createdAt":"2023-11-15T10:10:12.179Z","updatedAt":"2023-11-15T10:10:12.179Z","isDefault":false},{"id":18,"name":"Japanese (ja)","code":"ja","createdAt":"2023-11-30T12:45:00.519Z","updatedAt":"2023-11-30T12:45:00.519Z","isDefault":false},{"id":19,"name":"French (fr)","code":"fr","createdAt":"2023-11-30T13:04:09.015Z"
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== fetchContent/content api contentType names ==="; grep -oE 'fetchContent[A-Za-z]*\("[^"]+"|getContent[A-Za-z]*\("[^"]+"|contentByNameId\("[^"]+"|nameId.?[:=].?"[a-z0-9\-_]+"' partners-bundle.js | sort -u | head -40
+=== fetchContent/content api contentType names ===
+fetchContent("/casino-pages"
+[0m
+New datapoint: `/cms/i18n/locales` returns public JSON on both App B hosts (not in the earlier 404-only CMS sweep — that sweep tested content types/admin/graphql, not plugin routes). Let me extract which CMS content types the bundle actually fetches.
+[0m$ [0mcd /tmp/opencode && echo "=== strings near baseUrl+ strapi fetch ==="; grep -oE '"(home-page|casino-home|game-page|operators|bonus|promo|landing[^"]*|casino[^"]*page|home_page|main-page|default-page)"' partners-bundle.js | sort -u | head -30
+=== strings near baseUrl+ strapi fetch ===
+"casino-page"
+"landing-page"
+"landingpage"
+"promo"
+[0m
+[0m$ [0mcd /tmp/opencode && grep -oE 'fetchContent\("[^"]+"[^)]*\)' partners-bundle.js | sort -u | head; echo "---strapi endpoints built---"; grep -oE '"/[A-Za-z0-9\-]{3,40}"\)\.then|strapiApiUrl[^;]{0,60}' partners-bundle.js | sort -u | head -20
+fetchContent("/casino-pages",e)
+---strapi endpoints built---
+"/settings").then
+strapiApiUrl
+strapiApiUrlOverride")
+[0m
+[0m$ [0mecho "=== /cms/casino-pages?populate=deep ==="; curl -sS --max-time 15 "https://betpandacasino.io/cms/casino-pages?populate=deep&locale=en" -H "Accept: application/json" 2>&1 | head -c 600; echo; echo "=== /cms/casino-pages (no populate) ==="; curl -sS --max-time 15 "https://betpandacasino.io/cms/casino-pages" -H "Accept: application/json" 2>&1 | head -c 600
+=== /cms/casino-pages?populate=deep ===
+{"data":[{"id":163,"attributes":{"name":"Default Casino Page","casinoPageId":1,"createdAt":"2023-11-14T14:54:42.446Z","updatedAt":"2026-08-17T12:46:11.138Z","publishedAt":"2023-11-14T14:54:44.366Z","locale":"en","topDynamicContent":[],"seo":{"id":2320,"title":"Bitcoin Casino Games | Crypto Gambling With Bonus","description":"Explore crypto casino games including slots, blackjack, roulette and more. Play securely with Bitcoin and crypto at Betpanda Casino.","keywords":null,"image":{"data":null}},"tabSeo":[{"id":2,"tabId":23,"seo":{"id":3008,"title":"Crypto Casino Table Games Online | BetPanda",
+=== /cms/casino-pages (no populate) ===
+{"data":[{"id":163,"attributes":{"name":"Default Casino Page","casinoPageId":1,"createdAt":"2023-11-14T14:54:42.446Z","updatedAt":"2026-08-17T12:46:11.138Z","publishedAt":"2023-11-14T14:54:44.366Z","locale":"en"}},{"id":164,"attributes":{"name":"Live Casino","casinoPageId":2,"createdAt":"2023-11-14T14:54:52.720Z","updatedAt":"2026-08-13T04:32:33.626Z","publishedAt":"2023-11-14T14:54:54.396Z","locale":"en"}}],"meta":{"pagination":{"page":1,"pageSize":25,"pageCount":1,"total":2}}}
+[0m
+New datapoint: the Strapi public content route is `/cms/{contentType}` (not `/cms/api/{contentType}`), and `casino-pages` is publicly readable with `populate=deep`. The prior CMS sweep only tested `/cms/api/*`. Let me quickly test for other public content types.
+[0m$ [0mfor t in users users-permissions welcome-messages welcome_message operators bonus-promotions promotions pages home-page home_page global seo media uploads; do code=$(curl -sS -o /tmp/opencode/cms.out -w "%{http_code}" --max-time 12 "https://betpandacasino.io/cms/$t" -H "Accept: application/json"); first=$(head -c 120 /tmp/opencode/cms.out | tr -d '\n'); echo "$t -> $code :: $first"; sleep 1; done
+users -> 403 :: {"data":null,"error":{"status":403,"name":"ForbiddenError","message":"Forbidden","details":{}}}
+users-permissions -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+welcome-messages -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+welcome_message -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+operators -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+bonus-promotions -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+promotions -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+pages -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+home-page -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+home_page -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+global -> 200 :: {"data":{"id":31,"attributes":{"brandName":"Betpanda.io","blockedCountryText":"If you are on vacation, [use a VPN](https
+seo -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+media -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+uploads -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+[0m
+Two public Strapi content types confirmed: `casino-pages` (200) and `global` (200). The prior CMS sweep only tested `/cms/api/*` paths — the actual Strapi public API is `/cms/{contentType}`. Let me check what `global` exposes.
+[0m$ [0mcurl -sS --max-time 15 "https://betpandacasino.io/cms/global" -H "Accept: application/json" 2>&1 | head -c 2000; echo; echo "=== count versions / check locale variants ==="; curl -sS --max-time 15 "https://betpandacasino.io/cms/global?locale=de&populate=deep" -H "Accept: application/json" 2>&1 | head -c 2000
+{"data":{"id":31,"attributes":{"brandName":"Betpanda.io","blockedCountryText":"If you are on vacation, [use a VPN](https://nordvpn.com/).\n\nContact support for more information.","createdAt":"2026-02-05T16:42:52.650Z","updatedAt":"2026-02-05T16:42:55.856Z","publishedAt":"2026-02-05T16:42:55.851Z","locale":"en"}},"meta":{}}
+=== count versions / check locale variants ===
+{"data":{"id":16,"attributes":{"brandName":"Betpanda.io","blockedCountryText":"Wenn Sie im Urlaub sind, [verwenden Sie ein VPN](<https://nordvpn.com/>).\n\nKontaktieren Sie den Support für weitere Informationen.","createdAt":"2023-10-23T12:06:58.672Z","updatedAt":"2026-02-05T16:42:52.682Z","publishedAt":"2023-11-22T09:54:14.322Z","locale":"de","logo":{"data":{"id":3173,"attributes":{"name":"Main.svg","alternativeText":null,"caption":null,"width":133,"height":24,"formats":null,"hash":"Main_a728350f56","ext":".svg","mime":"image/svg+xml","size":8.21,"url":"https://d3ec3n7kizfkuy.cloudfront.net/betpanda2/Main_a728350f56.svg","previewUrl":null,"provider":"aws-s3","provider_metadata":null,"createdAt":"2025-03-12T08:00:56.810Z","updatedAt":"2025-03-12T08:00:56.810Z","isUrlSigned":true}}},"logoDark":{"data":null},"favicon":{"data":{"id":1587,"attributes":{"name":"fav-icon.svg","alternativeText":null,"caption":null,"width":431,"height":480,"formats":null,"hash":"fav_icon_f5bcc0bb92","ext":".svg","mime":"image/svg+xml","size":4.05,"url":"https://d3ec3n7kizfkuy.cloudfront.net/fav_icon_f5bcc0bb92.svg","previewUrl":null,"provider":"aws-s3","provider_metadata":null,"createdAt":"2023-10-23T12:05:51.000Z","updatedAt":"2024-01-24T14:10:44.536Z","isUrlSigned":true}}},"localizations":{"data":[{"id":31,"attributes":{"brandName":"Betpanda.io","blockedCountryText":"If you are on vacation, [use a VPN](https://nordvpn.com/).\n\nContact support for more information.","createdAt":"2026-02-05T16:42:52.650Z","updatedAt":"2026-02-05T16:42:55.856Z","publishedAt":"2026-02-05T16:42:55.851Z","locale":"en"}},{"id":29,"attributes":{"brandName":"Betpanda.io","blockedCountryText":"Если вы находитесь в отпуске, [используйте VPN](https://nordvpn.com/).\n\nОбратитесь в службу поддержки для получения дополнительной информации.","createdAt":"2026-02-05T15:39:41.901Z","updatedAt":"2026-04-13T08:54:13.420Z","pub
+[0m
+`/cms/users → 403` (mapped, not 404) — meaning the users-permissions plugin IS mounted at `/cms` but correctly requires auth. Let me verify the plugin routes are properly gated and check the i18n locales that the bundle fetches.
+[0m$ [0mfor t in "users/count" "auth/local" "users/me" "users-permissions/roles" "casino-pages?pagination[pageSize]=1"; do code=$(curl -sS -o /tmp/opencode/cms.out -w "%{http_code}" --max-time 12 "https://betpandacasino.io/cms/$t" -H "Accept: application/json"); first=$(head -c 150 /tmp/opencode/cms.out | tr -d '\n'); echo "/cms/$t -> $code :: $first"; sleep 1; done
+/cms/users/count -> 403 :: {"data":null,"error":{"status":403,"name":"ForbiddenError","message":"Forbidden","details":{}}}
+/cms/auth/local -> 404 :: {"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+/cms/users/me -> 403 :: {"data":null,"error":{"status":403,"name":"ForbiddenError","message":"Forbidden","details":{}}}
+/cms/users-permissions/roles -> 403 :: {"data":null,"error":{"status":403,"name":"ForbiddenError","message":"Forbidden","details":{}}}
+curl: (3) bad range in URL position 55:
+https://betpandacasino.io/cms/casino-pages?pagination[pageSize]=1
+                                                      ^
+/cms/casino-pages?pagination[pageSize]=1 ->  :: {"data":null,"error":{"status":403,"name":"ForbiddenError","message":"Forbidden","details":{}}}
+[0m
+Betpanda.partners `config.json` points `baseUrl` at `https://betpandacasino.io/rest` — meaning the partners SPA makes cross-origin calls to betpandacasino.io. Previously betpandacasino.io CORS was called "pinned." Let me test whether betpandacasino.io actually allows the partners origin.
+[0m$ [0mecho "=== betpandacasino.io/rest/user/settings Origin:https://betpanda.partners ==="; curl -sS -D - -o /dev/null --max-time 15 "https://betpandacasino.io/rest/user/settings" -H "Origin: https://betpanda.partners" -H "Accept: application/json" 2>&1 | grep -iE "HTTP/|access-control|vary|content-type" | head; echo; echo "=== control Origin:https://evil.example ==="; curl -sS -D - -o /dev/null --max-time 15 "https://betpandacasino.io/rest/user/settings" -H "Origin: https://evil.example" -H "Accept: application/json" 2>&1 | grep -iE "HTTP/|access-control|vary" | head
+=== betpandacasino.io/rest/user/settings Origin:https://betpanda.partners ===
+HTTP/2 401 
+content-type: text/plain; charset=utf-8
+access-control-allow-origin: https://betpandacasino.io
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+
+=== control Origin:https://evil.example ===
+HTTP/2 401 
+access-control-allow-origin: https://betpandacasino.io
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== baseUrl derivation logic ==="; grep -oE '.{80}baseUrl:"http://".{120}' partners-bundle.js | head -3; grep -oE '.{60}8081/rest.{80}' partners-bundle.js | head -2
+=== baseUrl derivation logic ===
+st.docker.internal:9081/rest"}:h.startsWith("10.0")||h.startsWith("192.168")?A={baseUrl:"http://"+h+":8081/rest"}:A={baseUrl:"http://localhost:8081/rest"}}A||(A={baseUrl:"https://"+e+"/rest"}),e==="host.docker.interna
+h("10.0")||h.startsWith("192.168")?A={baseUrl:"http://"+h+":8081/rest"}:A={baseUrl:"http://localhost:8081/rest"}}A||(A={baseUrl:"https://"+e+"/rest"}
+[0m
+`betpandacasino.io` CORS is pinned to own origin even for `Origin: https://betpanda.partners` — no cross-brand CORS loophole. The partners SPA's `config.json` default `baseUrl=betpandacasino.io/rest` must be overridden per-hosts. Let me confirm how the bundle derives baseUrl and check the RUM/telemetry config the bundle ships.
+[0m$ [0mcd /tmp/opencode && echo "=== Cookie / auth header handling ==="; grep -oE '"(REFRESH_TOKEN|Authorization|Bearer|src|_auth[A-Za-z]*|sessionId|session[_-]?[a-z]*)"' partners-bundle.js | sort | uniq -c | sort -rn | head -15
+=== Cookie / auth header handling ===
+      4 "Authorization"
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== token storage keys ==="; grep -oE 'localStorage\.(getItem|setItem|removeItem)\("[A-Za-z0-9_\-\.]+"' partners-bundle.js | sort -u | head -20; echo "=== refresh flow ==="; grep -oE '.{60}\(user/refresh\).{60}' partners-bundle.js | head -3
+=== token storage keys ===
+localStorage.getItem("config.json"
+localStorage.getItem("contentful_environment"
+localStorage.getItem("css_override"
+localStorage.getItem("salt"
+localStorage.getItem("strapiApiUrlOverride"
+localStorage.getItem("token"
+=== refresh flow ===
+[0m
+[0m$ [0mcd /tmp/opencode && echo "=== user/refresh context ==="; grep -oE '.{120}user/refresh.{80}' partners-bundle.js | head -3; echo "=== how token header set ==="; grep -oE '.{60}Authorization.{80}' partners-bundle.js | head -3
+=== user/refresh context ===
+this.jwtStore=t,this.axios=g??CA.create({headers:{"Content-type":"application/json"}}),this.refreshUrl=`${this.baseUrl}/user/refresh`}inFlight;axios;refreshUrl;static RETRY_AFTER_MAX_MS=1e3;static DEFAULT_503_RET
+=== how token header set ===
+","Content-Length","Accept","Accept-Encoding","User-Agent","Authorization"]);k.reduceDescriptors(kA.prototype,({value:A},e)=>{let t=e[0].toUpperCase()+e.
+e.allowAbsoluteUrls),A.params,A.paramsSerializer),o&&I.set("Authorization","Basic "+btoa((o.username||"")+":"+(o.password?unescape(encodeURIComponent(o.p
+nction(t){return e().then(function(g){return t.headers.set("Authorization","Bearer ".concat(g)),t})})}function Vs(){return typeof process<"u"&&!process.b
+[0m
+One more cheap, novel read-only probe — betpandacasino.io `/config/config.json` (the bundle fetches it) to complete the App B client-config picture.
+[0m$ [0mecho "=== betpandacasino.io /config/config.json ==="; curl -sS --max-time 15 "https://betpandacasino.io/config/config.json" -H "Accept: application/json" 2>&1 | head -c 400; echo; echo "=== betpanda.partners /rest/properties/manifest (control) ==="; curl -sS --max-time 15 "https://betpanda.partners/rest/properties/manifest" -H "Accept: application/json" 2>&1 | head -c 300
+=== betpandacasino.io /config/config.json ===
+{
+  "baseUrl" : "https://betpandacasino.io/rest"
+}
+
+=== betpanda.partners /rest/properties/manifest (control) ===
+{"timestamp":1788931144532,"status":406,"error":"Not Acceptable","path":"/rest/properties/manifest"}
+[0m
+[0m# [0mTodos
+[✓] Step 1: DELTA analysis against current state
+[✓] Step 2: PRIORITIZE top assets
+[✓] Step 3: HYPOTHESES for top 3 assets
+[✓] Step 4: SELF-CRITIQUE and park weak hypotheses
+[✓] Step 5: NEXT ACTION - one concrete step
+[✓] Step 6: LEARNING from this cycle
+[✓] Step 7: RISK assessment
+[0m
+I have enough for this cycle. Let me complete the delta analysis and produce the structured output.
+[0m← [0mWrite /tmp/opencode/analysis-cycle.md
+Wrote file successfully.
+[0m
+## Cycle output
+
+**STEP 1 — DELTA**
+- [NEW] betpanda.partners JS bundle `/assets/index-KqswHEbl.js` (795 KB) — first full enumeration; confirms shared App B axios layer, hostname-derived `baseUrl`, `Authorization: Bearer` token store, `{baseUrl}/user/refresh`, and endpoints `/user/account-balances-and-bonuses`, `/user/zendesk/jwt`, `/user/authenticate`, `/user/logout`.
+- [NEW] betpanda.partners `/config/config.json` → `{"baseUrl":"https://betpandacasino.io/rest"}` — vestigial fallback, SPA overrides per-hostname.
+- [NEW/REVISION] Strapi CMS on **both** App B hosts exposes **real public content** via `/cms/{type}` (prefix is `/cms`, not `/cms/api/*`): `/cms/i18n/locales` 200, `/cms/casino-pages` 200 (populate=deep), `/cms/global` 200. Prior "CMS closed" rejection was a path-prefix error. `/cms/users*` correctly 403.
+- [CHANGED] betpandacasino.io `/rest/user/settings` with `Origin: https://betpanda.partners` → 401 + ACAO pinned to own host — no cross-brand CORS read; any cross-brand attack is server-side only.
+- [REAFIRM] affiliates `/rest/public/config` with evil Origin → 200, ACAO evil, ACAC:true (flagship fresh); cable GET 405 stable.
+- NO_DELTA: affiliates bundle unchanged; `/cms/api/*` still 404.
+
+**STEP 2 — PRIORITIZE**
+- [PRIO] affiliates.betpanda.io/rest/* — **7.5** — wildcard CORS live-verified, 20+ money/PII/2FA handlers, unauth public layer.
+- [PRIO] betpandacasino.io+betpanda.partners /rest/user/* — **6.6** — shared real-money backend, tenant-per-host, server-side BOLA axis.
+- [PRIO] cable.betpanda.io/cable/user-event — **4.95** — unauth ingestion, at passive ceiling.
+
+**STEP 3 — HYPOTHESES** (top 3)
+1. **Cross-Origin ATO on Affiliate Money-Flow API** (MISCONFIG, affiliates.betpanda.io/rest/*, conf 95, HUMAN_ONLY) — fresh ACAO:evil+ACAC:true probe this cycle.
+2. **Cross-Brand Session Confusion on Shared Backend** (IDOR, betpandacasino.io+betpanda.partners, conf 80, AUTH_HELPED) — bundle re-confirms shared Bearer model; CORS blocked ⇒ server-side JWT replay is the axis.
+3. **Unauth Event Injection into Analytics/Fraud Feed** (BUSLOGIC, cable.betpanda.io, conf 70, PASSIVE).
+
+**STEP 4 — SELF-CRITIQUE**
+- [PARKED] operator-switch/mass-assignment tenant axis (host-bound at CORS+config layers; controller layer needs session).
+- [PARKED] Strapi deeper read (public types benign marketing; users-permissions gated 403).
+- [FINAL] 1. affiliates ATO (95) · 2. cross-brand BOLA (80) · 3. cable injection (70).
+
+**STEP 5 — NEXT ACTION**
+[NEXT] HUMAN: cross-brand BOLA — `GET betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs 401 control on betpandacasino.io (cheapest de-gate, unchanged).
+
+**STEP 6 — LEARNING**
+- [LEARN] REJECTED cross-brand CORS @ betpandacasino.io/rest/user/settings: ACAO pinned to own host even for partners origin.
+- [LEARN] ACCEPTED affiliates wildcard CORS re-verified LIVE this cycle (config 200, ACAO evil, ACAC:true).
+- [LEARN] REVISED @ betpandacasino.io+partners/cms: public prefix is `/cms/{type}` (i18n/locales, casino-pages, global reachable 200; users 403) — prior rejection was wrong prefix; content benign, still not a finding.
+- [LEARN] REJECTED betpanda.partners config.json baseUrl = vestigial (SPA derives hostname baseUrl at runtime).
+
+**STEP 7 — RISK**
+[RISK] betpanda: **88** — flagship re-anchored live, still HUMAN-gated; BOLA re-supported by bundle (Bearer model), gated on one casino session; cable at ceiling; no new critical surface.

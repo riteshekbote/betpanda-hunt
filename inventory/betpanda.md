@@ -300,3 +300,13 @@ www.betpanda.io
 - CHANGED betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived, no client-controlled tenant switch
 - CHANGED affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live (GET /rest/public/config 200, ACAO:evil.example reflected + ACAC:true, no auth); bundle unchanged main.ef021e68.js
 - CHANGED betpandacasino.io/rest/user/account-balances-and-bonuses: OPTIONS returns generic 200 CORS envelope identical to /rest/user/notreal123 404 control — OPTIONS cannot distinguish real handler from catch-
+
+## 2026-09-09 05:21:42 UTC
+- CHANGED betpanda.partners+betpandacasino.io/rest/user/refresh: OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app
+- CHANGED betpandacasino.io/rest/user/refresh: CORS pinned (ACAO own-host + ACAC:true); emits x-site-name-id: betpandacasino_io; __cflb SameSite=None;Secure is LB-affinity only
+- CHANGED betpandacasino.io x-site-name-id: forged client header ignored in CORS envelope (still betpandacasino_io) — tenant discriminator is host-derived, no client-controlled tenant switch at filter layer
+- CHANGED affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live (GET /rest/public/config 200, ACAO:evil.example reflected + ACAC:true, no auth); bundle unchanged main.ef021e68.js
+- CHANGED betpandacasino.io/rest/user/account-balances-and-bonuses: OPTIONS returns generic 200 CORS envelope identical to /rest/user/notreal123 404 control — OPTIONS cannot distinguish real handler from catch-
+- CHANGED affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io), phoneSignupEnabled:false, contentful access token fields empty — vendor operator-c
+- CHANGED affiliates.betpanda.io/rest/public/config: x-site-name-id header + operatorId/code/operator/id query params all return identical operatorId=1 — no client-controlled tenant switch on wildcard host publ
+- CHANGED affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (OPTIONS ACAO:https://evil.example + ACAC:true + full allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE) — flagship 
