@@ -325,3 +325,5 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io/rest/public/config — supportEmail rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, contentful access token fields empty — vendor ope
 
 ## 2026-09-09 14:23:13 UTC
+
+## 2026-09-09 17:53:56 UTC

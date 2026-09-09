@@ -1,4 +1,4 @@
-## 2026-09-09 14:23:01 UTC [target] (model nemotron3)
+## 2026-09-09 17:53:45 UTC [target] (model nemotron3)
 [PRIO] affiliates.betpanda.io/rest/*,9.35,attack_surface=10,business_value=9,tech_exposure=9,gate_ease=9,cloud_surface=8,freshness=10
 [PRIO] betpandacasino.io/rest/user/*,8.55,attack_surface=9,business_value=10,tech_exposure=9,gate_ease=5,cloud_surface=8,freshness=8
 [PRIO] betpanda.partners/rest/user/*,8.10,attack_surface=8,business_value=9,tech_exposure=8,gate_ease=6,cloud_surface=8,freshness=9
@@ -32,7 +32,6 @@ evidence_needed: Successful injection of crafted events that trigger downstream 
 verify_steps: PASSIVE: POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{"eventType":"deposit","amount":10000,"userId":"victim_id","currency":"EUR"}' → observe 200 response; fuzz eventType enum via wordlist; probe for reflection in any admin/dashboard UI (if discoverable)
 impact: Business logic abuse (bonus fraud, metric poisoning, fraud evasion), potential stored XSS in analytics dashboards — HIGH
 testability: PASSIVE
-[PARKED] None — all three hypotheses have confidence ≥70, valid classes (MISCONFIG, IDOR, BUSLOGIC), concrete verify_steps (PASSIVE or AUTH_HELPED), no REJECTED-class overlap.
 [FINAL] 1. Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (affiliates.betpanda.io, 95)
 [FINAL] 2. Cross-Brand BOLA via Shared Spring Boot Backend — JWT Missing aud/iss Validation (betpanda.partners/betpandacasino.io, 80)
 [FINAL] 3. Unauthenticated Event Injection with Arbitrary Schema Feeding Analytics/Fraud/Bonus Systems (cable.betpanda.io, 75)
@@ -53,4 +52,4 @@ testability: PASSIVE
 [LEARN] CHANGED @ affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io), phoneSignupEnabled:false, contentful access token fields empty — vendor operator-config churn, not a finding.
 [LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1; no client-controlled tenant switch on wildcard host public layer.
 [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (ACAO:https://evil.example).
-[RISK] betpanda: 90 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + change-password + public /rest/* layer (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), unauthenticated analytics injection with fully reverse-derived schema accepting XSS/negative amounts (chaining vector). OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure. Fresh SPA redeploy (main.ef021e68.js) expands attack surface with 30+ mapped endpoints.
+[RISK] betpanda: 90 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + change-password + public `/rest/*` layer (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), unauthenticated analytics injection with fully reverse-derived schema accepting XSS/negative amounts (chaining vector). OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure. Fresh SPA redeploy (main.ef021e68.js) expands attack surface with 30+ mapped endpoints.
