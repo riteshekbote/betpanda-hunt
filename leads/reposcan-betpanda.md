@@ -131,3 +131,12 @@ TARGET_ORG not configured for betpanda; skipping public-org deep scan.
 TARGET_ORG not configured for betpanda; skipping public-org deep scan.
 ## REPOSCAN 2026-09-09 18:59:39 UTC
 TARGET_ORG not configured for betpanda; skipping public-org deep scan.
+## REPOSCAN 2026-09-09 21:35:52 UTC
+[HYP] Phishing credential stealer (log.php)
+class: OTHER
+asset: betpanda/referral (deleted — commit b2cb01e0)
+confidence: 95
+reasoning: >
+impact: N/A — file deleted, repo empty, no live deployment
+verify_steps: >
+TARGET_ORG not configured for betpanda; skipping public-org deep scan.
