@@ -362,3 +362,15 @@ www.betpanda.io
 - CHANGED `betpanda.partners+betpandacasino.io/rest/user/refresh` — OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl `x-captcha-token`, `x-site-name-id`, `x-maintenance-reason`, `x-pre
 - CHANGED `betpandacasino.io/rest/user/account-balances-and-bonuses` — OPTIONS returns generic 200 CORS envelope identical to `/rest/user/notreal123` 404 control — OPTIONS cannot distinguish real handler from c
 - CHANGED `affiliates.betpanda.io/rest/*` — Wildcard CORS+credentials re-verified live fresh (GET `/rest/public/config` 200 ACAO:evil.example + ACAC:true; OPTIONS `/rest/user/password/reset` 200 ACAO:evil.examp
+
+## 2026-09-10 17:57:11 UTC
+- NEW `affiliates.betpanda.io` SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL is credential binding for POST `/rest/user/password/reset` (ATO chain primitive)
+- CHANGED `affiliates.betpanda.io/rest/public/config` — `supportEmail` rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, contentful access token fields empty — vendor
+- CHANGED `betpanda.partners+betpandacasino.io/rest/user/refresh` — OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl `x-captcha-token`, `x-site-name-id`, `x-maintenance-reason`, `x-pre
+- CHANGED `betpandacasino.io/rest/user/account-balances-and-bonuses` — OPTIONS returns generic 200 CORS envelope identical to `/rest/user/notreal123` 404 control — OPTIONS cannot distinguish real handler from c
+- CHANGED `affiliates.betpanda.io/rest/*` — Wildcard CORS+credentials re-verified live fresh (GET `/rest/public/config` 200 ACAO:evil.example + ACAC:true; OPTIONS `/rest/user/password/reset` 200 ACAO:evil.examp
+- CHANGED cable.betpandacasino.io/cable/user-event — fresh OPTIONS preflight returns 204 ACAO:* + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH; root serves byte-identical "BC CASINO / Cable Service - Ready!" ba
+- NEW `affiliates.betpanda.io` SPA route `/reset-password/:affiliateId/:resetPasswordCode` — reset code in URL binds to POST `/rest/user/password/reset` (ATO chain primitive)
+- CHANGED `affiliates.betpanda.io/rest/public/config` — `supportEmail` rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, contentful access token fields empty — vendor
+- CHANGED `betpanda.partners+betpandacasino.io/rest/user/refresh` — OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl `x-captcha-token`, `x-site-name-id`, `x-maintenance-reason`, `x-pre
+- CHANGED `affiliates.betpanda.io/rest/*` — Wildcard CORS+credentials re-verified live fresh (GET `/rest/public/config` 200 ACAO:evil.example + ACAC:true; OPTIONS `/rest/user/password/reset` 200 ACAO:evil.examp
