@@ -2899,3 +2899,33 @@ evidence_needed: operator confirmation injected events reach downstream consumer
 verify_steps: PASSIVE — surface exhausted; chained impact requires operator visibility.
 impact: analytics/fraud/bonus feed poisoning, stored-XSS in operator dashboards — Medium-High.
 testability: PASSIVE
+## 2026-09-10 05:43:42 UTC [target] (model bigpickle)
+[HYP] Wordpress REST on marketing blog discloses admin accounts and exposes plugin/endpoint surface cross-origin-with-credentials
+class: OTH
+asset: blog.betpandacasino.io/wp-json/*
+confidence: 45
+reasoning: /wp-json/ 200 enumerates namespaces (redirection/v1, yoast/v1, wp/v2, batch/v1) + application-passwords authorization route; /wp-json/wp/v2/users 200 → id1 admin_betpanda, id2 admin_ovidiu/"Corina" with author archives + gravatar hashes; /wp-json/wp/v2/media lists public uploads; redirection/v1/redirect GET is 401 auth-gated; xmlrpc 403; REST CORS allows origin https://betpandacasino.io with ACAC:true.
+evidence_needed: any unauth route returning non-public content (draft/private posts, redirect config, plugin settings) or a confirmed plugin defect with program-specific POC.
+verify_steps: PASSIVE — GET /wp-json/wp/v2/types; GET /wp-json/wp/v2/pages?status=publish&per_page=100; GET /wp-json/redirection/v1/export; GET /wp-json/yoast/v1/ (all read-only).
+impact: usernames aid credential/ATO targeting; plugin surface is a future chain node from casino-origin XSS (CORS+cred) — Low/Medium.
+testability: PASSIVE
+[HYP] Second cable instance at cable.betpandacasino.io accepts the same unauthenticated event injection
+class: BUSLOGIC
+asset: cable.betpandacasino.io/cable/user-event
+confidence: 60
+reasoning: POST-only 405 with ACAO:* identical to flagship cable.betpanda.io; root serves identical "Cable Service - Ready!" banner; /cable/, /admin, /debug/ 404 mirror the betpanda singleton; same service family → same unauth arbitrary-JSON ingestion primitive on a second host.
+evidence_needed: benign POST with known-good schema confirms 200 without auth, then wildcard ACAO:* enables any-third-party injection.
+verify_steps: AUTH_HELPED — mirrored benign POST {"eventType":"test","userId":"verify-bp2"} (operator-consented pattern already used on betpanda cable); confirm 200 + "processed and saved".
+impact: amplifies flagship data-poisoning / stored-XSS-to-dashboards across a second host — Medium/High.
+testability: AUTH_HELPED
+[HYP] Credentialed wildcard CORS across full /rest/* enables cross-origin ATO chain on affiliates
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live this cycle: GET /rest/public/config 200 ACAO:https://evil.example + ACAC:true (unauth); OPTIONS /rest/user/password/reset 200 ACAO:evil.example + ACAC:true + full allow-methods. Bundle main.ef021e68.js unchanged. 30+ handlers (password/reset, set-2fa-setting, change-password, players, transaction/list, agent/set-deposit-withdraw-limit) under credentialed wildcard CORS. POC remains auth-gated.
+evidence_needed: credentialed cross-origin GET /rest/user/metrics/affiliate returning PII; POST /rest/user/password/reset (resetPasswordCode-bound) completing ATO.
+verify_steps: HUMAN_ONLY — capture affiliate session; GET /rest/user/metrics/affiliate -H "Origin: https://evil.com" -b cookie; mirror credentialed POST password/reset from SPA route /reset-password/:affiliateId/:resetPasswordCode.
+impact: player PII/transaction exfil, credential reset, 2FA disable, deposit-limit tamper — CRITICAL.
+testability: HUMAN_ONLY
+[NEXT] PROBE: `GET https://blog.betpandacasino.io/wp-json/wp/v2/types` then `/wp-json/redirection/v1/export` and `/wp-json/wp/v2/pages?status=publish&per_page=100` — passive read-only dump of fresh WP REST surface for any unauth non-public data. (Longer-term top proof remains HUMAN cross-brand BOLA: `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs 401 control.)
+[RISK] betpanda: 88 — Flagship (95) re-anchored live, still HUMAN-gated on one affiliate session; cross-brand BOLA (80) remains cheapest complete proof. Two novel hosts added (WP blog with open REST+user leak, second unauth cable instance) broadening but not yet proving critical impact. Risk holds at 88.
