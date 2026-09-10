@@ -1,4 +1,4 @@
-## 2026-09-10 05:42:22 UTC [target] (model nemotron3)
+## 2026-09-10 10:11:02 UTC [target] (model nemotron3)
 [NEW] betpanda.partners confirmed as dedicated in-scope host fronting SAME Spring Boot `/rest` backend as betpandacasino.io (manifest 200, S3 operator PWA icons under `/operators/`)
 [NEW] affiliates.betpanda.io/rest/public/phone/* — `signin/verify` + `register/verify` POST-only JSON endpoints reflect evil Origin + ACAC:true; JSON body returns 404 (schema obfuscated)
 [NEW] affiliates.betpanda.io/rest/v2/* — v2 report endpoints (POST-only 405-GET), `/rest/v2/report/sub-affiliates`, `/rest/v2/report/daily-stats-with-comparison`, `/rest/user/selectable-payout-currencies`, `/rest/user/selectable-payout-networks`, `/rest/metrics/top-metrics-revenue-chart`, `/rest/trk/list`, `/rest/agent/id/{id}`, `/rest/agent/enable/{id}/{enabled}` (GET state-changing, 401)

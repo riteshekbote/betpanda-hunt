@@ -2929,3 +2929,24 @@ impact: player PII/transaction exfil, credential reset, 2FA disable, deposit-lim
 testability: HUMAN_ONLY
 [NEXT] PROBE: `GET https://blog.betpandacasino.io/wp-json/wp/v2/types` then `/wp-json/redirection/v1/export` and `/wp-json/wp/v2/pages?status=publish&per_page=100` — passive read-only dump of fresh WP REST surface for any unauth non-public data. (Longer-term top proof remains HUMAN cross-brand BOLA: `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <casino_jwt>"` vs 401 control.)
 [RISK] betpanda: 88 — Flagship (95) re-anchored live, still HUMAN-gated on one affiliate session; cross-brand BOLA (80) remains cheapest complete proof. Two novel hosts added (WP blog with open REST+user leak, second unauth cable instance) broadening but not yet proving critical impact. Risk holds at 88.
+## 2026-09-10 10:04:58 UTC [target] (model bigpickle)
+[HYP] Unauth event injection primitive duplicated on second cable instance
+class: BUSLOGIC
+asset: cable.betpandacasino.io/cable/user-event
+confidence: 65
+reasoning: GET 405 allow:POST + ACAO:* + 200 banner "Cable Service - Ready!" — byte-identical service family to flagship cable.betpanda.io where same primitive accepted arbitrary JSON (200 "processed and saved"). Passive baseline now confirmed live on the second host.
+evidence_needed: benign known-good POST (eventType/userId) returns 200 without auth on the second host; accept-with-reflection of stored fields in any consumer.
+verify_steps: AUTH_HELPED — `curl -s -D- -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -d '{"eventType":"test","userId":"verify-bp2"}'`; compare to flagship; confirm 200 + no auth + ACAO:*.
+impact: doubles the data-poisoning / analytics-fraud / stored-XSS-to-dashboards surface across two hosts — Medium/High.
+testability: AUTH_HELPED
+[HYP] Wordpress REST blog exposes no non-public content; credentialed CORS is a latent chain node only
+class: MISCONFIG
+asset: blog.betpandacasino.io/wp-json/*
+confidence: 30
+reasoning: All enumerated types (post/page/guide/media) return only public published objects; redirection/v1 gated (401); users/GUIDs are public author metadata; ACAO pinned to legitimate casino origin (own-company boundary), not arbitrary. Nothing factual indicates non-public exposure.
+evidence_needed: any draft/private post, redirect config, or plugin setting readable unauthenticated; or a working casino-origin content-injection that turns ACAO+pinned into data exfiltration.
+verify_steps: PASSIVE — exhausted (types/guides/users/redirection/search/taxonomies/media all captured); no reachable read-only route remains untested.
+impact: none demonstrated; only a future chain dependency from casino-origin XSS — Low.
+testability: PASSIVE
+[NEXT] HUMAN: `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <betpandacasino.io_session_jwt>"` vs `GET https://betpandacasino.io/rest/user/settings` control (expect 401) — a non-401 on partners with the casino-issued token proves cross-brand session acceptance = complete BOLA POC on shared App B (cheapest path to CRITICAL from a single test account).
+[RISK] betpanda: 88 — No regression; flagship wildcard CORS+creds (95) remains re-anchored but HUMAN-gated. Cross-brand BOLA (80) unchanged, still the cheapest complete CRITICAL proof. Two passive lanes (WP blog, second cable host) added surface but WP resolved as non-finding and cable needs auth-side confirmation. Risk holds; next meaningful delta requires one authenticated test.
