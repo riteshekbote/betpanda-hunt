@@ -2950,3 +2950,4 @@ impact: none demonstrated; only a future chain dependency from casino-origin XSS
 testability: PASSIVE
 [NEXT] HUMAN: `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <betpandacasino.io_session_jwt>"` vs `GET https://betpandacasino.io/rest/user/settings` control (expect 401) — a non-401 on partners with the casino-issued token proves cross-brand session acceptance = complete BOLA POC on shared App B (cheapest path to CRITICAL from a single test account).
 [RISK] betpanda: 88 — No regression; flagship wildcard CORS+creds (95) remains re-anchored but HUMAN-gated. Cross-brand BOLA (80) unchanged, still the cheapest complete CRITICAL proof. Two passive lanes (WP blog, second cable host) added surface but WP resolved as non-finding and cable needs auth-side confirmation. Risk holds; next meaningful delta requires one authenticated test.
+## 2026-09-10 14:30:16 UTC [target] (model bigpickle)

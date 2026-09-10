@@ -22710,3 +22710,16 @@ testability: PASSIVE
 ## STEP 7 — RISK
 
 [RISK] betpanda: 88 — No regression; flagship wildcard CORS+creds (95) remains re-anchored but HUMAN-gated. Cross-brand BOLA (80) unchanged, still the cheapest complete CRITICAL proof. Two passive lanes (WP blog, second cable host) added surface but WP resolved as non-finding and cable needs auth-side confirmation. Risk holds; next meaningful delta requires one authenticated test.
+===== ANALYST bigpickle 2026-09-10 14:42:33 UTC =====
+[0m
+> build · big-pickle
+[0m
+[93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
+[0m✗ [0mcurl -s -D /tmp/cable-bp2-headers.txt -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -d '{"eventType":"test-verify","userId":"verify-bp2-cycle"}' -o /tmp/cable-bp2-body.txt -w '%{http_code}' 2>/dev/null; echo; cat /tmp/cable-bp2-headers.txt; echo '---BODY---'; cat /tmp/cable-bp2-body.txt failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.
+[93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
+[0m✗ [0mcurl -s -D /tmp/wp-types-headers.txt https://blog.betpandacasino.io/wp-json/wp/v2/types -o /tmp/wp-types-body.txt -w '%{http_code}' 2>/dev/null; echo; cat /tmp/wp-types-headers.txt; echo '---BODY---'; cat /tmp/wp-types-body.txt failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.
+[93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
+[0m✗ [0mcurl -s -D /tmp/wp-redir-headers.txt https://blog.betpandacasino.io/wp-json/redirection/v1/export -o /tmp/wp-redir-body.txt -w '%{http_code}' 2>/dev/null; echo; cat /tmp/wp-redir-headers.txt; echo '---BODY---'; head -c 2000 /tmp/wp-redir-body.txt failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.
