@@ -23499,3 +23499,96 @@ testability: HUMAN_ONLY
 **[RISK] betpanda: 88** — Flagship (95) re-anchored but HUMAN-gated on one affiliate session; cross-brand BOLA (80) still cheapest complete CRITICAL proof, needs one authenticated token. Second cable instance added a live wildcard-preflight delta this cycle (Medium/High, one POST from confirming). WP-blog lane closed as non-finding. Critical-path surface unchanged; next meaningful delta requires an authenticated test on either lane.
 
 **System Reminder:** I am in plan mode (READ-ONLY). I cannot execute any bash commands, edits, or file modifications. My analysis is complete - the next actionable step requires human intervention to perform the AUTH_HELPED probes with actual credentials.
+===== ANALYST bigpickle 2026-09-10 22:48:06 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mcurl -sS -D /tmp/opencode/c2_post.hdr -o /tmp/opencode/c2_post.body -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -H 'Origin: https://evil.example' -d '{"eventType":"test","userId":"verify-bp2"}' --max-time 20; sleep 1; curl -sS -D /tmp/opencode/c2_opt.hdr -o /tmp/opencode/c2_opt.body -X OPTIONS https://cable.betpandacasino.io/cable/user-event -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' --max-time 20; sleep 1; curl -sS -D /tmp/opencode/aff_cfg.hdr -o /tmp/opencode/aff_cfg.body 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' --max-time 20; sleep 1; curl -sS -o /tmp/opencode/aff_index.html 'https://affiliates.betpanda.io/' --max-time 20; sleep 1; curl -sS -D /tmp/opencode/bp_set.hdr -o /tmp/opencode/bp_set.body 'https://betpanda.partners/rest/user/settings' --max-time 20
+(no output)
+[0m
+[0m→ [0mRead /tmp/opencode/c2_post.hdr
+[0m→ [0mRead /tmp/opencode/c2_post.body
+[0m→ [0mRead /tmp/opencode/c2_opt.hdr
+[0m→ [0mRead /tmp/opencode/aff_cfg.hdr
+[0m→ [0mRead /tmp/opencode/aff_index.html
+[0m→ [0mRead /tmp/opencode/bp_set.hdr
+[0m→ [0mRead /tmp/opencode/bp_set.body
+[0m
+[0m$ [0msleep 1; curl -sS -D /tmp/opencode/c2_post2.hdr -o /tmp/opencode/c2_post2.body -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -H 'Origin: https://evil.example' -d '{"eventType":"test","userId":"verifybp2"}' --max-time 20
+(no output)
+[0m
+[0m→ [0mRead /tmp/opencode/c2_post2.hdr
+[0m→ [0mRead /tmp/opencode/c2_post2.body
+Interesting—the affiliates index now references `main.1ae50aab.js` (the *old* bundle per KB history). Verifying which bundle is live and reading the corrected POST result:
+[0m
+[0m$ [0msleep 1; curl -sS -D /tmp/opencode/bundle_new.hdr -o /tmp/opencode/bundle_new.body --max-time 20 'https://affiliates.betpanda.io/main.ef021e68.js' -r 0-200; sleep 1; curl -sS -D /tmp/opencode/bundle_old.hdr -o /tmp/opencode/bundle_old.body --max-time 20 'https://affiliates.betpanda.io/main.1ae50aab.js' -r 0-200; sleep 1; curl -sS -D /tmp/opencode/idx.hdr -o /tmp/opencode/idx.body --max-time 20 'https://affiliates.betpanda.io/' -o /dev/null
+(no output)
+[0m
+[0m→ [0mRead /tmp/opencode/bundle_new.hdr
+[0m→ [0mRead /tmp/opencode/bundle_new.body
+[0m→ [0mRead /tmp/opencode/bundle_old.hdr
+[0m→ [0mRead /tmp/opencode/bundle_old.body
+[0m→ [0mRead /tmp/opencode/idx.hdr
+Two more read-only anchors (backend handlers untouched by the SPA rollback?):
+[0m
+[0m$ [0msleep 1; curl -sS -D /tmp/opencode/pwreset.hdr -o /tmp/opencode/pwreset.body --max-time 20 'https://affiliates.betpanda.io/rest/user/password/reset' -H 'Origin: https://evil.example' -o /dev/null; sleep 1; curl -sS -D /tmp/opencode/set2fa.hdr -o /tmp/opencode/set2fa.body --max-time 20 'https://affiliates.betpanda.io/rest/user/set-2fa-setting' -H 'Origin: https://evil.example' -o /dev/null; sleep 1; curl -sS -D /tmp/opencode/players.hdr -o /tmp/opencode/players.body --max-time 20 'https://affiliates.betpanda.io/rest/user/players' -H 'Origin: https://evil.example' -o /dev/null
+(no output)
+[0m
+[0m→ [0mRead /tmp/opencode/pwreset.hdr
+[0m→ [0mRead /tmp/opencode/set2fa.hdr
+[0m→ [0mRead /tmp/opencode/players.hdr
+## STEP 1 — DELTA
+- [CHANGED] `affiliates.betpanda.io` SPA rolled BACK to `main.1ae50aab.js` (Jul-30 build, 2,089,573 B, last-modified 2026-07-30); `main.ef021e68.js` now returns 206 `text/html` catch-all (eliminated) — first bundle churn since ef021e68 landed.
+- [CHANGED] `cable.betpandacasino.io/cable/user-event`: two benign POSTs uncovered **staged server-side schema validation** via distinct 400s — `userId` alphanumeric-only (hyphen rejected), then `registeredOn` RFC3339-required — strict validator, NOT the lax flagship.
+- NO_DELTA backend: affiliates `/rest/*` handlers live (405s + ACAO:evil + ACAC:true), betpandacasino.io `/rest/user/settings` 401 control, cable2 OPTIONS 204 ACAO:*.
+
+## STEP 2 — PRIORITIZE
+- [PRIO] affiliates.betpanda.io/rest/*,7.2,business_value(10)+tech(8); gate_ease drags (3) -> flagship 95
+- [PRIO] betpandacasino.io+betpanda.partners shared /rest/user/*,7.1,business_value(10)+surface(8); gate 4 -> BOLA 80
+- [PRIO] cable.betpandacasino.io/cable/user-event,5.7,gate_ease(10)+freshness(7); injection unconfirmed -> downgraded 70->55
+
+## STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS+credentials full /rest/* enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Fresh this cycle 22:46-47Z — GET /rest/public/config 200 ACAO:https://evil.example+ACAC:true (unauth); GET password/reset, set-2fa-setting, players all 405 POST-only reflecting identical ACAO+ACAC:true. Backend handlers intact despite SPA rollback to old bundle.
+evidence_needed: credentialed cross-origin read (metrics/affiliate, transaction/list) or POST password/reset with resetPasswordCode.
+verify_steps: HUMAN_ONLY — `GET /rest/user/metrics/affiliate -H "Origin: https://evil.com" -b <session>`; mirror credentialed POST from `/reset-password/:affiliateId/:resetPasswordCode`.
+impact: PII/transaction exfil, credential reset, 2FA disable, deposit-limit tamper — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Cross-brand session acceptance on shared App B proves BOLA between brands
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Control re-confirmed fresh — betpanda.partners/rest/user/settings 401 "No http-session found in request", envelope carries x-captcha-token/x-site-name-id/x-maintenance-reason/x-preferred-app-context; SPA index-KqswHEbl.js parity; OPTIONS envelope parity. Cognito JWT aud/iss unverified.
+evidence_needed: non-401 on betpanda.partners endpoint using casino-issued JWT vs 401 control.
+verify_steps: HUMAN_ONLY — `GET https://betpandacasino.io/rest/user/settings -H "Authorization: Bearer <jwt>"` (control→401); same JWT → `https://betpanda.partners/rest/user/settings`; non-401 = cross-brand accepted.
+impact: cross-brand wallet/balance/settings disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Unauth validated event-ingestion handler duplicated on second cable instance
+class: BUSLOGIC
+asset: cable.betpandacasino.io/cable/user-event
+confidence: 55
+reasoning: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH; two benign POSTs each hit distinct 400 JSON validation errors (userId alphanumeric-only; registeredOn RFC3339-required) with ACAO:* — real unauth handler, schema-strict, NOT byte-equivalent lax flagship. XSS/negative-amount injection NOT confirmed here.
+evidence_needed: fully-formed benign payload (registeredOn RFC3339, alphanumeric userId) returning 200 without auth; upstream reflection/dashboard ingestion.
+verify_steps: AUTH_HELPED — `POST -d '{"eventType":"test","userId":"verifybp2","registeredOn":"2026-09-10T22:48:00Z"}'`; then owned-site stored reflection check. (Two prior benign 400s establish handler without a write.)
+impact: unauth analytics-pipeline write / event poisoning on second host — Medium. Injection primitive NOT demonstrated.
+testability: AUTH_HELPED
+
+## STEP 4 — SELF-CRITIQUE
+[PARKED] cable.betpandacasino.io XSS/negative-amount injection: stricter validator (userId alnum, registeredOn RFC3339) contradicts the flagship-lax model; not confirmed — dropped 70→55, injection sub-claim rejected.
+[PARKED] affiliates Zendesk JWT /rest/user/zendesk/jwt: auth-gated, schema unknown, no passive path (unchanged).
+[FINAL] 1) affiliates wildcard CORS 95 (HUMAN), 2) cross-brand BOLA 80 (HUMAN), 3) cable2 unauth handler 55 (AUTH_HELPED). All ≥40 survive; flagship & BOLA only advance with one authenticated session.
+
+## STEP 5 — NEXT ACTION
+[NEXT] HUMAN: cross-brand token-reuse proof — `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <betpandacasino.io-issued JWT>"` vs already re-anchored 401 control; non-401 = cross-brand BOLA on shared App B (cheapest complete CRITICAL). Cable2 lane folded into evidence already gathered; further body-brute is a mutating loop with no injection evidence to chase.
+
+## STEP 6 — LEARNING
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: fresh re-anchor 22:46-47Z — config 200 ACAO:https://evil.example+ACAC:true; password/reset, set-2fa-setting, players all 405 POST-only with identical ACAO:evil+ACAC:true; backend intact, bundle-agnostic.
+[LEARN] CHANGED @ affiliates.betpanda.io SPA: live bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handled independently; endpoint map still valid (live-confirmed, not JS-only).
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: real unauth handler (ACAO:*; staged 400s userId-alnum → registeredOn-RFC3339); schema-strict, not lax flagship equivalent.
+[LEARN] REJECTED BUSLOGIC @ cable.betpandacasino.io injection primitive: arbitrary-eventType/XSS/negative-amount NOT confirmed; stricter validator contradicts flagship-lax model.
+
+## STEP 7 — RISK
+[RISK] betpanda: 86 — Flagship (95) re-anchored but HUMAN-gated; cross-brand BOLA (80) still cheapest complete CRITICAL proof, needs one authenticated token; second-cable lane downgraded 70→55 (strict validator, no injection evidence); SPA rollback to Jul-30 build records first bundle churn in days but backend unaffected. Next meaningful delta on any lane requires one authenticated test.

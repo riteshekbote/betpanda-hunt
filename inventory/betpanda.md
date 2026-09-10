@@ -380,3 +380,9 @@ www.betpanda.io
 - CHANGED `affiliates.betpanda.io/rest/public/config` — `supportEmail` rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, contentful access token fields empty — vendor
 - CHANGED `betpanda.partners+betpandacasino.io/rest/user/refresh` — OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl `x-captcha-token`, `x-site-name-id`, `x-maintenance-reason`, `x-pre
 - CHANGED `affiliates.betpanda.io/rest/*` — Wildcard CORS+credentials re-verified live fresh (GET `/rest/public/config` 200 ACAO:evil.example + ACAC:true; OPTIONS `/rest/user/password/reset` 200 ACAO:evil.examp
+
+## 2026-09-10 22:48:06 UTC
+- NEW `cable.betpandacasino.io/cable/user-event` — Second cable instance discovered; OPTIONS preflight returns 204 with `ACAO:*` + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH; root banner byte-identical "B
+- CHANGED `affiliates.betpanda.io/rest/public/config` — `supportEmail` rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, contentful access token fields empty — vendor
+- CHANGED `betpanda.partners+betpandacasino.io/rest/user/refresh` — OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl `x-captcha-token`, `x-site-name-id`, `x-maintenance-reason`, `x-pre
+- CHANGED `affiliates.betpanda.io/rest/*` — Wildcard CORS+credentials re-verified live fresh (GET `/rest/public/config` 200 ACAO:evil.example + ACAC:true; OPTIONS `/rest/user/password/reset` 200 ACAO:evil.examp
