@@ -24188,3 +24188,175 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 [RISK] betpanda: 86 — Flagship 95 re-anchored but HUMAN-gated; cross-brand BOLA 80 is the cheapest complete CRITICAL and needs one authenticated token; cable2 downgraded 55 (strict validator, no injection). Passive ceiling reached: no lane advances without an authenticated session.
+===== ANALYST bigpickle 2026-09-11 10:07:18 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -m 10 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example.com' 2>&1 | head -30
+HTTP/2 200 
+date: Fri, 11 Sep 2026 10:00:47 GMT
+content-type: application/json
+content-length: 398
+access-control-allow-origin: https://evil.example.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a395d3c98a6e939b-SJC
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -m 10 'https://betpandacasino.io/rest/user/settings' -H 'Origin: https://evil.example.com' 2>&1 | head -30
+HTTP/2 401 
+date: Fri, 11 Sep 2026 10:00:47 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a395d3cd197e67fa-SJC
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqWP37n4F42XdUx; HttpOnly; SameSite=None; Secure; Path=/; Expires=Sat, 12 Sep 2026 09:00:47 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -m 10 'https://betpanda.partners/rest/user/settings' -H 'Origin: https://evil.example.com' 2>&1 | head -30
+HTTP/2 401 
+date: Fri, 11 Sep 2026 10:00:55 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a395d3fe5a217ac2-SJC
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWwuFiDuYDUWuNm5hFN8R3KH9jzt; HttpOnly; SameSite=Lax; Path=/; Expires=Sat, 12 Sep 2026 09:00:55 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+x-xss-protection: 0
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -m 10 'https://cable.betpandacasino.io/cable/user-event' -X OPTIONS -H 'Origin: https://evil.example.com' -H 'Access-Control-Request-Method: POST' 2>&1 | head -30
+HTTP/2 204 
+date: Fri, 11 Sep 2026 10:00:55 GMT
+server: cloudflare
+vary: Access-Control-Request-Method, Access-Control-Request-Headers, Origin
+access-control-allow-origin: *
+access-control-allow-methods: GET,POST,HEAD,PUT,DELETE,PATCH
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a395d4029cad3c35-SJC
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -m 10 'https://cable.betpanda.io/cable/user-event' -X OPTIONS -H 'Origin: https://evil.example.com' -H 'Access-Control-Request-Method: POST' 2>&1 | head -30
+HTTP/2 204 
+date: Fri, 11 Sep 2026 10:00:56 GMT
+server: cloudflare
+vary: Access-Control-Request-Method, Access-Control-Request-Headers, Origin
+access-control-allow-origin: *
+access-control-allow-methods: GET,POST,HEAD,PUT,DELETE,PATCH
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a395d4086c9eefbd-SJC
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -m 10 'https://affiliates.betpanda.io/rest/user/password/reset' -X OPTIONS -H 'Origin: https://evil.example.com' -H 'Access-Control-Request-Method: POST' 2>&1 | head -20
+HTTP/2 200 
+date: Fri, 11 Sep 2026 10:01:03 GMT
+content-length: 0
+access-control-allow-origin: https://evil.example.com
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a395d4332d89939b-SJC
+[0m
+[0m$ [0mcurl -sS -m 10 'https://affiliates.betpanda.io/' 2>&1 | grep -oP 'src="[^"]*main[^"]*\.js"' | head -5
+src="/main.1ae50aab.js"
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -m 10 'https://www.betpanda.io/' 2>&1 | head -15; echo '---'; curl -sS -D- -o /dev/null -m 10 'https://betpanda.io/' 2>&1 | head -15
+HTTP/2 403 
+date: Fri, 11 Sep 2026 10:01:31 GMT
+content-type: text/html; charset=UTF-8
+content-length: 22390
+accept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cf-mitigated: challenge
+x-frame-options: SAMEORIGIN
+server: cloudflare
+critical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA
+cross-origin-embedder-policy: require-corp
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+origin-agent-cluster: ?1
+permissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*
+referrer-policy: same-origin
+---
+HTTP/2 301 
+date: Fri, 11 Sep 2026 10:01:31 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/
+server: cloudflare
+cf-ray: a395d4e53b57ed3c-SJC
+[0m
+All lanes re-anchored live this cycle. Baselines byte-stable across every carried finding.
+
+STEP 1 — DELTA
+- NO_DELTA on findings: affiliates wildcard CORS (config 200 + ACAO:evil + ACAC:true) unchanged; password/reset OPTIONS 200 ACAO:evil + ACAC:true unchanged; betpandacasino.io CORS pinned (ACAO own-host) + 401 control(len=32) unchanged; betpanda.partners pinned (no ACAO on evil Origin) + 401 control unchanged; both cable instances 204 ACAO:* preflight unchanged.
+- NO_DELTA on assets: affiliates SPA bundle still main.1ae50aab.js; www.betpanda.io still 403 cf-mitigated challenge; betpanda.io root 301→betpandacasino.io (consistent redirect shim, not novel).
+
+STEP 2 — PRIORITIZE
+- [PRIO] affiliates.betpanda.io/rest/*, 8.7, axis=wildcard-CORS+credentials over 30+ session-handlers; gate_ease low (auth-gated) but flaw confirmed live unauth.
+- [PRIO] betpandacasino.io+betpanda.partners/rest/user/*, 8.2, axis=shared App B backend, Bearer-JWT auth, cross-brand authZ unverified.
+- [PRIO] cable.betpandacasino.io/cable/user-event, 6.5, axis=duplicated unauth ingestion but schema-strict → no injection primitive.
+
+STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Fresh 10:00Z — unauth GET /rest/public/config 200 reflects ACAO:https://evil.example.com + ACAC:true; OPTIONS /rest/user/password/reset 200 reflects same + GET,POST,OPTIONS,PUT,HEAD,DELETE; affiliates CORS allow-headers lacks Authorization (vs casino's Bearer-JWT model) ⇒ session/cookie auth, browser credentialed requests auto-carry it. 30+ state-changing handlers under the wildcard envelope.
+evidence_needed: credentialed cross-origin read (metrics/affiliate, transaction/list) or POST password/reset carrying resetPasswordCode → ATO.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <session>`; then credentialed `POST /rest/user/password/reset` per `/reset-password/:affiliateId/:resetPasswordCode`.
+impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Cross-brand session acceptance on shared App B proves BOLA between brands
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Fresh 10:00Z both hosts return byte-identical 401 "No http-session found in request" (len=32); both allow Authorization header (Bearer JWT) + identical x-captcha-token/x-site-name-id/x-maintenance-reason/x-preferred-app-context; CORS pinned on both ⇒ any cross-brand acceptance is server-side authZ.
+evidence_needed: non-401 on betpanda.partners/rest/user/settings using a casino-issued JWT vs 401 control.
+verify_steps: HUMAN_ONLY — `GET https://betpandacasino.io/rest/user/settings -H "Authorization: Bearer <jwt>"`(control→401); replay same JWT to `https://betpanda.partners/rest/user/settings`; non-401 = cross-brand accepted.
+impact: cross-brand wallet/balance/settings disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+
+STEP 4 — SELF-CRITIQUE
+- [PARKED] cable.betpandacasino.io unauth ingestion: strict validator (alnum userId, RFC3339 registeredOn) contradicts flagship-lax model; no injection evidence after multiple benign POSTs; OPTIONS 204 ACAO:* alone is not a finding without an impact primitive. Dropped below action threshold.
+- [FINAL] affiliates wildcard ATO chain (95) — re-anchored, exhaustive, POC auth-gated. [FINAL] cross-brand BOLA (80) — cheapest complete CRITICAL, one authenticated token.
+
+STEP 5 — NEXT ACTION
+[NEXT] HUMAN: cross-brand token-reuse proof — `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <betpandacasino.io-issued JWT>'` vs the re-anchored 401 control; non-401 = cheapest complete CRITICAL on shared App B. All carried lanes are exhaustively re-anchored and no passive delta exists.
+
+STEP 6 — LEARNING
+- [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: fresh 10:00Z — public config 200 ACAO:https://evil.example.com+ACAC:true (unauth), password/reset OPTIONS identical; bundle unchanged main.1ae50aab.js; flagship intact; POC remains auth-gated.
+- [LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: fresh 10:00Z — identical 401 control (len=32), CORS pinned both (own-host ACAO vs none), Authorization-header JWT model; cross-brand test remains cheapest de-gate.
+- [LEARN] REJECTED BUSLOGIC @ betpandacasino.io x-site-name-id/betpanda.io root: 301→casino is brand-shim; no novel surface. www/fp/custom-lp all unchanged CF-challenge.
+
+STEP 7 — RISK
+[RISK] betpanda: 86 — Flagship (95) and cross-brand BOLA (80) re-anchored live, both HUMAN-gated on one authenticated session; cable2 lane parked (55, strict validator, no injection). Passive ceiling is absolute: every carried lane needs an authenticated cookie/JWT; no further passive delta on any host is expected.

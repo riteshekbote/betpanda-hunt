@@ -3252,3 +3252,24 @@ impact: unauth analytics-pipeline write / event poisoning on second host — Med
 testability: AUTH_HELPED
 [NEXT] HUMAN: cross-brand token-reuse proof — `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <betpandacasino.io-issued JWT>"` against the already re-anchored 401 control; non-401 = cheapest complete CRITICAL on shared App B. No new passive delta exists; all three lanes require one authenticated session.
 [RISK] betpanda: 86 — Flagship 95 re-anchored but HUMAN-gated; cross-brand BOLA 80 is the cheapest complete CRITICAL and needs one authenticated token; cable2 downgraded 55 (strict validator, no injection). Passive ceiling reached: no lane advances without an authenticated session.
+## 2026-09-11 10:02:06 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Fresh 10:00Z — unauth GET /rest/public/config 200 reflects ACAO:https://evil.example.com + ACAC:true; OPTIONS /rest/user/password/reset 200 reflects same + GET,POST,OPTIONS,PUT,HEAD,DELETE; affiliates CORS allow-headers lacks Authorization (vs casino's Bearer-JWT model) ⇒ session/cookie auth, browser credentialed requests auto-carry it. 30+ state-changing handlers under the wildcard envelope.
+evidence_needed: credentialed cross-origin read (metrics/affiliate, transaction/list) or POST password/reset carrying resetPasswordCode → ATO.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <session>`; then credentialed `POST /rest/user/password/reset` per `/reset-password/:affiliateId/:resetPasswordCode`.
+impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Cross-brand session acceptance on shared App B proves BOLA between brands
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Fresh 10:00Z both hosts return byte-identical 401 "No http-session found in request" (len=32); both allow Authorization header (Bearer JWT) + identical x-captcha-token/x-site-name-id/x-maintenance-reason/x-preferred-app-context; CORS pinned on both ⇒ any cross-brand acceptance is server-side authZ.
+evidence_needed: non-401 on betpanda.partners/rest/user/settings using a casino-issued JWT vs 401 control.
+verify_steps: HUMAN_ONLY — `GET https://betpandacasino.io/rest/user/settings -H "Authorization: Bearer <jwt>"`(control→401); replay same JWT to `https://betpanda.partners/rest/user/settings`; non-401 = cross-brand accepted.
+impact: cross-brand wallet/balance/settings disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[NEXT] HUMAN: cross-brand token-reuse proof — `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <betpandacasino.io-issued JWT>'` vs the re-anchored 401 control; non-401 = cheapest complete CRITICAL on shared App B. All carried lanes are exhaustively re-anchored and no passive delta exists.
+[RISK] betpanda: 86 — Flagship (95) and cross-brand BOLA (80) re-anchored live, both HUMAN-gated on one authenticated session; cable2 lane parked (55, strict validator, no injection). Passive ceiling is absolute: every carried lane needs an authenticated cookie/JWT; no further passive delta on any host is expected.
