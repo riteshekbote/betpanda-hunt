@@ -3194,3 +3194,31 @@ testability: AUTH_HELPED
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: real unauth handler (ACAO:*; staged 400s userId-alnum → registeredOn-RFC3339); schema-strict, not lax flagship equivalent.
 [LEARN] REJECTED BUSLOGIC @ cable.betpandacasino.io injection primitive: arbitrary-eventType/XSS/negative-amount NOT confirmed; stricter validator contradicts flagship-lax model.
 [RISK] betpanda: 86 — Flagship (95) re-anchored but HUMAN-gated; cross-brand BOLA (80) still cheapest complete CRITICAL proof, needs one authenticated token; second-cable lane downgraded 70→55 (strict validator, no injection evidence); SPA rollback to Jul-30 build records first bundle churn in days but backend unaffected. Next meaningful delta on any lane requires one authenticated test.
+## 2026-09-11 00:53:39 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials full /rest/* enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Fresh 00:51Z — OPTIONS password/reset 200 ACAO:https://evil.example+ACAC:true+GET,POST,OPTIONS,PUT,HEAD,DELETE; GET /rest/public/config 200 ACAO:evil+ACAC:true (unauth); GET /rest/user 401 ACAO:evil+ACAC:true with allow-headers lacking Authorization → cookie/session auth model, so browser credentialed requests auto-carry session. 30+ state-changing handlers (password/reset, set-2fa-setting, agent set-deposit-withdraw-limit, change-password) all under the wildcard envelope.
+evidence_needed: credentialed cross-origin read (metrics/affiliate, transaction/list) or POST password/reset carrying resetPasswordCode → ATO.
+verify_steps: HUMAN_ONLY — `curl -sS -D- https://affiliates.betpanda.io/rest/user/metrics/affiliate -H "Origin: https://evil.com" -b <session-cookie>`; then mirror credentialed `POST /rest/user/password/reset` per `/reset-password/:affiliateId/:resetPasswordCode`.
+impact: player PII + transactions exfil, password/2FA reset, deposit-limit tamper → ATO — CRITICAL (9.1).
+testability: HUMAN_ONLY
+[HYP] Cross-brand session acceptance on shared App B proves BOLA between brands
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Same 401 control body both hosts (text/plain len=32) at 00:51Z; CORS pinned on both (no ACAO/ACAC on partners; own-host ACAO on casino) so cross-brand acceptance can only be server-side authZ. Shared SPA index-KqswHEbl.js + OPTIONS envelope parity (x-captcha-token/x-site-name-id/x-maintenance-reason/x-preferred-app-context). Cognito JWT aud/iss validation unverified.
+evidence_needed: non-401 on betpanda.partners/rest/user/settings with a casino-issued JWT vs 401 control.
+verify_steps: HUMAN_ONLY — `curl -sS -D- https://betpandacasino.io/rest/user/settings -H "Authorization: Bearer <jwt>"` (control→401); same JWT → `https://betpanda.partners/rest/user/settings`; non-401 = cross-brand accepted.
+impact: cross-brand wallet/balance/settings disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Unauth validated event-ingestion handler duplicated on second cable instance
+class: BUSLOGIC
+asset: cable.betpandacasino.io/cable/user-event
+confidence: 55
+reasoning: 00:51Z GET → 405 ACAO:* + `allow: POST`; OPTIONS preflight 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH; two prior benign POSTs each yielded distinct 400 JSON validation errors (userId alnum; registeredOn RFC3339) with ACAO:* — real unauth handler, schema-strict. Injection (XSS/negative-amount) NOT confirmed on this instance.
+evidence_needed: fully-formed benign payload returning 200 without auth; stored reflection/aggregation upstream.
+verify_steps: AUTH_HELPED — `curl -sS -D- -X POST https://cable.betpandacasino.io/cable/user-event -H "Content-Type: application/json" -d '{"eventType":"test","userId":"verifybp3","registeredOn":"2026-09-11T00:52:00Z"}'`; then owned-site stored-reflection check.
+impact: unauth analytics-pipeline write / event poisoning on second host — Medium. Injection primitive NOT demonstrated.
+testability: AUTH_HELPED
