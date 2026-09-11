@@ -273,3 +273,8 @@
 - 2026-09-11 CHANGED @ affiliates.betpanda.io/rest/public/config: supportEmail rotated to deals@bamboopartners.io (was support@betpanda.io), phoneSignupEnabled:false, contentful access token fields empty — vendor operator-config churn, not a finding.
 - 2026-09-11 REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1; no client-controlled tenant switch on wildcard host public layer.
 - 2026-09-11 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/user/password/reset: wildcard CORS+ACAC re-confirmed fresh (ACAO:https://evil.example).
+- 2026-09-11 ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: second-instance unauth write confirmed (shared-cycle log 14:40:30; OPTIONS 204 ACAO:* re-confirmed 17:55Z); validator aligned with flagship-lax (arbitrary eventType/XSS/negative amounts) — supersedes strict-model note; dual-instance injection now concrete.
+- 2026-09-11 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live re-anchor 17:55Z — config 200 ACAO:https://evil.example + ACAC:true, password/reset OPTIONS 200 same + full allow-methods; allow-headers lack Authorization ⇒ cookie/session auth carried cross-origin automatically.
+- 2026-09-11 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: 401 len=32 parity re-confirmed live; CORS filter asymmetry observed (casino ACAO own-host+ACAC:true; partners NO ACAO/ACAC even own-origin) → cross-brand acceptance would be server-side only.
+- 2026-09-11 CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+- 2026-09-11 REJECTED @ crt.sh passive CT sweep: 429/502 — no fresh subdomain data this cycle; SCAN lane deferred not discarded.

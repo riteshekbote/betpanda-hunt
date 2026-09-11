@@ -415,3 +415,8 @@ www.betpanda.io
 - CHANGED `affiliates.betpanda.io` — SPA bundle reverted to `main.1ae50aab.js` (Jul-30, 2,089,573 B); `main.ef021e68.js` gone (206 text/html catch-all); backend `/rest/*` endpoints live-confirmed independent of
 - CHANGED `cable.betpandacasino.io/cable/user-event` — Second cable instance confirmed live; OPTIONS preflight 204 `ACAO:*` + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH; POST accepts arbitrary `eventType` (XS
 - CHANGED `cable.betpanda.io/cable/user-event` — Validator alignment confirmed: both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negati
+
+## 2026-09-11 18:01:32 UTC
+- CHANGED `affiliates.betpanda.io` — SPA bundle reverted to `main.1ae50aab.js` (Jul-30, 2,089,573 B); `main.ef021e68.js` gone (206 text/html catch-all); backend `/rest/*` endpoints live-confirmed independent of
+- CHANGED `cable.betpandacasino.io/cable/user-event` — Second cable instance confirmed live; OPTIONS preflight 204 `ACAO:*` + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH; POST accepts arbitrary `eventType` (XS
+- CHANGED `cable.betpanda.io/cable/user-event` — Validator alignment confirmed: both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negati
