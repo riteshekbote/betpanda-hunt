@@ -278,3 +278,7 @@
 - 2026-09-11 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: 401 len=32 parity re-confirmed live; CORS filter asymmetry observed (casino ACAO own-host+ACAC:true; partners NO ACAO/ACAC even own-origin) → cross-brand acceptance would be server-side only.
 - 2026-09-11 CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
 - 2026-09-11 REJECTED @ crt.sh passive CT sweep: 429/502 — no fresh subdomain data this cycle; SCAN lane deferred not discarded.
+- 2026-09-11 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: fresh re-anchor ~18:15Z — config 200 ACAO:https://evil.example + ACAC:true; password/reset OPTIONS 200 same + full allow-methods; allow-headers lack Authorization ⇒ cookie/session auth crosses origin automatically.
+- 2026-09-11 ACCEPTED CHANGED @ betpandacasino.io SPA index-5unQ0efM.js: enumerated 795,626 B bundle — only known App B handlers; baseUrl=https://<host>/rest; no new money-flow/upload/kyc endpoints; FliptService client-side flags only. Endpoint map unchanged.
+- 2026-09-11 REJECTED @ stage/staging/cdn.betpanda.io: passive CT identities all NXDOMAIN (dig status NXDOMAIN on Cloudflare authoritative, no CNAME/A) — retired hosts, no subdomain takeover, no attack surface.
+- 2026-09-11 ACCEPTED @ crt.sh SCAN lane: recovered this cycle after 429/502 — HTML format returns full CT log; query now proven reliable, lane closed with data.

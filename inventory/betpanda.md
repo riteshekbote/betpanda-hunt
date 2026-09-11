@@ -420,3 +420,11 @@ www.betpanda.io
 - CHANGED `affiliates.betpanda.io` — SPA bundle reverted to `main.1ae50aab.js` (Jul-30, 2,089,573 B); `main.ef021e68.js` gone (206 text/html catch-all); backend `/rest/*` endpoints live-confirmed independent of
 - CHANGED `cable.betpandacasino.io/cable/user-event` — Second cable instance confirmed live; OPTIONS preflight 204 `ACAO:*` + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH; POST accepts arbitrary `eventType` (XS
 - CHANGED `cable.betpanda.io/cable/user-event` — Validator alignment confirmed: both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negati
+
+## 2026-09-11 20:42:29 UTC
+- CHANGED `affiliates.betpanda.io` — SPA bundle reverted to `main.1ae50aab.js` (Jul-30, 2,089,573 B); `main.ef021e68.js` gone (206 text/html catch-all); backend `/rest/*` endpoints live-confirmed independent of
+- CHANGED `cable.betpandacasino.io/cable/user-event` — Second cable instance confirmed live; OPTIONS preflight 204 `ACAO:*` + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH; POST accepts arbitrary `eventType` (XS
+- CHANGED `cable.betpanda.io/cable/user-event` — Validator alignment confirmed: both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negati
+- CHANGED `affiliates.betpanda.io/rest/public/config` — `supportEmail` rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, Contentful access token fields empty — vendor
+- CHANGED `betpandacasino.io` SPA bundle rotated to `index-5unQ0efM.js` (was `index-KqswHEbl.js`); App B behavior anchors unchanged
+- CHANGED `betpandacasino.io+betpanda.partners/rest/user/refresh` — OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl `x-captcha-token`, `x-site-name-id`, `x-maintenance-reason`, `x-pre
