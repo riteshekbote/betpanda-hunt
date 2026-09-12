@@ -497,3 +497,5 @@ www.betpanda.io
 - CHANGED `betpandacasino.io`+`betpanda.partners` /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) re-confirmed live 00:56:08-09Z.
 - CHANGED `affiliates.betpanda.io/rest/public/config` supportEmail rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), phoneSignupEnabled:false, Contentful access token fields empty — vendor opera
 - CHANGED `affiliates.betpanda.io/rest/public/config` x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1 — no client-controlled tenant switch on wildcard host public l
+
+## 2026-09-12 23:07:35 UTC
