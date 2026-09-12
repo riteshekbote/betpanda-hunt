@@ -27463,3 +27463,449 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 [RISK] betpanda: 88 — Flagship 95, cable 85, cross-brand BOLA 80 all re-anchored live 09:35Z (stable across the 09-12 boundary). New-identity lane (CT/DNS) re-opened and closed with LOW only: WordPress blog properly gated, tracker disabled-not-dangling, cms challenge-blocked, www redirect. All three impact proofs remain gated on a single authenticated test session; zero new passive surface of value. Absolute passive ceiling — one HUMAN-account session de-gates the two top findings; nothing further actionable on the api target until provisioned.
+===== ANALYST bigpickle 2026-09-12 13:13:44 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mcurl -sS -m 25 -D- 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' -o /tmp/opencode/aff_config.out; echo "---BODY---"; head -c 1500 /tmp/opencode/aff_config.out
+HTTP/2 200 
+date: Sat, 12 Sep 2026 13:07:59 GMT
+content-type: application/json
+content-length: 398
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a39f23662a28e53e-DFW
+
+---BODY---
+{"logoUrl":"https://d3ec3n7kizfkuy.cloudfront.net/Betpanda_io_logo_White_Green_b5267c709b.png","operatorId":1,"linkUrl":"https://betpanda.partners","supportEmail":"deals@bamboopartners.io","contenfulSpaceId":"","strapiApiUrl":"/cms","contentfulAccessToken":"","currencies":["BTC","ETH","USDT","BNB","DOGE","LTC","SAND","SHIB","TRX","uBTC","XMR","XRP","USDC","SOL","TON"],"phoneSignupEnabled":false}
+[0m
+[0m$ [0mcurl -sS -m 25 -D- 'https://betpandacasino.io/rest/user/settings' -H 'Origin: https://evil.example' -o /tmp/opencode/bc_set.out; echo "---BODY---"; head -c 800 /tmp/opencode/bc_set.out
+HTTP/2 401 
+date: Sat, 12 Sep 2026 13:07:59 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a39f23650feee718-DFW
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx92h7kctJzAap; HttpOnly; SameSite=None; Secure; Path=/; Expires=Sun, 13 Sep 2026 12:07:59 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+---BODY---
+No http-session found in request
+[0m
+[0m$ [0mcurl -sS -m 25 -D- 'https://betpanda.partners/rest/user/settings' -H 'Origin: https://evil.example' -o /tmp/opencode/bp_set.out; echo "---BODY---"; head -c 800 /tmp/opencode/bp_set.out
+HTTP/2 401 
+date: Sat, 12 Sep 2026 13:07:59 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a39f236549a16b34-DFW
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWwuFiDuYDUWuNm5CSaYTuCg7KUY; HttpOnly; SameSite=Lax; Path=/; Expires=Sun, 13 Sep 2026 12:07:59 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+x-xss-protection: 0
+
+---BODY---
+No http-session found in request
+[0m
+[0m$ [0mcurl -sS -m 25 -D- -X OPTIONS 'https://cable.betpandacasino.io/cable/user-event' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: content-type' -o /tmp/opencode/c2_opt.out; echo "---BODY---"; head -c 500 /tmp/opencode/c2_opt.out
+HTTP/2 204 
+date: Sat, 12 Sep 2026 13:08:03 GMT
+server: cloudflare
+vary: Access-Control-Request-Method, Access-Control-Request-Headers, Origin
+access-control-allow-origin: *
+access-control-allow-methods: GET,POST,HEAD,PUT,DELETE,PATCH
+access-control-allow-headers: content-type
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a39f237dccf959fe-DFW
+
+---BODY---
+[0m
+[0m$ [0mcurl -sS -m 25 'https://betpandacasino.io/' -o /tmp/opencode/bc_index.html; grep -oE 'src="[^"]+\.js[^"]*"' /tmp/opencode/bc_index.html; grep -oE '(index|main)-[A-Za-z0-9_]+\.js' /tmp/opencode/bc_index.html | sort -u
+src="/assets/index-5unQ0efM.js"
+index-5unQ0efM.js
+[0m
+Anchors re-confirmed live (13:07-08Z). Now running the novel lane this cycle: extract auth-flow internals (Cognito pool/client IDs, auth endpoints) from the live SPA bundles to strengthen the cross-brand JWT hypothesis without a token.
+[0m$ [0mcurl -sS -m 25 'https://betpanda.partners/' -o /tmp/opencode/bp_index.html; grep -oE 'src="[^"]+\.js[^"]*"' /tmp/opencode/bp_index.html; grep -oE '(index|main)-[A-Za-z0-9_]+\.js' /tmp/opencode/bp_index.html | sort -u
+src="/assets/index-5unQ0efM.js"
+index-5unQ0efM.js
+[0m
+[0m$ [0mcurl -sS -m 25 'https://affiliates.betpanda.io/' -o /tmp/opencode/aff_index.html; grep -oE 'src="[^"]+\.js[^"]*"' /tmp/opencode/aff_index.html; grep -oE '(index|main)-[A-Za-z0-9_]+\.js' /tmp/opencode/aff_index.html | sort -u
+src="/main.1ae50aab.js"
+[0m
+betpanda.partners now serves the SAME bundle as betpandacasino.io (`index-5unQ0efM.js`) — brand-shared build. Fetching all three bundles and grepping for auth internals (Cognito pool IDs, JWT issuers, client IDs).
+[0m$ [0mcurl -sS -m 60 'https://betpandacasino.io/assets/index-5unQ0efM.js' -o /tmp/opencode/bc_bundle.js; wc -c /tmp/opencode/bc_bundle.js; curl -sS -m 60 'https://affiliates.betpanda.io/main.1ae50aab.js' -o /tmp/opencode/aff_bundle.js; wc -c /tmp/opencode/aff_bundle.js
+795626 /tmp/opencode/bc_bundle.js
+2089573 /tmp/opencode/aff_bundle.js
+[0m
+[0m$ [0mecho "=== cognito pools ==="; grep -oE 'cognito-idp\.[a-z0-9-]+\.amazonaws\.com[^"'\'' ]*' /tmp/opencode/bc_bundle.js | sort -u; echo "=== userPoolId/UserPoolId/clientId/ClientId ==="; grep -oE '"(userPoolId|UserPoolId|ClientId|clientId|identityPoolId|userPoolWebClientId)"[^,}]{0,80}' /tmp/opencode/bc_bundle.js | sort -u | head -40; echo "=== aws region pools ==="; grep -oE 'eu-west-1[^"'\'' ]{0,20}' /tmp/opencode/bc_bundle.js | sort -u | head
+=== cognito pools ===
+=== userPoolId/UserPoolId/clientId/ClientId ===
+=== aws region pools ===
+[0m
+[0m$ [0mecho "=== cognito-affiliates ==="; grep -oE 'cognito-idp\.[a-z0-9-]+\.amazonaws\.com[^"'\'' ]*' /tmp/opencode/aff_bundle.js | sort -u; echo "=== pool keys ==="; grep -oE '"(userPoolId|UserPoolId|ClientId|clientId|identityPoolId|userPoolWebClientId|poolId)"[^,}]{0,80}' /tmp/opencode/aff_bundle.js | sort -u | head -40
+=== cognito-affiliates ===
+=== pool keys ===
+[0m
+[0m$ [0mecho "=== bc: cognito/JWT/amazonaws markers ==="; grep -oE 'cognito' /tmp/opencode/bc_bundle.js | sort | uniq -c; grep -oE '(JWT|jwt|id_token|idToken|access_token|accessToken|refresh_token)' /tmp/opencode/bc_bundle.js | sort | uniq -c; grep -oE 'amazonaws\.com' /tmp/opencode/bc_bundle.js | sort | uniq -c; grep -oE 'apiKey|apikey' /tmp/opencode/bc_bundle.js | sort | uniq -c
+=== bc: cognito/JWT/amazonaws markers ===
+      8 cognito
+      1 JWT
+     10 accessToken
+     17 jwt
+      5 amazonaws.com
+[0m
+[0m$ [0mecho "=== aff: cognito/JWT markers ==="; grep -oE 'cognito' /tmp/opencode/aff_bundle.js | sort | uniq -c; grep -oE '(JWT|jwt|id_token|idToken|access_token|accessToken|refresh_token)' /tmp/opencode/aff_bundle.js | sort | uniq -c; grep -oE 'amazonaws\.com' /tmp/opencode/aff_bundle.js | sort | uniq -c
+=== aff: cognito/JWT markers ===
+     10 accessToken
+      2 amazonaws.com
+[0m
+[0m$ [0mecho "=== bc cognito contexts ==="; grep -oE '.{120}cognito.{160}' /tmp/opencode/bc_bundle.js | head -20
+=== bc cognito contexts ===
+some(function(t){return t.test(A)}):e},Fa={logicalServiceName:"rum.aws.amazon.com",urlsToInclude:[/.*/],urlsToExclude:[/cognito\-identity\.([^\.]*\.)?amazonaws\.com/,/sts\.([^\.]*\.)?amazonaws\.com/],stackTraceLength:200,recordAllRequests:!1,addXRayTraceIdHeader:!1},LD=function(A){retur
+new Ie({method:od,headers:{"content-type":Cd,"x-amz-target":i},protocol:Qd,hostname:t.hostname,body:n})},this.hostname="cognito-identity.".concat(e.region,".amazonaws.com"),this.fetchRequestHandler=e.fetchRequestHandler,this.config=e.clientConfig,this.identityStorageKey=!((g=e.clientCon
+ion)}),n.renewCredentials())return C();o(n.credentials)})]})})};var i=e.identityPoolId.split(":")[0];this.config=e,this.cognitoIdentityClient=new sd({fetchRequestHandler:new ti,region:i,clientConfig:e,applicationId:t}),this.credentialStorageKey=this.config.cookieAttributes.unique?"".con
+n hd(this,function(a){switch(a.label){case 0:I=1,a.label=1;case 1:a.label=2;case 2:return a.trys.push([2,6,,7]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return o=a.sent(),[4,this.cognitoIdentityClient.getOpenIdToken(o)];case 4:return C=a.s
+n dd(this,function(r){switch(r.label){case 0:n=1,r.label=1;case 1:r.label=2;case 2:return r.trys.push([2,5,,6]),[4,this.cognitoIdentityClient.getId({IdentityPoolId:this.config.identityPoolId})];case 3:return I=r.sent(),[4,this.cognitoIdentityClient.getCredentialsForIdentity(I.IdentityId
+e"),localStorage.removeItem(this.credentialStorageKey),this.config.identityPoolId?(j.info("Rebuilding client with fresh cognito credentials"),localStorage.removeItem(this.identityStorageKey),this.setCognitoCredentials(this.config.identityPoolId,this.config.guestRoleArn)):this.credential
+[0m
+[0m$ [0mecho "=== bc amazonaws contexts ==="; grep -oE '.{100}amazonaws\.com.{120}' /tmp/opencode/bc_bundle.js | head -20
+=== bc amazonaws contexts ===
+tion(A,e,t){var g={id:Oa(),name:A,start_time:e,end_time:void 0,in_progress:!1,namespace:A.endsWith("amazonaws.com")?"aws":"remote"};return t&&(g.http=t),g},Ja=function(A){try{return A.hostname?A.hostname:A.url?new URL(A.url).hostname
+ve credentials from STS: ".concat(r));case 4:return[2]}})})},this.hostname="sts.".concat(e.region,".amazonaws.com"),this.fetchRequestHandler=e.fetchRequestHandler}return A}(),bn=function(A,e,t,g){function i(n){return n instanceof t?n
+t":i},protocol:Qd,hostname:t.hostname,body:n})},this.hostname="cognito-identity.".concat(e.region,".amazonaws.com"),this.fetchRequestHandler=e.fetchRequestHandler,this.config=e.clientConfig,this.identityStorageKey=!((g=e.clientConfig
+ A.concat(n||Array.prototype.slice.call(e))},qa="us-west-2",sI="https://dataplane.rum.".concat(qa,".amazonaws.com"),We;(function(A){A.Errors="errors",A.Performance="performance",A.Interaction="interaction",A.Http="http"})(We||(We={})
+at(window.GLOBAL_CLOUDWATCH_SAMPLE_RATE))):.1,identityPoolId:t,endpoint:`https://dataplane.rum.${g}.amazonaws.com`,telemetries:["performance","errors","http"],allowCookies:!0,enableXRay:!1,signing:!0};try{Pa=new lp(e,"0.1.0",g,i)}cat
+[0m
+[0m$ [0mecho "=== bc authenticate/captcha contexts ==="; grep -oE '.{60}(/rest/user/authenticate|captcha|reCAPTCHA|turnstile|hcaptcha).{120}' /tmp/opencode/bc_bundle.js | head -30
+=== bc authenticate/captcha contexts ===
+[0m
+[0m$ [0mecho "=== aff captcha/auth contexts ==="; grep -oE '.{60}(/rest/public/login|/rest/user/authenticate|captcha|turnstile|reCAPTCHA).{110}' /tmp/opencode/aff_bundle.js | head -30
+=== aff captcha/auth contexts ===
+[0m
+Cognito refs are only AWS CloudWatch RUM/S3 guest-credential SDK internals — not the login token path. Extracting the real auth flow (authenticate/captcha/token constants) from both bundles to hand the HUMAN lane an exact request shape.
+[0m$ [0mfor w in authenticate captcha turnstile recaptcha hcaptcha refresh; do echo "$w: $(grep -oE "$w" /tmp/opencode/bc_bundle.js | wc -l)"; done; echo "=== bc /rest paths ==="; grep -oE '/rest/[A-Za-z0-9_./{}${}-]+' /tmp/opencode/bc_bundle.js | sort -u | head -60
+authenticate: 1
+captcha: 0
+turnstile: 0
+recaptcha: 0
+hcaptcha: 0
+refresh: 12
+=== bc /rest paths ===
+[0m
+[0m$ [0mfor w in authenticate captcha turnstile recaptcha hcaptcha refresh login register; do echo "$w: $(grep -oE "$w" /tmp/opencode/aff_bundle.js | wc -l)"; done; echo "=== aff /rest paths ==="; grep -oE '/rest/[A-Za-z0-9_./{}${}-]+' /tmp/opencode/aff_bundle.js | sort -u | head -70
+authenticate: 0
+captcha: 0
+turnstile: 0
+recaptcha: 0
+hcaptcha: 0
+refresh: 2
+login: 11
+register: 57
+=== aff /rest paths ===
+[0m
+[0m$ [0mecho "=== bc authenticate context ==="; grep -oE '.{200}authenticate.{300}' /tmp/opencode/bc_bundle.js | head -5; echo "=== bc refresh contexts ==="; grep -oE '.{80}refresh.{100}' /tmp/opencode/bc_bundle.js | head -8
+=== bc authenticate context ===
+uccessfulRequest=Date.now(),g()}).catch(n=>this.handleError(e,n,i))})}shouldRedirectToAppLogin(e){const t=localStorage.getItem("token"),g=localStorage.getItem("salt");return!(!t||!g||e.indexOf("/user/authenticate")!=-1||e.indexOf("/user/logout")!=-1||e.endsWith("/user/zendesk/jwt"))}async handleResponseError(e){const t=e.response?.status,g=e.config,i=g?.url;if(t!==401||!g||typeof i!="string"||!i.startsWith(this.baseUrl))return Promise.reject(e);if(g.__retriedAfterRefresh)return this.jwtStore.clear(),this.ha
+=== bc refresh contexts ===
+e=t,this.axios=g??CA.create({headers:{"Content-type":"application/json"}}),this.refreshUrl=`${this.baseUrl}/user/refresh`}inFlight;axios;refreshUrl;static RETRY_AFTER_MAX_MS=1e3;static DE
+h failed after retry",g)}}}async postOnce(){const t=(await this.axios.post(this.refreshUrl,void 0,{withCredentials:!0})).data;return this.jwtStore.setJwt(t?.jwt),t}parseRetryAfter(e){cons
+er/zendesk/jwt";class rl{constructor(e,t,g){this.baseUrl=e,this.jwtStore=t,this.refreshCoordinator=g,this.lastRequest=Date.now(),this.lastSuccessfulRequest=Date.now(),this.axios=CA.create
+ore.clear(),this.handleTerminalAuthRedirect(i),Promise.reject(e);try{await this.refreshCoordinator.refresh()}catch(n){return il(n)&&this.handleTerminalAuthRedirect(i),Promise.reject(e)}re
+his.fetcher=t}storeEtag(e){const t=e.headers.get("etag");t&&(this.etag=t)}async refresh(){try{const e={etag:this.etag},t=await this.fetcher(e),g=t.headers.get("etag");if(this.etag&&this.e
+:Promise.resolve()}whenReady(){return this.initPromise??Promise.resolve()}async refresh(){if(!this.client)return this.pollsUntilRetry>0?(this.pollsUntilRetry--,!1):(await this.attemptInit
+ffPolls=Math.min(this.retryBackoffPolls*2,yu),!1));try{return await this.client.refresh()}catch(e){return console.warn("[FliptService] refresh failed — keeping the current snapshot",e),!1
+[0m
+[0m$ [0mecho "=== aff login contexts ==="; grep -oE '.{80}"/?(user|public|v2)/[a-z-]+login.{120}' /tmp/opencode/aff_bundle.js | head -8; echo "=== aff register contexts ==="; grep -oE '.{60}"/?(public/)?register.{120}' /tmp/opencode/aff_bundle.js | head -10; echo "=== aff replay/baseUrl ==="; grep -oE '.{60}(rest/public/config|baseUrl|endpoint).{100}' /tmp/opencode/aff_bundle.js | head -12
+=== aff login contexts ===
+=== aff register contexts ===
+l?void 0:n.status})}},_Oe=async e=>{try{return Vt.post(Yt()+"/public/register",e)}catch(t){throw new Error(t)}},COe=async e=>{try{return Vt.post(Yt()+"/public/login",e)}catch(t){throw new Error(t)}
+:"/pending-approval",element:y.jsx(p3e,{})}),y.jsx(hn,{path:"/register",element:y.jsx(f3e,{})}),y.jsx(hn,{path:"/recover",element:y.jsx(h3e,{})}),y.jsx(hn,{path:"/reset-password/:affiliateId
+=== aff replay/baseUrl ===
+oid 0:e.response)??e)});let M_;const XA=e=>{M_=e},Yt=()=>M_.baseUrl,eG=()=>M_.favicon,tG=async e=>{try{return e.withDeposit?await Vt.post(Yt()+"/user/players",{limit:e
+().environmentBaseUrl;if(!Ze)throw new Error("Please define baseUrl for "+Ge);return Ze.endsWith("/")||(Ze+="/"),Ze};async function Ye({context:Ge,path:Ze,config:lt}){
+e:"en"})}}class _u{constructor(t){Ie(this,"axios");Ie(this,"baseUrl");let n=localStorage.getItem("strapiApiUrlOverride");n?this.baseUrl=n:this.baseUrl=t,this.axios=j_.
+Content(t,n){return new Promise((r,i)=>{this.axios.get(this.baseUrl+"/"+t+"?populate=deep&locale="+n).then(a=>{r(a.data)}).catch(a=>i(a))})}getAuthenticationPage(){ret
+,document.title=e.appTitle?e.appTitle:"Affiliate"}catch{XA({baseUrl:"http://localhost:9095/rest",favicon:"https://nano-public.s3-eu-west-1.amazonaws.com/neobet/neobet-
+[0m
+[0m$ [0mecho "=== x-captcha-token in bc ==="; grep -c 'x-captcha-token' /tmp/opencode/bc_bundle.js; echo "=== x-captcha-token in aff ==="; grep -c 'x-captcha-token' /tmp/opencode/aff_bundle.js; echo "=== aff /user|v2 path literals ==="; grep -oE '"/?(user|v2|public|agent|player|players|trk|metrics|reports|payouts|transaction|try-activate)[^"]{0,60}"' /tmp/opencode/aff_bundle.js | sort -u | head -70
+=== x-captcha-token in bc ===
+0
+=== x-captcha-token in aff ===
+0
+=== aff /user|v2 path literals ===
+"/agent/create"
+"/agent/events/list"
+"/agent/list"
+"/agent/set-deposit-withdraw-limit"
+"/metrics/top-metrics-revenue-chart"
+"/payouts/single-currency-list"
+"/player/:id"
+"/players"
+"/public/config"
+"/public/login"
+"/public/logout"
+"/public/register"
+"/reports/commission"
+"/reports/details"
+"/reports/sub-affiliates"
+"/transaction/list"
+"/trk/list"
+"/user"
+"/user/account-settings"
+"/user/change-password"
+"/user/metrics/affiliate"
+"/user/password/reset"
+"/user/players"
+"/user/selectable-payout-currencies"
+"/user/selectable-payout-networks"
+"/user/set-2fa-setting"
+"/user/set-profile"
+"/v2/report"
+"/v2/report/daily-stats-with-comparison"
+"/v2/report/sub-affiliates"
+"agent-detail d-flex flex-column gap-1 m-0 px-5 r"
+"agent-information-layout"
+"agenteventpage.agentinfo.agentid"
+"agenteventpage.agentinfo.created"
+"agenteventpage.agentinfo.depositLimit"
+"agenteventpage.agentinfo.fail"
+"agenteventpage.agentinfo.lastlogin"
+"agenteventpage.agentinfo.status"
+"agenteventpage.agentinfo.success"
+"agenteventpage.agentinfo.title"
+"agenteventpage.agentinfo.updateLimits-btn"
+"agenteventpage.agentinfo.username"
+"agenteventpage.agentinfo.withdrawLimit"
+"agenteventpage.empty-table"
+"agenteventpage.error-table"
+"agenteventpage.pagetitle"
+"agenteventpage.subtitle"
+"agentpage.agentcreate.fail"
+"agentpage.agentcreate.formfields.error-password"
+"agentpage.agentcreate.formfields.error-text"
+"agentpage.agentcreate.formfields.name"
+"agentpage.agentcreate.formfields.password"
+"agentpage.agentcreate.formfields.username"
+"agentpage.agentcreate.register-btn"
+"agentpage.agentcreate.submit-btn"
+"agentpage.agentcreate.success"
+"agentpage.agentcreate.title"
+"agentpage.agentcreate.username-taken"
+"agentpage.empty-table"
+"agentpage.error-table"
+"agentpage.intro.description"
+"agentpage.intro.title"
+"agentpage.pagetitle"
+"agentpage.subtitle"
+"player-information-avatar "
+"player-information-layout"
+"player-list-item-custom text-gray-700"
+"player-metrics-items rounded"
+"playerid"
+"playerpage.playerinfo.cpa.amount"
+[0m
+[0m$ [0mecho "=== bc /user path literals ==="; grep -oE '"/?user/[a-zA-Z0-9-]{2,60}"' /tmp/opencode/bc_bundle.js | sort -u | head -50; echo "=== bc /rest path literal build ==="; grep -oE '"/(user|auth|rest|login)[a-zA-Z0-9/_-]{2,60}"' /tmp/opencode/bc_bundle.js | sort -u | head -50
+=== bc /user path literals ===
+"/user/account-balances-and-bonuses"
+"/user/authenticate"
+"/user/logout"
+=== bc /rest path literal build ===
+"/user/account-balances-and-bonuses"
+"/user/authenticate"
+"/user/logout"
+"/user/zendesk/jwt"
+[0m
+Auth model extracted. Now pulling the exact register/login payload schema + captcha header usage from bundles.
+[0m$ [0mecho "=== aff register call-site payloads ==="; grep -oE '.{80}(_Oe|COe)\(.+?\{.{0,40}' /tmp/opencode/aff_bundle.js | head -12; echo "=== aff field keys near register ==="; grep -oE '"(email|username|password|firstName|firstname|lastName|lastname|phone|bonusCode|promoCode|currency|captchaToken|captcha_token|agreeToTerms)"[^,}]{0,40}' /tmp/opencode/aff_bundle.js | sort | uniq -c | sort -rn | head -20
+=== aff register call-site payloads ===
+=== aff field keys near register ===
+     13 "currency"
+      9 "password"
+      1 "username"
+      1 "phone"
+      1 "password")||t==="textarea"||e.contentEditable==="
+      1 "currency"&&i.indexOf(":")<0)n.currency||(n.curren
+[0m
+[0m$ [0mecho "=== bc authenticate call-site ==="; grep -oE '.{150}/user/authenticate.{200}' /tmp/opencode/bc_bundle.js | head -6
+=== bc authenticate call-site ===
+his.handleError(e,n,i))})}shouldRedirectToAppLogin(e){const t=localStorage.getItem("token"),g=localStorage.getItem("salt");return!(!t||!g||e.indexOf("/user/authenticate")!=-1||e.indexOf("/user/logout")!=-1||e.endsWith("/user/zendesk/jwt"))}async handleResponseError(e){const t=e.response?.status,g=e.config,i=g?.url;if(t!==401||!g||typeof i!="string"||!i.startsWith(th
+[0m
+[0m$ [0mgrep -oE '.{260}/public/register.{20}' /tmp/opencode/aff_bundle.js; echo "------ login ------"; grep -oE '.{360}/public/login.{20}' /tmp/opencode/aff_bundle.js
+status})}},H0e=async e=>{var t,n;try{return await Vt.post(Yt()+"/user/set-2fa-setting",e)}catch(r){throw new Error((t=r==null?void 0:r.data)==null?void 0:t.error,{cause:(n=r==null?void 0:r.data)==null?void 0:n.status})}},_Oe=async e=>{try{return Vt.post(Yt()+"/public/register",e)}catch(t){throw 
+------ login ------
+?void 0:t.status})}},H0e=async e=>{var t,n;try{return await Vt.post(Yt()+"/user/set-2fa-setting",e)}catch(r){throw new Error((t=r==null?void 0:r.data)==null?void 0:t.error,{cause:(n=r==null?void 0:r.data)==null?void 0:n.status})}},_Oe=async e=>{try{return Vt.post(Yt()+"/public/register",e)}catch(t){throw new Error(t)}},COe=async e=>{try{return Vt.post(Yt()+"/public/login",e)}catch(t){throw
+[0m
+[0m$ [0mgrep -oE '.{80}_Oe\(.{160}' /tmp/opencode/aff_bundle.js | head -10; echo "-----COe-----"; grep -oE '.{80}COe\(.{160}' /tmp/opencode/aff_bundle.js | head -10
+-----COe-----
+[0m
+[0m$ [0mgrep -oE '.{20}_Oe.{20}' /tmp/opencode/aff_bundle.js | sort | uniq -c | sort -rn | head -20; echo "-----"; grep -oE '.{20}COe.{20}' /tmp/opencode/aff_bundle.js | sort | uniq -c | sort -rn | head -20
+1 void 0:n.status})}},_Oe=async e=>{try{retur
+      1 j,Uge as k,COe as l,_Oe as m,rn as n,EOe as
+-----
+      1 s i,y as j,Uge as k,COe as l,_Oe as m,rn as
+      1 hrow new Error(t)}},COe=async e=>{try{retur
+[0m
+[0m$ [0mecho "=== bc Authorization header usage ==="; grep -oE '.{100}Authorization.{120}' /tmp/opencode/bc_bundle.js | head -10
+=== bc Authorization header usage ===
+):n(e),this}};kA.accessor(["Content-Type","Content-Length","Accept","Accept-Encoding","User-Agent","Authorization"]);k.reduceDescriptors(kA.prototype,({value:A},e)=>{let t=e[0].toUpperCase()+e.slice(1);return{get:()=>A,set(g){this[t]
+=kA.from(I),e.url=QQ(cQ(e.baseURL,e.url,e.allowAbsoluteUrls),A.params,A.paramsSerializer),o&&I.set("Authorization","Basic "+btoa((o.username||"")+":"+(o.password?unescape(encodeURIComponent(o.password)):"")));let C;if(k.isFormData(t)
+on xs(A,e){A.interceptors.request.use(function(t){return e().then(function(g){return t.headers.set("Authorization","Bearer ".concat(g)),t})})}function Vs(){return typeof process<"u"&&!process.browser}function qs(){return typeof windo
+eURL||"".concat(n,"://").concat(o,":").concat(C).concat(g.basePath,"/spaces/").concat(I);!g.headers.Authorization&&typeof g.accessToken!="function"&&(g.headers.Authorization="Bearer "+g.accessToken);var B={baseURL:a,headers:g.headers
+nction(){return cA(this)}})}function ZA(A){var e=A.config,t=A.response,g;if(e&&e.headers&&e.headers.Authorization){var i="...".concat(e.headers.Authorization.toString().substr(-5));e.headers.Authorization="Bearer ".concat(i)}if(!Bn(t
+.jwtStore.getJwt();return n&&typeof i.url=="string"&&i.url.startsWith(this.baseUrl)&&i.headers.set("Authorization",`Bearer ${n}`),i}),this.axios.interceptors.response.use(i=>i,i=>this.handleResponseError(i))}axios;lastRequest;lastSuc
+er-version":"1.47.0","x-flipt-environment":t};e.authentication&&("clientToken"in e.authentication?n.Authorization=`Bearer ${e.authentication.clientToken}`:"jwtToken"in e.authentication&&(n.Authorization=`JWT ${e.authentication.jwtTok
+[0m
+[0m$ [0mcurl -sS -m 20 -D- 'https://betpandacasino.io/.well-known/oauth-authorization-server' -o /tmp/opencode/bc_oidc.out; echo "---BODY(first 300)---"; head -c 300 /tmp/opencode/bc_oidc.out
+HTTP/2 301 
+date: Sat, 12 Sep 2026 13:09:47 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/.well-known/oauth-authorization-server/
+server: cloudflare
+cf-ray: a39f260e0d06ddb0-DFW
+
+---BODY(first 300)---
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+[0m
+[0m$ [0mcurl -sS -m 20 -D- 'https://affiliates.betpanda.io/.well-known/openid-configuration' -o /tmp/opencode/aff_oidc.out; echo "---BODY(first 300)---"; head -c 300 /tmp/opencode/aff_oidc.out
+HTTP/2 200 
+date: Sat, 12 Sep 2026 13:09:48 GMT
+content-type: text/html
+server: cloudflare
+last-modified: Thu, 30 Jul 2026 08:13:40 GMT
+accept-ranges: bytes
+cf-cache-status: DYNAMIC
+cf-ray: a39f26107e30c0f9-DFW
+
+---BODY(first 300)---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<!--     <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Affiliate</title>
+    <script type="module" crossorig
+[0m
+App B auth model fully resolved from bundle: server-mints JWT via `POST /rest/user/refresh` → `{jwt}`, sent as `Authorization: Bearer <jwt>`; Cognito refs are only RUM/S3 guest-credential SDK. Closing the `.well-known` OIDC lane as the final novel probe.
+[0m$ [0mcurl -sS -m 20 -D- 'https://betpandacasino.io/.well-known/openid-configuration' -o /tmp/opencode/bc_oidc2.out; echo "---BODY(first 300)---"; head -c 300 /tmp/opencode/bc_oidc2.out
+HTTP/2 301 
+date: Sat, 12 Sep 2026 13:09:49 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/.well-known/openid-configuration/
+server: cloudflare
+cf-ray: a39f26166f24dc12-DFW
+
+---BODY(first 300)---
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+[0m
+Closing with a byte-level parity check on the shared bundle to back the cross-brand claim.
+[0m$ [0mcurl -sS -m 60 'https://betpanda.partners/assets/index-5unQ0efM.js' -o /tmp/opencode/bp_bundle.js; sha256sum /tmp/opencode/bp_bundle.js /tmp/opencode/bc_bundle.js; wc -c /tmp/opencode/bp_bundle.js /tmp/opencode/bc_bundle.js
+581f94e02774152b30bc733ab993fdd4bdbb8c9f40764db8bd2233f898f6f974  /tmp/opencode/bp_bundle.js
+581f94e02774152b30bc733ab993fdd4bdbb8c9f40764db8bd2233f898f6f974  /tmp/opencode/bc_bundle.js
+ 795626 /tmp/opencode/bp_bundle.js
+ 795626 /tmp/opencode/bc_bundle.js
+1591252 total
+[0m
+STEP 1 — DELTA
+- CHANGED betpanda.partners SPA bundle → `index-5unQ0efM.js`, sha256 `581f94e02774152b30bc733ab993fdd4bdbb8c9f40764db8bd2233f898f6f974` — **byte-identical** to betpandacasino.io (was `index-KqswHEbl.js` on partners). Brand-shared build proven at content level.
+- NEW App B auth flow reverse-engineered from live bundle: axios request interceptor sets `Authorization: Bearer ${jwt}` from `jwtStore`; `POST ${baseUrl}/user/refresh` (withCredentials:true, cookie only) returns `{jwt}` and is re-called on 401 with retry→terminal-login redirect; localStorage keys `token`+`salt`; login-redirect excluded only for `/user/authenticate`, `/user/logout`, `/user/zendesk/jwt`.
+- NEW Elegible-lane closure: `.well-known/openid-configuration` + `.well-known/oauth-authorization-server` on betpandacasino.io → 301→trailing-slash SPA catch-all; affiliates → 200 SPA HTML. No OIDC/oauth-authorization-server metadata on either host.
+- NEW (overturn) "Cognito JWT" @ App B: all 8 `cognito` refs in bundle are AWS CloudWatch RUM + `cognito-identity`/`sts` guest-credential SDK (`identityPoolId`, `getOpenIdToken`, `guestRoleArn`, `dataplane.rum.us-west-2`) — analytics/S3-guest only; the login JWT is server-minted by the Spring backend, not Cognito.
+- NEW affiliates public primitives confirmed in bundle: `Vt.post(Yt()+"/public/register",e)` and `"/public/login"` (SPA routes `/register`, `/recover`, `/reset-password/:affiliateId/:resetPasswordCode`); zero captcha/turnstile/recaptcha primitives anywhere in affiliates bundle → affiliate register/login appear CAPTCHA-free.
+- NO_DELTA flagship envelope: re-anchored live 13:07Z (config 200, ACAO:`https://evil.example` + ACAC:true, no auth); casino/partners settings 401 len=32 with CORS asymmetry; cable2 OPTIONS 204 ACAO:*.
+
+STEP 2 — PRIORITIZE
+- [PRIO] affiliates.betpanda.io/rest/*,6.4,attack_surface(9)/business(9)/gate(2)/public-layer-open
+- [PRIO] betpandacasino.io+betpanda.partners/rest/user/*,5.9,shared-build-proof-raises-tech-exposure(5)/business(9)/gate(1)
+- [PRIO] cable.betpanda.io+cable.betpandacasino.io/cable/user-event,4.6,gate(10)/business(4)/single-route
+
+STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 13:07Z — GET /rest/public/config 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization ⇒ cookie session crosses origin; bundle main.1ae50aab.js defines POST {baseUrl}/public/register + /public/login with zero captcha primitives; 30+ handlers incl password/reset + set-2fa-setting. All anchors byte-stable across 09-11→09-12.
+evidence_needed: credentialed cross-origin response diff on /rest/user/metrics/affiliate from evil Origin, or reset-password POST with valid code.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <session_cookie>` vs no-cookie 401 control; then state-changing cross-origin probes.
+impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Shared App B backend accepts cross-brand JWT (no tenant/aud scoping) → BOLA
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 82
+reasoning: Live 13:07-08Z — both /rest/user/settings 401 len=32 "No http-session found"; both serve sha256-identical index-5unQ0efM.js (single shared build/contract); bundle proves JWT is server-minted POST /rest/user/refresh {jwt} and sent as `Authorization: Bearer` with NO tenant/issuer claim client-side; CORS asymmetry (casino ACAO own-host+ACAC:true, partners NO ACAO/ACAC) ⇒ any cross-brand accept is server-side; x-site-name-id host-derived.
+evidence_needed: non-401 on betpanda.partners using a betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — login casino account → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <cookie>` → capture {jwt}; replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H "Authorization: Bearer <jwt>"`; non-401 = cross-brand BOLA (proves flag AND de-gates flagship probes on affiliates-adjacent API).
+impact: cross-brand wallet/balance/settings/PII disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 85
+reasoning: Live 13:08Z — cable2 OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH (flagship baseline identical, prior-posted 200 arbitrary eventType/XSS/negatives). Single-route Express both instances; downstream bonus/fraud reflection still unproven.
+evidence_needed: benign marker event reflected on owned reference account dashboard/report.
+verify_steps: AUTH_HELPED — `curl -sS -D- -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -d '{"eventType":"verifybp8","userId":"verifybp8","registeredOn":"2026-09-12T13:10:00Z","amount":"0.01"}'`; then owned-site stored-reflection check.
+impact: unauth event poisoning / analytics + fraud & bonus-pipeline write on both hosts — Medium.
+testability: AUTH_HELPED
+
+STEP 4 — SELF-CRITIQUE
+- PARKED register/login schema reversal via static analysis: call sites are minified aliases (`_Oe`→`m`, `COe`→`l`); exact payload keys not statically recoverable without a browser form trace — do this inside the HUMAN account session, not as a passive lane.
+- PARKED CAPTCHA-free register as standalone finding: absence-of-captcha is not rate-limit/abuse evidence and mass-registration abuse is a REJECTED class; value is only as the account-provisioning path that de-gates the top findings.
+- DROPPED (confidence<40/closed): `.well-known`* OIDC (SPA catch-all on both hosts); old "Cognito JWT" characterization (overturned by bundle — server-minted JWT, Cognito is RUM/S3-guest only).
+- [FINAL] 1) MISCONFIG affiliates wildcard CORS [95]; 2) IDOR cross-brand BOLA [82, +2 via identical-build proof]; 3) BUSLOGIC dual-cable injection [85]. Ranking unchanged; evidence density improved on #2.
+
+STEP 5 — NEXT ACTION
+[NEXT] HUMAN: one casino account session → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <session_cookie>` → capture `{jwt}` → replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <jwt>'`; non-401 vs control = cross-brand BOLA proven AND yields a working Bearer auth primitive to credential-probe the flagship cross-origin chain. Bundle now provides exact flow so this is a 2-command de-gate. (Alternative self-service path now concrete: affiliate `POST /rest/public/register` appears CAPTCHA-free per bundle.)
+
+STEP 6 — LEARNING
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: re-anchored live 13:07Z — 200 ACAO:https://evil.example + ACAC:true, bundle-agnostic, allow-headers lack Authorization; flagship envelope byte-stable.
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners/rest/user/settings: 401 len=32 parity + CORS asymmetry re-confirmed 13:07-08Z; both brands now serve sha256-identical index-5unQ0efM.js — shared build/contract strengthens server-side-only cross-brand acceptance hypothesis.
+- LEARN: ACCEPTED AUTH @ App B bundle: JWT flow reverse-derived — POST /rest/user/refresh (cookie-only, withCredentials) → {jwt}; axios sets `Authorization: Bearer ${jwt}`; localStorage token+salt; auto-refresh-on-401; cross-brand verify shape is now exact.
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io+affiliates.betpanda.io/.well-known/*: openid-configuration + oauth-authorization-server → SPA catch-all / trailing-slash only; no OIDC/organization metadata server on either host.
+- LEARN: REJECTED (overturned) AUTH @ App B "Cognito JWT": all cognito refs in bundle are CloudWatch RUM + cognito-identity/sts S3-guest SDK; login JWT is server-minted, no Cognito user-pool/issuer in client → cross-brand question is purely server authZ, not token-issuer confusion.
+
+STEP 7 — RISK
+[RISK] betpanda: 88 — Flagship 95 and dual-cable 85 re-anchored live 13:07-08Z; cross-brand BOLA raised to 82 on byte-identical shared build + definitive JWT flow. New lanes (.well-known OIDC, Cognito attribution, register-captcha-free) closed with low/expected negatives. All three impact proofs remain gated on one authenticated session; bundle work has reduced the de-gate to a 2-command replay — still nothing further actionable passively.
