@@ -450,3 +450,5 @@ www.betpanda.io
 - CHANGED `affiliates.betpanda.io`: SPA bundle reverted to `main.1ae50aab.js` (Jul-30); `main.ef021e68.js` gone (206 text/html catch-all); backend `/rest/*` endpoints live-confirmed independent of bundle versio
 - CHANGED `betpandacasino.io`: SPA bundle rotated to `index-5unQ0efM.js` (was `index-KqswHEbl.js`); App B behavior anchors unchanged (identical 401 on `/rest/user/settings`, same handler set).
 - CHANGED `cable.betpanda.io` + `cable.betpandacasino.io`: Validator alignment confirmed — both cable instances accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS,
+
+## 2026-09-12 05:31:41 UTC

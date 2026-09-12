@@ -3583,3 +3583,33 @@ testability: HUMAN_ONLY
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: OPTIONS 204 ACAO:* + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed live 00:56:07Z — dual-instance unauth ingestion stable.
 [LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners/rest/user/settings: 401 len=32 control parity + CORS asymmetry (casino ACAC:true vs partners no ACAO) re-confirmed live 00:56:08-09Z — cross-brand acceptance, if present, is server-side only.
 [RISK] betpanda: 88 — Flagship 95 re-anchored live again (00:56Z, day-rollover stable); dual cable unauth write confirmed (85); cross-brand BOLA 80 parked. All three impact proofs remain gated on a single authenticated test session; zero new passive surface (CT closed, bundles stable, all namespaces swept). Absolute passive ceiling — an authenticated-account session is the only remaining de-gate; nothing further to do on the api target until a HUMAN account is provisioned.
+## 2026-09-12 05:31:31 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 00:56:05Z 2026-09-12 — GET /rest/public/config 200, ACAO:https://evil.example + ACAC:true; allow-headers lack Authorization ⇒ cookie/session auth crosses origin automatically; 30+ handlers incl. password/reset, set-2fa-setting, agent/set-deposit-withdraw-limit under same envelope; bundle-agnostic (main.1ae50aab.js). This cycle: springdoc/actuator absent under /rest → no schema shortcut; auth-gated POC mandatory.
+evidence_needed: credentialed cross-origin response diff (200 vs 401) on /rest/user/metrics/affiliate from evil origin, or cross-origin POST /rest/user/password/reset with valid resetPasswordCode.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <session_cookie>` vs no-cookie 401 control; then state-changing cross-origin POST probes.
+impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 85
+reasoning: Live both instances: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH; POST 200 accepting arbitrary eventType (XSS strings, negative amounts — schema-lax on both: alnum userId, RFC3339 registeredOn). This cycle: each instance is a single-route Express app (all other /cable/* paths Cannot-GET) — no additional sinks reachable; downstream reflection/bonus/fraud-side effects remain unproven.
+evidence_needed: benign marker event reflected/aggregated on owned reference account dashboard/report.
+verify_steps: AUTH_HELPED — `curl -sS -D- -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -d '{"eventType":"verifybp8","userId":"verifybp8","registeredOn":"2026-09-12T01:00:00Z","amount":"0.01"}'`; then owned-site stored-reflection check.
+impact: unauth event poisoning / analytics + fraud & bonus-pipeline write on both hosts — Medium.
+testability: AUTH_HELPED
+[HYP] Shared App B Spring Boot backend accepts cross-brand JWT (missing aud/iss validation) → BOLA
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Live 00:56:08-09Z — both /rest/user/settings 401 len=32; this cycle /rest/error 200-empty on BOTH hosts (additional shared-handler evidence); CORS asymmetry (casino ACAC:true vs partners none) ⇒ any cross-brand accept is server-side; x-site-name-id proven host-derived.
+evidence_needed: non-401 on betpanda.partners using a betpandacasino-issued JWT vs 401 control.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://betpandacasino.io/rest/user/settings' -H "Authorization: Bearer <casino_jwt>"` (control 401) then replay same JWT to `https://betpanda.partners/rest/user/settings`; non-401 = cross-brand accepted.
+impact: cross-brand wallet/balance/settings disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[NEXT] HUMAN: obtain one excess-account session on betpandacasino.io, capture Bearer JWT, replay to `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`; non-401 vs control = cross-brand BOLA proven AND unlocks credentialed probes for the flagship — one account de-gates the two top findings. (All PROBE/SCAN lanes at absolute ceiling: OpenAPI/actuator closed on 3 backends, cable single-route mapped, sibling DNS NXDOMAIN, CT swept 09-11; no further passive request changes any score.)
+[RISK] betpanda: 88 — Flagship 95 and dual cable 85 re-validated (anchors stable; this cycle closed the OpenAPI/actuator, cable-breadth, and sibling-DNS lanes with expected negatives). All three impact proofs remain gated on a single authenticated test session; zero new passive surface discovered across 9 distinct probe sets this cycle. Absolute passive ceiling — an authenticated account is the only remaining de-gate on the api target.
