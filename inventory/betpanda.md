@@ -478,3 +478,22 @@ www.betpanda.io
 - CHANGED Both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts).
 - CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor 00:56:05Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization.
 - CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) re-confirmed live.
+
+## 2026-09-12 21:21:19 UTC
+- CHANGED Both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts).
+- CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor 00:56:05Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization.
+- CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) re-confirmed live.
+- CHANGED affiliates.betpanda.io SPA bundle reverted to `main.1ae50aab.js` (Jul-30, 2,089,573 B); `main.ef021e68.js` gone (206 text/html catch-all). Backend `/rest/*` endpoints live-confirmed independent of bun
+- CHANGED betpandacasino.io SPA bundle rotated to `index-5unQ0efM.js` (was `index-KqswHEbl.js`); App B behavior anchors unchanged (identical 401 on `/rest/user/settings`, same handler set).
+- CHANGED cable.betpandacasino.io/cable/user-event: Second cable instance confirmed live; OPTIONS preflight 405 (POST-only), root GET 200 ACAO:*; POST accepts arbitrary eventType (XSS strings, negative amounts)
+- CHANGED Both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts).
+- CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor 00:56:05Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization.
+- CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) re-confirmed live.
+- NEW `cable.betpandacasino.io/cable/user-event` — Second cable instance confirmed live (2026-09-10 17:57Z); OPTIONS preflight 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH; root GET 200 ACAO:* "BC CASINO / C
+- NEW `affiliates.betpanda.io` SPA bundle reverted to `main.1ae50aab.js` (Jul-30, 2,089,573 B); `main.ef021e68.js` gone (206 text/html catch-all); backend `/rest/*` endpoints live-confirmed independent of b
+- NEW `betpandacasino.io` SPA bundle rotated to `index-5unQ0efM.js` (was `index-KqswHEbl.js`); App B behavior anchors unchanged (identical 401 on `/rest/user/settings`, same handler set).
+- CHANGED `affiliates.betpanda.io/rest/public/config` fresh re-anchor 00:56:05Z 2026-09-12 — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization; flagship envelope byte-stable across 202
+- CHANGED `cable.betpanda.io` + `cable.betpandacasino.io` validator alignment confirmed — both cable instances accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, 
+- CHANGED `betpandacasino.io`+`betpanda.partners` /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) re-confirmed live 00:56:08-09Z.
+- CHANGED `affiliates.betpanda.io/rest/public/config` supportEmail rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), phoneSignupEnabled:false, Contentful access token fields empty — vendor opera
+- CHANGED `affiliates.betpanda.io/rest/public/config` x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1 — no client-controlled tenant switch on wildcard host public l

@@ -28979,3 +28979,362 @@ access-control-allow-methods: GET,POST,HEAD,PUT,DELETE,PATCH
 [93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
 [0m✗ [0mecho "=== 4. casino settings 401 + evil Origin ==="; curl -sS -D- --max-time 15 'https://betpandacasino.io/rest/user/settings' -H 'Origin: https://evil.example' -o /tmp/casino.json | grep -iE 'HTTP/|access-control|x-site|content-length'; echo "--- body:"; cat /tmp/casino.json; echo; echo "=== 5. partners settings 401 + evil Origin ==="; sleep 1; curl -sS -D- --max-time 15 'https://betpanda.partners/rest/user/settings' -H 'Origin: https://evil.example' -o /tmp/partners.json | grep -iE 'HTTP/|access-control|x-site|content-length'; echo "--- body:"; cat /tmp/partners.json failed
 [91m[1mError: [0mThe user rejected permission to use this specific tool call.
+===== ANALYST bigpickle 2026-09-12 21:21:19 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/ && ls -la /home/runner/work/betpanda-hunt/betpanda-hunt/art/ 2>/dev/null | head -50
+total 388
+drwxr-xr-x 12 runner runner   4096 Sep 12 21:14 .
+drwxr-xr-x  3 runner runner   4096 Sep 12 21:14 ..
+drwxr-xr-x  7 runner runner   4096 Sep 12 21:14 .git
+drwxr-xr-x  3 runner runner   4096 Sep 12 21:14 .github
+-rw-r--r--  1 runner runner   1709 Sep 12 21:14 README.md
+-rw-r--r--  1 runner runner     32 Sep 12 21:14 analyst-out.txt
+-rw-r--r--  1 runner runner 144760 Sep 12 21:14 analyst-prompt.txt
+-rw-r--r--  1 runner runner 140979 Sep 12 21:14 ctx.txt
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 inventory
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 knowledge
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 leads
+-rw-r--r--  1 runner runner  17342 Sep 12 21:14 probe-results.md
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 recon-notes
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 reports
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 reposcan-raw
+-rw-r--r--  1 runner runner   3194 Sep 12 21:14 scope.yml
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 scripts
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_bigpickle.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_laguna.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_ling3.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_longcat.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_mimo.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_nemotron3.json
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 triage
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/scripts/ /home/runner/work/betpanda-hunt/betpanda-hunt/leads/ /home/runner/work/betpanda-hunt/betpanda-hunt/knowledge/ /home/runner/work/betpanda-hunt/betpanda-hunt/inventory/
+/home/runner/work/betpanda-hunt/betpanda-hunt/inventory/:
+total 72
+drwxr-xr-x  2 runner runner  4096 Sep 12 21:14 .
+drwxr-xr-x 12 runner runner  4096 Sep 12 21:14 ..
+-rw-r--r--  1 runner runner 63128 Sep 12 21:14 betpanda.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/knowledge/:
+total 72
+drwxr-xr-x  2 runner runner  4096 Sep 12 21:14 .
+drwxr-xr-x 12 runner runner  4096 Sep 12 21:14 ..
+-rw-r--r--  1 runner runner 63213 Sep 12 21:14 index.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/leads/:
+total 1320
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 .
+drwxr-xr-x 12 runner runner   4096 Sep 12 21:14 ..
+-rw-r--r--  1 runner runner 583282 Sep 12 21:14 lead-bigpickle.md
+-rw-r--r--  1 runner runner   3366 Sep 12 21:14 lead-laguna.md
+-rw-r--r--  1 runner runner   3300 Sep 12 21:14 lead-ling3.md
+-rw-r--r--  1 runner runner   3432 Sep 12 21:14 lead-longcat.md
+-rw-r--r--  1 runner runner     18 Sep 12 21:14 lead-mimo.md
+-rw-r--r--  1 runner runner 726382 Sep 12 21:14 lead-nemotron3.md
+-rw-r--r--  1 runner runner  11635 Sep 12 21:14 reposcan-betpanda.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/scripts/:
+total 28
+drwxr-xr-x  2 runner runner  4096 Sep 12 21:14 .
+drwxr-xr-x 12 runner runner  4096 Sep 12 21:14 ..
+-rw-r--r--  1 runner runner 16987 Sep 12 21:14 sync-issues.py
+[0m
+[0m→ [0mRead scope.yml
+[0m→ [0mRead probe-results.md
+[0m
+[0m$ [0mcat /home/runner/work/betpanda-hunt/betpanda-hunt/state_bigpickle.json /home/runner/work/betpanda-hunt/betpanda-hunt/analyst-out.txt 2>/dev/null; echo "---"; tail -40 /home/runner/work/betpanda-hunt/betpanda-hunt/leads/lead-bigpickle.md
+{"phase": "POC", "target": "api"}[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/ && ls -la /home/runner/work/betpanda-hunt/betpanda-hunt/art/ 2>/dev/null | head -50
+total 388
+drwxr-xr-x 12 runner runner   4096 Sep 12 21:14 .
+drwxr-xr-x  3 runner runner   4096 Sep 12 21:14 ..
+drwxr-xr-x  7 runner runner   4096 Sep 12 21:14 .git
+drwxr-xr-x  3 runner runner   4096 Sep 12 21:14 .github
+-rw-r--r--  1 runner runner   1709 Sep 12 21:14 README.md
+-rw-r--r--  1 runner runner     32 Sep 12 21:14 analyst-out.txt
+-rw-r--r--  1 runner runner 144760 Sep 12 21:14 analyst-prompt.txt
+-rw-r--r--  1 runner runner 140979 Sep 12 21:14 ctx.txt
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 inventory
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 knowledge
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 leads
+-rw-r--r--  1 runner runner  17342 Sep 12 21:14 probe-results.md
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 recon-notes
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 reports
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 reposcan-raw
+-rw-r--r--  1 runner runner   3194 Sep 12 21:14 scope.yml
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 scripts
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_bigpickle.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_laguna.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_ling3.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_longcat.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_mimo.json
+-rw-r--r--  1 runner runner     33 Sep 12 21:14 state_nemotron3.json
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 triage
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/scripts/ /home/runner/work/betpanda-hunt/betpanda-hunt/leads/ /home/runner/work/betpanda-hunt/betpanda-hunt/knowledge/ /home/runner/work/betpanda-hunt/betpanda-hunt/inventory/
+/home/runner/work/betpanda-hunt/betpanda-hunt/inventory/:
+total 72
+drwxr-xr-x  2 runner runner  4096 Sep 12 21:14 .
+drwxr-xr-x 12 runner runner  4096 Sep 12 21:14 ..
+-rw-r--r--  1 runner runner 63128 Sep 12 21:14 betpanda.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/knowledge/:
+total 72
+drwxr-xr-x  2 runner runner  4096 Sep 12 21:14 .
+drwxr-xr-x 12 runner runner  4096 Sep 12 21:14 ..
+-rw-r--r--  1 runner runner 63213 Sep 12 21:14 index.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/leads/:
+total 1320
+drwxr-xr-x  2 runner runner   4096 Sep 12 21:14 .
+drwxr-xr-x 12 runner runner   4096 Sep 12 21:14 ..
+-rw-r--r--  1 runner runner 583282 Sep 12 21:14 lead-bigpickle.md
+-rw-r--r--  1 runner runner   3366 Sep 12 21:14 lead-laguna.md
+-rw-r--r--  1 runner runner   3300 Sep 12 21:14 lead-ling3.md
+-rw-r--r--  1 runner runner   3432 Sep 12 21:14 lead-longcat.md
+-rw-r--r--  1 runner runner     18 Sep 12 21:14 lead-mimo.md
+-rw-r--r--  1 runner runner 726382 Sep 12 21:14 lead-nemotron3.md
+-rw-r--r--  1 runner runner  11635 Sep 12 21:14 reposcan-betpanda.md
+
+/home/runner/work/betpanda-hunt/betpanda-hunt/scripts/:
+total 28
+drwxr-xr-x  2 runner runner  4096 Sep 12 21:14 .
+drwxr-xr-x 12 runner runner  4096 Sep 12 21:14 ..
+-rw-r--r--  1 runner runner 16987 Sep 12 21:14 sync-issues.py
+[0m
+[0m→ [0mRead scope.yml
+[0m→ [0mRead probe-results.md
+---
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Live 09:35Z — both /rest/user/settings 401 len=32 identical allow-headers (Authorization,x-captcha-token,x-site-name-id,x-maintenance-reason,x-preferred-app-context); casino ACAO own-host+ACAC:true, partners NO ACAO ⇒ any cross-brand accept is server-side, not a CORS artifact; x-site-name-id host-derived.
+evidence_needed: non-401 on betpanda.partners using a betpandacasino-issued JWT vs 401 control.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://betpandacasino.io/rest/user/settings' -H "Authorization: Bearer <casino_jwt>"` (control 401) then replay same JWT to `https://betpanda.partners/rest/user/settings`; non-401 = cross-brand accepted.
+impact: cross-brand wallet/balance/settings disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[NEXT] HUMAN: obtain one excess-account session on betpandacasino.io, capture Bearer JWT, replay to `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`; non-401 vs control = cross-brand BOLA proven AND unlocks credentialed probes for the flagship — one account de-gates the top two findings. (PROBE lanes exhausted: new-cycle CT/DNS identities closed — blog properly gated, tracker disabled-not-dangling, cms challenge-blocked; no passive request changes any score this cycle.)
+[RISK] betpanda: 88 — Flagship 95, cable 85, cross-brand BOLA 80 all re-anchored live 09:35Z (stable across the 09-12 boundary). New-identity lane (CT/DNS) re-opened and closed with LOW only: WordPress blog properly gated, tracker disabled-not-dangling, cms challenge-blocked, www redirect. All three impact proofs remain gated on a single authenticated test session; zero new passive surface of value. Absolute passive ceiling — one HUMAN-account session de-gates the two top findings; nothing further actionable on the api target until provisioned.
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 13:07Z — GET /rest/public/config 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization ⇒ cookie session crosses origin; bundle main.1ae50aab.js defines POST {baseUrl}/public/register + /public/login with zero captcha primitives; 30+ handlers incl password/reset + set-2fa-setting. All anchors byte-stable across 09-11→09-12.
+evidence_needed: credentialed cross-origin response diff on /rest/user/metrics/affiliate from evil Origin, or reset-password POST with valid code.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <session_cookie>` vs no-cookie 401 control; then state-changing cross-origin probes.
+impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Shared App B backend accepts cross-brand JWT (no tenant/aud scoping) → BOLA
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 82
+reasoning: Live 13:07-08Z — both /rest/user/settings 401 len=32 "No http-session found"; both serve sha256-identical index-5unQ0efM.js (single shared build/contract); bundle proves JWT is server-minted POST /rest/user/refresh {jwt} and sent as `Authorization: Bearer` with NO tenant/issuer claim client-side; CORS asymmetry (casino ACAO own-host+ACAC:true, partners NO ACAO/ACAC) ⇒ any cross-brand accept is server-side; x-site-name-id host-derived.
+evidence_needed: non-401 on betpanda.partners using a betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — login casino account → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <cookie>` → capture {jwt}; replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H "Authorization: Bearer <jwt>"`; non-401 = cross-brand BOLA (proves flag AND de-gates flagship probes on affiliates-adjacent API).
+impact: cross-brand wallet/balance/settings/PII disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 85
+reasoning: Live 13:08Z — cable2 OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH (flagship baseline identical, prior-posted 200 arbitrary eventType/XSS/negatives). Single-route Express both instances; downstream bonus/fraud reflection still unproven.
+evidence_needed: benign marker event reflected on owned reference account dashboard/report.
+verify_steps: AUTH_HELPED — `curl -sS -D- -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -d '{"eventType":"verifybp8","userId":"verifybp8","registeredOn":"2026-09-12T13:10:00Z","amount":"0.01"}'`; then owned-site stored-reflection check.
+impact: unauth event poisoning / analytics + fraud & bonus-pipeline write on both hosts — Medium.
+testability: AUTH_HELPED
+[NEXT] HUMAN: one casino account session → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <session_cookie>` → capture `{jwt}` → replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <jwt>'`; non-401 vs control = cross-brand BOLA proven AND yields a working Bearer auth primitive to credential-probe the flagship cross-origin chain. Bundle now provides exact flow so this is a 2-command de-gate. (Alternative self-service path now concrete: affiliate `POST /rest/public/register` appears CAPTCHA-free per bundle.)
+[RISK] betpanda: 88 — Flagship 95 and dual-cable 85 re-anchored live 13:07-08Z; cross-brand BOLA raised to 82 on byte-identical shared build + definitive JWT flow. New lanes (.well-known OIDC, Cognito attribution, register-captcha-free) closed with low/expected negatives. All three impact proofs remain gated on one authenticated session; bundle work has reduced the de-gate to a 2-command replay — still nothing further actionable passively.
+## 2026-09-12 18:45:26 UTC [target] (model bigpickle)
+[0m
+[0m$ [0mdate -u +%FT%TZ; echo "=== 1 config ==="; curl -sS --max-time 15 -o /dev/null -D- 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' | grep -iE 'HTTP/|access-control|content-type' ; sleep 1.2
+echo "=== 2 pwreset OPTIONS ==="; curl -sS --max-time 15 -o /dev/null -D- -X OPTIONS 'https://affiliates.betpanda.io/rest/user/password/reset' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' | grep -iE 'HTTP/|access-control|content-type'; sleep 1.2
+echo "=== 3 cable2 root ==="; curl -sS --max-time 15 -o /dev/null -D- 'https://cable.betpandacasino.io/' | grep -iE 'HTTP/|access-control|content-type'; sleep 1.2
+echo "=== 4 cable1 root ==="; curl -sS --max-time 15 -o /dev/null -D- 'https://cable.betpanda.io/' | grep -iE 'HTTP/|access-control|content-type'; sleep 1.2
+echo "=== 5 partners settings ==="; curl -sS --max-time 15 -D- 'https://betpanda.partners/rest/user/settings' -H 'Origin: https://evil.example' | grep -iE 'HTTP/|access-control|content-length|content-type'; sleep 1.2
+echo "=== 6 casino settings ==="; curl -sS --max-time 15 -D- 'https://betpandacasino.io/rest/user/settings' -H 'Origin: https://evil.example' | grep -iE 'HTTP/|access-control|content-length|content-type'
+2026-09-12T21:15:10Z
+=== 1 config ===
+HTTP/2 200 
+content-type: application/json
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+=== 2 pwreset OPTIONS ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+=== 3 cable2 root ===
+HTTP/2 200 
+content-type: text/plain; charset=utf-8
+access-control-allow-origin: *
+=== 4 cable1 root ===
+HTTP/2 200 
+content-type: text/plain; charset=utf-8
+=== 5 partners settings ===
+HTTP/2 401 
+content-type: text/plain; charset=utf-8
+content-length: 32
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+=== 6 casino settings ===
+HTTP/2 401 
+content-type: text/plain; charset=utf-8
+content-length: 32
+access-control-allow-origin: https://betpandacasino.io
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+[0m
+[0m$ [0mecho "=== aff index scripts ==="; curl -sS --max-time 15 'https://affiliates.betpanda.io/' | grep -oE 'main\.[a-f0-9]{8}\.js' | sort -u; sleep 1.2
+echo "=== casino index scripts ==="; curl -sS --max-time 15 'https://betpandacasino.io/' | grep -oE 'index-[A-Za-z0-9]{8}\.js' | sort -u; sleep 1.2
+echo "=== crt.sh betpandacasino.io ==="; curl -sS --max-time 30 'https://crt.sh/?q=%25.betpandacasino.io&output=json' -H 'Accept: application/json' | python3 -c "import sys,json; d=json.load(sys.stdin); names=sorted({n for e in d for n in e['name_value'].split(chr(10)) if n and not n.startswith('*.')}); print(len(names)); [print(x) for x in names]" 2>&1 | head -40
+=== aff index scripts ===
+main.1ae50aab.js
+=== casino index scripts ===
+index-5unQ0efM.js
+=== crt.sh betpandacasino.io ===
+3
+betpandacasino.io
+blog.betpandacasino.io
+cable.betpandacasino.io
+[0m
+[0m$ [0mecho "=== DNS ==="; dig +short blog.betpandacasino.io A; dig +short blog.betpandacasino.io CNAME; echo "=== HTTP ==="; curl -sS --max-time 20 -D- 'https://blog.betpandacasino.io/' -H 'User-Agent: Mozilla/5.0' | head -30
+=== DNS ===
+104.20.21.21
+172.66.175.171
+=== HTTP ===
+HTTP/2 200 
+date: Sat, 12 Sep 2026 21:16:02 GMT
+content-type: text/html; charset=UTF-8
+server: cloudflare
+vary: Accept-Encoding
+link: <https://blog.betpandacasino.io/wp-json/>; rel="https://api.w.org/"
+link: <https://blog.betpandacasino.io/wp-json/wp/v2/pages/155>; rel="alternate"; title="JSON"; type="application/json"
+link: <https://blog.betpandacasino.io/>; rel=shortlink
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+referrer-policy: no-referrer-when-downgrade
+content-security-policy: default-src 'self' https: wss: data: 'unsafe-inline' 'unsafe-eval';
+permissions-policy: interest-cohort=()
+strict-transport-security: max-age=31536000; includeSubDomains
+cf-cache-status: DYNAMIC
+cf-ray: a3a1ee50481a1ad1-LAX
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+        <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+curl: (23) Failure writing output to destination
+[0m
+[0m$ [0mecho "=== wp-json routes (namespaces only) ==="; curl -sS --max-time 20 'https://blog.betpandacasino.io/wp-json/' -H 'User-Agent: Mozilla/5.0' | python3 -c "import sys,json; d=json.load(sys.stdin); print('name:',d.get('name')); print('url:',d.get('url')); print('namespaces:',d.get('namespaces')); print('n_routes:',len(d.get('routes',{})))" 2>&1; sleep 1.2
+echo "=== users endpoint ==="; curl -sS --max-time 20 -o /dev/null -w 'status=%{http_code} len=%{size_download}\n' 'https://blog.betpandacasino.io/wp-json/wp/v2/users' -H 'User-Agent: Mozilla/5.0'; sleep 1.2
+echo "=== author id=1 ==="; curl -sS --max-time 20 -D- -o /dev/null 'https://blog.betpandacasino.io/?author=1' -H 'User-Agent: Mozilla/5.0' | grep -iE 'HTTP/|location'
+=== wp-json routes (namespaces only) ===
+name: betpandacasino.io
+url: https://blog.betpandacasino.io
+namespaces: ['oembed/1.0', 'redirection/v1', 'yoast/v1', 'wp/v2', 'wp-site-health/v1', 'wp-block-editor/v1', 'wp-abilities/v1']
+n_routes: 237
+=== users endpoint ===
+status=200 len=10965
+=== author id=1 ===
+HTTP/2 301 
+location: https://blog.betpandacasino.io/author/admin_betpanda/
+[0m
+[0m$ [0mecho "=== users payload ==="; curl -sS --max-time 20 'https://blog.betpandacasino.io/wp-json/wp/v2/users' -H 'User-Agent: Mozilla/5.0' | python3 -c "import sys,json; d=json.load(sys.stdin); [print(u.get('id'), u.get('slug'), u.get('name'), u.get('link')) for u in d]" 2>&1; sleep 1.2
+echo "=== user 1 full ==="; curl -sS --max-time 20 'https://blog.betpandacasino.io/wp-json/wp/v2/users/1' -H 'User-Agent: Mozilla/5.0' | python3 -c "import sys,json; d=json.load(sys.stdin); print({k:('len'+str(len(str(v))) if k in('email','capabilities') else v) for k,v in d.items()})" 2>&1
+=== users payload ===
+1 admin_betpanda admin_betpanda https://blog.betpandacasino.io/author/admin_betpanda/
+2 admin_ovidiu Corina https://blog.betpandacasino.io/author/admin_ovidiu/
+=== user 1 full ===
+{'id': 1, 'name': 'admin_betpanda', 'url': 'https://blog.betpandacasino.io', 'description': '', 'link': 'https://blog.betpandacasino.io/author/admin_betpanda/', 'slug': 'admin_betpanda', 'meta': [], 'acf': [], 'yoast_head': '<!-- This site is optimized with the Yoast SEO plugin v28.2 - https://yoast.com/product/yoast-seo-wordpress/ -->\n<title>admin_betpanda, Author at betpandacasino.io</title>\n<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />\n<link rel="canonical" href="https://blog.betpandacasino.io/author/admin_betpanda/" />\n<meta property="og:locale" content="en_US" />\n<meta property="og:type" content="profile" />\n<meta property="og:title" content="admin_betpanda, Author at betpandacasino.io" />\n<meta property="og:url" content="https://blog.betpandacasino.io/author/admin_betpanda/" />\n<meta property="og:site_name" content="betpandacasino.io" />\n<meta property="og:image" content="https://secure.gravatar.com/avatar/ba8d875b86b143d18cf907aa5f7cc1668ccfe22d777a25824d6ea6cacacbd546?s=500&d=mm&r=g" />\n<meta name="twitter:card" content="summary_large_image" />\n<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https:\\/\\/schema.org","@graph":[{"@type":"ProfilePage","@id":"https:\\/\\/blog.betpandacasino.io\\/author\\/admin_betpanda\\/","url":"https:\\/\\/blog.betpandacasino.io\\/author\\/admin_betpanda\\/","name":"admin_betpanda, Author at betpandacasino.io","isPartOf":{"@id":"https:\\/\\/blog.betpandacasino.io\\/#website"},"breadcrumb":{"@id":"https:\\/\\/blog.betpandacasino.io\\/author\\/admin_betpanda\\/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https:\\/\\/blog.betpandacasino.io\\/author\\/admin_betpanda\\/"]}]},{"@type":"BreadcrumbList","@id":"https:\\/\\/blog.betpandacasino.io\\/author\\/admin_betpanda\\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https:\\/\\/blog.betpandacasino.io\\/"},{"@type":"ListItem","position":2,"name":"Archives for admin_betpanda"}]},{"@type":"WebSite","@id":"https:\\/\\/blog.betpandacasino.io\\/#website","url":"https:\\/\\/blog.betpandacasino.io\\/","name":"betpandacasino.io","description":"","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\\/\\/blog.betpandacasino.io\\/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"en-US"},{"@type":"Person","@id":"https:\\/\\/blog.betpandacasino.io\\/#\\/schema\\/person\\/268c5524b69ddba5c0f25cf33944df21","name":"admin_betpanda","sameAs":["https:\\/\\/blog.betpandacasino.io"],"mainEntityOfPage":{"@id":"https:\\/\\/blog.betpandacasino.io\\/author\\/admin_betpanda\\/"}}]}</script>\n<!-- / Yoast SEO plugin. -->', 'yoast_head_json': {'title': 'admin_betpanda, Author at betpandacasino.io', 'robots': {'index': 'index', 'follow': 'follow', 'max-snippet': 'max-snippet:-1', 'max-image-preview': 'max-image-preview:large', 'max-video-preview': 'max-video-preview:-1'}, 'canonical': 'https://blog.betpandacasino.io/author/admin_betpanda/', 'og_locale': 'en_US', 'og_type': 'profile', 'og_title': 'admin_betpanda, Author at betpandacasino.io', 'og_url': 'https://blog.betpandacasino.io/author/admin_betpanda/', 'og_site_name': 'betpandacasino.io', 'og_image': [{'url': 'https://secure.gravatar.com/avatar/ba8d875b86b143d18cf907aa5f7cc1668ccfe22d777a25824d6ea6cacacbd546?s=500&d=mm&r=g', 'type': '', 'width': '', 'height': ''}], 'twitter_card': 'summary_large_image', 'schema': {'@context': 'https://schema.org', '@graph': [{'@type': 'ProfilePage', '@id': 'https://blog.betpandacasino.io/author/admin_betpanda/', 'url': 'https://blog.betpandacasino.io/author/admin_betpanda/', 'name': 'admin_betpanda, Author at betpandacasino.io', 'isPartOf': {'@id': 'https://blog.betpandacasino.io/#website'}, 'breadcrumb': {'@id': 'https://blog.betpandacasino.io/author/admin_betpanda/#breadcrumb'}, 'inLanguage': 'en-US', 'potentialAction': [{'@type': 'ReadAction', 'target': ['https://blog.betpandacasino.io/author/admin_betpanda/']}]}, {'@type': 'BreadcrumbList', '@id': 'https://blog.betpandacasino.io/author/admin_betpanda/#breadcrumb', 'itemListElement': [{'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://blog.betpandacasino.io/'}, {'@type': 'ListItem', 'position': 2, 'name': 'Archives for admin_betpanda'}]}, {'@type': 'WebSite', '@id': 'https://blog.betpandacasino.io/#website', 'url': 'https://blog.betpandacasino.io/', 'name': 'betpandacasino.io', 'description': '', 'potentialAction': [{'@type': 'SearchAction', 'target': {'@type': 'EntryPoint', 'urlTemplate': 'https://blog.betpandacasino.io/?s={search_term_string}'}, 'query-input': {'@type': 'PropertyValueSpecification', 'valueRequired': True, 'valueName': 'search_term_string'}}], 'inLanguage': 'en-US'}, {'@type': 'Person', '@id': 'https://blog.betpandacasino.io/#/schema/person/268c5524b69ddba5c0f25cf33944df21', 'name': 'admin_betpanda', 'sameAs': ['https://blog.betpandacasino.io'], 'mainEntityOfPage': {'@id': 'https://blog.betpandacasino.io/author/admin_betpanda/'}}]}}, '_links': {'self': [{'href': 'https://blog.betpandacasino.io/wp-json/wp/v2/users/1', 'targetHints': {'allow': ['GET']}}], 'collection': [{'href': 'https://blog.betpandacasino.io/wp-json/wp/v2/users'}]}}
+[0m
+[0m$ [0mecho "=== redirection REST ==="; curl -sS --max-time 15 -o /dev/null -w 'status=%{http_code} len=%{size_download}\n' 'https://blog.betpandacasino.io/wp-json/redirection/v1/redirect' -H 'User-Agent: Mozilla/5.0'; sleep 1.2
+echo "=== xmlrpc presence (GET) ==="; curl -sS --max-time 15 -o /dev/null -w 'status=%{http_code} len=%{size_download}\n' 'https://blog.betpandacasino.io/xmlrpc.php' -H 'User-Agent: Mozilla/5.0'; sleep 1.2
+echo "=== .git HEAD ==="; curl -sS --max-time 15 -o /dev/null -w 'status=%{http_code} len=%{size_download}\n' 'https://blog.betpandacasino.io/.git/HEAD' -H 'User-Agent: Mozilla/5.0'; sleep 1.2
+echo "=== wp-login ==="; curl -sS --max-time 15 -o /dev/null -w 'status=%{http_code} len=%{size_download}\n' 'https://blog.betpandacasino.io/wp-login.php' -H 'User-Agent: Mozilla/5.0'
+=== redirection REST ===
+status=401 len=98
+=== xmlrpc presence (GET) ===
+status=403 len=146
+=== .git HEAD ===
+status=403 len=146
+=== wp-login ===
+status=404 len=151254
+[0m
+## 2026-09-12 21:16Z — POC/api cycle (bigpickle)
+
+**STEP 1 — DELTA**
+- NEW ASSET @ blog.betpandacasino.io — WordPress on Cloudflare (200, HTTP/2), surfaced via `crt.sh?q=%25.betpandacasino.io` (CT returns only 3 names: root, blog, cable). Same brand/casino family as the flagship App B host.
+- NEW DISCLOSURE @ blog.betpandacasino.io/wp-json/wp/v2/users — unauthenticated 200 (10,965 B) returning full user roster: `id=1 slug=admin_betpanda`, `id=2 slug=admin_ovidiu` (display name "Corina"). `?author=1` → 301 `/author/admin_betpanda/` corroborates.
+- CHANGED @ blog.betpandacasino.io — gating confirmed around the open REST layer: `redirection/v1/redirect` 401 (auth-gated), `xmlrpc.php` 403, `.git/HEAD` 403, `wp-login.php` 404 (CF-mitigated). Yoast SEO v28.2 + Redirection + oembed/site-health/wp-abilities namespaces leaked via route index (237 routes).
+- NO_CHANGE — flagship anchors re-anchored live 21:15Z byte-stable: config 200 `ACAO:https://evil.example`+`ACAC:true`; password/reset OPTIONS 200 same; allow-headers lack Authorization; cable2 root 200 ACAO:*; casino settings 401 len=32 `ACAO` own-host+`ACAC:true` vs partners 401 len=32 NO ACAO (asymmetry intact). Bundles unchanged (`main.1ae50aab.js`, `index-5unQ0efM.js`).
+
+**STEP 2 — PRIORITIZE**
+- [PRIO] affiliates.betpanda.io/rest/* — 7.9 — a=10 b=10 t=8 g=6 c=5 f=3 (carried; unchanged top)
+- [PRIO] betpandacasino.io+betpanda.partners/rest/user/* — 6.75 — a=8 b=9 t=8 g=4 c=5 f=2 (carried)
+- [PRIO] blog.betpandacasino.io/wp-json — 4.0 — a=2 b=2 t=4 g=10 c=1 f=8 (NEW; only fresh delta this cycle)
+
+**STEP 3 — HYPOTHESES**
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 21:15Z — config 200 ACAO:https://evil.example+ACAC:true; password/reset OPTIONS 200 same + full allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; allow-headers lack Authorization ⇒ cookie/session auth crosses origin automatically; 30+ handlers incl set-2fa-setting, agent/set-deposit-withdraw-limit; bundle-agnostic.
+evidence_needed: credentialed cross-origin response diff (non-401 vs 401 control) on /rest/user/metrics/affiliate from evil Origin, or reset-password POST with valid resetPasswordCode.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <cookie>` vs no-cookie 401 control; then state-changing cross-origin probes.
+impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 85
+reasoning: Live 21:15Z — cable2 root GET 200 ACAO:*; prior cycles logged dual OPTIONS 204/405 ACAO:* + POST 200 accepting arbitrary eventType/XSS/negative amounts with alnum userId + RFC3339 registeredOn. Single-route Express; downstream bonus/fraud reflection unproven.
+evidence_needed: benign marker event reflected/aggregated on an owned reference account.
+verify_steps: AUTH_HELPED — `curl -sS -D- -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -d '{"eventType":"verifybp8","userId":"verifybp8","registeredOn":"2026-09-12T21:20:00Z","amount":"0.01"}'`; then owned-site stored-reflection check.
+impact: unauth event poisoning / analytics + fraud & bonus-pipeline write on both hosts — Medium.
+testability: AUTH_HELPED
+[HYP] Unauthenticated WP REST discloses admin usernames of casino-brand blog
+class: OTHER
+asset: blog.betpandacasino.io/wp-json/wp/v2/users
+confidence: 55
+reasoning: Live 21:16Z — `/wp-json/wp/v2/users` returns 200 with `admin_betpanda` + `admin_ovidiu`(Corina) full author objects incl. avatars/links; `?author=1`→`/author/admin_betpanda/`. Remaining blog surfaces gated (xmlrpc 403, wp-login 404, redirection REST 401, .git 403). Yoast 28.2 + Redirection namespaces visible in route index only.
+evidence_needed: reuse of the disclosed admin handles as an attack credential on betpandacasino.io real-money accounts (username alone; no password present, so impact-limited).
+verify_steps: PASSIVE (done) — `curl -sS 'https://blog.betpandacasino.io/wp-json/wp/v2/users'`; `curl -sS -I 'https://blog.betpandacasino.io/?author=1'`. Active depth requires WP admin creds → OOS.
+impact: staff/admin username + real-name disclosure feeding targeted phishing/credential-stuffing against casino operator accounts — LOW/informational; borders OOS "username enumeration on login pages" but is delivered via REST, not a login form.
+testability: PASSIVE
+
+**STEP 4 — SELF-CRITIQUE**
+- [PARKED] blog Redirection plugin REST (`redirection/v1/redirect` 401): auth-gated, no unauth surface.
+- [PARKED] blog xmlrpc/.git/wp-login: CF 403/404 gated — no surface, matches prior "blog properly gated" note.
+- [FINAL] 1) affiliates flagship MISCONFIG 95; 2) dual-cable BUSLOGIC 85; 3) cross-brand IDOR 82; 4) blog WP-REST user disclosure 55 (real, verified, LOW value, OOS-adjacent).
+
+**STEP 5 — NEXT ACTION**
+[NEXT] HUMAN: one casino account session → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <session_cookie>` → capture `{jwt}` → replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <jwt>'`; non-401 vs control = cross-brand BOLA proven AND yields a working Bearer primitive to credential-probe the flagship cross-origin chain (2-command de-gate for the top two findings). Optional blog follow-up (low priority): passive origin-IP history lookup for blog.betpandacasino.io to test CF zone bypass — not actionable this cycle.
+
+**STEP 6 — LEARNING**
+- [LEARN] ACCEPTED OTHER @ blog.betpandacasino.io: unauthenticated `wp-json/wp/v2/users` returns 200 with admin roster (admin_betpanda, admin_ovidiu/Corina) + `?author=1` 301 author-archive redirect — new in-scope subdomain surfaced via crt.sh on the betpandacasino.io family; low severity, gated blog otherwise.
+- [LEARN] REJECTED MISCONFIG @ blog.betpandacasino.io: xmlrpc 403 (CF), `wp-login.php` 404 (CF-mitigated), `.git/HEAD` 403, redirection REST 401 — no unauth write/debug surface on the blog.
+- [LEARN] REJECTED MISCONFIG @ blog.betpandacasino.io/wp-json/redirection/v1: 401 auth-gated — no unauth redirect-rule disclosure.
+
+**STEP 7 — RISK**
+[RISK] betpanda: 88 — Flagship 95, dual-cable 85, cross-brand BOLA 82 all re-anchored live 21:15Z (byte-stable across 09-12). New blog subdomain found and closed with LOW only (WP-REST admin username disclosure verified; all deeper blog surfaces CF-gated). Zero change to the three impact proofs, still gated on one authenticated test session — absolute passive ceiling persists; the 2-command replay remains the single de-gate for the top two findings.
