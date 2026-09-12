@@ -1628,3 +1628,21 @@
 - LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
 - LEARN: CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handle
 - LEARN: CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+
+## RANKED HYPOTHESES 2026-09-12 09:39:51 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (from art/lead_nemotron3.txt)
+- [85] cable.betpanda.io/cable/user-event: Dual unauthenticated cable ingestion accepts arbitrary events; schema-lax on both instances (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: obtain one excess-account session on betpandacasino.io, capture Bearer JWT, replay to `GET https://betpanda.partners/rest/user/settings -H "Authorization
+- NEXT(hypotheses-nemotron3.txt): PROBE: POST https://cable.betpandacasino.io/cable/user-event -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{"eventType":"deposit","amoun
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: fresh re-anchor 00:56:05Z 2026-09-12 — 200 ACAO:https://evil.example + ACAC:true, allow-headers 
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: OPTIONS 204 ACAO:* + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed live 00:56:07Z — du
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners/rest/user/settings: 401 len=32 control parity + CORS asymmetry (casino ACAC:true vs partners no ACAO) re-con
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live fresh this cycle (GET /rest/public/config 200 ACAO:evil.example +
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: Second cable instance confirmed live; OPTIONS preflight 405 (POST-only), root GET 200 ACAO:*; POST
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Validator alignment confirmed — both cable instances now accept identical schema (alphanumeric userId, R
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared App B backend re-confirmed live — both /rest/user/settings return identical 401 control; CORS pinned
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under 
+- LEARN: REJECTED MISCONFIG @ betpanda.partners/rest/*: CORS pinned (Vary:Origin, no ACAO reflection) — only affiliates.betpanda.io is wildcard.
+- LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
+- LEARN: CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handle
+- LEARN: CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
