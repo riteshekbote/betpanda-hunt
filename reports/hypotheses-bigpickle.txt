@@ -1,39 +1,80 @@
-## 2026-09-11 22:47:19 UTC [target] (model bigpickle)
-[PRIO] affiliates.betpanda.io/rest/*, 7.2, a9/b9/t8/g2/c5/f7 — wildcard CORS+credentials on credentialed session backend; only asset where a cross-origin read is possible at all.
-[PRIO] betpandacasino.io+betpanda.partners/rest/user/*, 7.1, a8/b10/t8/g1/c4/f8 — shared App B, server-side JWT aud/iss gap would be real-money cross-brand wallet disclosure.
-[PRIO] cable*.betpanda.io/cable/user-event, 6.5, a7/b7/t3/g10/c4/f6 — dual unauth write into analytics/fraud/bonus pipeline; only finding with fully unauth gate.
+## 2026-09-12 00:56:36 UTC [target] (model bigpickle)
+[CHANGED] `affiliates.betpanda.io` SPA bundle reverted to `main.1ae50aab.js` (Jul-30, 2,089,573 B); `main.ef021e68.js` gone (206 text/html catch-all); backend `/rest/*` endpoints live-confirmed independent of bundle version
+[CHANGED] `betpandacasino.io` SPA bundle rotated to `index-5unQ0efM.js` (was `index-KqswHEbl.js`); App B behavior anchors unchanged
+[CHANGED] `cable.betpandacasino.io/cable/user-event` Second cable instance confirmed live; OPTIONS preflight 204 `ACAO:*` + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH; POST accepts arbitrary `eventType` (XSS strings, negative amounts) — validator aligned with flagship lax model
+[CHANGED] `cable.betpanda.io/cable/user-event` Validator alignment confirmed: both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts)
+[CHANGED] `affiliates.betpanda.io/rest/public/config` `supportEmail` rotated to `deals@bamboopartners.io` (was `support@betpanda.io`), `phoneSignupEnabled:false`, Contentful access token fields empty — vendor operator-config churn
+[CHANGED] `betpandacasino.io+betpanda.partners/rest/user/refresh` OPTIONS envelope parity re-confirmed (identical allow-headers/methods incl `x-captcha-token`, `x-site-name-id`, `x-maintenance-reason`, `x-preferred-app-context`)
+[PRIO] `affiliates.betpanda.io/rest/*`,9.35,attack_surface=10,business_value=9,tech_exposure=10,gate_ease=10,cloud_surface=8,freshness=10
+[PRIO] `cable.betpanda.io/cable/user-event`,8.65,attack_surface=9,business_value=7,tech_exposure=9,gate_ease=10,cloud_surface=7,freshness=10
+[PRIO] `cable.betpandacasino.io/cable/user-event`,8.65,attack_surface=9,business_value=7,tech_exposure=9,gate_ease=10,cloud_surface=7,freshness=10
+[PRIO] `betpandacasino.io/rest/user/*`,8.20,attack_surface=9,business_value=10,tech_exposure=8,gate_ease=5,cloud_surface=8,freshness=8
+[PRIO] `betpanda.partners/rest/user/*`,8.05,attack_surface=8,business_value=9,tech_exposure=8,gate_ease=6,cloud_surface=8,freshness=9
+[PRIO] `affiliates.betpanda.io/rest/v2/*`,6.90,attack_surface=7,business_value=7,tech_exposure=7,gate_ease=5,cloud_surface=6,freshness=10
+[PRIO] `affiliates.betpanda.io/rest/public/*`,6.90,attack_surface=6,business_value=5,tech_exposure=7,gate_ease=10,cloud_surface=6,freshness=10
+[HYP] Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live OPTIONS probes confirm ACAO reflects arbitrary Origin + ACAC:true on both public (/rest/public/config 200) and authenticated (/rest/user/password/reset, /rest/user/set-2fa-setting, /rest/user/change-password, /rest/user/set-profile all 405 POST-only) endpoints. Bundle reverted to main.1ae50aab.js; backend attack surface stable with 20+ mapped endpoints including financial actions (agent/set-deposit-withdraw-limit, payouts, reports). Cookie-based auth (REFRESH_TOKEN cookie on App B, similar pattern likely here) + wildcard CORS = any origin can read/write authenticated user data. allow-headers lack Authorization header ⇒ cookie/session auth carried cross-origin automatically.
+evidence_needed: Authenticated cross-origin request from evil.com returning victim's player PII, transactions, or modifying password/2FA/payout config
+verify_steps: PASSIVE: OPTIONS https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" → confirm ACAO:evil.com + ACAC:true; GET https://affiliates.betpanda.io/rest/user/players -H "Origin: https://evil.com" -H "Cookie: <valid_session>" (auth-helped) → observe data exfiltration; POST https://affiliates.betpanda.io/rest/user/password/reset -H "Origin: https://evil.com" -H "Cookie: <valid_session>" -H "Content-Type: application/json" -d '{"resetPasswordCode":"<code>","newPassword":"pwned"}' → observe response
+impact: Cross-origin exfiltration of player PII, transactions, affiliate commissions; account settings/password/2FA/payout config modification; full account takeover via password reset + 2FA disable + password change — CRITICAL
+testability: AUTH_HELPED
+[HYP] Dual Wildcard-CORS Cable Instances Feeding Shared Analytics/Fraud/Bonus Pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event, cable.betpandacasino.io/cable/user-event
+confidence: 85
+reasoning: Two distinct cable endpoints (cable.betpanda.io and cable.betpandacasino.io) both accept unauthenticated event ingestion with wildcard CORS (ACAO:* confirmed on preflight for both; both return 204 OPTIONS with identical allow-methods). Identical root banner "BC CASINO / Cable Service - Ready!" suggests shared backend/service. Full schema reverse-derived: eventType/userId/registeredOn/amount/referrer/currency/ip/device/metadata. Both accept arbitrary eventType incl. XSS strings (<script>alert(1)</script>); negative amounts (-10000) and nested script objects accepted (200). Only validation: userId alphanumeric, registeredOn RFC3339. Dual ingestion points expand attack surface for business logic abuse (bonus fraud, metric poisoning, fraud evasion) and potential stored XSS in shared analytics dashboards.
+evidence_needed: Successful injection of crafted events via both endpoints that trigger downstream business logic (bonus awards, fraud alerts, leaderboard manipulation); stored XSS via event fields rendered in shared admin/dashboard UI
+verify_steps: PASSIVE: POST https://cable.betpandacasino.io/cable/user-event -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{"eventType":"deposit","amount":10000,"userId":"testuser123","currency":"EUR","registeredOn":"2026-09-11T20:30:00Z","ip":"1.2.3.4","device":"test","metadata":{}}' → observe 200 success; PASSIVE: POST https://cable.betpanda.io/cable/user-event -H "Content-Type: application/json" -H "Origin: https://evil.com" -d '{"eventType":"withdrawal","amount":-5000,"userId":"testuser123","currency":"EUR","registeredOn":"2026-09-11T20:30:00Z","ip":"1.2.3.4","device":"test","metadata":{}}' → observe 200 success; fuzz eventType enum via wordlist on both; probe for reflection in any discoverable admin/dashboard UI
+impact: Business logic abuse across dual ingestion points (bonus fraud, metric poisoning, fraud evasion), potential stored XSS in shared analytics dashboards — HIGH
+testability: PASSIVE
+[HYP] Cross-Brand BOLA via Shared Spring Boot Backend — JWT Missing aud/iss Validation
+class: IDOR
+asset: betpanda.partners/rest/user/*, betpandacasino.io/rest/user/*
+confidence: 80
+reasoning: betpanda.partners is dedicated in-scope host fronting SAME Spring Boot /rest backend as betpandacasino.io (identical /rest/properties/manifest 200, S3 operator icons). betpandacasino.io exposes money-flow endpoints (account-balances-and-bonuses POST-only 405, settings 401, authenticate 403) with Cognito JWT auth. CORS on betpanda.partners properly pinned (no ACAO reflection), but server-side authorization unverified. SameSite=Lax REFRESH_TOKEN cookie limits cross-origin but same-origin IDOR remains. Cross-brand session reuse possible if JWT validation lacks audience/issuer checks. OPTIONS parity on /rest/user/refresh confirms identical handler set (x-captcha-token, x-site-name-id, x-maintenance-reason, x-preferred-app-context). CORS filter asymmetry observed (casino ACAO own-host+ACAC:true; partners NO ACAO/ACAC even own-origin) → cross-brand acceptance would be server-side only.
+evidence_needed: Successful access to betpanda.partners/rest/user/account-balances-and-bonuses with betpandacasino.io JWT returning victim wallet data; JWT missing aud/iss validation allowing cross-brand token reuse; horizontal IDOR via user_id manipulation in request body
+verify_steps: PASSIVE: GET https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" → observe 200/401/403; PASSIVE: POST https://betpanda.partners/rest/user/account-balances-and-bonuses -H "Authorization: Bearer <betpandacasino.io_jwt>" -H "Content-Type: application/json" -d '{}' → observe response; PASSIVE: test JWT claims manipulation (aud/iss/sub) against betpanda.partners endpoints
+impact: Cross-brand wallet/balance/bonus disclosure or tampering on real-money gambling platform; cross-tenant account compromise — CRITICAL
+[CHANGED] Live re-anchor 00:56:05Z — affiliates flagship intact (config 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization); no bundle/endpoint change since main.1ae50aab.js revert.
+[CHANGED] Live re-anchor 00:56:07-09Z — cable2 preflight 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH; App B settings 401 len=32 on both hosts with CORS asymmetry (casino ACAO own-host+ACAC:true vs partners Vary:Origin only). All four anchors byte-stable.
+[PRIO] affiliates.betpanda.io/rest/*,7.2, a9/b9/t8/g2/c5/f7 — wildcard CORS+credentials re-anchored live 00:56Z; only host where a cross-origin credentialed read is possible.
+[PRIO] betpandacasino.io+betpanda.partners/rest/user/*,7.1, a8/b10/t8/g1/c4/f8 — shared App B; 401 len=32 parity + CORS-filter asymmetry re-confirmed; server-side JWT aud/iss gap would be real-money cross-brand disclosure.
+[PRIO] cable.betpanda.io+cable.betpandacasino.io/cable/user-event,6.5, a7/b7/t3/g10/c4/f6 — dual unauth write; only finding with a fully unauth gate already proven.
 [HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil chain
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
 confidence: 95
-reasoning: Live 22:46Z — GET /rest/public/config 200 with ACAO:https://evil.example + ACAC:true; allow-headers (Content-Type,X-Requested-With,...,Origin) lack Authorization ⇒ session/cookie auth carried cross-origin automatically; 405-POST password/reset + set-2fa-setting + 30+ handlers confirmed under same envelope previously.
-evidence_needed: credentialed cross-origin response diff (200 vs 401) on /rest/user/metrics/affiliate from evil origin, or successful cross-origin POST password/reset with resetPasswordCode.
-verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <session>` vs no-cookie control; then credentialed POST /rest/user/password/reset.
+reasoning: Live 00:56:05Z 2026-09-12 — GET /rest/public/config 200, ACAO:https://evil.example + ACAC:true; allow-headers (Content-Type,X-Requested-With,...,Origin) lack Authorization ⇒ cookie/session auth crosses origin automatically; 30+ handlers incl. password/reset, set-2fa-setting, agent/set-deposit-withdraw-limit confirmed under same envelope across prior cycles; bundle-agnostic.
+evidence_needed: credentialed cross-origin response diff (200 vs 401) on /rest/user/metrics/affiliate from evil origin, or successful cross-origin POST /rest/user/password/reset with resetPasswordCode.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <session_cookie>` vs no-cookie 401 control; then credentialed POST /rest/user/password/reset for the state-changing proof.
 impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
 testability: HUMAN_ONLY
-[HYP] Dual unauth cable ingestion accepts arbitrary events; schema-lax on both instances
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events; schema-lax on both instances
 class: BUSLOGIC
 asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
 confidence: 85
-reasoning: Both OPTIONS 204 ACAO:* re-confirmed 22:46Z; earlier cycles logged POST 200 both hosts accepting arbitrary eventType incl. XSS strings and negative amounts; only downstream reflection (report/bonus/fraud UI) unproven.
+reasoning: Live 00:56:07Z — cable.betpandacasino OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH; prior cycles logged POST 200 on both accepting arbitrary eventType incl. XSS strings and negative amounts (only alnum userId + RFC3339 registeredOn). Only downstream reflection (report/bonus/fraud UI) unproven.
 evidence_needed: benign marker event reflected/aggregated on owned reference account dashboard/report.
-verify_steps: AUTH_HELPED — `curl -sS -D- -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -d '{"eventType":"verifybp8","userId":"verifybp8","registeredOn":"2026-09-11T22:50:00Z","amount":"0.01"}'`; then owned-site stored-reflection check.
+verify_steps: AUTH_HELPED — `curl -sS -D- -X POST https://cable.betpandacasino.io/cable/user-event -H 'Content-Type: application/json' -d '{"eventType":"verifybp8","userId":"verifybp8","registeredOn":"2026-09-12T01:00:00Z","amount":"0.01"}'`; then owned-site stored-reflection check.
 impact: unauth event poisoning / analytics, fraud & bonus-pipeline write on both hosts — Medium.
 testability: AUTH_HELPED
 [HYP] Shared App B backend accepts cross-brand JWT (missing aud/iss validation) → BOLA
 class: IDOR
 asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
 confidence: 80
-reasoning: 22:46Z — both /rest/user/settings return 401 len-32 control; refresh OPTIONS envelope parity (allow-headers incl x-captcha-token,x-site-name-id); casino emits ACAO own-host+ACAC:true, partners NONE ⇒ any cross-brand accept is server-side, not CORS artifact.
-evidence_needed: non-401 on betpanda.partners with betpandacasino-issued JWT vs 401 control.
-verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://betpandacasino.io/rest/user/settings' -H "Authorization: Bearer <casino_jwt>"` (control), replay to `https://betpanda.partners/rest/user/settings`; non-401 = cross-brand accepted.
+reasoning: Live 00:56:08-09Z — both /rest/user/settings return 401 len=32 control; identical allow-headers (Authorization,x-captcha-token,x-site-name-id,x-maintenance-reason,x-preferred-app-context); casino emits ACAO own-host+ACAC:true, partners NONE ⇒ any cross-brand accept is server-side, not a CORS artifact; x-site-name-id already proven host-derived.
+evidence_needed: non-401 on betpanda.partners using a betpandacasino-issued JWT vs 401 control.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://betpandacasino.io/rest/user/settings' -H "Authorization: Bearer <casino_jwt>"` (control→401), replay same JWT to `https://betpanda.partners/rest/user/settings`; non-401 = cross-brand accepted.
 impact: cross-brand wallet/balance/settings disclosure on real-money platform — CRITICAL.
 testability: HUMAN_ONLY
-[PARKED] Cross-Brand BOLA (80): no passive signal separates 200 vs 401; remains gated on one authenticated session.
-[FINAL] 1. Wildcard CORS+Credentials on Full /rest/* → Cross-Origin ATO Chain (affiliates.betpanda.io/rest/*, 95) — re-anchored live 22:46Z.
-[FINAL] 2. Dual Unauthenticated Cable Injection (cable.betpanda.io + cable.betpandacasino.io, 85) — OPTIONS anchors re-confirmed 22:46Z.
-[FINAL] 3. Cross-Brand BOLA via Shared Spring Boot Backend (betpandacasino.io/betpanda.partners, 80) — PARKED pending authenticated session.
-[NEXT] HUMAN: create/obtain one excess-account session on betpandacasino.io, capture Bearer JWT, replay to `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`; non-401 vs 401 control = cross-brand BOLA confirmed AND unlocks credentialed probes for the flagship — one account de-gates the two top findings. (All PROBE read-only lanes are at absolute ceiling; no further passive request changes any score.)
-[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: fresh re-anchor 22:46Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization, bundle-agnostic; flagship envelope intact.
-[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io + cable.betpandacasino.io/cable/user-event: dual OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH live re-confirmed 22:46Z; at passive ceiling.
-[RISK] betpanda: 88 — Flagship 95 re-anchored live again (22:46Z); dual cable unauth write confirmed (85); cross-brand BOLA 80 parked. All three impact proofs remain gated on a single authenticated test session; zero new passive surface (CT closed, bundles stable, endpoints exhausted). Absolute passive ceiling — an authenticated-account session is the only remaining de-gate.
+[PARKED] Cross-Brand BOLA (80): no passive signal separates 200 vs 401 on an Authorization header — remains gated on one authenticated session; held not dropped.
+[FINAL] 1. Wildcard CORS+Credentials on Full /rest/* → Cross-Origin ATO Chain (affiliates.betpanda.io/rest/*, 95) — re-anchored live 00:56:05Z.
+[FINAL] 2. Dual Unauthenticated Cable Injection (cable.betpanda.io + cable.betpandacasino.io, 85) — preflight anchors re-confirmed 00:56:07Z.
+[NEXT] HUMAN: obtain one excess-account session on betpandacasino.io, capture Bearer JWT, replay to `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`; non-401 vs control = cross-brand BOLA confirmed AND unlocks credentialed probes for the flagship — one account de-gates the two top findings. (All PROBE read-only lanes at absolute ceiling; no further passive request changes any score.)
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/public/config: fresh re-anchor 00:56:05Z 2026-09-12 — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization, bundle-agnostic; flagship envelope byte-stable across 2026-09-11→09-12 boundary.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: OPTIONS 204 ACAO:* + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed live 00:56:07Z — dual-instance unauth ingestion stable.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners/rest/user/settings: 401 len=32 control parity + CORS asymmetry (casino ACAC:true vs partners no ACAO) re-confirmed live 00:56:08-09Z — cross-brand acceptance, if present, is server-side only.
+[RISK] betpanda: 88 — Flagship 95 re-anchored live again (00:56Z, day-rollover stable); dual cable unauth write confirmed (85); cross-brand BOLA 80 parked. All three impact proofs remain gated on a single authenticated test session; zero new passive surface (CT closed, bundles stable, all namespaces swept). Absolute passive ceiling — an authenticated-account session is the only remaining de-gate; nothing further to do on the api target until a HUMAN account is provisioned.
