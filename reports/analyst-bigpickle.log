@@ -28939,3 +28939,43 @@ All five live anchors re-confirmed byte-stable at 16:22-23Z. Checking for new id
 [93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
 [0m✗ [0mcat /tmp/ct_betpanda.io.txt; echo "==="; curl -sS -m 25 "https://crt.sh/?q=%25.betpandacasino.io&output=json" -A "Mozilla/5.0" 2>/dev/null | head -c 400; echo; echo "=== try betpandacasino separately ==="; curl -sS -m 25 "https://crt.sh/?q=betpandacasino.io&output=json" -A "Mozilla/5.0" 2>/dev/null | python3 -c "import sys,json;d=json.load(sys.stdin);print(sorted({n for e in d for n in e.get('name_value','').split(chr(10))}))" 2>/dev/null | head failed
 [91m[1mError: [0mThe user rejected permission to use this specific tool call.
+===== ANALYST bigpickle 2026-09-12 18:46:36 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m→ [0mRead .
+[0m✱ [0mGlob "**/*.txt"[90m in . · 9 matches[0m
+[0m✱ [0mGlob "**/*.md"[90m in . · 85 matches[0m
+[0m→ [0mRead triage/run-2026-09-12-16-22.md
+[0m→ [0mRead state_bigpickle.json
+[0m→ [0mRead triage/run-2026-09-12-13-07.md
+[0m→ [0mRead probe-results.md
+[0m→ [0mRead leads/lead-bigpickle.md
+[0m→ [0mRead analyst-out.txt
+[0m→ [0mRead reports/hypotheses-bigpickle.txt
+[0m→ [0mRead scope.yml
+I'll re-anchor the key live signals this cycle before scoring any delta.
+[0m
+[0m$ [0mecho "=== 1. affiliates config + evil Origin ==="; curl -sS -D- --max-time 15 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' -o /tmp/cfg.json | grep -iE 'HTTP/|access-control|content-type|x-site'; sleep 1; echo "=== 2. affiliates password/reset OPTIONS + evil Origin ==="; curl -sS -D- --max-time 15 -X OPTIONS 'https://affiliates.betpanda.io/rest/user/password/reset' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' -o /dev/null | grep -iE 'HTTP/|access-control'; sleep 1; echo "=== 3. cable2 OPTIONS ==="; curl -sS -D- --max-time 15 -X OPTIONS 'https://cable.betpandacasino.io/cable/user-event' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' -o /dev/null | grep -iE 'HTTP/|access-control'
+=== 1. affiliates config + evil Origin ===
+HTTP/2 200 
+content-type: application/json
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+=== 2. affiliates password/reset OPTIONS + evil Origin ===
+HTTP/2 200 
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+=== 3. cable2 OPTIONS ===
+HTTP/2 204 
+vary: Access-Control-Request-Method, Access-Control-Request-Headers, Origin
+access-control-allow-origin: *
+access-control-allow-methods: GET,POST,HEAD,PUT,DELETE,PATCH
+[0m
+[93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
+[0m✗ [0mecho "=== 4. casino settings 401 + evil Origin ==="; curl -sS -D- --max-time 15 'https://betpandacasino.io/rest/user/settings' -H 'Origin: https://evil.example' -o /tmp/casino.json | grep -iE 'HTTP/|access-control|x-site|content-length'; echo "--- body:"; cat /tmp/casino.json; echo; echo "=== 5. partners settings 401 + evil Origin ==="; sleep 1; curl -sS -D- --max-time 15 'https://betpanda.partners/rest/user/settings' -H 'Origin: https://evil.example' -o /tmp/partners.json | grep -iE 'HTTP/|access-control|x-site|content-length'; echo "--- body:"; cat /tmp/partners.json failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.
