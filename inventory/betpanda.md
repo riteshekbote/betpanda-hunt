@@ -499,3 +499,11 @@ www.betpanda.io
 - CHANGED `affiliates.betpanda.io/rest/public/config` x-site-name-id header + operatorId/code/operator/id query params all → identical operatorId=1 — no client-controlled tenant switch on wildcard host public l
 
 ## 2026-09-12 23:07:35 UTC
+
+## 2026-09-13 01:12:01 UTC
+- CHANGED affiliates.betpanda.io SPA bundle reverted to `main.1ae50aab.js` (Jul-30, 2,089,573 B); `main.ef021e68.js` gone (206 text/html catch-all). Backend `/rest/*` endpoints live-confirmed independent of bun
+- CHANGED betpandacasino.io SPA bundle rotated to `index-5unQ0efM.js` (was `index-KqswHEbl.js`); App B behavior anchors unchanged (identical 401 on `/rest/user/settings`, same handler set).
+- CHANGED cable.betpandacasino.io/cable/user-event: Second cable instance confirmed live; OPTIONS preflight 405 (POST-only), root GET 200 ACAO:*; POST accepts arbitrary eventType (XSS strings, negative amounts)
+- CHANGED Both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts).
+- CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor 00:56:05Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization.
+- CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) re-confirmed live.

@@ -3972,3 +3972,33 @@ evidence_needed: benign marker event reflected/aggregated on an owned reference 
 verify_steps: AUTH_HELPED — POST benign marker event (`{"eventType":"verifybp8","userId":"verifybp8","registeredOn":"2026-09-12T21:27:00Z","amount":"0.01"}`), then owned-site stored-reflection check.
 impact: unauth event poisoning / analytics + fraud & bonus-pipeline write on both hosts — Medium.
 testability: AUTH_HELPED
+## 2026-09-13 01:10:13 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil chain
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 01:09:20Z 2026-09-13 — GET /rest/public/config 200 with `ACAO:https://evil.example` reflected + `ACAC:true`; allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; allow-headers lack Authorization ⇒ cookie/session auth crosses origin automatically; 30+ handlers incl. password/reset, set-2fa-setting, agent/set-deposit-withdraw-limit.
+evidence_needed: credentialed cross-origin response diff (non-401 vs 401 no-cookie control) on an authed route, or reset-password POST w/ valid resetPasswordCode.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <cookie>` vs no-cookie 401; then state-changing cross-origin probes.
+impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 85
+reasoning: Live 01:09:24Z — cable2 root 200 `ACAO:*`; prior cycles: dual OPTIONS 204/405 ACAO:* + POST 200 accepting arbitrary eventType/XSS/negative amounts (alnum userId, RFC3339 registeredOn). Single-route Express; downstream bonus/fraud reflection unproven.
+evidence_needed: benign marker event reflected/aggregated on an owned reference account.
+verify_steps: AUTH_HELPED — POST benign marker `{"eventType":"verifybp8","userId":"verifybp8","registeredOn":"2026-09-13T01:10:00Z","amount":"0.01"}` then owned-site stored-reflection check.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — Medium.
+testability: AUTH_HELPED
+[HYP] Cross-brand BOLA via shared App B backend
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 82
+reasoning: Live 01:09:28-31Z — both /rest/user/settings 401 len=32; CORS asymmetry (casino ACAO own-host+ACAC:true, partners no ACAO) ⇒ cross-brand accept is server-side only; x-site-name-id host-derived; JWT minted via POST /rest/user/refresh.
+evidence_needed: non-401 on betpanda.partners using betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — POST /rest/user/refresh w/ session cookie → {jwt} → `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`.
+impact: cross-brand wallet/settings/PII disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[NEXT] HUMAN: one casino account session → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <session_cookie>` → capture `{jwt}` → replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <jwt>'`; non-401 vs 401 control = cross-brand BOLA proven AND yields a Bearer primitive to credential-probe the flagship cross-origin chain — the single 2-command de-gate for the top two findings (unchanged; all passive lanes exhausted, no new surface this cycle).
+[RISK] betpanda: 88 — Flagship 95, dual-cable 85, cross-brand BOLA 82 all re-anchored live 01:09-31Z (byte-stable across 09-12→09-13). Sole new surface (track.betpanda.partners) is third-party disabled SaaS; blog wp-json closed at LOW. Zero change to the three impact proofs, still gated on one authenticated test session — absolute passive ceiling persists; the 2-command replay remains the single de-gate for the top two findings.
