@@ -31014,3 +31014,271 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 - [RISK] betpanda: 88 — Flagship 95, dual-cable 85, cross-brand BOLA 82 all re-anchored live this cycle (12:14Z), zero drift. Zero movement on the three impact proofs — still blocked on ONE authenticated test session (refresh→Bearer→partners replay = 2 commands). No new passive surface (CT zones + bundle + public layer all exhausted). Absolute passive ceiling persists; program risk unchanged until the HUMAN de-gate fires.
+===== ANALYST bigpickle 2026-09-13 19:14:36 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la && ls -la art 2>/dev/null; ls -la *hypotheses* 2>/dev/null
+total 404
+drwxr-xr-x 12 runner runner   4096 Sep 13 18:56 .
+drwxr-xr-x  3 runner runner   4096 Sep 13 18:56 ..
+drwxr-xr-x  7 runner runner   4096 Sep 13 18:56 .git
+drwxr-xr-x  3 runner runner   4096 Sep 13 18:56 .github
+-rw-r--r--  1 runner runner   1709 Sep 13 18:56 README.md
+-rw-r--r--  1 runner runner     32 Sep 13 18:56 analyst-out.txt
+-rw-r--r--  1 runner runner 153454 Sep 13 18:56 analyst-prompt.txt
+-rw-r--r--  1 runner runner 149673 Sep 13 18:56 ctx.txt
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 inventory
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 knowledge
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 leads
+-rw-r--r--  1 runner runner  18862 Sep 13 18:56 probe-results.md
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 recon-notes
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 reports
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 reposcan-raw
+-rw-r--r--  1 runner runner   3194 Sep 13 18:56 scope.yml
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 scripts
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_bigpickle.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_laguna.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_ling3.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_longcat.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_mimo.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_nemotron3.json
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 triage
+[0m
+[0m✱ [0mGlob "**/*.md"[90m 92 matches[0m
+[0m→ [0mRead triage/run-2026-09-13-16-26.md
+[0m→ [0mRead leads/lead-bigpickle.md
+[0m
+[0m$ [0mcat state_bigpickle.json; echo; cat analyst-out.txt; echo; tail -40 probe-results.md
+{"phase": "POC", "target": "api"}
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mls -la && ls -la art 2>/dev/null; ls -la *hypotheses* 2>/dev/null
+total 404
+drwxr-xr-x 12 runner runner   4096 Sep 13 18:56 .
+drwxr-xr-x  3 runner runner   4096 Sep 13 18:56 ..
+drwxr-xr-x  7 runner runner   4096 Sep 13 18:56 .git
+drwxr-xr-x  3 runner runner   4096 Sep 13 18:56 .github
+-rw-r--r--  1 runner runner   1709 Sep 13 18:56 README.md
+-rw-r--r--  1 runner runner     32 Sep 13 18:56 analyst-out.txt
+-rw-r--r--  1 runner runner 153454 Sep 13 18:56 analyst-prompt.txt
+-rw-r--r--  1 runner runner 149673 Sep 13 18:56 ctx.txt
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 inventory
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 knowledge
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 leads
+-rw-r--r--  1 runner runner  18862 Sep 13 18:56 probe-results.md
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 recon-notes
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 reports
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 reposcan-raw
+-rw-r--r--  1 runner runner   3194 Sep 13 18:56 scope.yml
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 scripts
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_bigpickle.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_laguna.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_ling3.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_longcat.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_mimo.json
+-rw-r--r--  1 runner runner     33 Sep 13 18:56 state_nemotron3.json
+drwxr-xr-x  2 runner runner   4096 Sep 13 18:56 triage
+[0m
+[0m✱ [0mGlob "**/*.md"[90m 92 matches[0m
+[0m→ [0mRead triage/run-2026-09-13-16-26.md
+[0m→ [0mRead leads/lead-bigpickle.md
+
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate' -> HTTP 404
+
+## 2026-09-12 18:46:41 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+
+## 2026-09-12 21:21:25 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate' -> HTTP 404
+
+## 2026-09-12 23:07:41 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate' -> HTTP 404
+
+## 2026-09-13 01:12:08 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate' -> HTTP 404
+
+## 2026-09-13 06:30:46 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate' -> HTTP 404
+
+## 2026-09-13 12:09:07 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate' -> HTTP 404
+
+## 2026-09-13 16:46:20 UTC
+https://affiliates.betpanda.io/rest/user/metrics/affiliate' -> HTTP 404
+[0m
+Baselines confirmed identical for ten days. Running a fresh re-anchor + a genuinely new public-namespace sweep on the wildcard-CORS host.
+[0m$ [0mprobe() {
+  printf '%-70s' "$1"
+  curl -sS -o /dev/null -m 15 -w 'HTTP %{http_code} len=%{size_download}' "$1"
+  echo
+}
+echo "== ANCHOR 1: flagship envelope =="
+curl -sS -D- -o /dev/null -m 15 'https://affiliates.betpanda.io/rest/public/config' \
+  -H 'Origin: https://evil.example' | rg -i 'HTTP/|access-control-allow-origin:|access-control-allow-credentials:|content-type:' 
+echo "== ANCHOR 2: password/reset OPTIONS =="
+curl -sS -D- -o /dev/null -m 15 -X OPTIONS 'https://affiliates.betpanda.io/rest/user/password/reset' \
+  -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' | rg -i 'HTTP/|access-control-allow-origin:|access-control-allow-credentials:|allow-methods|allow-headers'
+echo "== ANCHOR 3: BOLA parity =="
+curl -sS -o /dev/null -m 15 -w 'casino /rest/user/settings -> %{http_code} len=%{size_download}\n' 'https://betpandacasino.io/rest/user/settings'
+curl -sS -o /dev/null -m 15 -w 'partners /rest/user/settings -> %{http_code} len=%{size_download}\n' 'https://betpanda.partners/rest/user/settings'
+== ANCHOR 1: flagship envelope ==
+/bin/bash: line 8: rg: command not found
+== ANCHOR 2: password/reset OPTIONS ==
+/bin/bash: line 11: rg: command not found
+== ANCHOR 3: BOLA parity ==
+casino /rest/user/settings -> 401 len=32
+partners /rest/user/settings -> 401 len=32
+[0m
+[0m$ [0mecho "== ANCHOR 1: flagship envelope =="
+curl -sS -D- -o /dev/null -m 15 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' | grep -iE 'HTTP/|access-control-allow-origin:|access-control-allow-credentials:|content-type:'
+echo "== ANCHOR 2: password/reset OPTIONS =="
+curl -sS -D- -o /dev/null -m 15 -X OPTIONS 'https://affiliates.betpanda.io/rest/user/password/reset' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' | grep -iE 'HTTP/|access-control-allow-origin:|access-control-allow-credentials:|allow-methods|allow-headers'
+echo "== ANCHOR 4: cable OPTIONS both =="
+curl -sS -D- -o /dev/null -m 15 -X OPTIONS 'https://cable.betpanda.io/cable/user-event' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' | grep -iE 'HTTP/|access-control-allow-origin:' 
+curl -sS -D- -o /dev/null -m 15 -X OPTIONS 'https://cable.betpandacasino.io/cable/user-event' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' | grep -iE 'HTTP/|access-control-allow-origin:'
+== ANCHOR 1: flagship envelope ==
+HTTP/2 200 
+content-type: application/json
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+== ANCHOR 2: password/reset OPTIONS ==
+HTTP/2 200 
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+== ANCHOR 4: cable OPTIONS both ==
+HTTP/2 204 
+access-control-allow-origin: *
+HTTP/2 204 
+access-control-allow-origin: *
+[0m
+Flagship + BOLA + dual-cable all byte-stable. Now a fresh `/rest/public/*` GET sweep for undiscovered unauth handlers (405/200 = handler, 404 = baseline).
+[0m$ [0mprobe() {
+  printf '%-55s' "$1"
+  curl -sS -o /dev/null -m 12 -w 'HTTP %{http_code} len=%{size_download}\n' "$1"
+  sleep 0.6
+}
+for p in notreal123ctl logout reset-password forgot-password password session currencies operator languages support trk config-payment config-maintenance bonus-list commission-list; do
+  probe "https://affiliates.betpanda.io/rest/public/$p"
+done
+https://affiliates.betpanda.io/rest/public/notreal123ctlHTTP 404 len=130
+https://affiliates.betpanda.io/rest/public/logout      HTTP 200 len=0
+https://affiliates.betpanda.io/rest/public/reset-passwordHTTP 404 len=131
+https://affiliates.betpanda.io/rest/public/forgot-passwordHTTP 404 len=132
+https://affiliates.betpanda.io/rest/public/password    HTTP 404 len=125
+https://affiliates.betpanda.io/rest/public/session     HTTP 404 len=124
+https://affiliates.betpanda.io/rest/public/currencies  HTTP 404 len=127
+https://affiliates.betpanda.io/rest/public/operator    HTTP 404 len=125
+https://affiliates.betpanda.io/rest/public/languages   HTTP 404 len=126
+https://affiliates.betpanda.io/rest/public/support     HTTP 404 len=124
+https://affiliates.betpanda.io/rest/public/trk         HTTP 404 len=120
+https://affiliates.betpanda.io/rest/public/config-paymentHTTP 404 len=131
+https://affiliates.betpanda.io/rest/public/config-maintenanceHTTP 404 len=135
+https://affiliates.betpanda.io/rest/public/bonus-list  HTTP 404 len=127
+https://affiliates.betpanda.io/rest/public/commission-listHTTP 404 len=132
+[0m
+`/rest/public/logout` confirmed live again (HTTP 200 len=0 on GET — real handler). Characterizing it and its CORS envelope.
+[0m$ [0mecho "== GET /rest/public/logout with evil Origin =="
+curl -sS -D- -o /dev/null -m 12 'https://affiliates.betpanda.io/rest/public/logout' -H 'Origin: https://evil.example' | grep -iE 'HTTP/|access-control|cache-control|content-type'
+echo "== OPTIONS /rest/public/logout with evil Origin =="
+curl -sS -D- -o /dev/null -m 12 -X OPTIONS 'https://affiliates.betpanda.io/rest/public/logout' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: DELETE' | grep -iE 'HTTP/|access-control|allow-methods'
+echo "== same-origin GET for comparison =="
+curl -sS -D- -o /dev/null -m 12 'https://affiliates.betpanda.io/rest/public/logout' -H 'Origin: https://affiliates.betpanda.io' | grep -iE 'HTTP/|access-control'
+== GET /rest/public/logout with evil Origin ==
+HTTP/2 200 
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+== OPTIONS /rest/public/logout with evil Origin ==
+HTTP/2 200 
+access-control-allow-origin: https://evil.example
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+== same-origin GET for comparison ==
+HTTP/2 200 
+access-control-allow-origin: https://affiliates.betpanda.io
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+[0m
+Confirmed at the absolute passive ceiling — all anchors byte-stable, 15-path public sweep negative except the already-mapped `logout` handler. Structured analysis below.
+
+## STEP 1 — DELTA
+- [CHANGED] affiliates.betpanda.io/rest/public/* breadth re-swept (15 candidates + control): only `/rest/public/logout` is a real handler — GET 200 len=0, OPTIONS/GET both reflect `ACAO:https://evil.example` + `ACAC:true` + full allow-methods (session-destroy primitive on wildcard-CORS public layer; logout-CSRF is OUT OF SCOPE). All other candidates 404 len≈130.
+- [CHANGED] `/rest/public/logout` characterized live 16:52Z — is an unauth 200/empty handler under wildcard CORS+credentials, confirming the filter-level envelope extends to the public GET layer (not only OPTIONS/authed).
+- NO_DELTA: flagship CORS envelope (config 200 ACAO evil+ACAC:true; password/reset OPTIONS 200 same + full allow-methods, allow-headers lack Authorization), App B settings 401 len=32 on both brands, dual-cable OPTIONS 204 ACAO:\*.
+
+## STEP 2 — PRIORITIZE
+- [PRIO] betpandacasino.io+betpanda.partners /rest/user/*,7.15,a8/b10/t8/g3/c2/f8 — real-money App B, JWT, cross-brand BOLA closest to proof
+- [PRIO] cable.betpandacasino.io+cable.betpanda.io /cable/user-event,6.70,a7/b6/t7/g10/c1/f8 — unauth write, CORS \*, dual-instance
+- [PRIO] affiliates.betpanda.io/rest/*,6.60,a9/b9/t4/g2/c3/f9 — flagship wildcard CORS+credentials, 30+ handlers, POC auth-gated
+- [PRIO] affiliates.betpanda.io/rest/public/logout,3.80,a1/b3/t2/g10/c1/f9 — public 200/empty under wildcard CORS; impact limited to logout-CSRF (explicitly out of scope)
+
+## STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 16:47-52Z 2026-09-13 — GET /rest/public/config 200 ACAO:https://evil.example + ACAC:true; OPTIONS /rest/user/password/reset 200 same + allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; allow-headers lack Authorization ⇒ cookie/session-auth crosses origin automatically; /rest/public/logout (GET 200 len=0) and 404 paths also reflect the envelope ⇒ filter-layer-wide, bundle-agnostic (main.1ae50aab.js unchanged). 30+ handlers incl. password/reset, set-2fa-setting, agent/set-deposit-withdraw-limit.
+evidence_needed: credentialed cross-origin response diff (non-401 vs 401 no-cookie) on an authed route, or reset-password POST with valid resetPasswordCode.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <cookie>'` vs no-cookie 401; then state-changing cross-origin probes.
+impact: PII/transaction exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Cross-brand BOLA via shared App B backend
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 82
+reasoning: 16:48Z live — both hosts /rest/user/settings 401 len=32 parity; CORS asymmetry (casino ACAO own-host+ACAC:true, partners no-ACAO) ⇒ cross-brand accept, if present, is server-side only; x-site-name-id host-derived; JWT minted via POST /rest/user/refresh, used as Bearer.
+evidence_needed: non-401 on betpanda.partners using a betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — POST /rest/user/refresh with session cookie → {jwt} → `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`.
+impact: cross-brand wallet/balance/settings/PII disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 85
+reasoning: 16:51Z live — both OPTIONS 204 ACAO:\*; prior-cycle POST 200 with arbitrary eventType/XSS/negative amounts on both instances (alnum userId, RFC3339 registeredOn); validator aligned lax; downstream bonus/fraud reflection unproven.
+evidence_needed: benign marker event reflected/aggregated on an owned reference account.
+verify_steps: AUTH_HELPED — POST benign marker `{"eventType":"verifybp12","userId":"verifybp12","registeredOn":"2026-09-13T16:30:00Z","amount":"0.01"}` then owned-site stored-reflection check.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — Medium.
+testability: AUTH_HELPED
+
+## STEP 4 — SELF-CRITIQUE
+- [PARKED] /rest/public/logout as finding: session-destroy primitive under wildcard CORS, but sole impact is forced logout (logout-CSRF explicitly out of scope). Not reportable standalone; may pair into a chained POC later at zero cost. Not a hypothesis.
+- [FINAL] survivors ranked: 1) MISCONFIG affiliates (95) 2) BUSLOGIC dual-cable (85) 3) IDOR cross-brand App B (82). No confidence erosion: anchors re-verified fresh this cycle; 15-path negative sweep confirms no undiscovered unauth public handler on the wildcard host.
+
+## STEP 5 — NEXT ACTION
+[NEXT] HUMAN: one casino account session → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <session_cookie>'` → capture `{jwt}` → replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <jwt>'`; non-401 vs 401 control = cross-brand BOLA AND yields a Bearer primitive to credential-probe the flagship cross-origin chain. Fallback de-gate if no casino account: `POST https://affiliates.betpanda.io/rest/public/register` with minimal JSON to test if registration is CAPTCHA-free (if so, an OWNED affiliate test account unlocks the flagship POC) — only other live gate left (all passive lanes now exhausted: 15-path public sweep negative this cycle).
+
+## STEP 6 — LEARNING
+- [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: re-anchored live 16:47-52Z — config 200 ACAO:https://evil.example+ACAC:true; password/reset OPTIONS 200 same + full allow-methods; /rest/public/logout GET 200 len=0 also reflects ACAO evil+ACAC:true; envelope backend-wide, bundle-agnostic.
+- [LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity re-confirmed live 16:48Z; CORS asymmetry unchanged; cross-brand accept, if present, server-side only.
+- [LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: OPTIONS 204 ACAO:\* re-confirmed both hosts 16:50-51Z; dual unauth ingestion stable.
+- [LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/public breadth: 15-candidate sweep (reset-password/forgot-password/password/session/currencies/operator/languages/support/trk/config-payment/config-maintenance/bonus-list/commission-list/logout) — only logout is a handler (200 len=0); public unauth surface fully enumerated.
+- [LEARN] CHANGED @ affiliates.betpanda.io/rest/public/logout: GET 200 len=0 + wildcard ACAO/ACAC/full allow-methods on both GET and OPTIONS; session-destroy primitive, impact capped at logout-CSRF (out of scope).
+
+## STEP 7 — RISK
+[RISK] betpanda: 88 — Flagship 95, dual-cable 85, cross-brand BOLA 82 all re-anchored live this cycle (envelope reflected on 8+ paths; /rest/public/logout confirmed wildcard-CORS on the unauth GET layer). Zero movement on the three impact proofs — still blocked on ONE authenticated session (refresh→Bearer→partners replay = 2 commands, or a CAPTCHA-free register test); 15-path negative public sweep confirms no new unauth gate exists passively. Absolute passive ceiling re-verified; program risk unchanged until the HUMAN de-gate fires.

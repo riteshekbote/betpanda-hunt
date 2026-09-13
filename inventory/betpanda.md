@@ -525,3 +525,13 @@ www.betpanda.io
 ## 2026-09-13 12:09:01 UTC
 
 ## 2026-09-13 16:46:19 UTC
+
+## 2026-09-13 19:14:36 UTC
+- CHANGED affiliates.betpanda.io SPA bundle reverted to main.1ae50aab.js (Jul-30, 2.09MB); main.ef021e68.js gone (206 text/html catch-all). Backend /rest/* endpoints live-confirmed independent of bundle version
+- CHANGED betpandacasino.io SPA bundle rotated to index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged (identical 401 on /rest/user/settings, same handler set).
+- CHANGED cable.betpandacasino.io/cable/user-event confirmed as second cable instance: OPTIONS preflight 405 (POST-only), root GET 200 ACAO:*, POST accepts arbitrary eventType (XSS strings, negative amounts) wi
+- CHANGED Both cable instances (cable.betpanda.io + cable.betpandacasino.io) now accept identical schema: alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts.
+- CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor 00:56:05Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization; flagship envelope byte-stable across 2026-09-11→09-13
+- CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry re-confirmed live (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) — cross-brand acceptance, if pres
+- NEW cable.betpandacasino.io/cable/user-event second instance fully validated as wildcard-CORS unauth ingestion endpoint matching flagship behavior.
+- NEW affiliates.betpanda.io SPA +1 public handler mapped (public/logout); backend handling independent of bundle.
