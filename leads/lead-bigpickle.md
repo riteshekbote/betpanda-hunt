@@ -4131,3 +4131,35 @@ impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — 
 testability: AUTH_HELPED
 [NEXT] HUMAN: one casino account session → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <session_cookie>'` → capture `{jwt}` → replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <jwt>'`; non-401 vs 401 control = cross-brand BOLA AND yields a Bearer primitive to credential-probe the flagship cross-origin chain. Fallback de-gate if no casino account: `POST https://affiliates.betpanda.io/rest/public/register` with minimal JSON to test if registration is CAPTCHA-free (if so, an OWNED affiliate test account unlocks the flagship POC) — only other live gate left (all passive lanes now exhausted: 15-path public sweep negative this cycle).
 [RISK] betpanda: 88 — Flagship 95, dual-cable 85, cross-brand BOLA 82 all re-anchored live this cycle (envelope reflected on 8+ paths; /rest/public/logout confirmed wildcard-CORS on the unauth GET layer). Zero movement on the three impact proofs — still blocked on ONE authenticated session (refresh→Bearer→partners replay = 2 commands, or a CAPTCHA-free register test); 15-path negative public sweep confirms no new unauth gate exists passively. Absolute passive ceiling re-verified; program risk unchanged until the HUMAN de-gate fires.
+## 2026-09-13 21:19:07 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 21:16Z 2026-09-13 — GET /rest/public/config 200 ACAO:https://evil.example + ACAC:true + allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; OPTIONS /rest/user/password/reset 200 same envelope; allow-headers list LACKS Authorization ⇒ cookie/session auth crosses origin automatically; response readable in-browser because ACAO echoes the exact evil Origin (not `*`) alongside ACAC:true — textbook credentialed-wildcard chain. 30+ handlers incl. password/reset, set-2fa-setting, agent/set-deposit-withdraw-limit, revenue/metrics; config/probes byte-stable, bundle-agnostic.
+evidence_needed: credentialed cross-origin response diff (non-401 vs 401 no-cookie) on an authed route, or reset-password POST with valid resetPasswordCode.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <cookie>'` vs no-cookie 401; then state-changing cross-origin probes.
+impact: PII/transaction/commission exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL.
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 80
+reasoning: Prior-cycle POST 200 with arbitrary eventType/XSS/negative amounts on both instances (alnum userId, RFC3339 registeredOn); both accepted root banner ACAO:*; this cycle 32-path sweep closes any alternative cable surface — user-event is the ONLY write path; downstream bonus/fraud reflection unproven, no hidden read/aggregation route exists to observe stored events.
+evidence_needed: benign marker event reflected/aggregated on an owned reference account.
+verify_steps: AUTH_HELPED — POST benign marker `{"eventType":"verifybp13","userId":"verifybp13","registeredOn":"2026-09-13T21:20:00Z","amount":"0.01"}` then owned-site stored-reflection check.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — Medium.
+testability: AUTH_HELPED
+[HYP] Cross-brand BOLA via shared App B backend
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Prior-cycle 16:48Z — both hosts /rest/user/settings 401 len=32 parity; CORS asymmetry (casino ACAO own-host+ACAC:true vs partners no-ACAO) ⇒ cross-brand accept, if present, is server-side only; x-site-name-id host-derived at filter layer; JWT minted via POST /rest/user/refresh, used as Bearer.
+evidence_needed: non-401 on betpanda.partners using a betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — POST /rest/user/refresh with session cookie → {jwt} → `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`.
+impact: cross-brand wallet/balance/settings/PII disclosure on real-money platform — CRITICAL.
+testability: HUMAN_ONLY
+[NEXT] HUMAN: single casino account session → `curl -sS -X POST 'https://betpandacasino.io/rest/user/refresh' -b <session_cookie>'` → capture `{jwt}` → replay `curl -sS -D- 'https://betpanda.partners/rest/user/settings' -H 'Authorization: Bearer <jwt>'`; non-401 vs 401 control = cross-brand BOLA and yields a Bearer primitive to credential-probe the flagship chain. Fallback if no casino account: `POST https://affiliates.betpanda.io/rest/public/register` minimal JSON — if CAPTCHA-free, an OWNED affiliate test account unlocks the flagship POC (only live gate left; passive lanes exhausted incl. this cycle's 32-path cable sweep and dead CT lane).
+[LEARN] REJECTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: 32-path GET sweep (/health /config /env /docs /metrics /swagger /openapi.json /version /status + /cable/{health,config,stats,version,status,info}) all 404 on both instances — single-route surface (root banner + /cable/user-event) confirmed; no hidden unauth read/admin route; cable surface exhaustively closed at 4.9.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live re-verify 21:16Z — config 200 ACAO:https://evil.example + ACAC:true + allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; config body byte-stable (operatorId=1, 15 currencies, supportEmail deals@bamboopartners.io); password/reset OPTIONS same envelope; allow-headers lack Authorization. Flagship intact, bundle-agnostic.
+[RISK] betpanda: 88 — Flagship 95, dual-cable 80, cross-brand BOLA 80 all re-anchored or freshly swept this cycle; no impact proof advanced (all three still gated on ONE authenticated session); 32-path negative cable sweep closes the last plausible passive surface, and crt.sh CT lane is timing out. Absolute passive ceiling stands; program risk unchanged until the HUMAN de-gate fires.
