@@ -306,3 +306,9 @@
 - 2026-09-13 REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
 - 2026-09-13 CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handled independently; endpoint map still valid (live-confirmed, not JS-only).
 - 2026-09-13 CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+- 2026-09-13 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live fresh this cycle (GET /rest/public/config 200 ACAO:evil.example + ACAC:true; OPTIONS /rest/user/password/reset 200 ACAO:evil.example + ACAC:true + full allow-methods). Bundle main.1ae50aab.js unchanged; POC remains auth-gated.
+- 2026-09-13 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io/cable/user-event: Dual unauth ingestion re-confirmed stable; at passive ceiling.
+- 2026-09-13 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared App B re-confirmed live — both /rest/user/settings return identical 401 control; CORS pinned both; cross-brand session test remains the cheapest de-gate.
+- 2026-09-13 REJECTED MISCONFIG @ betpandacasino.io/cms: Strapi closed — no public content types, no admin at default path — CMS content-disclosure eliminated.
+- 2026-09-13 CHANGED @ affiliates.betpanda.io SPA: bundle main.1ae50aab.js unchanged; +1 public handler mapped (public/logout); backend handling independent of bundle.
+- 2026-09-13 CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js unchanged; App B anchors unchanged.

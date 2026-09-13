@@ -521,3 +521,5 @@ www.betpanda.io
 - CHANGED Both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts).
 - CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor 00:56:05Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization.
 - CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) re-confirmed live.
+
+## 2026-09-13 12:09:01 UTC
