@@ -9559,3 +9559,55 @@ testability: AUTH_HELPED
 [LEARN] CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
 
 [RISK] betpanda: 95 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + change-password + public `/rest/*` layer (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), dual unauthenticated analytics injection with fully reverse-derived schema accepting XSS/negative amounts on both cable instances (chaining vector). OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure. Fresh SPA redeploy (main.1ae50aab.js) backend attack surface stable with 30+ mapped endpoints.
+===== ANALYST nemotron3 2026-09-13 16:46:19 UTC =====
+[0m
+> build · nemotron-3-ultra-free
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/
+total 420
+drwxr-xr-x 12 runner runner   4096 Sep 13 16:26 .
+drwxr-xr-x  3 runner runner   4096 Sep 13 16:25 ..
+drwxr-xr-x  7 runner runner   4096 Sep 13 16:26 .git
+drwxr-xr-x  3 runner runner   4096 Sep 13 16:25 .github
+-rw-r--r--  1 runner runner   1709 Sep 13 16:25 README.md
+-rw-r--r--  1 runner runner     43 Sep 13 16:26 analyst-out.txt
+-rw-r--r--  1 runner runner 160247 Sep 13 16:26 analyst-prompt.txt
+-rw-r--r--  1 runner runner 156466 Sep 13 16:26 ctx.txt
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 inventory
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 knowledge
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 leads
+-rw-r--r--  1 runner runner  18762 Sep 13 16:25 probe-results.md
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 recon-notes
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 reports
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 reposcan-raw
+-rw-r--r--  1 runner runner   3194 Sep 13 16:25 scope.yml
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 scripts
+-rw-r--r--  1 runner runner     33 Sep 13 16:25 state_bigpickle.json
+-rw-r--r--  1 runner runner     33 Sep 13 16:25 state_laguna.json
+-rw-r--r--  1 runner runner     33 Sep 13 16:25 state_ling3.json
+-rw-r--r--  1 runner runner     33 Sep 13 16:25 state_longcat.json
+-rw-r--r--  1 runner runner     33 Sep 13 16:25 state_mimo.json
+-rw-r--r--  1 runner runner     33 Sep 13 16:25 state_nemotron3.json
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 triage
+[0m
+[0m→ [0mRead scope.yml
+[0m✱ [0mGlob "**/*.md"[90m in inventory · 1 match[0m
+[0m✱ [0mGlob "**/*.md"[90m in knowledge · 1 match[0m
+[0m✱ [0mGlob "**/*.txt"[90m in leads · 0 matches[0m
+[0m→ [0mRead inventory/betpanda.md
+[0m→ [0mRead knowledge/index.md
+[0m
+[0m$ [0mls -la /home/runner/work/betpanda-hunt/betpanda-hunt/leads/
+total 1448
+drwxr-xr-x  2 runner runner   4096 Sep 13 16:25 .
+drwxr-xr-x 12 runner runner   4096 Sep 13 16:26 ..
+-rw-r--r--  1 runner runner 617275 Sep 13 16:25 lead-bigpickle.md
+-rw-r--r--  1 runner runner   3621 Sep 13 16:25 lead-laguna.md
+-rw-r--r--  1 runner runner   3550 Sep 13 16:25 lead-ling3.md
+-rw-r--r--  1 runner runner   3692 Sep 13 16:25 lead-longcat.md
+-rw-r--r--  1 runner runner     18 Sep 13 16:25 lead-mimo.md
+-rw-r--r--  1 runner runner 824552 Sep 13 16:25 lead-nemotron3.md
+-rw-r--r--  1 runner runner  12170 Sep 13 16:25 reposcan-betpanda.md
+[0m
+[0m→ [0mRead leads/lead-nemotron3.md[90m [limit=200, offset=0][0m
+[0m→ [0mRead leads/lead-nemotron3.md[90m [limit=300, offset=4000][0m

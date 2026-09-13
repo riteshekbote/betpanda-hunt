@@ -523,3 +523,5 @@ www.betpanda.io
 - CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC) re-confirmed live.
 
 ## 2026-09-13 12:09:01 UTC
+
+## 2026-09-13 16:46:19 UTC

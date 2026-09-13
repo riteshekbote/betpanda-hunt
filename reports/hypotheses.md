@@ -1799,3 +1799,6 @@
 - LEARN: REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
 - LEARN: CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handle
 - LEARN: CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+
+## RANKED HYPOTHESES 2026-09-13 16:46:19 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil (from art/lead_bigpickle.txt)
