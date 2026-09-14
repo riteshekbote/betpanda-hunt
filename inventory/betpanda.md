@@ -562,3 +562,5 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor 23:14Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization; flagship envelope byte-stable
 - CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry re-confirmed live (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC even for own-origin)
 - CHANGED affiliates.betpanda.io SPA +1 public handler mapped (public/logout); backend handling independent of bundle
+
+## 2026-09-14 01:15:16 UTC

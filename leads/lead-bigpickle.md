@@ -4272,3 +4272,42 @@ impact: cross-brand wallet/balance/settings/PII disclosure on real-money platfor
 testability: HUMAN_ONLY
 [NEXT] HUMAN: `curl -sS -X POST 'https://affiliates.betpanda.io/rest/public/register' -H 'Content-Type: application/json' -d '{"username":"<own-test>","email":"<own-test>@<owned-domain>","password":"<strong-random>"}'` with OWN throwaway identity (expect OK_PENDING_APPROVAL); if approved, `curl -sS -X POST 'https://affiliates.betpanda.io/rest/public/login' -H 'Content-Type: application/json' -d '{"email":"<own-test>@<owned-domain>","password":"<strong-random>"}' -c cookies.txt` → then `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b cookies.txt'` vs no-cookie 401 control = flagship cross-origin diff. Parallel fallback: casino account → refresh→Bearer→`GET betpanda.partners/rest/user/settings` (cross-brand BOLA + Bearer primitive).
 [RISK] betpanda: 88 — Flagship 95 (CAPTCHA-free register narrows the de-gate but pending-approval + HUMAN approval still block proof), dual-cable 80, cross-brand BOLA 80, all re-anchored 23:14Z byte-stable; DNS sweep + bundle re-grep close both remaining passive breadth lanes (no new hosts, no new endpoints). Program risk unchanged: zero impact-proof movement until the HUMAN de-gate (owned register→login or casino refresh→Bearer) fires.
+## 2026-09-14 01:15:08 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 01:13Z — config 200 ACAO:https://evil.example + ACAC:true + allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; allow-headers lack Authorization ⇒ cookie/session auth crosses origin automatically and responses are in-browser readable. 30+ handlers incl. password/reset, set-2fa-setting, agent/set-deposit-withdraw-limit, metrics, reports, v2/report. Bundle stable main.1ae50aab.js, endpoint map live-confirmed.
+evidence_needed: credentialed cross-origin response diff (non-401 vs 401 no-cookie) on an authed route; or reset-password POST with valid resetPasswordCode; or owned affiliate session from approved register.
+verify_steps: HUMAN_ONLY — `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <cookie>'` vs no-cookie 401, then state-changing cross-origin probe. De-gate left to right: POST /rest/public/register (CAPTCHA-free, own throwaway identity) → POST /rest/public/login → cookie diff.
+impact: PII/transaction/commission exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 80
+reasoning: Live 01:13Z — both root 200 ACAO:* (len 1051 byte-identical); prior POST 200 with arbitrary eventType/XSS/negative amounts on both; 32-path sweep closes non-user-event routes. No read/aggregation route exists → passive ceiling; downstream reflection unproven.
+evidence_needed: benign marker aggregated/reflected on an owned reference account.
+verify_steps: AUTH_HELPED — POST benign marker `{"eventType":"verifybp14","userId":"verifybp14","registeredOn":"2026-09-14T01:20:00Z","amount":"0.01"}` to one instance, then owned-site stored-reflection check.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — MEDIUM
+testability: AUTH_HELPED
+[HYP] Cross-brand BOLA via shared App B backend (JWT missing aud/iss validation)
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Live 01:13Z — both /rest/user/settings 401 len=32 parity; CORS asymmetry (casino ACAO own-host+ACAC+Authorization allowed; partners no ACAO/ACAC) ⇒ cross-brand accept, if present, is server-side only; JWT minted via POST /rest/user/refresh, used as Bearer. Viable path still the casino→partners token handoff.
+evidence_needed: non-401 on betpanda.partners using betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — casino login → POST /rest/user/refresh with session cookie → `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`.
+impact: cross-brand wallet/balance/settings/PII disclosure on real-money platform — CRITICAL
+testability: HUMAN_ONLY
+[HYP] WordPress `wp-abilities/v1` custom namespace exposes privileged capability-runner route
+class: MISCONFIG
+asset: blog.betpandacasino.io/wp-abilities/v1
+confidence: 45
+reasoning: Route index advertises `/wp-abilities/v1/abilities/{name}/run`; plugin otherwise unidentifiable. Collection GET 404 (theme HTML, not REST 401) — route registered but collection handler not GET-able; cannot reach `run` without a valid ability name. Non-standard plugin = uncommon tech exposure, but current evidence does not demonstrate an unauthenticated action.
+evidence_needed: a valid `{name}` value for `/wp-abilities/v1/abilities/{name}/run` returning non-404; or plugin archive/source identifying the plugin and its auth guard.
+verify_steps: SCAN — fetch wp-content/plugins listing + plugin archive fingerprint; POC only after an unauth `run` is demonstrated.
+impact: unknown; likely capability/feature-flag system. Severity gated on auth guard — LOW-MED
+testability: AUTH_HELPED
+[NEXT] HUMAN: `curl -sS -X POST 'https://affiliates.betpanda.io/rest/public/register' -H 'Content-Type: application/json' -d '{"username":"<own-test>","email":"<own-test>@<owned-domain>","password":"<strong-random>"}'` (expect OK_PENDING_APPROVAL) → if approved: `curl -sS -X POST 'https://affiliates.betpanda.io/rest/public/login' -H 'Content-Type: application/json' -d '{"email":"<own-test>@<owned-domain>","password":"<strong-random>"}' -c cookies.txt` → `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b cookies.txt'` vs no-cookie 401 = flagship cross-origin diff. Parallel fallback: casino account → refresh→Bearer→`GET https://betpanda.partners/rest/user/settings` (cross-brand BOLA + Bearer primitive).
+[RISK] betpanda: 92 — Flagship (95) live-verified third straight cycle with byte-stable envelope and no de-gate movement; dual-cable (80) and cross-brand BOLA (80) unchanged; new blog host adds breadth but closes to all high-value classes (SSRF 401, XMLRPC 403, redirection 401, wp-abilities 404). Zero impact-proof movement until either HUMAN de-gate fires (CAPTCHA-free register→login→cross-origin diff, or casino refresh→Bearer cross-brand handoff). Program risk dominated by the flagship's pending authenticated POC.

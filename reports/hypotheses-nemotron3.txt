@@ -1,14 +1,7 @@
-## 2026-09-13 23:17:33 UTC [target] (model nemotron3)
-[CHANGED] affiliates.betpanda.io SPA bundle stable at `main.1ae50aab.js` (Jul-30); backend `/rest/*` endpoints live-verified independent of bundle  
-[CHANGED] betpandacasino.io SPA bundle stable at `index-5unQ0efM.js`; App B behavior anchors unchanged (identical 401 on `/rest/user/settings`)  
-[CHANGED] cable.betpandacasino.io/cable/user-event: second cable instance fully validated — OPTIONS 204 ACAO:* + POST 200 with lax validator (arbitrary eventType/XSS/negative amounts)  
-[CHANGED] Both cable instances (cable.betpanda.io + cable.betpandacasino.io) now accept identical schema: alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts  
-[CHANGED] affiliates.betpanda.io/rest/public/config fresh re-anchor 23:14Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization; flagship envelope byte-stable  
-[CHANGED] betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry re-confirmed live (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC even for own-origin)  
-[CHANGED] affiliates.betpanda.io SPA +1 public handler mapped (public/logout); backend handling independent of bundle  
-[PRIO] affiliates.betpanda.io/rest/*,9.25,attack_surface=10,business_value=10,tech_exposure=10,gate_ease=10,cloud_surface=8,freshness=10  
-[PRIO] cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event,7.75,attack_surface=8,business_value=7,tech_exposure=8,gate_ease=10,cloud_surface=6,freshness=10  
-[PRIO] betpanda.partners/rest/user/* + betpandacasino.io/rest/user/*,7.50,attack_surface=8,business_value=10,tech_exposure=7,gate_ease=4,cloud_surface=8,freshness=10  
+## 2026-09-14 01:14:55 UTC [target] (model nemotron3)
+[PRIO] affiliates.betpanda.io/rest/*,9.80,attack_surface=10,business_value=10,tech_exposure=10,gate_ease=10,cloud_surface=8,freshness=10  
+[PRIO] cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event,8.05,attack_surface=8,business_value=7,tech_exposure=8,gate_ease=10,cloud_surface=6,freshness=10  
+[PRIO] betpanda.partners/rest/user/* + betpandacasino.io/rest/user/*,7.95,attack_surface=8,business_value=10,tech_exposure=7,gate_ease=4,cloud_surface=8,freshness=10  
 [HYP] Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain  
 class: MISCONFIG  
 asset: affiliates.betpanda.io/rest/*  
