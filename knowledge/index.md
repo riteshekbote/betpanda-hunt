@@ -330,3 +330,6 @@
 - 2026-09-14 CHANGED @ affiliates.betpanda.io SPA: bundle stable main.1ae50aab.js; backend independent of bundle.
 - 2026-09-14 CHANGED @ betpandacasino.io SPA: bundle stable index-5unQ0efM.js; App B anchors unchanged.
 - 2026-09-14 ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Validator alignment confirmed — both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts). Live POST to cable.betpanda.io with XSS/negative-amount returned 200 success.
+- 2026-09-14 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live 06:26Z; flagships envelope byte-stable 12+ days. POC remains auth-gated.
+- 2026-09-14 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io/cable/user-event: Dual unauth ingestion re-confirmed stable; at passive ceiling.
+- 2026-09-14 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: 401 len=32 parity + CORS asymmetry re-confirmed. Cross-brand BOLA stands; cheapest de-gate is Bearer handoff.
