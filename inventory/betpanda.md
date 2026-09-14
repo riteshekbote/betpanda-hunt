@@ -564,3 +564,12 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io SPA +1 public handler mapped (public/logout); backend handling independent of bundle
 
 ## 2026-09-14 01:15:16 UTC
+
+## 2026-09-14 06:31:23 UTC
+- CHANGED affiliates.betpanda.io SPA bundle stable at `main.1ae50aab.js` (Jul-30, 2.09MB); backend `/rest/*` endpoints live-verified independent of bundle version
+- CHANGED betpandacasino.io SPA bundle stable at `index-5unQ0efM.js`; App B behavior anchors unchanged (identical 401 on `/rest/user/settings`)
+- CHANGED cable.betpandacasino.io/cable/user-event: second cable instance fully validated — OPTIONS 204 ACAO:* + POST 200 with lax validator (arbitrary eventType/XSS/negative amounts)
+- CHANGED Both cable instances (cable.betpanda.io + cable.betpandacasino.io) now accept identical schema: alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts
+- CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor 23:14Z — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization; flagship envelope byte-stable
+- CHANGED betpandacasino.io+betpanda.partners `/rest/user/settings` 401 len=32 parity + CORS asymmetry re-confirmed live (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC even for own-origin)
+- CHANGED affiliates.betpanda.io SPA +1 public handler mapped (public/logout); backend handling independent of bundle

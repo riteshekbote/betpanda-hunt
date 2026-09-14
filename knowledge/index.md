@@ -323,3 +323,10 @@
 - 2026-09-14 REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
 - 2026-09-14 CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handled independently; endpoint map still valid (live-confirmed, not JS-only).
 - 2026-09-14 CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+- 2026-09-14 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live 06:26Z (config 200 ACAO:evil.example+ACAC:true; password/reset OPTIONS same; allow-headers lack Authorization). Flagship stable 12+ days.
+- 2026-09-14 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io/cable/user-event: Dual unauth ingestion re-confirmed 06:26Z (OPTIONS 204 ACAO:* both; GET 405 both). Passive ceiling.
+- 2026-09-14 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: 401 len=32 parity + CORS asymmetry re-confirmed 06:26Z. Cross-brand BOLA stands; cheapest de-gate is Bearer handoff.
+- 2026-09-14 REJECTED MISCONFIG @ blog.betpandacasino.io/wp-abilities: No ability name discovered, no unauth action. Parked.
+- 2026-09-14 CHANGED @ affiliates.betpanda.io SPA: bundle stable main.1ae50aab.js; backend independent of bundle.
+- 2026-09-14 CHANGED @ betpandacasino.io SPA: bundle stable index-5unQ0efM.js; App B anchors unchanged.
+- 2026-09-14 ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Validator alignment confirmed — both cable instances now accept identical schema (alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts). Live POST to cable.betpanda.io with XSS/negative-amount returned 200 success.
