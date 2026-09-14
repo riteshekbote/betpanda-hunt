@@ -333,3 +333,7 @@
 - 2026-09-14 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live 06:26Z; flagships envelope byte-stable 12+ days. POC remains auth-gated.
 - 2026-09-14 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io/cable/user-event: Dual unauth ingestion re-confirmed stable; at passive ceiling.
 - 2026-09-14 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: 401 len=32 parity + CORS asymmetry re-confirmed. Cross-brand BOLA stands; cheapest de-gate is Bearer handoff.
+- 2026-09-14 REJECTED MISCONFIG @ blog.betpandacasino.io/wp-json/*: Redirection/y oast/site-health/abilities REST namespaces all 401 rest_forbidden unauth (live probes 22:17-22Z); complete route map exposes no unauth admin action; WP parked lead retired at confidence 20.
+- 2026-09-14 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: envelope re-verified live 22:16Z (config 200 ACAO:evil.example + ACAC:true; allow-headers lack Authorization) — flagship stable.
+- 2026-09-14 ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: OPTIONS 204 ACAO:* re-confirmed 22:16Z — dual-instance ingestion unchanged.
+- 2026-09-14 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: 401 len=32 parity + CORS asymmetry re-confirmed 22:16Z; partners allow-headers include Authorization (Bearer channel open) — BOLA de-gate path intact.

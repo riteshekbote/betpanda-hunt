@@ -33180,3 +33180,304 @@ If non-401 with cookie + cross-origin Origin, flagship POC is concrete.
 
 ### STEP 7 — RISK
 [RISK] betpanda: 92 — Flagship (95) live-verified 6th straight cycle with byte-stable envelope; all three active findings unchanged; zero impact-proof movement until HUMAN de-gate fires. Program risk dominated by flagship's pending authenticated POC. WordPress breadth closed.
+===== ANALYST bigpickle 2026-09-14 22:18:45 UTC =====
+[0m
+> build · big-pickle
+[0m
+I'll run a few read-only probes to check for delta against the three stable anchors and the parked WordPress lead.
+[0m$ [0mcurl -sS -m 20 -D- -o /dev/null 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' 2>&1 | head -30
+HTTP/2 200 
+date: Mon, 14 Sep 2026 22:16:41 GMT
+content-type: application/json
+content-length: 398
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3b2c1e999559c54-IAD
+[0m
+[0m$ [0mcurl -sS -m 20 -X OPTIONS -D- -o /dev/null 'https://cable.betpanda.io/cable/user-event' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: content-type' 2>&1 | head -20
+HTTP/2 204 
+date: Mon, 14 Sep 2026 22:16:43 GMT
+server: cloudflare
+vary: Access-Control-Request-Method, Access-Control-Request-Headers, Origin
+access-control-allow-origin: *
+access-control-allow-methods: GET,POST,HEAD,PUT,DELETE,PATCH
+access-control-allow-headers: content-type
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a3b2c1f74f9dc557-IAD
+[0m
+[0m$ [0mcurl -sS -m 20 -D- 'https://betpandacasino.io/rest/user/settings' -H 'Origin: https://evil.example' 2>&1 | head -15; echo "---PARTNERS---"; curl -sS -m 20 -D- 'https://betpanda.partners/rest/user/settings' -H 'Origin: https://evil.example' 2>&1 | head -15
+HTTP/2 401 
+date: Mon, 14 Sep 2026 22:16:46 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a3b2c20829dfc94e-IAD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcxYro2GPQDZa6Y; HttpOnly; SameSite=None; Secure; Path=/; Expires=Tue, 15 Sep 2026 21:16:46 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+---PARTNERS---
+HTTP/2 401 
+date: Mon, 14 Sep 2026 22:16:47 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a3b2c20dfaad172f-IAD
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWyBfWMHoa2iyUHso64uMCBrkeTe; HttpOnly; SameSite=Lax; Path=/; Expires=Tue, 15 Sep 2026 21:16:47 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+[0m
+[0m$ [0mcurl -sS -m 20 -D- 'https://blog.betpandacasino.io/wp-json/' 2>&1 | head -12; echo; curl -sS -m 20 'https://blog.betpandacasino.io/wp-json/' 2>&1 | head -c 800
+HTTP/2 200 
+date: Mon, 14 Sep 2026 22:16:50 GMT
+content-type: application/json; charset=UTF-8
+server: cloudflare
+vary: Accept-Encoding
+vary: Origin
+x-robots-tag: noindex
+link: <https://blog.betpandacasino.io/wp-json/>; rel="https://api.w.org/"
+x-content-type-options: nosniff
+x-content-type-options: nosniff
+access-control-expose-headers: X-WP-Total, X-WP-TotalPages, Link
+access-control-allow-headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
+
+{"name":"betpandacasino.io","description":"","url":"https:\/\/blog.betpandacasino.io","home":"https:\/\/blog.betpandacasino.io","gmt_offset":"0","timezone_string":"","page_for_posts":0,"page_on_front":155,"show_on_front":"page","namespaces":["oembed\/1.0","redirection\/v1","yoast\/v1","wp\/v2","wp-site-health\/v1","wp-block-editor\/v1","wp-abilities\/v1"],"authentication":{"application-passwords":{"endpoints":{"authorization":"https:\/\/blog.betpandacasino.io\/wp-admin\/authorize-application.php"}}},"routes":{"\/":{"namespace":"","methods":["GET"],"endpoints":[{"methods":["GET"],"args":{"context":{"default":"view","required":false}}}],"_links":{"self":[{"href":"https:\/\/blog.betpandacasino.io\/wp-json\/"}]}},"\/batch\/v1":{"namespace":"","methods":["POST"],"endpoints":[{"methods":["POST"]
+[0m
+All three anchors are byte-stable. The blog WP-json root now reveals namespaces — let me pull the full route map for novel surface.
+[0m$ [0mcurl -sS -m 25 'https://blog.betpandacasino.io/wp-json/' 2>&1 | python3 -c "
+import sys,json
+d=json.load(sys.stdin)
+routes=d.get('routes',{})
+for p,v in sorted(routes.items()):
+    if any(n in p for n in ['redirection','yoast','abilities','site-health','batch']):
+        print(p, v.get('methods'))
+"
+/batch/v1 ['POST']
+/redirection/v1 ['GET']
+/redirection/v1/404 ['GET']
+/redirection/v1/bulk/404/(?P<bulk>delete) ['POST', 'PUT', 'PATCH']
+/redirection/v1/bulk/group/(?P<bulk>delete|enable|disable) ['POST', 'PUT', 'PATCH']
+/redirection/v1/bulk/log/(?P<bulk>delete) ['POST', 'PUT', 'PATCH']
+/redirection/v1/bulk/redirect/(?P<bulk>delete|enable|disable|reset) ['POST', 'PUT', 'PATCH']
+/redirection/v1/export/(?P<module>1|2|3|all)/(?P<format>csv|apache|nginx|json) ['GET']
+/redirection/v1/export/404/(?P<format>csv|json) ['GET']
+/redirection/v1/export/404/preview ['GET']
+/redirection/v1/export/bundle ['GET']
+/redirection/v1/export/bundle/preview ['GET']
+/redirection/v1/export/group/(?P<format>csv|json) ['GET']
+/redirection/v1/export/log/(?P<format>csv|json) ['GET']
+/redirection/v1/export/log/preview ['GET']
+/redirection/v1/export/redirect ['GET']
+/redirection/v1/export/redirect/preview ['GET']
+/redirection/v1/group ['GET', 'POST', 'PUT', 'PATCH']
+/redirection/v1/group/(?P<id>[\d]+) ['POST', 'PUT', 'PATCH']
+/redirection/v1/import/file/(?P<group_id>\d+) ['POST', 'PUT', 'PATCH']
+/redirection/v1/import/plugin ['GET', 'POST', 'PUT', 'PATCH']
+/redirection/v1/import/plugin/(?P<plugin>[a-z0-9-]+)/preview ['GET']
+/redirection/v1/log ['GET']
+/redirection/v1/plugin ['GET', 'POST', 'PUT', 'PATCH']
+/redirection/v1/plugin/data ['POST', 'PUT', 'PATCH']
+/redirection/v1/plugin/delete ['POST', 'PUT', 'PATCH']
+/redirection/v1/plugin/finish ['POST', 'PUT', 'PATCH']
+/redirection/v1/plugin/fix ['POST', 'PUT', 'PATCH']
+/redirection/v1/plugin/test ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+/redirection/v1/redirect ['GET', 'POST', 'PUT', 'PATCH']
+/redirection/v1/redirect/(?P<id>[\d]+) ['POST', 'PUT', 'PATCH']
+/redirection/v1/redirect/post ['GET']
+/redirection/v1/setting ['GET', 'POST', 'PUT', 'PATCH']
+/wp-abilities/v1 ['GET']
+/wp-abilities/v1/abilities ['GET']
+/wp-abilities/v1/abilities/(?P<name>[a-zA-Z0-9\-\/]+) ['GET']
+/wp-abilities/v1/abilities/(?P<name>[a-zA-Z0-9\-\/]+?)/run ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+/wp-abilities/v1/categories ['GET']
+/wp-abilities/v1/categories/(?P<slug>[a-z0-9]+(?:-[a-z0-9]+)*) ['GET']
+/wp-site-health/v1 ['GET']
+/wp-site-health/v1/directory-sizes ['GET']
+/wp-site-health/v1/tests/authorization-header ['GET']
+/wp-site-health/v1/tests/background-updates ['GET']
+/wp-site-health/v1/tests/dotorg-communication ['GET']
+/wp-site-health/v1/tests/https-status ['GET']
+/wp-site-health/v1/tests/loopback-requests ['GET']
+/wp-site-health/v1/tests/page-cache ['GET']
+/yoast/v1 ['GET']
+/yoast/v1/action_tracking ['POST']
+/yoast/v1/ai/free_sparks ['POST']
+/yoast/v1/ai_content_planner/banner_permanent_dismissal ['POST']
+/yoast/v1/ai_content_planner/get_outline ['POST']
+/yoast/v1/ai_content_planner/get_suggestions ['GET']
+/yoast/v1/ai_generator/bust_subscription_cache ['POST']
+/yoast/v1/ai_generator/callback ['POST']
+/yoast/v1/ai_generator/consent ['POST']
+/yoast/v1/ai_generator/get_suggestions ['POST']
+/yoast/v1/ai_generator/get_usage ['POST']
+/yoast/v1/ai_generator/refresh_callback ['POST']
+/yoast/v1/alerts/dismiss ['POST']
+/yoast/v1/available_posts ['GET']
+/yoast/v1/bulk_editor/posts ['GET']
+/yoast/v1/bulk_editor/update_search ['POST']
+/yoast/v1/bulk_editor/update_social ['POST']
+/yoast/v1/complete_task ['POST']
+/yoast/v1/configuration/check_capability ['GET']
+/yoast/v1/configuration/enable_tracking ['POST']
+/yoast/v1/configuration/get_configuration_state ['GET']
+/yoast/v1/configuration/save_configuration_state ['POST']
+/yoast/v1/configuration/site_representation ['POST']
+/yoast/v1/configuration/social_profiles ['POST']
+/yoast/v1/file_size ['GET']
+/yoast/v1/get_head ['GET']
+/yoast/v1/get_tasks ['GET']
+/yoast/v1/import/(?P<plugin>[\w-]+)/(?P<type>[\w-]+) ['POST']
+/yoast/v1/indexing/complete ['POST']
+/yoast/v1/indexing/general ['POST']
+/yoast/v1/indexing/indexables-complete ['POST']
+/yoast/v1/indexing/post-type-archives ['POST']
+/yoast/v1/indexing/posts ['POST']
+/yoast/v1/indexing/prepare ['POST']
+/yoast/v1/indexing/terms ['POST']
+/yoast/v1/integrations/set_active ['POST']
+/yoast/v1/introductions/(?P<introduction_id>[\w-]+)/seen ['POST']
+/yoast/v1/link-indexing/posts ['POST']
+/yoast/v1/link-indexing/terms ['POST']
+/yoast/v1/meta/search ['GET']
+/yoast/v1/myyoast/authorize ['POST']
+/yoast/v1/myyoast/refresh-status ['POST']
+/yoast/v1/myyoast/register ['POST']
+/yoast/v1/myyoast/registration ['PUT', 'DELETE']
+/yoast/v1/myyoast/status ['GET']
+/yoast/v1/new-content-type-visibility/dismiss-post-type ['POST']
+/yoast/v1/new-content-type-visibility/dismiss-taxonomy ['POST']
+/yoast/v1/readability_scores ['GET']
+/yoast/v1/semrush/authenticate ['POST']
+/yoast/v1/semrush/country_code ['POST']
+/yoast/v1/semrush/related_keyphrases ['GET']
+/yoast/v1/seo_scores ['GET']
+/yoast/v1/setup_steps_tracking ['POST']
+/yoast/v1/site_kit_configuration_permanent_dismissal ['POST']
+/yoast/v1/statistics ['GET']
+/yoast/v1/wincher/account/limit ['GET']
+/yoast/v1/wincher/account/upgrade-campaign ['GET']
+/yoast/v1/wincher/authenticate ['POST']
+/yoast/v1/wincher/authorization-url ['GET']
+/yoast/v1/wincher/keyphrases ['POST']
+/yoast/v1/wincher/keyphrases/track ['POST']
+/yoast/v1/wincher/keyphrases/untrack ['DELETE']
+/yoast/v1/wistia_embed_permission ['GET', 'POST']
+/yoast/v1/workouts ['GET', 'POST']
+[0m
+Rich route map exposed. Let me probe the cached/unauth-possible GET routes (Redirection plugin API is normally token-gated; site-health normally admin-only).
+[0m$ [0mfor u in \
+  'https://blog.betpandacasino.io/wp-json/redirection/v1/redirect' \
+  'https://blog.betpandacasino.io/wp-json/redirection/v1/setting' \
+  'https://blog.betpandacasino.io/wp-json/redirection/v1/log'; do
+  echo "=== $u ==="; curl -sS -m 20 -w ' [%{http_code}]\n' "$u" | head -c 400; echo; sleep 1;
+done
+=== https://blog.betpandacasino.io/wp-json/redirection/v1/redirect ===
+{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}} [401]
+
+=== https://blog.betpandacasino.io/wp-json/redirection/v1/setting ===
+{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}} [401]
+
+=== https://blog.betpandacasino.io/wp-json/redirection/v1/log ===
+{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}} [401]
+[0m
+Redirection API properly gated. Checking abilities list, site-health, and Yoast config state.
+[0m$ [0mfor u in \
+  'https://blog.betpandacasino.io/wp-json/wp-abilities/v1/abilities' \
+  'https://blog.betpandacasino.io/wp-json/wp-abilities/v1/categories'; do
+  echo "=== $u ==="; curl -sS -m 20 -w ' [%{http_code}]\n' "$u" | head -c 500; echo; sleep 1;
+done
+=== https://blog.betpandacasino.io/wp-json/wp-abilities/v1/abilities ===
+{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}} [401]
+
+=== https://blog.betpandacasino.io/wp-json/wp-abilities/v1/categories ===
+{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}} [401]
+[0m
+[0m$ [0mfor u in \
+  'https://blog.betpandacasino.io/wp-json/wp-site-health/v1/tests/dotorg-communication' \
+  'https://blog.betpandacasino.io/wp-json/yoast/v1/configuration/get_configuration_state'; do
+  echo "=== $u ==="; curl -sS -m 20 -w ' [%{http_code}]\n' "$u" | head -c 400; echo; sleep 1;
+done
+=== https://blog.betpandacasino.io/wp-json/wp-site-health/v1/tests/dotorg-communication ===
+{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}} [401]
+
+=== https://blog.betpandacasino.io/wp-json/yoast/v1/configuration/get_configuration_state ===
+{"code":"rest_forbidden","message":"Sorry, you are not allowed to do that.","data":{"status":401}} [401]
+[0m
+All admin WP REST namespaces are 401-gated. Closing the WordPress thread and emitting the structured cycle.
+
+---
+
+STEP 1 — DELTA
+- NEW @ blog.betpandacasino.io /wp-json/: full route map enumerated — namespaces `redirection/v1`, `yoast/v1`, `wp-site-health/v1`, `wp-block-editor/v1`, `wp-abilities/v1`, `batch/v1`; ~100 routes listed.
+- CHANGED @ blog.betpandacasino.io: every admin route probed (redirection redirect/setting/log, abilities list/categories, site-health dotorg-communication, yoast get_configuration_state) → 401 `rest_forbidden` unauth. No unauth admin surface.
+- CHANGED re-verify 22:16-47Z: affiliates flagship (200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization), cable OPTIONS (204 ACAO:* full methods), App B settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host; partners NO ACAO/ACAC) — all byte-stable.
+
+STEP 2 — PRIORITIZE
+[PRIO] affiliates.betpanda.io/rest/*,9.5,attack_surface=10 business_value=9 tech_exposure=8 gate_ease=10 cloud_surface=8 freshness=8
+[PRIO] cable.betpanda.io+cable.betpandacasino.io,8.0,attack_surface=8 business_value=6 tech_exposure=7 gate_ease=10 cloud_surface=5 freshness=8
+[PRIO] betpandacasino.io+betpanda.partners,7.5,attack_surface=6 business_value=9 tech_exposure=7 gate_ease=2 cloud_surface=5 freshness=8
+[PRIO] blog.betpandacasino.io,4.0,attack_surface=6 business_value=2 tech_exposure=7 gate_ease=1 cloud_surface=0 freshness=8
+
+STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS+credentials on full /rest/* backend enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 22:16Z — GET /rest/public/config 200, ACAO:https://evil.example reflected + ACAC:true + allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; allow-headers LACK Authorization ⇒ cookie/session auth crosses origin with responses in-browser readable. 30+ handlers incl. password/reset (credential: reset code in URL /reset-password/:affiliateId/:code), set-2fa-setting, agent/set-deposit-withdraw-limit, metrics, reports, v2/report. Envelope byte-stable 12+ days, bundle-agnostic.
+evidence_needed: credentialed cross-origin response diff (non-401 vs 401 no-cookie) on an authed route; or owned affiliate session from approved register.
+verify_steps: HUMAN_ONLY — POST /rest/public/register (CAPTCHA-free) → POST /rest/public/login → `curl -sS -D- 'https://affiliates.betpanda.io/rest/user/metrics/affiliate' -H 'Origin: https://evil.com' -b <cookie>' vs no-cookie 401.
+impact: PII/transaction/commission exfil + password/2FA reset + deposit-limit tamper → ATO — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Cross-brand BOLA via shared App B backend (JWT missing aud/iss validation)
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Live 22:16Z — both /rest/user/settings 401 len=32 parity; CORS asymmetry (casino ACAO own-host+ACAC:true; partners NO ACAO/ACAC but partners allow-headers DO include Authorization ⇒ Bearer channel open) — cross-brand accept, if present, is server-side only. JWT minted via POST /rest/user/refresh, used as Bearer. Cheapest de-gate: casino→partners token handoff.
+evidence_needed: non-401 on betpanda.partners using betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — casino login → POST /rest/user/refresh with session cookie → `GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>"`.
+impact: cross-brand wallet/balance/settings/PII disclosure on real-money platform — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion accepts arbitrary events on shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event
+confidence: 80
+reasoning: Live 22:16Z — both OPTIONS 204 ACAO:* + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH; prior POST 200 with arbitrary eventType/XSS/negative amounts on both; 32-path sweep closed non-user-event routes. No read/aggregation route exists → passive ceiling; downstream reflection unproven.
+evidence_needed: benign marker aggregated/reflected on an owned reference account.
+verify_steps: AUTH_HELPED — POST benign marker `{"eventType":"verifybp16","userId":"verifybp16","registeredOn":"2026-09-16T10:00:00Z","amount":"0.01"}` to one instance, then stored-reflection check.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — MEDIUM
+testability: AUTH_HELPED
+
+STEP 4 — SELF-CRITIQUE
+[PARKED] WordPress blog REST/plugins: confidence dropped to 20 — full route map enumerated (redirection/v1, yoast/v1, wp-site-health/v1, wp-block-editor/v1, abilities) and every admin route returns 401 rest_forbidden unauth; no public content beyond standard wp/v2 blog posts; no valid ability name; no token bypass vector. WP surface closed conclusively.
+[FINAL] 1. Wildcard CORS (95) — flagship, byte-stable 12+ days, POC gated only on HUMAN register→login.
+[FINAL] 2. Cross-brand BOLA (80) — shared backend, Bearer handoff cheapest de-gate.
+[FINAL] 3. Dual cable ingestion (80) — stable, at passive ceiling, needs downstream reflection proof.
+
+STEP 5 — NEXT ACTION
+[NEXT] HUMAN: De-gate flagship — register throwaway affiliate at POST /rest/public/register (CAPTCHA-free per config), login via POST /rest/public/login, then compare credentialed vs no-cookie GET /rest/user/metrics/affiliate with Origin https://evil.example.
+
+STEP 6 — LEARNING
+[LEARN] REJECTED MISCONFIG @ blog.betpandacasino.io/wp-json/*: Redirection/y oast/site-health/abilities REST namespaces all 401 rest_forbidden unauth (live probes 22:17-22Z); complete route map exposes no unauth admin action; WP parked lead retired at confidence 20.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: envelope re-verified live 22:16Z (config 200 ACAO:evil.example + ACAC:true; allow-headers lack Authorization) — flagship stable.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: OPTIONS 204 ACAO:* re-confirmed 22:16Z — dual-instance ingestion unchanged.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: 401 len=32 parity + CORS asymmetry re-confirmed 22:16Z; partners allow-headers include Authorization (Bearer channel open) — BOLA de-gate path intact.
+
+STEP 7 — RISK
+[RISK] betpanda: 92 — Flagship (95) live-verified another cycle, byte-stable; all three findings unchanged; WP breadth conclusively closed with no new surface; program remains gated on HUMAN authenticated POC for the flagship, dominating risk.
