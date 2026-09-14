@@ -1,4 +1,4 @@
-## 2026-09-14 13:20:28 UTC [target] (model bigpickle)
+## 2026-09-14 18:44:57 UTC [target] (model bigpickle)
 [PRIO] affiliates.betpanda.io/rest/*,9.5,attack_surface=10 business_value=9 tech_exposure=8 gate_ease=10 cloud_surface=8 freshness=9
 [PRIO] cable.betpanda.io+cable.betpandacasino.io,8.0,attack_surface=8 business_value=6 tech_exposure=7 gate_ease=10 cloud_surface=5 freshness=9
 [PRIO] betpandacasino.io+betpanda.partners,7.5,attack_surface=6 business_value=9 tech_exposure=7 gate_ease=2 cloud_surface=5 freshness=9
@@ -29,10 +29,10 @@ evidence_needed: benign marker aggregated/reflected on an owned reference accoun
 verify_steps: AUTH_HELPED — POST benign marker `{"eventType":"verifybp14","userId":"verifybp14","registeredOn":"2026-09-14T13:30:00Z","amount":"0.01"}` to one instance, then stored-reflection check.
 impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — MEDIUM
 testability: AUTH_HELPED
+[FINAL] 1. Wildcard CORS (95) — flagship, POC gated on HUMAN register→login
+[FINAL] 2. Cross-brand BOLA (80) — shared backend, cheapest de-gate is Bearer handoff
+[FINAL] 3. Dual cable ingestion (80) — at passive ceiling, needs reflection proof
 [PARKED] WordPress wp-abilities/v1: confidence 45, no valid ability name, no unauth action, testability AUTH_HELPED with no de-gate path. Low ROI.
-[FINAL] 1. Wildcard CORS (95) — flagship, 12+ days stable, POC gated only on HUMAN register→login
-[FINAL] 2. Cross-brand BOLA (80) — shared backend confirmed, cheapest de-gate is casino→partners Bearer test
-[FINAL] 3. Dual cable ingestion (80) — stable, at passive ceiling, needs downstream reflection proof
 [NEXT] HUMAN: De-gate the flagship. Run:
 [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live 06:26Z; flagships envelope byte-stable 12+ days. POC remains auth-gated.
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io/cable/user-event: Dual unauth ingestion re-confirmed stable; at passive ceiling.
@@ -40,4 +40,4 @@ testability: AUTH_HELPED
 [LEARN] REJECTED MISCONFIG @ blog.betpandacasino.io/wp-abilities: No ability name discovered, no unauth action. Parked.
 [LEARN] CHANGED @ affiliates.betpanda.io SPA: bundle stable main.1ae50aab.js; backend independent of bundle.
 [LEARN] CHANGED @ betpandacasino.io SPA: bundle stable index-5unQ0efM.js; App B anchors unchanged.
-[RISK] betpanda: 92 — Flagship (95) live-verified 5th straight cycle with byte-stable envelope; all three active findings unchanged; zero impact-proof movement until HUMAN de-gate fires. Program risk dominated by flagship's pending authenticated POC. WordPress breadth closed.
+[RISK] betpanda: 92 — Flagship (95) live-verified 6th straight cycle with byte-stable envelope; all three active findings unchanged; zero impact-proof movement until HUMAN de-gate fires. Program risk dominated by flagship's pending authenticated POC. WordPress breadth closed.
