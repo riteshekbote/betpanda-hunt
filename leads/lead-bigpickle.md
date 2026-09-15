@@ -4524,3 +4524,4 @@ testability: AUTH_HELPED
 [LEARN] REJECTED MISCONFIG @ worker.betpanda.io + cdn.betpanda.io: crt.sh-identified hosts both NXDOMAIN (no CNAME/A) — retired, no attack surface.
 [LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status routes on wildcard-CORS host.
 [RISK] betpanda: 92 — Flagship (95) re-anchored 12+ consecutive cycles with byte-stable envelope; all three findings unchanged, each gated on authenticated proof (register→login, Bearer handoff, own-account reflection); zero impact-proof movement without HUMAN de-gate; breadth exhaustively closed this cycle (cms/graphql, api v1/v2, worker/cdn NXDOMAIN) leaving no new passive surface.
+## 2026-09-15 11:12:44 UTC [target] (model bigpickle)
