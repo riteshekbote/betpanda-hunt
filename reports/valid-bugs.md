@@ -27,3 +27,6 @@
 - 2 lead(s) marked VALID at 2026-09-15 11:18:16 UTC
   - **Verdict: VALID**
   - | 1 | Wildcard CORS + credentials on affiliates.betpanda.io REST API | **VALID** | 9.1 Critical | Yes |
+
+- 1 lead(s) marked VALID at 2026-09-15 15:37:25 UTC
+  - | 1 | Wildcard CORS + credentials on `affiliates.betpanda.io/rest/*` | **VALID** | 9.1 Critical |
