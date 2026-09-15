@@ -626,3 +626,15 @@ www.betpanda.io
 ## 2026-09-15 11:28:50 UTC
 
 ## 2026-09-15 15:43:17 UTC
+
+## 2026-09-15 19:29:55 UTC
+- NEW affiliates.betpanda.io/rest/*: Wildcard CORS+credentials envelope byte-stable 13+ days (config 200 ACAO:evil.example+ACAC:true; password/reset OPTIONS same; allow-headers lack Authorization ⇒ cookie/s
+- NEW cable.betpanda.io + cable.betpandacasino.io/cable/user-event: Dual unauth ingestion fully aligned — both OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH; both POST accept arbitrary eventType (XSS 
+- NEW betpanda.partners + betpandacasino.io/rest/user/*: Shared App B backend re-confirmed — both /rest/user/settings 401 len=32 parity; CORS asymmetry (casino ACAO own-host+ACAC:true vs partners NO ACAO/AC
+- CHANGED betpandacasino.io/cms: /cms/graphql GET 404 JSON (POST 405 NotFoundError); /cms, /cms/admin, /cms/_health all 404 JSON — GraphQL + admin + health fully closed
+- CHANGED betpandacasino.io/api+v1+v2+internal+beta sweep: all /api/* SPA catch-all 200; all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespaces
+- CHANGED TLD variants (betpandacasino.com/betpandasport.com/betpanda.com/betpandasports.com): GoDaddy-parked, CF-525, unresponsive, NXDOMAIN — zero operator content
+- CHANGED affiliates.betpanda.io/rest/properties/*: i18n/settings/seo/theme/translations/layout all 404 vs manifest 200 — namespace closed
+- CHANGED affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status
+- CHANGED affiliates.betpanda.io SPA: bundle stable main.1ae50aab.js (Jul-30); backend independent of bundle
+- CHANGED betpandacasino.io SPA: bundle stable index-5unQ0efM.js; App B anchors unchanged

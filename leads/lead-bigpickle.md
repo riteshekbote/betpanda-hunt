@@ -4559,3 +4559,33 @@ testability: AUTH_HELPED
 [LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live re-anchor 15:38Z — config 200 ACAO:https://evil.example + ACAC:true (13th consecutive day); flagship envelope byte-stable.
 [LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry re-confirmed 15:38Z — Bearer handoff path intact (partners allow-headers include Authorization).
 [RISK] betpanda: 92 — Flagship re-anchored 13 straight days byte-stable; all three findings unchanged and each is gated on authenticated proof (register→login, Bearer handoff, own-account reflection); this cycle's two fresh passive lanes (TLD variants, properties namespace) both closed negative; zero impact-proof movement without HUMAN de-gate; no remaining passive upside on any host.
+## 2026-09-15 19:15:30 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Today 05:53Z+15:38Z — config 200 ACAO:https://evil.example+ACAC:true; password/reset OPTIONS 200 ACAO:evil+ACAC:true+full allow-methods; allow-headers lack Authorization ⇒ cookie/session rides cross-origin readably. Envelope byte-stable 13 consecutive days, bundle-agnostic (main.1ae50aab.js). CT sweep adds no new hosts.
+evidence_needed: credentialed cross-origin response diff (non-401 vs no-cookie 401) on an authed route.
+verify_steps: HUMAN_ONLY — POST /rest/public/register (CAPTCHA-free per config) → POST /rest/public/login → GET /rest/user/metrics/affiliate with Origin https://evil.example + session cookie vs no-cookie 401 control.
+impact: PII/commission/transaction exfil + password/2FA reset + limit tamper → ATO — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Cross-brand BOLA via shared App B backend (JWT aud/iss validation gap)
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: 15:38Z parity — both /rest/user/settings 401 len=32; casino ACAO own-host+ACAC:true; partners NO ACAO but allow-headers DO include Authorization ⇒ Bearer channel open; refresh-envelope parity identical. Cross-brand accept, if present, is server-side only.
+evidence_needed: non-401 on betpanda.partners using betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — casino login → POST /rest/user/refresh → GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>".
+impact: cross-brand wallet/balance/settings PII disclosure on real-money platform — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion into shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io+cable.betpandacasino.io/cable/user-event
+confidence: 80
+reasoning: Both accept identical schema (alnum userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts, 200). CORS ACAO:* preflight on both. No read/aggregation route exists (32-path sweep 404) → passive ceiling; downstream reflection unproven.
+evidence_needed: benign marker aggregated/reflected on an owned reference account.
+verify_steps: AUTH_HELPED — POST benign marker {"eventType":"verifybp17","userId":"verifybp17","registeredOn":"2026-09-17T10:00:00Z","amount":"0.01"} to one instance, then check own-account dashboard/report.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — MEDIUM
+testability: AUTH_HELPED
+[NEXT] HUMAN: De-gate flagship — register throwaway affiliate at POST https://affiliates.betpanda.io/rest/public/register (CAPTCHA-free per config), login via POST /rest/public/login, then compare credentialed vs no-cookie GET /rest/user/metrics/affiliate with Origin https://evil.example (expect non-401 + readable cross-origin body → full POC for submission 1; the session also yields a JWT for the cross-brand Bearer handoff → submission 2), then optionally POST the benign verifybp17 marker to one cable instance with the owned account.
+[RISK] betpanda: 92 — Flagship re-anchored 13 straight days byte-stable; all three findings unchanged and each gated on authenticated proof (register→login, Bearer handoff, own-account reflection); this cycle's fresh CT lane closed negative (no new hosts, no bamboopartners map); zero passive movement possible without HUMAN de-gate; remaining upside is exclusively human-in-the-loop POC execution.
