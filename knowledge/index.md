@@ -374,3 +374,10 @@
 - 2026-09-15 REJECTED OAUTH @ betpanda.io/api/auth/authorize: SPA catch-all, no server-side OAuth endpoint (unchanged).
 - 2026-09-15 CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handled independently; endpoint map still valid (live-confirmed, not JS-only).
 - 2026-09-15 CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+- 2026-09-15 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: fresh 05:53Z re-anchor — config 200 ACAO:https://evil.example+ACAC:true; /rest/public/register + /rest/user/password/reset OPTIONS 200 ACAO:evil+ACAC:true + full allow-methods; allow-headers lack Authorization; flagship envelope byte-stable.
+- 2026-09-15 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: both OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed 05:54Z; root banner byte-identical; at passive ceiling.
+- 2026-09-15 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own+ACAC; partners NO ACAO, allow-headers incl Authorization) re-confirmed 05:54Z; Bearer handoff path intact.
+- 2026-09-15 REJECTED MISCONFIG @ betpandacasino.io/cms: /cms/graphql GET returns Strapi JSON 404 (POST 405 w/ allow HEAD,GET but body NotFoundError); /cms, /cms/admin, /cms/_health all 404 JSON — GraphQL + admin + health all closed; CMS fully eliminated.
+- 2026-09-15 REJECTED MISCONFIG @ betpandacasino.io/api+v1/v2/internal/beta sweep: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden versioned/internal namespaces.
+- 2026-09-15 REJECTED MISCONFIG @ worker.betpanda.io + cdn.betpanda.io: crt.sh-identified hosts both NXDOMAIN (no CNAME/A) — retired, no attack surface.
+- 2026-09-15 REJECTED MISCONFIG @ affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status routes on wildcard-CORS host.

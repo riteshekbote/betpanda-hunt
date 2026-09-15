@@ -476,3 +476,11 @@ https://affiliates.betpanda.io/rest/user/metrics/affiliate' -> HTTP 404
 https://affiliates.betpanda.io/rest/public/register -> HTTP 405
 https://affiliates.betpanda.io/rest/public/login -> HTTP 405
 https://affiliates.betpanda.io/rest/user/metrics/affiliate -> HTTP 401
+
+## 2026-09-15 05:56:05 UTC
+https://affiliates.betpanda.io/rest/user/password/reset -> HTTP 405
+https://affiliates.betpanda.io/rest/user/players -> HTTP 405
+https://cable.betpanda.io/cable/user-event -> HTTP 405
+https://affiliates.betpanda.io/rest/public/register -> HTTP 405
+https://affiliates.betpanda.io/rest/public/login -> HTTP 405
+https://affiliates.betpanda.io/rest/user/metrics/affiliate -> HTTP 401

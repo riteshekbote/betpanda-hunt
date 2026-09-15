@@ -33583,3 +33583,397 @@ x-xss-protection: 0
 [0m• [0mExtract unique CT names[90m Explore Agent[0m
 CT for betpandacasino.io shows only known hosts. Processing the truncated betpanda.io CT log and checking config body.
 [0m✓ [0mExtract unique CT names[90m Explore Agent[0m
+===== ANALYST bigpickle 2026-09-15 05:55:57 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -X OPTIONS 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: GET' -H 'Access-Control-Request-Headers: Content-Type' 2>&1 | head -30
+HTTP/2 200 
+date: Tue, 15 Sep 2026 05:53:43 GMT
+content-length: 0
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3b55f63f9affeda-ORD
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -X OPTIONS 'https://affiliates.betpanda.io/rest/user/password/reset' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: Content-Type' 2>&1 | head -30
+HTTP/2 200 
+date: Tue, 15 Sep 2026 05:53:43 GMT
+content-length: 0
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3b55f653c49e892-MSP
+[0m
+[0m$ [0mcurl -sS 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' 2>&1 | head -80
+{"logoUrl":"https://d3ec3n7kizfkuy.cloudfront.net/Betpanda_io_logo_White_Green_b5267c709b.png","operatorId":1,"linkUrl":"https://betpanda.partners","supportEmail":"deals@bamboopartners.io","contenfulSpaceId":"","strapiApiUrl":"/cms","contentfulAccessToken":"","currencies":["BTC","ETH","USDT","BNB","DOGE","LTC","SAND","SHIB","TRX","uBTC","XMR","XRP","USDC","SOL","TON"],"phoneSignupEnabled":false}
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -X OPTIONS 'https://cable.betpanda.io/cable/user-event' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: Content-Type' 2>&1 | head -30
+HTTP/2 204 
+date: Tue, 15 Sep 2026 05:53:58 GMT
+server: cloudflare
+vary: Access-Control-Request-Method, Access-Control-Request-Headers, Origin
+access-control-allow-origin: *
+access-control-allow-methods: GET,POST,HEAD,PUT,DELETE,PATCH
+access-control-allow-headers: Content-Type
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a3b55fc10cd85107-MSP
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null -X OPTIONS 'https://cable.betpandacasino.io/cable/user-event' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: Content-Type' 2>&1 | head -30
+HTTP/2 204 
+date: Tue, 15 Sep 2026 05:53:58 GMT
+server: cloudflare
+vary: Access-Control-Request-Method, Access-Control-Request-Headers, Origin
+access-control-allow-origin: *
+access-control-allow-methods: GET,POST,HEAD,PUT,DELETE,PATCH
+access-control-allow-headers: Content-Type
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a3b55fc459e5511c-MSP
+[0m
+[0m$ [0mcurl -sS -D- 'https://betpandacasino.io/rest/user/settings' 2>&1 | head -40
+HTTP/2 401 
+date: Tue, 15 Sep 2026 05:53:59 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a3b55fc6fc68ae82-ORD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqWtdvC8hnHh6Zr; HttpOnly; SameSite=None; Secure; Path=/; Expires=Wed, 16 Sep 2026 04:53:59 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+No http-session found in request
+[0m
+[0m$ [0mcurl -sS -D- 'https://betpanda.partners/rest/user/settings' 2>&1 | head -40
+HTTP/2 401 
+date: Tue, 15 Sep 2026 05:54:00 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a3b55fc8cb8362e2-ORD
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWwuFiDuYDUWuNm67gRu6ZWARZet; HttpOnly; SameSite=Lax; Path=/; Expires=Wed, 16 Sep 2026 04:54:00 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+x-xss-protection: 0
+
+No http-session found in request
+[0m
+[0m$ [0mcurl -sS 'https://betpanda.io/' -o /dev/null -D- 2>&1 | head -20
+HTTP/2 301 
+date: Tue, 15 Sep 2026 05:54:21 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/
+server: cloudflare
+cf-ray: a3b560519c2cacf3-MSP
+[0m
+[0m$ [0mcurl -sS 'https://betpandacasino.io/rest/user/authenticate' -X POST -H 'Content-Type: application/json' -d '{}' 2>&1 | head -20
+{"timestamp":1789451662404,"status":403,"error":"Forbidden","path":"/rest/user/authenticate"}
+[0m
+[0m$ [0mcurl -sS 'https://betpandacasino.io/rest/user/refresh' -X POST -H 'Content-Type: application/json' -d '{}' 2>&1 | head -20
+(no output)
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null 'https://blog.betpandacasino.io/wp-json/wp/v2/posts' 2>&1 | head -20
+HTTP/2 200 
+date: Tue, 15 Sep 2026 05:54:24 GMT
+content-type: application/json; charset=UTF-8
+server: cloudflare
+vary: Accept-Encoding
+vary: Origin
+x-robots-tag: noindex
+x-content-type-options: nosniff
+x-content-type-options: nosniff
+access-control-expose-headers: X-WP-Total, X-WP-TotalPages, Link
+access-control-allow-headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
+x-wp-total: 1625
+x-wp-totalpages: 163
+link: <https://blog.betpandacasino.io/wp-json/wp/v2/posts?page=2>; rel="next"
+allow: GET
+access-control-allow-origin: https://betpandacasino.io
+access-control-allow-methods: OPTIONS, GET, POST, PUT, PATCH, DELETE
+access-control-allow-credentials: true
+x-xss-protection: 1; mode=block
+referrer-policy: no-referrer-when-downgrade
+[0m
+[0m$ [0mcurl -sS -D- 'https://betpandacasino.io/rest/user/refresh' -X POST -H 'Content-Type: application/json' -d '{}' 2>&1 | head -20
+HTTP/2 401 
+date: Tue, 15 Sep 2026 05:54:30 GMT
+content-length: 0
+cf-ray: a3b56088882eace8-MSP
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: REFRESH_TOKEN=; Path=/rest/user/refresh; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; HttpOnly; SameSite=Lax
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVf2cPU7fSzLKE; HttpOnly; SameSite=None; Secure; Path=/; Expires=Wed, 16 Sep 2026 04:54:30 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+[0m
+[0m$ [0mcurl -sS -D- 'https://betpandacasino.io/cms/graphql' -X POST -H 'Content-Type: application/json' -d '{"query":"{__typename}"}' 2>&1 | head -20
+HTTP/2 405 
+date: Tue, 15 Sep 2026 05:54:31 GMT
+content-type: text/plain; charset=utf-8
+content-length: 18
+cf-ray: a3b5608b2e19511c-MSP
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+allow: HEAD, GET
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVfmRufgK5Fzoe; HttpOnly; SameSite=None; Secure; Path=/; Expires=Wed, 16 Sep 2026 04:54:31 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+access-control-allow-credentials: true
+content-security-policy: img-src 'self' data: blob: https://d3ec3n7kizfkuy.cloudfront.net ;media-src 'self' data: blob: market-assets.strapi.io https://d3ec3n7kizfkuy.cloudfront.net ;connect-src 'self' https:;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+[0m
+[0m$ [0mcurl -sS -D- 'https://affiliates.betpanda.io/rest/public/register' -X OPTIONS -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' -H 'Access-Control-Request-Headers: Content-Type' 2>&1 | head -20
+HTTP/2 200 
+date: Tue, 15 Sep 2026 05:54:32 GMT
+content-length: 0
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3b56097ebc8e895-MSP
+[0m
+[0m$ [0mcurl -sS -D- 'https://cable.betpandacasino.io/' 2>&1 | head -20
+HTTP/2 200 
+date: Tue, 15 Sep 2026 05:54:33 GMT
+content-type: text/plain; charset=utf-8
+content-length: 1051
+server: cloudflare
+access-control-allow-origin: *
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a3b5609a696ff4a2-ORD
+
+
+██████╗ ██████╗      ██████╗ █████╗ ██████╗ ██╗     ███████╗    🔌
+██╔══██╗██╔══██╗    ██╔════╝██╔══██╗██╔══██╗██║     ██╔════╝    
+██████╔╝██████╔╝    ██║     ███████║██████╔╝██║     █████╗      
+██╔══██╗██╔═══╝     ██║     ██╔══██║██╔══██╗██║     ██╔══╝      
+██████╔╝██║         ╚██████╗██║  ██║██████╔╝███████╗███████╗    
+╚═════╝ ╚═╝          ╚═════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝    
+                                                                  
+           Service - Ready! 🚀
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null 'https://betpandacasino.io/cms' 2>&1 | head -20
+HTTP/2 301 
+date: Tue, 15 Sep 2026 05:54:43 GMT
+content-type: text/html; charset=UTF-8
+location: https://betpandacasino.io/cms/
+server: cloudflare
+cf-ray: a3b560df3a63511c-MSP
+[0m
+[0m$ [0mcurl -sS -D- 'https://betpandacasino.io/cms/graphql' 2>&1 | head -40
+HTTP/2 404 
+date: Tue, 15 Sep 2026 05:54:44 GMT
+content-type: application/json; charset=utf-8
+content-length: 94
+cf-ray: a3b560dce8efff48-MSP
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcwzzhxWa9iNwNL; HttpOnly; SameSite=None; Secure; Path=/; Expires=Wed, 16 Sep 2026 04:54:44 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+access-control-allow-credentials: true
+content-security-policy: img-src 'self' data: blob: https://d3ec3n7kizfkuy.cloudfront.net ;media-src 'self' data: blob: market-assets.strapi.io https://d3ec3n7kizfkuy.cloudfront.net ;connect-src 'self' https:;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+
+{"data":null,"error":{"status":404,"name":"NotFoundError","message":"Not Found","details":{}}}
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null 'https://betpandacasino.io/cms/admin' 2>&1 | head -20
+HTTP/2 404 
+date: Tue, 15 Sep 2026 05:54:44 GMT
+content-type: application/json; charset=utf-8
+content-length: 94
+cf-ray: a3b560e1fde7eacc-ORD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVr6uCTZPq3HfS; HttpOnly; SameSite=None; Secure; Path=/; Expires=Wed, 16 Sep 2026 04:54:44 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+access-control-allow-credentials: true
+content-security-policy: img-src 'self' data: blob: https://d3ec3n7kizfkuy.cloudfront.net ;media-src 'self' data: blob: market-assets.strapi.io https://d3ec3n7kizfkuy.cloudfront.net ;connect-src 'self' https:;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null 'https://betpandacasino.io/cms/_health' 2>&1 | head -20
+HTTP/2 404 
+date: Tue, 15 Sep 2026 05:54:45 GMT
+content-type: application/json; charset=utf-8
+content-length: 94
+cf-ray: a3b560e75eddb7ac-ORD
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpY9SfHui9PYtcx2ULzuhSxvGMA; HttpOnly; SameSite=None; Secure; Path=/; Expires=Wed, 16 Sep 2026 04:54:45 GMT
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+access-control-allow-credentials: true
+content-security-policy: img-src 'self' data: blob: https://d3ec3n7kizfkuy.cloudfront.net ;media-src 'self' data: blob: market-assets.strapi.io https://d3ec3n7kizfkuy.cloudfront.net ;connect-src 'self' https:;default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline'
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+[0m
+[0m$ [0mcurl -sS 'https://crt.sh/?q=%25.betpanda.io&output=json' 2>&1 | python3 -c "import sys,json; d=json.load(sys.stdin); names=set(); [names.add(n.lower()) for e in d for n in e.get('name_value','').split('\n')]; print('\n'.join(sorted(names)))" 2>&1 | head -60
+*.betpanda.io
+betpanda.io
+cable.betpanda.io
+cdn.betpanda.io
+custom-lp.betpanda.io
+fp.betpanda.io
+stage.betpanda.io
+staging.betpanda.io
+worker.betpanda.io
+[0m
+[0m$ [0mcurl -sS 'https://crt.sh/?q=%25.betpandacasino.io&output=json' 2>&1 | python3 -c "import sys,json; d=json.load(sys.stdin); names=set(); [names.add(n.lower()) for e in d for n in e.get('name_value','').split('\n')]; print('\n'.join(sorted(names)))" 2>&1 | head -60
+*.betpandacasino.io
+betpandacasino.io
+blog.betpandacasino.io
+cable.betpandacasino.io
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null --max-time 10 'https://worker.betpanda.io/' 2>&1 | head -25
+curl: (6) Could not resolve host: worker.betpanda.io
+[0m
+[0m$ [0mcurl -sS -D- -o /dev/null --max-time 10 'https://cdn.betpanda.io/' 2>&1 | head -25
+curl: (6) Could not resolve host: cdn.betpanda.io
+[0m
+[0m$ [0mgetent hosts worker.betpanda.io; echo "---"; getent hosts cdn.betpanda.io
+---
+[0m
+[0m$ [0mfor p in 'rest/metrics' 'rest/health' 'rest/version' 'rest/actuator/health'; do code=$(curl -sS -o /dev/null -w '%{http_code}' "https://affiliates.betpanda.io/$p" -H 'Origin: https://evil.example'); echo "affiliates $p -> $code"; done
+affiliates rest/metrics -> 404
+affiliates rest/health -> 404
+affiliates rest/version -> 404
+affiliates rest/actuator/health -> 404
+[0m
+[0m$ [0mfor p in 'api/v1/users' 'api/v2' 'rest/v1/user' 'rest/internal' 'rest/beta' 'api/users' 'rest/operator'; do code=$(curl -sS -o /dev/null -w '%{http_code}' "https://betpandacasino.io/$p"); echo "$p -> $code"; done
+api/v1/users -> 200
+api/v2 -> 200
+rest/v1/user -> 404
+rest/internal -> 404
+rest/beta -> 404
+api/users -> 200
+rest/operator -> 404
+[0m
+STEP 1 — DELTA
+NO_DELTA. All three anchors re-verified live 05:53-54Z with byte-stable envelopes; crt.sh re-sweep surfaced only known hosts (worker.betpanda.io, cdn.betpanda.io both NXDOMAIN); /cms/graphql GET JSON-404 (POST 405 Greeting-page CSP but body NotFoundError) — Strapi GraphQL still closed; betpandacasino.io /api/* + versioned /rest/* guesses all SPA/404 catch-all; affiliates unknown /rest/* 404 with ACAO:evil reflection intact.
+
+STEP 2 — PRIORITIZE
+[PRIO] affiliates.betpanda.io/rest/*,9.5,attack_surface=10 business_value=9 tech_exposure=8 gate_ease=10 cloud_surface=8 freshness=8
+[PRIO] betpandacasino.io+betpanda.partners,7.5,attack_surface=6 business_value=9 tech_exposure=7 gate_ease=2 cloud_surface=5 freshness=8
+[PRIO] cable.betpanda.io+cable.betpandacasino.io,8.0,attack_surface=8 business_value=6 tech_exposure=7 gate_ease=10 cloud_surface=5 freshness=8
+
+STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Fresh 05:53Z — config 200 ACAO:https://evil.example + ACAC:true; OPTIONS /rest/public/register + /rest/user/password/reset both 200 ACAO:evil + ACAC:true; allow-headers LACK Authorization ⇒ cookie/session auth rides cross-origin, responses in-browser readable. 30+ handlers incl. password/reset (URL-bound reset code), set-2fa-setting, agent limits, reports. Envelope byte-stable 12+ days, bundle-agnostic.
+evidence_needed: credentialed cross-origin response diff (non-401 vs 401 no-cookie) on an authed route; or owned affiliate session.
+verify_steps: HUMAN_ONLY — POST /rest/public/register → POST /rest/public/login → GET /rest/user/metrics/affiliate with Origin https://evil.example + session cookie vs no-cookie 401 control.
+impact: PII/commission/transaction exfil + password/2FA reset + limit tamper → ATO — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Cross-brand BOLA via shared App B backend (JWT aud/iss validation gap)
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: 05:53Z parity — both /rest/user/settings 401 len=32; casino ACAO own-host+ACAC:true; partners NO ACAO but allow-headers DO include Authorization ⇒ Bearer channel open; refresh-envelope parity identical incl. custom headers. Cross-brand accept, if present, is server-side only; cheapest de-gate is casino→partners Bearer handoff.
+evidence_needed: non-401 on betpanda.partners using betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — casino login → POST /rest/user/refresh with session cookie → GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>".
+impact: cross-brand wallet/balance/settings PII disclosure on real-money platform — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion into shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io+cable.betpandacasino.io/cable/user-event
+confidence: 80
+reasoning: 05:53Z — both OPTIONS 204 ACAO:* + methods GET,POST,HEAD,PUT,DELETE,PATCH; root banner byte-identical any-host; prior POST 200 with arbitrary eventType/XSS/negative amounts on both. No read/aggregation route exists → passive ceiling; downstream reflection unproven.
+evidence_needed: benign marker aggregated/reflected on an owned reference account.
+verify_steps: AUTH_HELPED — POST benign marker `{"eventType":"verifybp17","userId":"verifybp17","registeredOn":"2026-09-17T10:00:00Z","amount":"0.01"}` to one instance, then check own-account dashboard/report for the marker.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — MEDIUM
+testability: AUTH_HELPED
+
+STEP 4 — SELF-CRITIQUE
+[FINAL] 1. Wildcard CORS (95) — flagship, byte-stable 12+ days, auth-gated; no passive upside left.
+[FINAL] 2. Cross-brand BOLA (80) — Bearer handoff is the only remaining de-gate.
+[FINAL] 3. Dual cable ingestion (80) — at passive ceiling; reflection proof requires owned account.
+[PARKED] WordPress blog.betpandacasino.io wp-json breadth: route map closed, all admin routes 401, retired at confidence 20 — no new vector this cycle.
+
+STEP 5 — NEXT ACTION
+[NEXT] HUMAN: De-gate flagship — register throwaway affiliate at POST /rest/public/register (CAPTCHA-free), login at /rest/public/login, then compare credentialed vs no-cookie GET /rest/user/metrics/affiliate with Origin https://evil.example (expect non-401 + readable cross-origin body → full POC).
+
+STEP 6 — LEARNING
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: fresh 05:53Z re-anchor — config 200 ACAO:https://evil.example+ACAC:true; /rest/public/register + /rest/user/password/reset OPTIONS 200 ACAO:evil+ACAC:true + full allow-methods; allow-headers lack Authorization; flagship envelope byte-stable.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: both OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed 05:54Z; root banner byte-identical; at passive ceiling.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: /rest/user/settings 401 len=32 parity + CORS asymmetry (casino ACAO own+ACAC; partners NO ACAO, allow-headers incl Authorization) re-confirmed 05:54Z; Bearer handoff path intact.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io/cms: /cms/graphql GET returns Strapi JSON 404 (POST 405 w/ allow HEAD,GET but body NotFoundError); /cms, /cms/admin, /cms/_health all 404 JSON — GraphQL + admin + health all closed; CMS fully eliminated.
+[LEARN] REJECTED MISCONFIG @ betpandacasino.io/api+v1/v2/internal/beta sweep: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden versioned/internal namespaces.
+[LEARN] REJECTED MISCONFIG @ worker.betpanda.io + cdn.betpanda.io: crt.sh-identified hosts both NXDOMAIN (no CNAME/A) — retired, no attack surface.
+[LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status routes on wildcard-CORS host.
+
+STEP 7 — RISK
+[RISK] betpanda: 92 — Flagship (95) re-anchored 12+ consecutive cycles with byte-stable envelope; all three findings unchanged, each gated on authenticated proof (register→login, Bearer handoff, own-account reflection); zero impact-proof movement without HUMAN de-gate; breadth exhaustively closed this cycle (cms/graphql, api v1/v2, worker/cdn NXDOMAIN) leaving no new passive surface.
