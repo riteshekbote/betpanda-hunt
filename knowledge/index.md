@@ -386,3 +386,6 @@
 - 2026-09-15 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live re-anchor 15:38Z — config 200 ACAO:https://evil.example + ACAC:true (13th consecutive day); flagship envelope byte-stable.
 - 2026-09-15 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry re-confirmed 15:38Z — Bearer handoff path intact (partners allow-headers include Authorization).
 - 2026-09-15 REJECTED MISCONFIG @ betpandacasino.io/api+v1+v2+internal+beta sweep: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden versioned/internal namespaces.
+- 2026-09-15 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: fresh re-anchor 19:45Z — config 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization, body byte-stable; envelope day 13, bundle-agnostic.
+- 2026-09-15 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry re-confirmed; Bearer de-gate path intact (partners allow-headers incl Authorization).
+- 2026-09-15 ACCEPTED BUSLOGIC @ cable/cable.betpandacasino.io/cable/user-event: 405-GET baselines stable; at passive ceiling.

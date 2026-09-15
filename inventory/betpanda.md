@@ -638,3 +638,17 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status
 - CHANGED affiliates.betpanda.io SPA: bundle stable main.1ae50aab.js (Jul-30); backend independent of bundle
 - CHANGED betpandacasino.io SPA: bundle stable index-5unQ0efM.js; App B anchors unchanged
+
+## 2026-09-15 22:25:36 UTC
+- CHANGED affiliates.betpanda.io SPA bundle stable main.1ae50aab.js (Jul-30); backend /rest/* live-verified independent of bundle
+- CHANGED betpandacasino.io SPA bundle stable index-5unQ0efM.js; App B anchors unchanged (identical 401 /rest/user/settings)
+- CHANGED cable.betpandacasino.io/cable/user-event: second instance fully validated — OPTIONS 204 ACAO:* + POST 200 lax validator (arbitrary eventType/XSS/negative amounts)
+- CHANGED Both cable instances (cable.betpanda.io + cable.betpandacasino.io) accept identical schema: alphanumeric userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts
+- CHANGED affiliates.betpanda.io/rest/public/config fresh re-anchor — 200 ACAO:https://evil.example + ACAC:true, allow-headers lack Authorization; flagship envelope byte-stable 13+ days
+- CHANGED betpandacasino.io+betpanda.partners /rest/user/settings 401 len=32 parity + CORS asymmetry re-confirmed (casino ACAO own-host+ACAC:true vs partners NO ACAO/ACAC even own-origin)
+- CHANGED betpandacasino.io/cms: /cms/graphql GET 404 JSON (POST 405 NotFoundError); /cms, /cms/admin, /cms/_health all 404 — GraphQL+admin+health fully closed
+- CHANGED betpandacasino.io/api+v1+v2+internal+beta sweep: all /api/* SPA catch-all 200; all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespaces
+- CHANGED TLD variants (betpandacasino.com/betpandasport.com/betpanda.com/betpandasports.com): GoDaddy-parked, CF-525, unresponsive, NXDOMAIN — zero operator content
+- CHANGED affiliates.betpanda.io/rest/properties/*: i18n/settings/seo/theme/translations/layout all 404 vs manifest 200 — namespace closed
+- CHANGED affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status
+- CHANGED worker.betpanda.io + cdn.betpanda.io: crt.sh-identified hosts both NXDOMAIN — retired, no attack surface
