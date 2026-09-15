@@ -33481,3 +33481,105 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 [RISK] betpanda: 92 — Flagship (95) live-verified another cycle, byte-stable; all three findings unchanged; WP breadth conclusively closed with no new surface; program remains gated on HUMAN authenticated POC for the flagship, dominating risk.
+===== ANALYST bigpickle 2026-09-15 00:46:32 UTC =====
+[0m
+> build · big-pickle
+[0m
+Running read-only re-anchor probes + passive CT sweep for fresh surface.
+[0m% [0mWebFetch https://crt.sh/?q=%25.betpandacasino.io&output=json
+[0m% [0mWebFetch https://crt.sh/?q=%25.betpanda.io&output=json
+[0m
+[0m$ [0mecho "===1 affiliates config==="; curl -sS -D - -o /tmp/bp1.txt --max-time 15 -H "Origin: https://evil.example" "https://affiliates.betpanda.io/rest/public/config" 2>/dev/null | tr -d '\r'; echo; echo "===2 cable.betpanda.io root==="; curl -sS -D - -o /tmp/bp2.txt --max-time 15 "https://cable.betpanda.io/" 2>/dev/null | tr -d '\r'; echo; sleep 1; echo "===3 cable.betpandacasino.io root==="; curl -sS -D - -o /tmp/bp3.txt --max-time 15 "https://cable.betpandacasino.io/" 2>/dev/null | tr -d '\r'; echo; sleep 1; echo "===4 casino settings==="; curl -sS -D - -o /dev/null --max-time 15 "https://betpandacasino.io/rest/user/settings" 2>/dev/null | tr -d '\r'; echo; sleep 1; echo "===5 partners settings==="; curl -sS -D - -o /dev/null --max-time 15 "https://betpanda.partners/rest/user/settings" 2>/dev/null | tr -d '\r'
+===1 affiliates config===
+HTTP/2 200 
+date: Tue, 15 Sep 2026 00:42:57 GMT
+content-type: application/json
+content-length: 398
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a3b398293be03efd-LAX
+
+
+===2 cable.betpanda.io root===
+HTTP/2 200 
+date: Tue, 15 Sep 2026 00:42:58 GMT
+content-type: text/plain; charset=utf-8
+content-length: 1051
+server: cloudflare
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a3b3982d9b02c4d5-LAX
+
+
+===3 cable.betpandacasino.io root===
+HTTP/2 200 
+date: Tue, 15 Sep 2026 00:42:59 GMT
+content-type: text/plain; charset=utf-8
+content-length: 1051
+server: cloudflare
+access-control-allow-origin: *
+cache-control: must-revalidate
+cf-cache-status: DYNAMIC
+cf-ray: a3b39837685ce57c-LAX
+
+
+===4 casino settings===
+HTTP/2 401 
+date: Tue, 15 Sep 2026 00:43:01 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a3b39841ae5c142d-LAX
+cf-cache-status: DYNAMIC
+access-control-allow-origin: https://betpandacasino.io
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuHvZXV12ut48bRfpuP7j22GXttxqVeEnCxpcc1orc; HttpOnly; SameSite=None; Secure; Path=/; Expires=Tue, 15 Sep 2026 23:43:01 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0
+x-site-name-id: betpandacasino_io
+
+
+===5 partners settings===
+HTTP/2 401 
+date: Tue, 15 Sep 2026 00:43:04 GMT
+content-type: text/plain; charset=utf-8
+content-length: 32
+cf-ray: a3b3985068a478ef-LAX
+cf-cache-status: DYNAMIC
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+server: cloudflare
+set-cookie: __cflb=02DiuDJtr6FDeA2benWyBfWMHoa2iyUHs5aKQhL71MXPr; HttpOnly; SameSite=Lax; Path=/; Expires=Tue, 15 Sep 2026 23:43:04 GMT
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+pragma: no-cache
+access-control-allow-credentials: true
+access-control-allow-headers: Authorization,content-type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin,x-maintenance-reason,x-captcha-token,x-preferred-app-context,x-site-name-id
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-expose-headers: x-maintenance-reason, x-site-name-id
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+x-robots-tag: noindex, nofollow
+x-xss-protection: 0
+[0m
+[93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
+[0m✗ [0mRead /tmp/bp1.txt failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.
+[0m• [0mExtract unique CT names[90m Explore Agent[0m
+CT for betpandacasino.io shows only known hosts. Processing the truncated betpanda.io CT log and checking config body.
+[0m✓ [0mExtract unique CT names[90m Explore Agent[0m
