@@ -23,3 +23,7 @@
 - 2 lead(s) marked VALID at 2026-09-07 21:36:23 UTC
   - **VERDICT: VALID**
   - | 1 | Affiliates CORS+credentials | **VALID** | 9.1 | YES — bugs.olivermaicher.eu |
+
+- 2 lead(s) marked VALID at 2026-09-15 11:18:16 UTC
+  - **Verdict: VALID**
+  - | 1 | Wildcard CORS + credentials on affiliates.betpanda.io REST API | **VALID** | 9.1 Critical | Yes |
