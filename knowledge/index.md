@@ -381,3 +381,7 @@
 - 2026-09-15 REJECTED MISCONFIG @ betpandacasino.io/api+v1/v2/internal/beta sweep: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden versioned/internal namespaces.
 - 2026-09-15 REJECTED MISCONFIG @ worker.betpanda.io + cdn.betpanda.io: crt.sh-identified hosts both NXDOMAIN (no CNAME/A) — retired, no attack surface.
 - 2026-09-15 REJECTED MISCONFIG @ affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status routes on wildcard-CORS host.
+- 2026-09-15 REJECTED MISCONFIG @ betpandacasino.com+betpandasport.com+betpanda.com+betpandasports.com: TLD-variant sweep — GoDaddy-parked (/lander→forsale), CF-525 broken-origin, unresponsive IP, and NXDOMAIN respectively; zero reachable BetPanda operator content; no new attack surface.
+- 2026-09-15 REJECTED MISCONFIG @ betpandacasino.io/rest/properties/*: i18n/settings/seo/theme/translations/layout all JSON 404 vs manifest 200 — only /rest/properties/manifest is a real handler; namespace closed, no config/i18n leak.
+- 2026-09-15 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live re-anchor 15:38Z — config 200 ACAO:https://evil.example + ACAC:true (13th consecutive day); flagship envelope byte-stable.
+- 2026-09-15 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry re-confirmed 15:38Z — Bearer handoff path intact (partners allow-headers include Authorization).
