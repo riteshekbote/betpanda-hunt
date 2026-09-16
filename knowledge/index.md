@@ -415,3 +415,6 @@
 - 2026-09-16 ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: OPTIONS 204 ACAO:* + full allow-methods re-confirmed live; GET 405 confirms POST-only; dual-instance ingestion stable
 - 2026-09-16 REJECTED MISCONFIG @ affiliates.betpanda.io/{graphql,api/graphql}: Both 200 text/html SPA catch-all — no server-side GraphQL
 - 2026-09-16 REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently
+- 2026-09-16 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live 18:56Z re-anchor — password/reset OPTIONS 200 ACAO:https://evil.example+ACAC:true+full allow-methods; config GET 200 same; allow-headers lack Authorization ⇒ cookie/session crosses origin. Envelope byte-stable day 16, bundle-agnostic (main.ef021e68.js).
+- 2026-09-16 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity re-confirmed live 18:56Z both hosts; CORS asymmetry stable (casino ACAO own+ACAC:true; partners NO ACAO, allow-headers incl Authorization) — Bearer handoff de-gate path intact.
+- 2026-09-16 ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed live 18:56Z — dual-instance unauth ingestion stable at passive ceiling.

@@ -4761,3 +4761,38 @@ testability: AUTH_HELPED
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: Dual OPTIONS 204 ACAO:* + POST 200 {"status":"success"} re-confirmed live 15:03Z with verifybp17 marker — dual-instance ingestion stable at passive ceiling.
 [LEARN] CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.ef021e68.js (was main.1ae50aab.js); backend /rest/* endpoints live-confirmed independent of bundle version; handler set unchanged.
 [RISK] betpanda: 92 — Flagship envelope re-anchored 16 consecutive days (15:03Z, config+password/reset+settings sweep) byte-stable and already marked VALID (9.2); all three findings unchanged and each gated on authenticated proof per scope rule account_creation=restricted/live-data (register→login, Bearer handoff, own-account reflection); every fresh passive lane this cycle (bundle revert, namespace sweep, handler parity) closed stable or negative; zero impact-proof movement possible without HUMAN de-gate; remaining upside is exclusively human-in-the-loop POC execution.
+## 2026-09-16 18:58:16 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live 18:56Z — OPTIONS /rest/user/password/reset with Origin https://evil.example → 200 ACAO:https://evil.example + ACAC:true + full allow-methods; allow-headers lack Authorization ⇒ cookie/session crosses cross-origin automatically. GET /rest/public/config 200 same envelope (no auth). Bundle main.ef021e68.js; 20+ authed handlers incl. URL-bound password/reset, set-2fa-setting, agent deposit/withdraw limits, player PII, reports. Envelope byte-stable 16 consecutive days.
+evidence_needed: credentialed cross-origin GET diff (non-401 vs no-cookie 401) on an authed route.
+verify_steps: HUMAN_ONLY — POST /rest/public/register (CAPTCHA-free, phoneSignupEnabled:false) → POST /rest/public/login → GET /rest/user/metrics/affiliate with Origin https://evil.example + session cookie vs no-cookie 401 control.
+impact: PII/commission/transaction exfil + password/2FA reset + agent limit tamper → ATO — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Cross-brand BOLA via shared App B backend (JWT aud/iss validation gap)
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Live 18:56Z — both /rest/user/settings return identical 401 len=32 "No http-session found"; casino CORS pinned (ACAO own-host+ACAC:true) vs partners NO ACAO but allow-headers DO include Authorization ⇒ Bearer channel open on partners; x-site-name-id/x-captcha-token envelope parity identical. Cross-brand acceptance would be server-side only (curl-able, no browser needed).
+evidence_needed: non-401 on betpanda.partners using betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — casino login → POST /rest/user/refresh → GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>".
+impact: cross-brand wallet/balance/settings PII disclosure on real-money platform — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion into shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io+cable.betpandacasino.io/cable/user-event
+confidence: 80
+reasoning: Live 18:56Z — OPTIONS 204 ACAO:* + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH on cable2; both instances accept identical schema (alnum userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts → 200). No read/aggregation route exists (32-path sweep 404) → passive ceiling; downstream reflection unproven.
+evidence_needed: benign marker aggregated/reflected on owned reference account.
+verify_steps: AUTH_HELPED — POST {"eventType":"verifybp17","userId":"verifybp17","registeredOn":"2026-09-17T10:00:00Z","amount":"0.01"} to one instance, then check own-account dashboard/report.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — MEDIUM
+testability: AUTH_HELPED
+[PARKED] GraphQL introspection @ affiliates.betpanda.io: /graphql + /api/graphql = SPA catch-all 200 text/html — not a real endpoint; sole GraphQL checkpoint closed on every host.
+[FINAL] 1. affiliates.betpanda.io/rest/* CORS MISCONFIG (95) 2. cross-brand BOLA IDOR (80) 3. dual cable BUSLOGIC (80)
+[NEXT] HUMAN: De-gate flagship — register throwaway affiliate via POST https://affiliates.betpanda.io/rest/public/register (CAPTCHA-free per config, phoneSignupEnabled:false), login via POST /rest/public/login, then credentialed GET /rest/user/metrics/affiliate with Origin https://evil.example vs no-cookie 401 control → live non-401 + readable cross-origin body = POC for submission 1; session yields JWT for casino→partners Bearer handoff (submission 2); benign verifybp17 marker POST optional (submission 3).
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live 18:56Z re-anchor — password/reset OPTIONS 200 ACAO:https://evil.example+ACAC:true+full allow-methods; config GET 200 same; allow-headers lack Authorization ⇒ cookie/session crosses origin. Envelope byte-stable day 16, bundle-agnostic (main.ef021e68.js).
+[LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity re-confirmed live 18:56Z both hosts; CORS asymmetry stable (casino ACAO own+ACAC:true; partners NO ACAO, allow-headers incl Authorization) — Bearer handoff de-gate path intact.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed live 18:56Z — dual-instance unauth ingestion stable at passive ceiling.
+[RISK] betpanda: 92 — Flagship envelope re-anchored live 16 consecutive days (18:56Z, config+password/reset+settings+OPTIONS sweep) byte-stable, already marked VALID (9.0-9.2); all three findings unchanged and each gated on authenticated proof per scope rule account_creation=restricted/live-data (register→login, Bearer handoff, own-account reflection); no new passive lane since GraphQL/namespace/handler-map closes; zero impact-proof movement possible without HUMAN de-gate — remaining upside is exclusively human-in-the-loop POC execution.

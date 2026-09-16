@@ -2166,3 +2166,10 @@
 - LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: OPTIONS 204 ACAO:* + full allow-methods re-confirmed live; GET 405 confirms POST-only; dual-instance ing
 - LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/{graphql,api/graphql}: Both 200 text/html SPA catch-all — no server-side GraphQL
 - LEARN: REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently
+
+## RANKED HYPOTHESES 2026-09-16 19:16:51 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: De-gate flagship — register throwaway affiliate via POST https://affiliates.betpanda.io/rest/public/register (CAPTCHA-free per config, phoneSignupEnabled
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live 18:56Z re-anchor — password/reset OPTIONS 200 ACAO:https://evil.example+ACAC:true+full allow-methods; c
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity re-confirmed live 18:56Z both hosts; CORS asymmetry stable (casino ACAO own+ACAC
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed live 18:56Z — dual-instance unaut
