@@ -658,3 +658,8 @@ www.betpanda.io
 ## 2026-09-16 05:14:48 UTC
 
 ## 2026-09-16 10:06:19 UTC
+
+## 2026-09-16 15:06:05 UTC
+- CHANGED affiliates.betpanda.io/rest/*: Live OPTIONS sweep 10:05Z re-confirmed flagship envelope (metrics/affiliate, players, trk, agent/list, password/reset all 200 ACAO:https://evil.example + ACAC:true + ful
+- CHANGED betpandacasino.io+betpanda.partners/rest/user/settings: 401 len=32 parity + CORS asymmetry re-confirmed live 10:05Z (casino ACAO own-host+ACAC:true; partners NO ACAO/ACAC even own-origin, but allow-he
+- CHANGED cable.betpanda.io/cable/user-event: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH + allow-headers Content-Type re-confirmed live; GET 405 {"error":"Method Not Allowed"}

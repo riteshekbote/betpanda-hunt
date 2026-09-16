@@ -2151,3 +2151,18 @@
 - LEARN: CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handle
 - LEARN: CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
 - LEARN: REJECTED OTHER @ github.com/*betpanda*: no official BetPanda GitHub org — reposcan lane closed permanently with data; no further code-leak yield possible.
+
+## RANKED HYPOTHESES 2026-09-16 15:06:05 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil (from art/lead_bigpickle.txt)
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (from art/lead_nemotron3.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: De-gate flagship — register throwaway affiliate at POST https://affiliates.betpanda.io/rest/public/register (CAPTCHA-free per config, phoneSignupEnabled:
+- NEXT(hypotheses-nemotron3.txt): HUMAN: De-gate flagship — register throwaway affiliate at POST https://affiliates.betpanda.io/rest/public/register (CAPTCHA-free per config phoneSignupEnabled:f
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live 15:03Z re-anchor — config 200 ACAO:https://evil.example + ACAC:true + allow-methods GET,POST,OPTIONS,PU
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true; partners NO ACAO, allow-header
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: Dual OPTIONS 204 ACAO:* + POST 200 {"status":"success"} re-confirmed live 15:03Z with verifybp17 
+- LEARN: CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.ef021e68.js (was main.1ae50aab.js); backend /rest/* endpoints live-confirmed independent of bundle
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Live OPTIONS sweep 10:05Z re-confirmed flagship envelope across 5+ endpoints (metrics/affiliate, players, tr
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared App B backend re-confirmed — settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: OPTIONS 204 ACAO:* + full allow-methods re-confirmed live; GET 405 confirms POST-only; dual-instance ing
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/{graphql,api/graphql}: Both 200 text/html SPA catch-all — no server-side GraphQL
+- LEARN: REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently
