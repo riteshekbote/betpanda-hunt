@@ -652,3 +652,5 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io/rest/properties/*: i18n/settings/seo/theme/translations/layout all 404 vs manifest 200 — namespace closed
 - CHANGED affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status
 - CHANGED worker.betpanda.io + cdn.betpanda.io: crt.sh-identified hosts both NXDOMAIN — retired, no attack surface
+
+## 2026-09-16 00:32:58 UTC
