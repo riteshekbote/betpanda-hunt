@@ -5310,3 +5310,4 @@ testability: AUTH_HELPED
 [LEARN] REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently
 [RISK] betpanda: 95 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + change-password + public `/rest/*` layer (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), dual unauthenticated analytics injection with fully reverse-derived schema accepting XSS/negative amounts on both cable instances (chaining vector). OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure. Fresh SPA redeploy (main.1ae50aab.js) backend attack surface stable with 30+ mapped endpoints.
 ## 2026-09-16 19:16:38 UTC [target] (model nemotron3)
+## 2026-09-16 21:58:08 UTC [target] (model nemotron3)

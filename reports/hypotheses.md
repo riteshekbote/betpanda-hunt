@@ -2173,3 +2173,11 @@
 - LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live 18:56Z re-anchor — password/reset OPTIONS 200 ACAO:https://evil.example+ACAC:true+full allow-methods; c
 - LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity re-confirmed live 18:56Z both hosts; CORS asymmetry stable (casino ACAO own+ACAC
 - LEARN: ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH re-confirmed live 18:56Z — dual-instance unaut
+
+## RANKED HYPOTHESES 2026-09-16 21:58:16 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: De-gate flagship under program permission — scope rule account_creation=restricted forbids live-prod registrations, so request a sandbox/test affiliate c
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live 21:56:58Z re-anchor — password/reset OPTIONS 200 ACAO:https://evil.example+ACAC:true+full allow-methods
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity re-confirmed 21:57:01Z both hosts; CORS asymmetry stable (casino ACAO own+ACAC:t
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: dual OPTIONS 204 ACAO:* + full methods re-confirmed 21:57:01Z — dual-instance unauth ingestion st
+- LEARN: CONFLICT @ program rules: the register→login de-gate sits on live production (account_creation=restricted) — POC work now requires explicit operator-issued test
