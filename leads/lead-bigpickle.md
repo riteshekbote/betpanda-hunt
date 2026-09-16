@@ -4684,3 +4684,42 @@ evidence_needed: benign marker aggregated/reflected on an owned reference accoun
 verify_steps: AUTH_HELPED — POST {"eventType":"verifybp17","userId":"verifybp17","registeredOn":"2026-09-17T10:00:00Z","amount":"0.01"} to one instance, then check own-account dashboard/report.
 impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — MEDIUM
 testability: AUTH_HELPED
+## 2026-09-16 10:06:07 UTC [target] (model bigpickle)
+[PRIO] affiliates.betpanda.io/rest/*,9.2,flagship-MISCONFIG (attack_surface 8, business 10, tech 8, gate 10, cloud 8, fresh 9) — 0.25*8+0.25*10+0.15*8+0.15*10+0.10*8+0.10*9 = 9.2
+[PRIO] betpandacasino.io+betpanda.partners/rest/user/*,8.0,IDOR-BOLA (a7 b10 t8 g4 c8 f8 = 7.15→8.0 server-side-only cross-brand)
+[PRIO] cable.betpanda.io+cable.betpandacasino.io/cable/user-event,7.6,BUSLOGIC (a6 b7 t6 g10 c8 f8 = 7.4)
+[HYP] Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live this cycle 10:05Z — OPTIONS preflight (Origin https://evil.example, ACRM GET) on metrics/affiliate, players, trk, agent/list, password/reset ALL return 200 with ACAO:https://evil.example reflected + ACAC:true + allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; allow-headers lack Authorization ⇒ cookie/session rides cross-origin readably. Real 401 bodies confirmed on authed routes (metrics/affiliate, trk) and 405 on POST-only (players, agent/list). config 200 body byte-stable (operatorId=1, 15 currencies, deals@bamboopartners.io). Envelope byte-stable 15 consecutive days. 20+ handlers incl. URL-bound password/reset, set-2fa-setting, agent limits/reports.
+evidence_needed: credentialed cross-origin GET diff (non-401 vs no-cookie 401) on an authed route.
+verify_steps: HUMAN_ONLY — POST /rest/public/register (CAPTCHA-free, phoneSignupEnabled:false) → POST /rest/public/login → GET /rest/user/metrics/affiliate with Origin https://evil.example + session cookie vs no-cookie 401 control.
+impact: PII/commission/transaction exfil + password/2FA reset + agent limit tamper → ATO — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Cross-brand BOLA via shared App B backend (JWT aud/iss validation gap)
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: settings 401 len=32 parity both hosts live 10:05Z; casino ACAO own-host+ACAC:true vs partners NO ACAO but allow-headers DO include Authorization ⇒ Bearer channel open; x-site-name-id/x-captcha-token envelope parity identical. Cross-brand acceptance would be server-side only.
+evidence_needed: non-401 on betpanda.partners using betpandacasino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — casino login → POST /rest/user/refresh → GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>".
+impact: cross-brand wallet/balance/settings PII disclosure on real-money platform — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Dual unauthenticated cable ingestion into shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io+cable.betpandacasino.io/cable/user-event
+confidence: 80
+reasoning: Both accept identical schema (alnum userId, RFC3339 registeredOn, arbitrary eventType incl. XSS, negative amounts 200). Both OPTIONS 204 ACAO:* (re-confirmed 10:05Z). No read/aggregation route exists (32-path sweep 404) → passive ceiling; downstream reflection unproven.
+evidence_needed: benign marker aggregated/reflected on an owned reference account.
+verify_steps: AUTH_HELPED — POST {"eventType":"verifybp17","userId":"verifybp17","registeredOn":"2026-09-17T10:00:00Z","amount":"0.01"} to one instance, then check own-account dashboard/report.
+impact: unauth event poisoning / fraud & bonus-pipeline write on both hosts — MEDIUM
+testability: AUTH_HELPED
+[PARKED] GraphQL introspection @ affiliates.betpanda.io: /graphql + /api/graphql = SPA catch-all 200 text/html — not a real endpoint; only checkpoint where GraphQL could exist (betpandacasino.io/cms/graphql already closed).
+[FINAL] 1. affiliates.betpanda.io/rest/* CORS MISCONFIG (95) 2. cross-brand BOLA IDOR (80) 3. dual cable BUSLOGIC (80).
+[NEXT] HUMAN: De-gate flagship — register throwaway affiliate at POST https://affiliates.betpanda.io/rest/public/register (CAPTCHA-free per config, phoneSignupEnabled:false), login via POST /rest/public/login, then compare credentialed vs no-cookie GET /rest/user/metrics/affiliate with Origin https://evil.example (expect non-401 + readable cross-origin body → POC for submission 1; session yields JWT for casino→partners Bearer handoff → submission 2); optionally POST benign marker verifybp17 to one cable instance with the owned account (submission 3).
+[LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/{graphql,api/graphql}: both 200 text/html SPA catch-all (2024B index) — no server-side GraphQL; payload/route safe, no introspection surface on the wildcard host.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live 10:05Z OPTIONS sweep (metrics/affiliate, players, trk, agent/list, password/reset) all 200 ACAO:https://evil.example + ACAC:true, allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE, allow-headers lack Authorization — flagship envelope byte-stable 15 consecutive days; trk + metrics/affiliate 401 bodies confirm real authed handlers, players + agent/list 405 confirm real POST-only handlers (XML serializer only, no deserialization error leak).
+[LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true; partners no-ACAO, allow-headers incl Authorization) re-confirmed live 10:05Z — Bearer handoff de-gate path intact.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH + allow-headers Content-Type re-confirmed live; GET 405 {"error":"Method Not Allowed"} — dual-instance ingestion stable at passive ceiling.
+[RISK] betpanda: 92 — Flagship envelope re-anchored 15 straight days (1015Z, five-endpoint sweep) byte-stable and already marked VALID (9.1); all three findings unchanged and each gated on authenticated proof per scope rule account_creation=restricted/live-data (register→login, Bearer handoff, own-account reflection); every fresh passive lane this cycle (GraphQL, namespace, health/version, handler map) closed negative; zero impact-proof movement possible without HUMAN de-gate; remaining upside is exclusively human-in-the-loop POC execution.

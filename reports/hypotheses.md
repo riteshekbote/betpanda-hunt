@@ -2130,3 +2130,24 @@
 - LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status rou
 - LEARN: CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handle
 - LEARN: CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+
+## RANKED HYPOTHESES 2026-09-16 10:06:19 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil (from art/lead_bigpickle.txt)
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (from art/lead_nemotron3.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: De-gate flagship — register throwaway affiliate at POST https://affiliates.betpanda.io/rest/public/register (CAPTCHA-free per config, phoneSignupEnabled:
+- NEXT(hypotheses-nemotron3.txt): HUMAN: De-gate flagship — register throwaway affiliate at POST https://affiliates.betpanda.io/rest/public/register (CAPTCHA-free per config phoneSignupEnabled:f
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/{graphql,api/graphql}: both 200 text/html SPA catch-all (2024B index) — no server-side GraphQL; payload/route safe, 
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live 10:05Z OPTIONS sweep (metrics/affiliate, players, trk, agent/list, password/reset) all 200 ACAO:https:/
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry (casino ACAO own-host+ACAC:true; partners no-ACAO, allow-header
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: OPTIONS 204 ACAO:* + GET,POST,HEAD,PUT,DELETE,PATCH + allow-headers Content-Type re-confirmed live; GET 
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live fresh this cycle (GET /rest/public/config 200 ACAO:evil.example +
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpandacasino.io/cable/user-event: Second cable instance confirmed live; OPTIONS preflight 405 (POST-only), root GET 200 ACAO:*; POST
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event: Validator alignment confirmed — both cable instances now accept identical schema (alphanumeric userId, R
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared App B backend re-confirmed live — both /rest/user/settings return identical 401 control; CORS pinned
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend (proper JSON 404s on /cms/_health, /cms/api/*, /cms/admin) but NO public content types under 
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/api+v1+v2+internal+beta sweep: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden v
+- LEARN: REJECTED MISCONFIG @ worker.betpanda.io + cdn.betpanda.io: crt.sh-identified hosts both NXDOMAIN (no CNAME/A) — retired, no attack surface.
+- LEARN: REJECTED MISCONFIG @ affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status rou
+- LEARN: CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handle
+- LEARN: CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+- LEARN: REJECTED OTHER @ github.com/*betpanda*: no official BetPanda GitHub org — reposcan lane closed permanently with data; no further code-leak yield possible.

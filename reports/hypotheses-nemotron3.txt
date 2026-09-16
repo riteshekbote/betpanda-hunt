@@ -1,4 +1,4 @@
-## 2026-09-16 05:14:38 UTC [target] (model nemotron3)
+## 2026-09-16 10:05:23 UTC [target] (model nemotron3)
 [PRIO] affiliates.betpanda.io/rest/*,9.80,attack_surface=10,business_value=10,tech_exposure=10,gate_ease=10,cloud_surface=8,freshness=10
 [PRIO] cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event,8.05,attack_surface=8,business_value=7,tech_exposure=8,gate_ease=10,cloud_surface=6,freshness=10
 [PRIO] betpanda.partners/rest/user/* + betpandacasino.io/rest/user/*,7.95,attack_surface=8,business_value=10,tech_exposure=7,gate_ease=4,cloud_surface=8,freshness=10
@@ -43,4 +43,5 @@ testability: AUTH_HELPED
 [LEARN] REJECTED MISCONFIG @ affiliates.betpanda.io/rest/{metrics,health,version,actuator/health}: all 404 JSON with ACAO:evil reflected — no hidden actuator/status routes on wildcard-CORS host.
 [LEARN] CHANGED @ affiliates.betpanda.io SPA: bundle reverted to main.1ae50aab.js (Jul-30, 2,089,573 B); main.ef021e68.js gone (206 text/html catch-all). Backend handled independently; endpoint map still valid (live-confirmed, not JS-only).
 [LEARN] CHANGED @ betpandacasino.io SPA: bundle index-5unQ0efM.js (was index-KqswHEbl.js); App B behavior anchors unchanged.
+[LEARN] REJECTED OTHER @ github.com/*betpanda*: no official BetPanda GitHub org — reposcan lane closed permanently with data; no further code-leak yield possible.
 [RISK] betpanda: 95 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + change-password + public `/rest/*` layer (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), dual unauthenticated analytics injection with fully reverse-derived schema accepting XSS/negative amounts on both cable instances (chaining vector). OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure. Fresh SPA redeploy (main.1ae50aab.js) backend attack surface stable with 30+ mapped endpoints.
