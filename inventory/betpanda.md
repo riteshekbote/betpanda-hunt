@@ -694,3 +694,11 @@ www.betpanda.io
 - CHANGED betpandacasino.io/api+v1+v2+internal+beta sweep: all /api/* SPA catch-all 200; all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespaces
 - CHANGED TLD variants (betpandacasino.com/betpandasport.com/betpanda.com/betpandasports.com): GoDaddy-parked, CF-525, unresponsive, NXDOMAIN — zero operator content
 - CHANGED GitHub reposcan: No official BetPanda GitHub org — lane closed permanently
+
+## 2026-09-17 23:58:08 UTC
+- CHANGED affiliates.betpanda.io SPA bundle rotated back to main.ef021e68.js (from main.1ae50aab.js); backend /rest/* endpoints live-confirmed independent of bundle version
+- CHANGED cable.betpandacasino.io/cable/user-event: Second cable instance fully validated — OPTIONS 204 ACAO:* + POST 200 lax validator (arbitrary eventType/XSS/negative amounts)
+- CHANGED betpandacasino.io/cms: /cms/graphql GET 404 JSON (POST 405 NotFoundError); /cms, /cms/admin, /cms/_health all 404 JSON — GraphQL + admin + health fully closed
+- CHANGED betpandacasino.io/api+v1+v2+internal+beta sweep: all /api/* SPA catch-all 200; all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespaces
+- CHANGED TLD variants (betpandacasino.com/betpandasport.com/betpanda.com/betpandasports.com): GoDaddy-parked, CF-525, unresponsive, NXDOMAIN — zero operator content
+- CHANGED GitHub reposcan: No official BetPanda GitHub org — lane closed permanently

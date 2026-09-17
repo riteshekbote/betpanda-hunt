@@ -437,3 +437,6 @@
 - 2026-09-17 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: no new probes this cycle; anchor stands by prior 10:01Z live evidence — envelope byte-stable day 17, bundle-agnostic, accept-headers lack Authorization.
 - 2026-09-17 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: prior 10:01Z settings 401 len=32 parity + CORS asymmetry stands; Bearer handoff de-gate path intact.
 - 2026-09-17 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: prior 10:01Z dual OPTIONS 204 ACAO:* stands; at passive ceiling.
+- 2026-09-17 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: no new probes this cycle; in-leads 21:56Z fresh evidence stands — config 200 ACAO:https://evil.example+ACAC:true, envelope byte-stable day 17, allow-headers lack Authorization.
+- 2026-09-17 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: in-leads settings 401 len=32 parity + CORS asymmetry stands; Bearer handoff de-gate path intact.
+- 2026-09-17 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: in-leads dual OPTIONS 204 ACAO:* stands; at passive ceiling.
