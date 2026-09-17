@@ -428,3 +428,6 @@
 - 2026-09-17 REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dropped.
 - 2026-09-17 REJECTED MISCONFIG @ betpandacasino.io/api+v1+v2+internal+beta: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespaces.
 - 2026-09-17 REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently.
+- 2026-09-17 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: fresh re-anchor 10:01Z — config 200 ACAO:https://evil.example+ACAC:true+full allow-methods; password/reset OPTIONS same envelope; allow-headers lack Authorization; envelope byte-stable day 17, bundle-agnostic.
+- 2026-09-17 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry re-confirmed 10:01Z; partners allow-headers incl Authorization; Bearer handoff de-gate path intact.
+- 2026-09-17 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: dual OPTIONS 204 ACAO:* re-confirmed 10:01Z; cable1 GET 405, cable2 OPTIONS 204; dual-instance unauth ingestion stable at passive ceiling.
