@@ -2181,3 +2181,7 @@
 - LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity re-confirmed 21:57:01Z both hosts; CORS asymmetry stable (casino ACAO own+ACAC:t
 - LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: dual OPTIONS 204 ACAO:* + full methods re-confirmed 21:57:01Z — dual-instance unauth ingestion st
 - LEARN: CONFLICT @ program rules: the register→login de-gate sits on live production (account_creation=restricted) — POC work now requires explicit operator-issued test
+
+## RANKED HYPOTHESES 2026-09-17 00:14:21 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil (from art/lead_bigpickle.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: Request operator-issued sandbox/test affiliate credential via bugs.olivermaicher.eu (scope rule account_creation=restricted blocks live-prod register; co

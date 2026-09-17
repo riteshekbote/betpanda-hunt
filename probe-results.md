@@ -554,3 +554,6 @@ https://affiliates.betpanda.io/rest/public/register -> HTTP 405
 
 ## 2026-09-16 21:58:16 UTC
 
+
+## 2026-09-17 00:14:22 UTC
+https://affiliates.betpanda.io/rest/public/login -> HTTP 405
