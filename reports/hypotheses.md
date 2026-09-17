@@ -2211,3 +2211,18 @@
 - LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dro
 - LEARN: REJECTED MISCONFIG @ betpandacasino.io/api+v1+v2+internal+beta: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespa
 - LEARN: REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently.
+
+## RANKED HYPOTHESES 2026-09-17 14:47:38 UTC
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil (from art/lead_bigpickle.txt)
+- [95] affiliates.betpanda.io/rest/*: Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain (from art/lead_nemotron3.txt)
+- NEXT(hypotheses-bigpickle.txt): HUMAN: Request operator-issued sandbox/test affiliate credential via bugs.olivermaicher.eu (scope rule account_creation=restricted blocks live-prod register; CA
+- NEXT(hypotheses-nemotron3.txt): HUMAN: Request operator-issued sandbox/test affiliate credential via bugs.olivermaicher.eu (scope rule account_creation=restricted blocks live-prod register; co
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: fresh re-anchor — config 200 ACAO:https://evil.example+ACAC:true+full allow-methods; password/reset OPTIONS 
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity + CORS asymmetry re-confirmed; partners allow-headers incl Authorization; Bearer
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: dual OPTIONS 204 ACAO:* re-confirmed; cable1 GET 405, cable2 OPTIONS 204; dual-instance unauth in
+- LEARN: ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: Wildcard CORS+credentials re-verified live fresh this cycle (GET /rest/public/config 200 ACAO:evil.example +
+- LEARN: ACCEPTED BUSLOGIC @ cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event: Dual unauth ingestion re-confirmed stable; both OPTIONS 204 A
+- LEARN: ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: Shared App B backend re-confirmed live — both /rest/user/settings return identical 401 control; CORS pinned
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dro
+- LEARN: REJECTED MISCONFIG @ betpandacasino.io/api+v1+v2+internal+beta: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespa
+- LEARN: REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently.
