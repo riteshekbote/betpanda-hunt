@@ -446,3 +446,9 @@
 - 2026-09-18 REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dropped.
 - 2026-09-18 REJECTED MISCONFIG @ betpandacasino.io/api+v1+v2+internal+beta: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespaces.
 - 2026-09-18 REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently.
+- 2026-09-18 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: no new probes this cycle; in-leads 21:56Z fresh evidence stands — config 200 ACAO:https://evil.example+ACAC:true, envelope byte-stable day 17, allow-headers lack Authorization.
+- 2026-09-18 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: in-leads settings 401 len=32 parity + CORS asymmetry stands; Bearer handoff de-gate path intact.
+- 2026-09-18 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: in-leads dual OPTIONS 204 ACAO:* stands; at passive ceiling.
+- 2026-09-18 ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: re-verified live 08:48-08:50Z — config 200 ACAO:https://evil.example+ACAC:true (398B byte-stable), password/reset OPTIONS same envelope + full methods, allow-headers lack Authorization; day 18, bundle-agnostic.
+- 2026-09-18 ACCEPTED IDOR @ betpandacasino.io+betpanda.partners: settings 401 len=32 parity re-verified 08:50Z both hosts; CORS asymmetry (casino ACAO own+ACAC:true vs partners no-ACAO w/ Authorization in allow-headers) stable — Bearer handoff path intact.
+- 2026-09-18 ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io: dual OPTIONS 204 ACAO:* re-verified 08:49Z; unauth ingestion stable at passive ceiling.
