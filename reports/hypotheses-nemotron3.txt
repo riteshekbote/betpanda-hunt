@@ -1,4 +1,4 @@
-## 2026-09-18 13:27:39 UTC [target] (model nemotron3)
+## 2026-09-18 17:12:51 UTC [target] (model nemotron3)
 [PRIO] affiliates.betpanda.io/rest/*,9.80,attack_surface=10,business_value=10,tech_exposure=10,gate_ease=10,cloud_surface=8,freshness=10
 [PRIO] cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event,8.05,attack_surface=8,business_value=7,tech_exposure=8,gate_ease=10,cloud_surface=6,freshness=10
 [PRIO] betpanda.partners/rest/user/* + betpandacasino.io/rest/user/*,7.95,attack_surface=8,business_value=10,tech_exposure=7,gate_ease=4,cloud_surface=8,freshness=10
