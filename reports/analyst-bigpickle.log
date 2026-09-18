@@ -38359,3 +38359,115 @@ sleep 1.2
 curl -s -m 20 -D - -o /tmp/partners_settings.txt -H "Origin: https://evil.example" "https://betpanda.partners/rest/user/settings" | head -14
 echo "partners body:"; cat /tmp/partners_settings.txt; echo failed
 [91m[1mError: [0mThe user rejected permission to use this specific tool call.
+===== ANALYST bigpickle 2026-09-18 22:22:21 UTC =====
+[0m
+> build · big-pickle
+[0m
+[0m$ [0mcurl -s --max-time 20 -o /dev/null -D - -X OPTIONS 'https://affiliates.betpanda.io/rest/user/password/reset' -H 'Origin: https://evil.example' -H 'Access-Control-Request-Method: POST' | grep -iE '^(HTTP|access-control|vary|allow)'
+HTTP/2 200 
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+[0m
+[0m$ [0mcurl -s --max-time 20 -o /dev/null -D - 'https://affiliates.betpanda.io/rest/public/config' -H 'Origin: https://evil.example' | grep -iE '^(HTTP|access-control|vary|content-type|content-length)' ; echo '---BODY---'; curl -s --max-time 20 'https://affiliates.betpanda.io/rest/public/config' | head -c 300
+HTTP/2 200 
+content-type: application/json
+content-length: 398
+access-control-allow-origin: https://evil.example
+vary: Origin
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,OPTIONS,PUT,HEAD,DELETE
+access-control-allow-headers: Content-Type,X-Requested-With,Host,User-Agent,Accept,Accept-Language,Accept-Encoding,Accept-Charset,Keep-Alive,Connection,Referer,Origin
+---BODY---
+{"logoUrl":"https://d3ec3n7kizfkuy.cloudfront.net/Betpanda_io_logo_White_Green_b5267c709b.png","operatorId":1,"linkUrl":"https://betpanda.partners","supportEmail":"deals@bamboopartners.io","contenfulSpaceId":"","strapiApiUrl":"/cms","contentfulAccessToken":"","currencies":["BTC","ETH","USDT","BNB","
+[0m
+[0m$ [0mcurl -s --max-time 30 'https://crt.sh/?q=%25.betpanda.io&output=json' | head -c 3000; echo; echo '---CAS---'; curl -s --max-time 30 'https://crt.sh/?q=%25.betpandacasino.io&output=json' | head -c 3000
+[{"issuer_ca_id":286236,"issuer_name":"C=US, O=Google Trust Services, CN=WE1","common_name":"custom-lp.betpanda.io","name_value":"custom-lp.betpanda.io","id":28952068632,"not_before":"2026-08-18T18:27:31","not_after":"2026-11-16T19:27:26","serial_number":"00fef55d2e5e830e760e1f1d3c628238bb","result_count":2},{"issuer_ca_id":286242,"issuer_name":"C=US, O=Google Trust Services, CN=WR1","common_name":"custom-lp.betpanda.io","name_value":"custom-lp.betpanda.io","id":28952065560,"not_before":"2026-08-18T18:27:20","not_after":"2026-11-16T19:27:15","serial_number":"04e1f26b4c43315c1324fc7a3479cc79","result_count":2},{"issuer_ca_id":286236,"issuer_name":"C=US, O=Google Trust Services, CN=WE1","common_name":"custom-lp.betpanda.io","name_value":"custom-lp.betpanda.io","id":28889133442,"not_before":"2026-08-18T17:58:21","not_after":"2026-11-16T18:58:19","serial_number":"3b030416dfc74f3a0e7f14e5742981b0","result_count":2},{"issuer_ca_id":286236,"issuer_name":"C=US, O=Google Trust Services, CN=WE1","common_name":"custom-lp.betpanda.io","name_value":"custom-lp.betpanda.io","id":29024357712,"not_before":"2026-08-18T17:58:21","not_after":"2026-11-16T18:58:19","serial_number":"3b030416dfc74f3a0e7f14e5742981b0","result_count":2},{"issuer_ca_id":286242,"issuer_name":"C=US, O=Google Trust Services, CN=WR1","common_name":"custom-lp.betpanda.io","name_value":"custom-lp.betpanda.io","id":29024355508,"not_before":"2026-08-18T17:58:12","not_after":"2026-11-16T18:57:05","serial_number":"00d186c9fc7fe932b4130e2a2ee50e4186","result_count":2},{"issuer_ca_id":286236,"issuer_name":"C=US, O=Google Trust Services, CN=WE1","common_name":"betpanda.io","name_value":"betpanda.io\ncustom-lp.betpanda.io","id":29036322125,"not_before":"2026-08-18T14:47:32","not_after":"2026-11-16T15:47:29","serial_number":"32affcd632f9a504137ca9aff7d34fb1","result_count":3},{"issuer_ca_id":286236,"issuer_name":"C=US, O=Google Trust Services, CN=WE1","common_name":"betpanda.io","name_value":"betpanda.io\ncustom-lp.betpanda.io","id":28947518832,"not_before":"2026-08-18T14:47:32","not_after":"2026-11-16T15:47:29","serial_number":"32affcd632f9a504137ca9aff7d34fb1","result_count":3},{"issuer_ca_id":286242,"issuer_name":"C=US, O=Google Trust Services, CN=WR1","common_name":"betpanda.io","name_value":"betpanda.io\ncustom-lp.betpanda.io","id":29020602762,"not_before":"2026-08-18T14:47:23","not_after":"2026-11-16T15:44:58","serial_number":"00ab63d54bdc0bc1ab0e443aa96d1758d9","result_count":3},{"issuer_ca_id":286236,"issuer_name":"C=US, O=Google Trust Services, CN=WE1","common_name":"betpanda.io","name_value":"*.betpanda.io\nbetpanda.io","id":28536542624,"not_before":"2026-08-04T16:05:39","not_after":"2026-11-02T17:05:25","serial_number":"51b9b89a9b08a3a913a658af5bcb6a17","result_count":3},{"issuer_ca_id":286242,"issuer_name":"C=US, O=Google Trust Services, CN=WR1","common_name":"betpanda.io","name_value":"*.betpanda.io\nbetpanda.io","id":28539487342,"not_before":"2026-08-04T16:05:19","not_after":"2026-11-02T17:
+---CAS---
+[{"issuer_ca_id":286236,"issuer_name":"C=US, O=Google Trust Services, CN=WE1","common_name":"betpandacasino.io","name_value":"*.betpandacasino.io\nbetpandacasino.io","id":29219030638,"not_before":"2026-08-27T06:14:09","not_after":"2026-11-25T07:13:51","serial_number":"38d9d8770d3852e00e7cb3da3cf133dc","result_count":3},{"issuer_ca_id":286242,"issuer_name":"C=US, O=Google Trust Services, CN=WR1","common_name":"betpandacasino.io","name_value":"*.betpandacasino.io\nbetpandacasino.io","id":29408323440,"not_before":"2026-08-27T06:13:45","not_after":"2026-11-25T07:12:19","serial_number":"7b8c5d570fdbd38513e342aeb1e10571","result_count":3},{"issuer_ca_id":432476,"issuer_name":"C=US, O=Let's Encrypt, CN=YR1","common_name":"cable.betpandacasino.io","name_value":"cable.betpandacasino.io","id":28455870549,"not_before":"2026-08-02T06:38:29","not_after":"2026-10-31T06:38:28","serial_number":"05425f7f52c7543e6927a86a8a89498c00cd","result_count":2},{"issuer_ca_id":432476,"issuer_name":"C=US, O=Let's Encrypt, CN=YR1","common_name":"cable.betpandacasino.io","name_value":"cable.betpandacasino.io","id":28455871639,"not_before":"2026-08-02T06:38:29","not_after":"2026-10-31T06:38:28","serial_number":"05425f7f52c7543e6927a86a8a89498c00cd","result_count":2},{"issuer_ca_id":432477,"issuer_name":"C=US, O=Let's Encrypt, CN=YR2","common_name":"blog.betpandacasino.io","name_value":"blog.betpandacasino.io","id":28455847194,"not_before":"2026-08-02T06:37:19","not_after":"2026-10-31T06:37:18","serial_number":"066482ab79c34807d71d0350b9ea98fcb4f9","result_count":2},{"issuer_ca_id":432477,"issuer_name":"C=US, O=Let's Encrypt, CN=YR2","common_name":"blog.betpandacasino.io","name_value":"blog.betpandacasino.io","id":28455852471,"not_before":"2026-08-02T06:37:19","not_after":"2026-10-31T06:37:18","serial_number":"066482ab79c34807d71d0350b9ea98fcb4f9","result_count":2},{"issuer_ca_id":432476,"issuer_name":"C=US, O=Let's Encrypt, CN=YR1","common_name":"blog.betpandacasino.io","name_value":"blog.betpandacasino.io","id":28326421045,"not_before":"2026-07-28T16:17:09","not_after":"2026-10-26T16:17:08","serial_number":"06fc76e73ac4f18ff81b028a8d152c1e30d4","result_count":2},{"issuer_ca_id":432476,"issuer_name":"C=US, O=Let's Encrypt, CN=YR1","common_name":"blog.betpandacasino.io","name_value":"blog.betpandacasino.io","id":28326417264,"not_before":"2026-07-28T16:17:09","not_after":"2026-10-26T16:17:08","serial_number":"06fc76e73ac4f18ff81b028a8d152c1e30d4","result_count":2},{"issuer_ca_id":432476,"issuer_name":"C=US, O=Let's Encrypt, CN=YR1","common_name":"blog.betpandacasino.io","name_value":"blog.betpandacasino.io","id":28326325896,"not_before":"2026-07-28T16:13:12","not_after":"2026-10-26T16:13:11","serial_number":"051a9ec85c82bf7b41dc33a89fc687cf77a9","result_count":2},{"issuer_ca_id":432476,"issuer_name":"C=US, O=Let's Encrypt, CN=YR1","common_name":"blog.betpandacasino.io","name_value":"blog.betpandacasino.io","id":28326330639,"not_before":"2026-07-28T16:13:12","not_after":"2026-10-2
+[0m
+[0m$ [0mfor z in betpanda.io betpandacasino.io; do echo "== $z =="; curl -s --max-time 30 "https://crt.sh/?q=%25.$z&output=json" | python3 -c "import sys,json;d=json.load(sys.stdin);s=set();[s.update(n.split('\n')) for e in d for n in [e['name_value']]];[print(n) for n in sorted(s)]" 2>/dev/null || echo ERR; done
+== betpanda.io ==
+ERR
+== betpandacasino.io ==
+*.betpandacasino.io
+betpandacasino.io
+blog.betpandacasino.io
+cable.betpandacasino.io
+[0m
+[0m$ [0mcurl -s --max-time 30 'https://crt.sh/?q=%25.betpanda.io&output=json' -o /tmp/opencode/crt_bp.json; wc -c /tmp/opencode/crt_bp.json; python3 -c "
+import json
+d=json.load(open('/tmp/opencode/crt_bp.json'))
+s=set()
+for e in d:
+    for n in e['name_value'].split('\n'):
+        s.add(n.strip())
+for n in sorted(s): print(n)
+" 2>&1 | head -40
+85399 /tmp/opencode/crt_bp.json
+*.betpanda.io
+betpanda.io
+cable.betpanda.io
+cdn.betpanda.io
+custom-lp.betpanda.io
+fp.betpanda.io
+stage.betpanda.io
+staging.betpanda.io
+worker.betpanda.io
+[0m
+STEP 1 — DELTA
+- [CHANGED] crt.sh CT re-pull both zones (betpanda.io: cable/cdn/custom-lp/fp/stage/staging/worker; betpandacasino.io: blog/cable/*) — zero NEW subdomain identities, all previously retired/assessed. No new attack surface.
+- [REANCHORED] affiliates flagship live this cycle — config 200 `ACAO:https://evil.example`+`ACAC:true` (398B byte-stable), password/reset OPTIONS 200 same + full methods, allow-headers lack Authorization. Day 18, bundle-agnostic.
+- NO_DELTA otherwise: App B settings 401 parity, cable dual OPTIONS 204 ACAO:* — unchanged from 13:26Z/08:49Z anchors.
+
+STEP 2 — PRIORITIZE
+- [PRIO] affiliates.betpanda.io/rest/*,7.2,attack_surface=10/business=10/tech=9/gate=2/cloud=3/fresh=2
+- [PRIO] cable.betpanda.io+cable.betpandacasino.io/cable/user-event,4.7,gate_ease=10/attack=4/business=6
+- [PRIO] betpandacasino.io+betpanda.partners/rest/user/*,4.4,gate=2/business=10/cloud=3
+
+STEP 3 — HYPOTHESES
+[HYP] Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live this cycle — GET /rest/public/config 200 `ACAO:https://evil.example`+`ACAC:true` (398B byte-stable, operatorId=1); OPTIONS /rest/user/password/reset 200 same + allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; allow-headers LACK Authorization ⇒ cookie/session crosses origin ungated; URL-bound reset code + set-2fa-setting + agent-limit tamper sit under same envelope; envelope byte-stable 18 consecutive days, bundle-agnostic.
+evidence_needed: credentialed cross-origin GET returning non-401 readable body vs no-cookie 401 control.
+verify_steps: HUMAN_ONLY — operator cred → POST /rest/public/login → GET /rest/user/metrics/affiliate Origin:https://evil.example + session cookie vs no-cookie 401 baseline.
+impact: PII/commission/transaction exfil + password/2FA/agent-limit tamper → ATO — CRITICAL
+testability: HUMAN_ONLY
+
+[HYP] Cross-brand BOLA via shared App B (JWT aud/iss validation gap)
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Prior 13:26Z parity stands — settings 401 len=32 identical both hosts; casino ACAO own-host+ACAC:true vs partners NO ACAO but allow-headers incl Authorization (Bearer, curl-only); shared handler set + refresh OPTIONS parity unchanged.
+evidence_needed: non-401 on partners using casino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — casino login → POST /rest/user/refresh → GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>".
+impact: cross-brand wallet/balance/settings PII on real-money platform — CRITICAL
+testability: HUMAN_ONLY
+
+[HYP] Dual unauth cable ingestion into shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io + cable.betpandacasino.io/cable/user-event
+confidence: 75
+reasoning: Prior POST 200 confirmations stand (lax validator, arbitrary eventType/XSS/negative amounts); dual OPTIONS 204 ACAO:* baseline re-verified 08:49Z; 32-path read sweep 404; at passive ceiling.
+evidence_needed: benign marker aggregated/reflected on owned reference account.
+verify_steps: AUTH_HELPED — POST {"eventType":"verifybp23","userId":"verifybp23","registeredOn":"2026-09-18T20:00:00Z","amount":"0.01"} to one instance, check own dashboard.
+impact: unauth event poisoning / fraud & bonus-pipeline write both hosts — MEDIUM
+testability: AUTH_HELPED
+
+STEP 4 — SELF-CRITIQUE
+- No new hypothesis survives triage: CT zero-yield, no new subdomains (retired stage/staging/cdn/worker confirmed again), App B namespace closed, CMS eliminated, cable surface closed. All three survivors are evidence-backed but impact-proof is auth-gated.
+- [FINAL] 1) affiliates.betpanda.io/rest/* MISCONFIG 95 HUMAN_ONLY · 2) cross-brand BOLA 80 HUMAN_ONLY · 3) dual cable ingestion 75 AUTH_HELPED
+
+STEP 5 — NEXT ACTION
+[NEXT] HUMAN: request operator-issued sandbox/test affiliate credential via bugs.olivermaicher.eu (scope rule account_creation=restricted blocks live-prod register; every de-gate — POST /rest/public/login session, cross-brand Bearer handoff, cable marker reflection — is dead without a session; CT re-sweep this cycle adds zero surface).
+
+STEP 6 — LEARNING
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: re-verified live this cycle — config 200 ACAO:https://evil.example+ACAC:true (398B byte-stable), password/reset OPTIONS same envelope + full methods, allow-headers lack Authorization; day 18, bundle-agnostic.
+[LEARN] ACCEPTED SCAN @ crt.sh: fresh CT re-pull both zones returns only previously-assessed identities (retired stage/staging/cdn/worker + known live hosts); zero new subdomains, zero new attack surface — sweep re-closed with data.
+
+STEP 7 — RISK
+[RISK] betpanda: 92 — three verified classes byte-stable into day 18 (flagship wildcard CORS+credentials, dual unauth write path, cross-brand 401 parity); CT re-pull confirms no new subdomain surface; all passive lanes exhausted with zero yield for 8+ consecutive cycles; impact-proof POC is exclusively gated on operator-issued credentials — autonomous progress nil, residual upside wholly human/operator-in-the-loop.
