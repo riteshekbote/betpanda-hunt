@@ -5407,3 +5407,37 @@ testability: AUTH_HELPED
 [LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners/rest/user/settings: 401 len=32 parity re-verified 09:37Z both hosts; CORS asymmetry (casino ACAO own+ACAC:true vs partners no-ACAO) stable — Bearer handoff path intact.
 [LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io/cable/user-event: dual OPTIONS 204 ACAO:* + full methods re-verified 09:38Z — unauth ingestion stable at passive ceiling.
 [RISK] betpanda: 92 — three verified classes byte-stable into day 19 (flagship wildcard CORS+credentials, cross-brand BOLA parity, dual unauth write path); all passive lanes closed with data (CT, CSP reposcan, namespace sweeps, TLD variants); autonomous yield zero for 9+ consecutive cycles; impact-proof POC is exclusively gated on operator-issued credentials — residual upside is 100% human/operator-in-the-loop.
+## 2026-09-19 13:26:16 UTC [target] (model bigpickle)
+[HYP] Wildcard CORS+credentials on full /rest/* enables cross-origin ATO/exfil
+class: MISCONFIG
+asset: affiliates.betpanda.io/rest/*
+confidence: 95
+reasoning: Live this cycle ~13:24Z — config 200 `ACAO:https://evil.example`+`ACAC:true` (398B, operatorId=1, deals@bamboopartners.io); password/reset OPTIONS same envelope + allow-methods GET,POST,OPTIONS,PUT,HEAD,DELETE; allow-headers LACK Authorization ⇒ cookie/session crosses origin ungated; URL-bound reset code + set-2fa-setting + agent-limit tamper under same envelope; day 19, bundle-agnostic (main.1ae50aab.js).
+evidence_needed: credentialed cross-origin GET returning non-401 readable body vs no-cookie 401 control.
+verify_steps: HUMAN_ONLY — operator cred → POST /rest/public/login → GET /rest/user/metrics/affiliate with Origin:https://evil.example + session cookie vs no-cookie 401 baseline.
+impact: PII/commission/transaction exfil + password/2FA/agent-limit tamper → ATO — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Cross-brand BOLA via shared App B (JWT aud/iss validation gap)
+class: IDOR
+asset: betpandacasino.io/rest/user/* + betpanda.partners/rest/user/*
+confidence: 80
+reasoning: Live this cycle — settings 401 len=32 parity both hosts; casino ACAO own-host+ACAC:true vs partners NO ACAO; shared handler set; new casino bundle index-Ck8MbDz7.js exposes same handler set; refresh OPTIONS parity unchanged.
+evidence_needed: non-401 on partners using casino-minted JWT vs 401 control.
+verify_steps: HUMAN_ONLY — casino login → POST /rest/user/refresh → GET https://betpanda.partners/rest/user/settings -H "Authorization: Bearer <jwt>".
+impact: cross-brand wallet/balance/settings PII on real-money platform — CRITICAL
+testability: HUMAN_ONLY
+[HYP] Dual unauth cable ingestion into shared analytics/fraud pipeline
+class: BUSLOGIC
+asset: cable.betpanda.io + cable.betpandacasino.io/cable/user-event
+confidence: 75
+reasoning: Live ~13:25Z — both OPTIONS (Origin+ACRM:POST+ACRH:content-type) → 204 `ACAO:*` + allow-methods GET,POST,HEAD,PUT,DELETE,PATCH + allow-headers content-type; bare OPTIONS 405 is preflight-header artifact; root banners 200 ACAO:* identical (1051B); prior POST 200 lax-validator confirmations stand; at passive ceiling.
+evidence_needed: benign marker aggregated/reflected on owned reference account.
+verify_steps: AUTH_HELPED — POST {"eventType":"verifybp26","userId":"verifybp26","registeredOn":"2026-09-19T13:00:00Z","amount":"0.01"} to one instance, check own dashboard.
+impact: unauth event poisoning / fraud & bonus-pipeline write both hosts — MEDIUM
+testability: AUTH_HELPED
+[NEXT] HUMAN: Request operator-issued sandbox/test affiliate credential via bugs.olivermaicher.eu — scope rule account_creation=restricted blocks live-prod register; bundle-rotation delta (index-Ck8MbDz7.js) enumerated clean, confirming zero passive upside remains; every de-gate (POST /rest/public/login session, cross-brand Bearer handoff, cable marker reflection) is dead without a session; day-19 re-anchor shows no fix, no new surface.
+[LEARN] ACCEPTED MISCONFIG @ affiliates.betpanda.io/rest/*: live ~13:24Z — config 200 ACAO:https://evil.example+ACAC:true (398B byte-stable, operatorId=1); password/reset OPTIONS same envelope + full allow-methods; allow-headers lack Authorization; envelope day 19, bundle-agnostic.
+[LEARN] ACCEPTED IDOR @ betpandacasino.io+betpanda.partners/rest/user/settings: 401 len=32 parity re-verified this cycle; casino ACAO own-host+ACAC:true vs partners no-ACAO — Bearer handoff path intact.
+[LEARN] ACCEPTED BUSLOGIC @ cable.betpanda.io+cable.betpandacasino.io/cable/user-event: both 204 ACAO:* + full methods re-confirmed (requires full preflight headers; bare OPTIONS 405 is header-dependent artifact); dual-instance ingestion stable.
+[LEARN] ACCEPTED @ betpandacasino.io bundle rotation index-Ck8MbDz7.js (798,528 B): enumeration yields only known App B handlers (/user/authenticate, /user/account-balances-and-bonuses, /user/logout, /user/zendesk/jwt) + internal dev baseUrl fallbacks (host.docker.internal:9081, localhost:8081) — no new handler, no new attack surface.
+[RISK] betpanda: 92 — three verified classes byte-stable into day 19 (flagship wildcard CORS+credentials, cross-brand BOLA parity, dual unauth write path); newest asset churn (casino bundle rotation) enumerated clean; all passive lanes closed with data (CT, reposcan, namespace sweeps, TLD variants, bundle enumeration); autonomous yield zero for 10+ consecutive cycles; residual upside is 100% human/operator-in-the-loop.

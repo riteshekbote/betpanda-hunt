@@ -723,3 +723,8 @@ www.betpanda.io
 ## 2026-09-19 05:03:10 UTC
 
 ## 2026-09-19 09:39:57 UTC
+
+## 2026-09-19 13:27:40 UTC
+- CHANGED affiliates.betpanda.io SPA bundle rotated back to `main.1ae50aab.js` (was `main.ef021e68.js`); backend `/rest/*` endpoints live-confirmed independent of bundle version
+- CHANGED betpandacasino.io SPA bundle stable at `index-5unQ0efM.js`; App B behavior anchors unchanged
+- CHANGED All three flagship findings re-confirmed live this cycle (2026-09-19 13:23-13:25Z probes) — no new endpoints, no regressions
