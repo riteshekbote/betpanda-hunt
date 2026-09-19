@@ -1,10 +1,13 @@
-## 2026-09-19 13:27:31 UTC [target] (model nemotron3)
-[CHANGED] affiliates.betpanda.io SPA bundle rotated back to `main.1ae50aab.js` (was `main.ef021e68.js`); backend `/rest/*` endpoints live-confirmed independent of bundle version
-[CHANGED] betpandacasino.io SPA bundle stable at `index-5unQ0efM.js`; App B behavior anchors unchanged
-[CHANGED] All three flagship findings re-confirmed live this cycle (2026-09-19 13:23-13:25Z probes) — no new endpoints, no regressions
+## 2026-09-19 16:53:39 UTC [target] (model nemotron3)
+[CHANGED] betpandacasino.io SPA bundle rotated to `index-Ck8MbDz7.js` (from
+[CHANGED] betpandacasino.io SPA bundle rotated to `index-Ck8MbDz7.js` (from `index-5unQ0efM.js`); enumeration shows dev baseUrl fallbacks (`host.docker.internal:9081`, `localhost:8081`) in client code — no new handlers, attack surface unchanged
+[CHANGED] affiliates.betpanda.io SPA bundle rotated back to `main.1ae50aab.js` (from `main.ef021e68.js`); backend `/rest/*` endpoints live-confirmed independent of bundle version
+[CHANGED] All three flagship findings re-confirmed live this cycle (2026-09-19 13:23-13:25Z + fresh 16:48Z probes) — no new endpoints, no regressions
+[NEW] betpandacasino.io client bundle contains internal dev baseUrl references (`host.docker.internal:9081`, `localhost:8081`) — information disclosure of dev infrastructure topology
 [PRIO] affiliates.betpanda.io/rest/*,9.80,attack_surface=10,business_value=10,tech_exposure=10,gate_ease=10,cloud_surface=8,freshness=10
 [PRIO] cable.betpanda.io/cable/user-event + cable.betpandacasino.io/cable/user-event,8.05,attack_surface=8,business_value=7,tech_exposure=8,gate_ease=10,cloud_surface=6,freshness=10
 [PRIO] betpanda.partners/rest/user/* + betpandacasino.io/rest/user/*,7.95,attack_surface=8,business_value=10,tech_exposure=7,gate_ease=4,cloud_surface=8,freshness=10
+[PRIO] betpandacasino.io/index-Ck8MbDz7.js,4.20,attack_surface=3,business_value=2,tech_exposure=6,gate_ease=10,cloud_surface=3,freshness=10
 [HYP] Wildcard CORS + Credentials on Full /rest/* Backend Enables Cross-Origin ATO Chain
 class: MISCONFIG
 asset: affiliates.betpanda.io/rest/*
@@ -43,4 +46,5 @@ testability: AUTH_HELPED
 [LEARN] REJECTED MISCONFIG @ betpandacasino.io/cms: Real Strapi v4 backend but NO public content types, NO admin at default path — CMS content-disclosure hypothesis dropped.
 [LEARN] REJECTED MISCONFIG @ betpandacasino.io/api+v1+v2+internal+beta: all /api/* SPA catch-all 200, all /rest/{v1,internal,beta,operator} 404 JSON — no hidden namespaces.
 [LEARN] REJECTED OTHER @ github.com/*betpanda*: No official BetPanda GitHub org — reposcan lane closed permanently.
-[RISK] betpanda: 95 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + change-password + public `/rest/*` layer (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), dual unauthenticated analytics injection with fully reverse-derived schema accepting XSS/negative amounts on both cable instances (chaining vector). OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure. Fresh SPA redeploy (main.1ae50aab.js) backend attack surface stable with 30+ mapped endpoints.
+[LEARN] ACCEPTED MISCONFIG @ betpandacasino.io/index-Ck8MbDz7.js: Client bundle contains dev baseUrl fallbacks (host.docker.internal:9081, localhost:8081) — internal topology disclosure, low direct exploitability.
+[RISK] betpanda: 95 — Wildcard CORS+credentials on affiliate money-flow API extends to password-reset + 2FA + change-password + public `/rest/*` layer (CRITICAL cross-origin ATO chain, strongest finding), real-money gambling API with BOLA surface across betpandacasino.io + betpanda.partners shared backend (CRITICAL financial), dual unauthenticated analytics injection with fully reverse-derived schema accepting XSS/negative amounts on both cable instances (chaining vector). OAuth ATO path ELIMINATED (false positive — SPA catch-all). Program scope covers all company-owned infrastructure. Fresh SPA redeploy (main.1ae50aab.js / index-Ck8MbDz7.js) backend attack surface stable with 30+ mapped endpoints. Dev baseUrl leakage in client bundle indicates CI/CD hygiene gap.

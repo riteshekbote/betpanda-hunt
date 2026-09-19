@@ -728,3 +728,10 @@ www.betpanda.io
 - CHANGED affiliates.betpanda.io SPA bundle rotated back to `main.1ae50aab.js` (was `main.ef021e68.js`); backend `/rest/*` endpoints live-confirmed independent of bundle version
 - CHANGED betpandacasino.io SPA bundle stable at `index-5unQ0efM.js`; App B behavior anchors unchanged
 - CHANGED All three flagship findings re-confirmed live this cycle (2026-09-19 13:23-13:25Z probes) — no new endpoints, no regressions
+
+## 2026-09-19 16:53:49 UTC
+- CHANGED betpandacasino.io SPA bundle rotated to `index-Ck8MbDz7.js` (from
+- CHANGED betpandacasino.io SPA bundle rotated to `index-Ck8MbDz7.js` (from `index-5unQ0efM.js`); enumeration shows dev baseUrl fallbacks (`host.docker.internal:9081`, `localhost:8081`) in client code — no new 
+- CHANGED affiliates.betpanda.io SPA bundle rotated back to `main.1ae50aab.js` (from `main.ef021e68.js`); backend `/rest/*` endpoints live-confirmed independent of bundle version
+- CHANGED All three flagship findings re-confirmed live this cycle (2026-09-19 13:23-13:25Z + fresh 16:48Z probes) — no new endpoints, no regressions
+- NEW betpandacasino.io client bundle contains internal dev baseUrl references (`host.docker.internal:9081`, `localhost:8081`) — information disclosure of dev infrastructure topology
