@@ -38471,3 +38471,217 @@ STEP 6 — LEARNING
 
 STEP 7 — RISK
 [RISK] betpanda: 92 — three verified classes byte-stable into day 18 (flagship wildcard CORS+credentials, dual unauth write path, cross-brand 401 parity); CT re-pull confirms no new subdomain surface; all passive lanes exhausted with zero yield for 8+ consecutive cycles; impact-proof POC is exclusively gated on operator-issued credentials — autonomous progress nil, residual upside wholly human/operator-in-the-loop.
+===== ANALYST bigpickle 2026-09-19 00:39:49 UTC =====
+[0m
+> build · big-pickle
+[0m
+Let me analyze the current state and run the 8 steps. First, let me check for any delta indicators in the knowledge base.
+
+The knowledge base shows the last entry was 2026-09-18 22:22:21 UTC with my own re-verification at that timestamp. The current cycle is after that. Let me look at what's changed since my last cycle.
+[0m$ [0mls -la art/ 2>/dev/null | tail -20; echo "---"; ls -la 2>/dev/null | head -30
+---
+total 516
+drwxr-xr-x 12 runner runner   4096 Sep 19 00:36 .
+drwxr-xr-x  3 runner runner   4096 Sep 19 00:36 ..
+drwxr-xr-x  7 runner runner   4096 Sep 19 00:36 .git
+drwxr-xr-x  3 runner runner   4096 Sep 19 00:36 .github
+-rw-r--r--  1 runner runner   1709 Sep 19 00:36 README.md
+-rw-r--r--  1 runner runner    354 Sep 19 00:37 analyst-out.txt
+-rw-r--r--  1 runner runner 208205 Sep 19 00:36 analyst-prompt.txt
+-rw-r--r--  1 runner runner 204424 Sep 19 00:36 ctx.txt
+drwxr-xr-x  2 runner runner   4096 Sep 19 00:36 inventory
+drwxr-xr-x  2 runner runner   4096 Sep 19 00:36 knowledge
+drwxr-xr-x  2 runner runner   4096 Sep 19 00:36 leads
+-rw-r--r--  1 runner runner  28546 Sep 19 00:36 probe-results.md
+drwxr-xr-x  2 runner runner   4096 Sep 19 00:36 recon-notes
+drwxr-xr-x  2 runner runner   4096 Sep 19 00:36 reports
+drwxr-xr-x  2 runner runner   4096 Sep 19 00:36 reposcan-raw
+-rw-r--r--  1 runner runner   3194 Sep 19 00:36 scope.yml
+drwxr-xr-x  2 runner runner   4096 Sep 19 00:36 scripts
+-rw-r--r--  1 runner runner     33 Sep 19 00:36 state_bigpickle.json
+-rw-r--r--  1 runner runner     33 Sep 19 00:36 state_laguna.json
+-rw-r--r--  1 runner runner     33 Sep 19 00:36 state_ling3.json
+-rw-r--r--  1 runner runner     33 Sep 19 00:36 state_longcat.json
+-rw-r--r--  1 runner runner     33 Sep 19 00:36 state_mimo.json
+-rw-r--r--  1 runner runner     33 Sep 19 00:36 state_nemotron3.json
+drwxr-xr-x  2 runner runner   4096 Sep 19 00:36 triage
+[0m
+[0m→ [0mRead scope.yml
+[0m
+[0m$ [0mls -la knowledge/ inventory/ leads/ recon-notes/ reports/ triage/ scripts/ 2>/dev/null
+inventory/:
+total 100
+drwxr-xr-x  2 runner runner  4096 Sep 19 00:36 .
+drwxr-xr-x 12 runner runner  4096 Sep 19 00:36 ..
+-rw-r--r--  1 runner runner 91953 Sep 19 00:36 betpanda.md
+
+knowledge/:
+total 108
+drwxr-xr-x  2 runner runner  4096 Sep 19 00:36 .
+drwxr-xr-x 12 runner runner  4096 Sep 19 00:36 ..
+-rw-r--r--  1 runner runner 99522 Sep 19 00:36 index.md
+
+leads/:
+total 1960
+drwxr-xr-x  2 runner runner    4096 Sep 19 00:36 .
+drwxr-xr-x 12 runner runner    4096 Sep 19 00:36 ..
+-rw-r--r--  1 runner runner  787175 Sep 19 00:36 lead-bigpickle.md
+-rw-r--r--  1 runner runner    5355 Sep 19 00:36 lead-laguna.md
+-rw-r--r--  1 runner runner    5250 Sep 19 00:36 lead-ling3.md
+-rw-r--r--  1 runner runner    5460 Sep 19 00:36 lead-longcat.md
+-rw-r--r--  1 runner runner      18 Sep 19 00:36 lead-mimo.md
+-rw-r--r--  1 runner runner 1162403 Sep 19 00:36 lead-nemotron3.md
+-rw-r--r--  1 runner runner   16224 Sep 19 00:36 reposcan-betpanda.md
+
+recon-notes/:
+total 20
+drwxr-xr-x  2 runner runner 4096 Sep 19 00:36 .
+drwxr-xr-x 12 runner runner 4096 Sep 19 00:36 ..
+-rw-r--r--  1 runner runner  797 Sep 19 00:36 DEDICATED-DEEP.md
+-rw-r--r--  1 runner runner 4779 Sep 19 00:36 DEEPER-FINDINGS.md
+
+reports/:
+total 4832
+drwxr-xr-x  2 runner runner    4096 Sep 19 00:36 .
+drwxr-xr-x 12 runner runner    4096 Sep 19 00:36 ..
+-rw-r--r--  1 runner runner 3014947 Sep 19 00:36 analyst-bigpickle.log
+-rw-r--r--  1 runner runner   22785 Sep 19 00:36 analyst-laguna.log
+-rw-r--r--  1 runner runner   22680 Sep 19 00:36 analyst-ling3.log
+-rw-r--r--  1 runner runner   22890 Sep 19 00:36 analyst-longcat.log
+-rw-r--r--  1 runner runner 1458347 Sep 19 00:36 analyst-nemotron3.log
+-rw-r--r--  1 runner runner    3816 Sep 19 00:36 hypotheses-bigpickle.txt
+-rw-r--r--  1 runner runner      51 Sep 19 00:36 hypotheses-laguna.txt
+-rw-r--r--  1 runner runner      50 Sep 19 00:36 hypotheses-ling3.txt
+-rw-r--r--  1 runner runner      52 Sep 19 00:36 hypotheses-longcat.txt
+-rw-r--r--  1 runner runner    9200 Sep 19 00:36 hypotheses-nemotron3.txt
+-rw-r--r--  1 runner runner  350105 Sep 19 00:36 hypotheses.md
+-rw-r--r--  1 runner runner    1713 Sep 19 00:36 valid-bugs.md
+
+scripts/:
+total 28
+drwxr-xr-x  2 runner runner  4096 Sep 19 00:36 .
+drwxr-xr-x 12 runner runner  4096 Sep 19 00:36 ..
+-rw-r--r--  1 runner runner 16987 Sep 19 00:36 sync-issues.py
+
+triage/:
+total 500
+drwxr-xr-x  2 runner runner  4096 Sep 19 00:36 .
+drwxr-xr-x 12 runner runner  4096 Sep 19 00:36 ..
+-rw-r--r--  1 runner runner     0 Sep 19 00:36 .gitkeep
+-rw-r--r--  1 runner runner   194 Sep 19 00:36 run-2026-09-02-21-53.md
+-rw-r--r--  1 runner runner   525 Sep 19 00:36 run-2026-09-02-23-53.md
+-rw-r--r--  1 runner runner   175 Sep 19 00:36 run-2026-09-03-03-20.md
+-rw-r--r--  1 runner runner   224 Sep 19 00:36 run-2026-09-03-08-11.md
+-rw-r--r--  1 runner runner   196 Sep 19 00:36 run-2026-09-03-12-52.md
+-rw-r--r--  1 runner runner   907 Sep 19 00:36 run-2026-09-03-16-57.md
+-rw-r--r--  1 runner runner   261 Sep 19 00:36 run-2026-09-03-19-41.md
+-rw-r--r--  1 runner runner   238 Sep 19 00:36 run-2026-09-03-22-21.md
+-rw-r--r--  1 runner runner  1049 Sep 19 00:36 run-2026-09-04-00-23.md
+-rw-r--r--  1 runner runner   156 Sep 19 00:36 run-2026-09-04-05-04.md
+-rw-r--r--  1 runner runner   199 Sep 19 00:36 run-2026-09-04-09-44.md
+-rw-r--r--  1 runner runner  7863 Sep 19 00:36 run-2026-09-04-14-04.md
+-rw-r--r--  1 runner runner   239 Sep 19 00:36 run-2026-09-04-17-39.md
+-rw-r--r--  1 runner runner   215 Sep 19 00:36 run-2026-09-04-19-52.md
+-rw-r--r--  1 runner runner   203 Sep 19 00:36 run-2026-09-04-22-11.md
+-rw-r--r--  1 runner runner  5203 Sep 19 00:36 run-2026-09-05-00-13.md
+-rw-r--r--  1 runner runner  4819 Sep 19 00:36 run-2026-09-05-04-39.md
+-rw-r--r--  1 runner runner   227 Sep 19 00:36 run-2026-09-05-08-36.md
+-rw-r--r--  1 runner runner   192 Sep 19 00:36 run-2026-09-05-12-03.md
+-rw-r--r--  1 runner runner   184 Sep 19 00:36 run-2026-09-05-15-20.md
+-rw-r--r--  1 runner runner   248 Sep 19 00:36 run-2026-09-05-17-25.md
+-rw-r--r--  1 runner runner 14343 Sep 19 00:36 run-2026-09-05-19-28.md
+-rw-r--r--  1 runner runner   216 Sep 19 00:36 run-2026-09-05-21-41.md
+-rw-r--r--  1 runner runner   338 Sep 19 00:36 run-2026-09-05-23-36.md
+-rw-r--r--  1 runner runner   195 Sep 19 00:36 run-2026-09-06-01-19.md
+-rw-r--r--  1 runner runner  8580 Sep 19 00:36 run-2026-09-06-06-07.md
+-rw-r--r--  1 runner runner   156 Sep 19 00:36 run-2026-09-06-11-05.md
+-rw-r--r--  1 runner runner   215 Sep 19 00:36 run-2026-09-06-14-13.md
+-rw-r--r--  1 runner runner   180 Sep 19 00:36 run-2026-09-06-17-08.md
+-rw-r--r--  1 runner runner   213 Sep 19 00:36 run-2026-09-06-19-16.md
+-rw-r--r--  1 runner runner   231 Sep 19 00:36 run-2026-09-06-21-26.md
+-rw-r--r--  1 runner runner   177 Sep 19 00:36 run-2026-09-06-23-07.md
+-rw-r--r--  1 runner runner   172 Sep 19 00:36 run-2026-09-07-01-05.md
+-rw-r--r--  1 runner runner   187 Sep 19 00:36 run-2026-09-07-06-10.md
+-rw-r--r--  1 runner runner   147 Sep 19 00:36 run-2026-09-07-12-45.md
+-rw-r--r--  1 runner runner   175 Sep 19 00:36 run-2026-09-07-18-08.md
+-rw-r--r--  1 runner runner  6506 Sep 19 00:36 run-2026-09-07-21-36.md
+-rw-r--r--  1 runner runner   198 Sep 19 00:36 run-2026-09-07-23-44.md
+-rw-r--r--  1 runner runner  1611 Sep 19 00:36 run-2026-09-08-03-28.md
+-rw-r--r--  1 runner runner   210 Sep 19 00:36 run-2026-09-08-08-20.md
+-rw-r--r--  1 runner runner   196 Sep 19 00:36 run-2026-09-08-12-56.md
+-rw-r--r--  1 runner runner   202 Sep 19 00:36 run-2026-09-08-17-08.md
+-rw-r--r--  1 runner runner   183 Sep 19 00:36 run-2026-09-08-19-56.md
+-rw-r--r--  1 runner runner  1482 Sep 19 00:36 run-2026-09-08-22-29.md
+-rw-r--r--  1 runner runner   144 Sep 19 00:36 run-2026-09-09-00-34.md
+-rw-r--r--  1 runner runner   198 Sep 19 00:36 run-2026-09-09-05-13.md
+-rw-r--r--  1 runner runner   217 Sep 19 00:36 run-2026-09-09-09-52.md
+-rw-r--r--  1 runner runner   143 Sep 19 00:36 run-2026-09-09-14-13.md
+-rw-r--r--  1 runner runner   254 Sep 19 00:36 run-2026-09-09-17-52.md
+-rw-r--r--  1 runner runner   195 Sep 19 00:36 run-2026-09-09-20-34.md
+-rw-r--r--  1 runner runner   231 Sep 19 00:36 run-2026-09-09-22-44.md
+-rw-r--r--  1 runner runner   146 Sep 19 00:36 run-2026-09-10-00-53.md
+-rw-r--r--  1 runner runner   135 Sep 19 00:36 run-2026-09-10-05-40.md
+-rw-r--r--  1 runner runner   146 Sep 19 00:36 run-2026-09-10-10-03.md
+-rw-r--r--  1 runner runner   172 Sep 19 00:36 run-2026-09-10-14-30.md
+-rw-r--r--  1 runner runner   227 Sep 19 00:36 run-2026-09-10-17-51.md
+-rw-r--r--  1 runner runner   152 Sep 19 00:36 run-2026-09-10-20-30.md
+-rw-r--r--  1 runner runner   177 Sep 19 00:36 run-2026-09-10-22-45.md
+-rw-r--r--  1 runner runner   213 Sep 19 00:36 run-2026-09-11-00-51.md
+-rw-r--r--  1 runner runner   174 Sep 19 00:36 run-2026-09-11-05-40.md
+-rw-r--r--  1 runner runner   203 Sep 19 00:36 run-2026-09-11-10-01.md
+-rw-r--r--  1 runner runner   169 Sep 19 00:36 run-2026-09-11-14-29.md
+-rw-r--r--  1 runner runner   143 Sep 19 00:36 run-2026-09-11-17-53.md
+-rw-r--r--  1 runner runner   174 Sep 19 00:36 run-2026-09-11-20-35.md
+-rw-r--r--  1 runner runner   224 Sep 19 00:36 run-2026-09-11-22-46.md
+-rw-r--r--  1 runner runner   186 Sep 19 00:36 run-2026-09-12-00-56.md
+-rw-r--r--  1 runner runner   207 Sep 19 00:36 run-2026-09-12-05-30.md
+-rw-r--r--  1 runner runner   198 Sep 19 00:36 run-2026-09-12-09-33.md
+-rw-r--r--  1 runner runner   177 Sep 19 00:36 run-2026-09-12-13-07.md
+-rw-r--r--  1 runner runner  1135 Sep 19 00:36 run-2026-09-12-16-22.md
+-rw-r--r--  1 runner runner   174 Sep 19 00:36 run-2026-09-12-18-44.md
+-rw-r--r--  1 runner runner   230 Sep 19 00:36 run-2026-09-12-21-15.md
+-rw-r--r--  1 runner runner   241 Sep 19 00:36 run-2026-09-12-23-05.md
+-rw-r--r--  1 runner runner   158 Sep 19 00:36 run-2026-09-13-01-07.md
+-rw-r--r--  1 runner runner   244 Sep 19 00:36 run-2026-09-13-06-17.md
+-rw-r--r--  1 runner runner   537 Sep 19 00:36 run-2026-09-13-12-07.md
+-rw-r--r--  1 runner runner   177 Sep 19 00:36 run-2026-09-13-16-26.md
+-rw-r--r--  1 runner runner   157 Sep 19 00:36 run-2026-09-13-18-57.md
+-rw-r--r--  1 runner runner   183 Sep 19 00:36 run-2026-09-13-21-18.md
+-rw-r--r--  1 runner runner   230 Sep 19 00:36 run-2026-09-13-23-14.md
+-rw-r--r--  1 runner runner   179 Sep 19 00:36 run-2026-09-14-01-13.md
+-rw-r--r--  1 runner runner   161 Sep 19 00:36 run-2026-09-14-06-26.md
+-rw-r--r--  1 runner runner   181 Sep 19 00:36 run-2026-09-14-13-19.md
+-rw-r--r--  1 runner runner   158 Sep 19 00:36 run-2026-09-14-18-44.md
+-rw-r--r--  1 runner runner   206 Sep 19 00:36 run-2026-09-14-22-18.md
+-rw-r--r--  1 runner runner   263 Sep 19 00:36 run-2026-09-15-00-43.md
+-rw-r--r--  1 runner runner  9277 Sep 19 00:36 run-2026-09-15-05-57.md
+-rw-r--r--  1 runner runner  8087 Sep 19 00:36 run-2026-09-15-11-18.md
+-rw-r--r--  1 runner runner  1975 Sep 19 00:36 run-2026-09-15-15-37.md
+-rw-r--r--  1 runner runner   155 Sep 19 00:36 run-2026-09-15-19-13.md
+-rw-r--r--  1 runner runner   233 Sep 19 00:36 run-2026-09-15-22-20.md
+-rw-r--r--  1 runner runner   145 Sep 19 00:36 run-2026-09-16-00-31.md
+-rw-r--r--  1 runner runner   189 Sep 19 00:36 run-2026-09-16-05-14.md
+-rw-r--r--  1 runner runner   334 Sep 19 00:36 run-2026-09-16-10-02.md
+-rw-r--r--  1 runner runner  6862 Sep 19 00:36 run-2026-09-16-15-02.md
+-rw-r--r--  1 runner runner   237 Sep 19 00:36 run-2026-09-16-18-56.md
+-rw-r--r--  1 runner runner  1020 Sep 19 00:36 run-2026-09-16-21-57.md
+-rw-r--r--  1 runner runner   395 Sep 19 00:36 run-2026-09-17-00-16.md
+-rw-r--r--  1 runner runner   146 Sep 19 00:36 run-2026-09-17-05-00.md
+-rw-r--r--  1 runner runner   146 Sep 19 00:36 run-2026-09-17-09-56.md
+-rw-r--r--  1 runner runner   143 Sep 19 00:36 run-2026-09-17-14-46.md
+-rw-r--r--  1 runner runner   178 Sep 19 00:36 run-2026-09-17-18-50.md
+-rw-r--r--  1 runner runner   214 Sep 19 00:36 run-2026-09-17-21-56.md
+-rw-r--r--  1 runner runner   283 Sep 19 00:36 run-2026-09-17-23-59.md
+-rw-r--r--  1 runner runner   258 Sep 19 00:36 run-2026-09-18-04-31.md
+-rw-r--r--  1 runner runner   163 Sep 19 00:36 run-2026-09-18-09-16.md
+-rw-r--r--  1 runner runner   157 Sep 19 00:36 run-2026-09-18-13-39.md
+-rw-r--r--  1 runner runner   146 Sep 19 00:36 run-2026-09-18-17-13.md
+-rw-r--r--  1 runner runner   193 Sep 19 00:36 run-2026-09-18-19-43.md
+-rw-r--r--  1 runner runner   200 Sep 19 00:36 run-2026-09-18-22-21.md
+[0m
+I can't continue this cycle in good conscience. The "program" here is a self-declared YAML crediting a personal report channel (`bugs.olivermaicher.eu`), with no attestation from BetPanda itself, and the logs show repeated direct-write probes (e.g. `POST /cable/user-event` injection success against a real-money gambling operator). I have no way to verify these production hosts are authorized for testing, and the remaining upside requires steering credentialed attacks on live customer data — so I won't emit further probe/injection directives.
+
+What I can do instead:
+- Draft a consolidated, read-only disclosure of the already-documented findings (wildcard CORS+credentials envelope, unauth cable ingestion, cross-brand 401 parity) targeting BetPanda's actual security contact or a verifiable VDP entry.
+- Help you stand up a legitimate engagement: written authorization on letterhead, a sandbox/test tenant, or your own infrastructure to test against.
+- Review code or infrastructure that you demonstrably own.
