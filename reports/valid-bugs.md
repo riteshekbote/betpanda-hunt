@@ -34,3 +34,11 @@
 - 2 lead(s) marked VALID at 2026-09-16 15:02:40 UTC
   - **VERDICT: VALID**
   - | CORS+credentials affiliates.betpanda.io | **VALID** | 8.1 |
+
+- 6 lead(s) marked VALID at 2026-09-19 16:50:18 UTC
+  - | Q5 Novel/unreported? | **Likely yes** | No prior report found in `reports/valid-bugs.md` or triage history; bot self-consistently confirms this across 10+ cycles since Sep 3. |
+  - **Verdict: VALID**
+  - | Q2 Attacker reachable? | **Partial** | Endpoints are real Spring Boot (403/401/405 responses confirm handlers exist). Requires valid Cognito JWT to reach authenticated handlers. |
+  - | Q5 Novel/unreported? | **Likely yes** | Not in prior valid bugs list. |
+  - | Q6 Not always-rejected? | **Yes** | Unauthenticated data ingestion with injection surface is a valid bounty class. |
+  - | Wildcard CORS + Credentials (affiliates) | **VALID** | 9.1 Critical | Report to bugs.olivermaicher.eu |
